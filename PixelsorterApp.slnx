@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../PixelsorterClassLib/PixelsorterClassLib/PixelsorterClassLib.csproj" />
+  <Project Path="PixelsorterApp/PixelsorterApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
