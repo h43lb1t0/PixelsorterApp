@@ -3,6 +3,7 @@ using Image = PixelsorterClassLib.Image;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
+using NumSharp;
 
 namespace PixelsorterApp
 {
@@ -11,13 +12,15 @@ namespace PixelsorterApp
 
         private ImageSource imgSource;
         private string imagePath; // Add field to store the file path
-        private readonly Mask mask = new Mask();
+        private readonly Mask masker = new Mask();
+        private bool useMask = false;
 
         public MainPage()
         {
             InitializeComponent();
             SizeChanged += OnPageSizeChanged;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
+            saveBtn.IsVisible = false;
         }
 
         private void OnPageSizeChanged(object sender, EventArgs e)
@@ -29,6 +32,8 @@ namespace PixelsorterApp
 
         private async void LoadImage_Clicked(object sender, EventArgs e)
         {
+
+            saveBtn.IsVisible = false; // Hide the save button when loading a new image
             var results = await MediaPicker.PickPhotosAsync();
 
             foreach (var file in results)
@@ -55,23 +60,32 @@ namespace PixelsorterApp
                 return;
 
             sortBtn.IsEnabled = false;
+            NDArray? mask = null;
 
             try
             {
                 // Run the CPU/IO-bound sorting and save on a background thread so the UI can update immediately.
                 await Task.Run(() =>
                 {
+
+                    if (this.useMask)
+                    {
+                        mask = masker.GetMask(this.imagePath);
+                    }
+
                     var imgData = Sorter.SortImage(
-                        Image.LoadImage(this.imagePath),
-                        SortBy.Warmth(),
-                        SortDirections.RowRightToLeft,
-                        mask.GetMask(this.imagePath)
-                    );
-                    Image.SaveImage(imgData, "sorted_image.png");
-                });
+                                Image.LoadImage(this.imagePath),
+                                SortBy.Warmth(),
+                                SortDirections.RowRightToLeft,
+                                mask
+                            );
+                            Image.SaveImage(imgData, "sorted_image.png");
+                        });
 
                 // Update UI after background work completes
                 imgShower.Source = ImageSource.FromFile("sorted_image.png");
+                sortBtn.IsVisible = false;
+                saveBtn.IsVisible = true;
             }
             catch (Exception ex)
             {
@@ -79,5 +93,19 @@ namespace PixelsorterApp
                 await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
+
+        private void SaveBtn_Clicked(object sender, EventArgs e)
+        {
+            // Implement saving the sorted image to the user's gallery or a chosen location.
+
+               // For example, you could use the MediaPicker to save the file or move it to a known location.
+                // This is a placeholder for the actual save logic.
+                DisplayAlertAsync("Save", "Image saved successfully!", "OK");
+        }
+
+        private void useMasking_Toggled(object sender, ToggledEventArgs e)
+        {
+            this.useMask = e.Value;
+        }
     }
-}
+ }

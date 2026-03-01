@@ -20,11 +20,34 @@
                 Clicked="LoadImage_Clicked"
                 HorizontalOptions="Fill" />
 
+            <HorizontalStackLayout
+                Spacing="10">
+
+                <Button
+                    x:Name="sortBtn"
+                    Text="Sort"
+                    Clicked="sortBtn_Clicked"
+                    HorizontalOptions="Fill" />
+
+                <VerticalStackLayout>
+
+                    <Label 
+                        Text="Use masking" />
+
+                    <Switch
+                        x:Name="useMasking"
+                        Toggled="useMasking_Toggled" />
+
+                </VerticalStackLayout>
+
+
+            </HorizontalStackLayout>
+
             <Button
-                x:Name="sortBtn"
-                Text="Sort"
-                Clicked="sortBtn_Clicked"
-                HorizontalOptions="Fill" />
+                x:Name="saveBtn"
+                Text="Save"
+                Clicked="SaveBtn_Clicked"
+                HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 
