@@ -43,8 +43,8 @@ namespace PixelsorterApp
             InitializeComponent();
             
             SizeChanged += OnPageSizeChanged;
+            sortBtn.IsVisible = true;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
-            saveBtn.IsVisible = false;
 
             InitializeSortDirectionOptions();
             sortByOptionNames = [.. sortByOptions.Keys];
@@ -100,6 +100,7 @@ namespace PixelsorterApp
             NDArray? mask = null;
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
+            saveBtn.IsEnabled = false;
 
             try
             {
@@ -125,7 +126,8 @@ namespace PixelsorterApp
 
                 // Back on the UI thread — safe to update UI elements.
                 imgShower.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
-
+                saveBtn.IsVisible = true;
+                saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
             }
             catch (Exception ex)
             {
@@ -140,9 +142,33 @@ namespace PixelsorterApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SaveBtn_Clicked(object sender, EventArgs e)
+        private async void SaveBtn_Clicked(object sender, EventArgs e)
         {
-           throw new NotImplementedException("Save functionality is not implemented yet. This will save the sorted image to the user's Gallery/Photos album.");
+            var imgData = ((StreamImageSource)imgShower.Source).Stream(CancellationToken.None).Result;
+            using var ms = new MemoryStream();
+            imgData.CopyTo(ms);
+            var imageBytes = ms.ToArray();
+            
+            var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
+            
+            if (galleryService != null)
+            {
+                var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                var result = await galleryService.SaveImageAsync(imageBytes, fileName);
+                
+                if (result)
+                {
+                    await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                }
+                else
+                {
+                    await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
+                }
+            }
+            else
+            {
+                await DisplayAlertAsync("Error", "Gallery service is not available", "OK");
+            }
         }
 
         private void useMasking_Toggled(object sender, ToggledEventArgs e)
