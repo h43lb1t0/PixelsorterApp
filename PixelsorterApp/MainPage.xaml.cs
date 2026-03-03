@@ -105,11 +105,11 @@ namespace PixelsorterApp
             try
             {
                 // Run the CPU/IO-bound sorting on a background thread; return only raw bytes so the UI can be updated safely.
-                var imageBytes = await Task.Run(() =>
+                var imageBytes = await Task.Run(async () =>
                 {
                     if (this.useMask)
                     {
-                        mask = masker.GetMask(this.imagePath);
+                        mask = await masker.GetMaskAsync(this.imagePath);
                     }
 
                     var imgData = Sorter.SortImage(
