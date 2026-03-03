@@ -1,12 +1,13 @@
-﻿using PixelsorterClassLib;
-using Image = PixelsorterClassLib.Image;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Maui.Storage;
+﻿using Microsoft.Maui.Storage;
 using NumSharp;
-using System.Collections.Generic;
+using PixelsorterClassLib;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Image = PixelsorterClassLib.Image;
 
 namespace PixelsorterApp
 {
@@ -23,11 +24,6 @@ namespace PixelsorterApp
         private SortDirections sortingDirection;
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
-        private readonly String SaveDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "pixelsorter");
-
-        private String? imageFileName;
-        private readonly string cacheDir = FileSystem.Current.CacheDirectory;
-        private readonly String tempFilePath;
 
         private void InitializeSortDirectionOptions()
         {
@@ -45,9 +41,6 @@ namespace PixelsorterApp
         public MainPage()
         {
             InitializeComponent();
-            
-            // Initialize tempFilePath after cacheDir is available
-            tempFilePath = Path.Combine(cacheDir, "sorted_image.png");
             
             SizeChanged += OnPageSizeChanged;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
@@ -78,15 +71,12 @@ namespace PixelsorterApp
         private async void LoadImage_Clicked(object sender, EventArgs e)
         {
 
-            imageFileName = null;
-
             saveBtn.IsVisible = false; // Hide the save button when loading a new image
             var results = await MediaPicker.PickPhotosAsync();
 
             foreach (var file in results)
             {
                 this.imagePath = file.FullPath; // Store the file path
-                imageFileName = Path.GetFileNameWithoutExtension(file.FullPath);
 
                 // Load the picked file into memory so the original file handle isn't held open.
                 using var stream = await file.OpenReadAsync();
@@ -107,15 +97,15 @@ namespace PixelsorterApp
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
-            sortBtn.IsEnabled = false;
             NDArray? mask = null;
+
+            sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
 
             try
             {
-                // Run the CPU/IO-bound sorting and save on a background thread so the UI can update immediately.
-                await Task.Run(() =>
+                // Run the CPU/IO-bound sorting on a background thread; return only raw bytes so the UI can be updated safely.
+                var imageBytes = await Task.Run(() =>
                 {
-
                     if (this.useMask)
                     {
                         mask = masker.GetMask(this.imagePath);
@@ -127,23 +117,22 @@ namespace PixelsorterApp
                                 sortingDirection,
                                 mask
                             );
-                    Image.SaveImage(imgData, tempFilePath);
+                    using var ms = new MemoryStream();
+                    using var foo = Image.NdarrayToImgData(imgData);
+                    foo.SaveAsPng(ms);
+                    return ms.ToArray();
                 });
 
-                // Update UI after background work completes
-                imgShower.Source = ImageSource.FromFile(tempFilePath);
-                sortBtn.IsVisible = false;
-                saveBtn.IsVisible = true;
+                // Back on the UI thread — safe to update UI elements.
+                imgShower.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+
             }
             catch (Exception ex)
             {
                 // Handle exceptions (e.g., show an alert)
                 await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
             }
-            finally
-            {
-                sortBtn.IsEnabled = true; // Re-enable the sort button regardless of success or failure
-            }
+            sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
         }
 
         /// <summary>
@@ -153,19 +142,7 @@ namespace PixelsorterApp
         /// <param name="e"></param>
         private void SaveBtn_Clicked(object sender, EventArgs e)
         {
-            // Ensure the save directory exists
-            if (!Directory.Exists(SaveDir))
-            {
-                Directory.CreateDirectory(SaveDir);
-            }
-            // Generate a unique file name to avoid overwriting existing files
-            string savePath = Path.Combine(SaveDir, $"pixelsorted_{imageFileName!}_{DateTime.Now:yyyyMMddHHmmss}.png");
-            if (!Directory.Exists(savePath)) {
-                File.Copy(tempFilePath, savePath);
-                DisplayAlertAsync("Image Saved", $"Your sorted image has been saved to: {savePath}", "OK");
-            } else {
-                DisplayAlertAsync("Save Failed", "A file with the same name already exists. Please try saving again.", "OK");
-            }
+           throw new NotImplementedException("Save functionality is not implemented yet. This will save the sorted image to the user's Gallery/Photos album.");
         }
 
         private void useMasking_Toggled(object sender, ToggledEventArgs e)
