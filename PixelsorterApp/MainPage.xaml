@@ -8,11 +8,14 @@
             Padding="30,0"
             Spacing="25">
 
-            <ImageButton
+            <Image
                 x:Name="LoadImageBtn"
                 Source="uploadplaceholder.png"
-                Aspect="AspectFit"
-                Clicked="LoadImage_Clicked" />
+                Aspect="AspectFit">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="LoadImage_Clicked" />
+                </Image.GestureRecognizers>
+            </Image>
             
             <Label
                     Text="Use masking"  />

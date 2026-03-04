@@ -62,8 +62,11 @@ namespace PixelsorterApp
 
         private void OnPageSizeChanged(object sender, EventArgs e)
         {
-            LoadImageBtn.WidthRequest = this.Width * 2 / 3;
-            LoadImageBtn.HeightRequest = this.Height * 0.7;
+            if (this.Width > 0 && this.Height > 0)
+            {
+                LoadImageBtn.WidthRequest = this.Width * 2 / 3;
+                LoadImageBtn.HeightRequest = this.Height * 0.7;
+            }
         }
 
 
@@ -88,8 +91,13 @@ namespace PixelsorterApp
                 this.imgSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 break;
             }
-            LoadImageBtn.Source = this.imgSource;
-            sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                LoadImageBtn.Source = null;
+                await Task.Delay(50); // Small delay to force UI update cycle on Android
+                LoadImageBtn.Source = this.imgSource;
+                sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
+            });
         }
 
         private async void sortBtn_Clicked(object sender, EventArgs e)
@@ -125,9 +133,14 @@ namespace PixelsorterApp
                 });
 
                 // Back on the UI thread — safe to update UI elements.
-                LoadImageBtn.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
-                saveBtn.IsVisible = true;
-                saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    LoadImageBtn.Source = null; // Force UI update on Android
+                    await Task.Delay(50); // Small delay to force UI update cycle on Android
+                    LoadImageBtn.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                    saveBtn.IsVisible = true;
+                    saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                });
             }
             catch (Exception ex)
             {
