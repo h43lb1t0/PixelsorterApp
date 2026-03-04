@@ -52,6 +52,14 @@
                 Clicked="SaveBtn_Clicked"
                 HorizontalOptions="Fill"
                 SemanticProperties.Description="Button to save the sorted image to the image gallery"/>
+
+            <Button
+                x:Name="licensesBtn"
+                Text="Open Source Licenses"
+                Clicked="LicensesBtn_Clicked"
+                HorizontalOptions="Fill"
+                Margin="0,20,0,0"
+                SemanticProperties.Description="Button to view open source licenses used by this application"/>
         </VerticalStackLayout>
     </ScrollView>
 

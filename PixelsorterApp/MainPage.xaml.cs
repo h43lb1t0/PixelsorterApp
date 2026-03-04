@@ -211,5 +211,10 @@ namespace PixelsorterApp
                 sortingDirection = sortDirectionOptions[selectedOption];
             }
         }
+
+        private async void LicensesBtn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LicensesPage());
+        }
     }
 }

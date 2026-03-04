@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -73,6 +73,12 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\PixelsorterClassLib\PixelsorterClassLib\PixelsorterClassLib.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="LicensesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
