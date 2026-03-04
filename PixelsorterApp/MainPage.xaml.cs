@@ -62,8 +62,8 @@ namespace PixelsorterApp
 
         private void OnPageSizeChanged(object sender, EventArgs e)
         {
-            imgShower.WidthRequest = this.Width * 2 / 3;
-            imgShower.HeightRequest = this.Height * 0.7;
+            LoadImageBtn.WidthRequest = this.Width * 2 / 3;
+            LoadImageBtn.HeightRequest = this.Height * 0.7;
         }
 
 
@@ -88,7 +88,7 @@ namespace PixelsorterApp
                 this.imgSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 break;
             }
-            imgShower.Source = this.imgSource;
+            LoadImageBtn.Source = this.imgSource;
             sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
         }
 
@@ -125,7 +125,7 @@ namespace PixelsorterApp
                 });
 
                 // Back on the UI thread — safe to update UI elements.
-                imgShower.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                LoadImageBtn.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 saveBtn.IsVisible = true;
                 saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
             }
@@ -144,7 +144,7 @@ namespace PixelsorterApp
         /// <param name="e"></param>
         private async void SaveBtn_Clicked(object sender, EventArgs e)
         {
-            var imgData = ((StreamImageSource)imgShower.Source).Stream(CancellationToken.None).Result;
+            var imgData = ((StreamImageSource)LoadImageBtn.Source).Stream(CancellationToken.None).Result;
             using var ms = new MemoryStream();
             imgData.CopyTo(ms);
             var imageBytes = ms.ToArray();

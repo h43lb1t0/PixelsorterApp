@@ -7,60 +7,48 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <Image
-                x:Name="imgShower"
-                Source="dotnet_bot.png"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a submarine number ten" />
 
-
-            <Button
+            <ImageButton
                 x:Name="LoadImageBtn"
-                Text="Load Image" 
-                Clicked="LoadImage_Clicked"
-                HorizontalOptions="Fill" />
+                Source="uploadplaceholder.png"
+                Aspect="AspectFit"
+                Clicked="LoadImage_Clicked" />
+            
+            <Label
+                    Text="Use masking"  />
 
-            <HorizontalStackLayout
-                Spacing="10"
-                HorizontalOptions="Fill">
-
-                <Button
-                    x:Name="sortBtn"
-                    Text="Sort"
-                    Clicked="sortBtn_Clicked"
-                    HorizontalOptions="Fill" />
-
-                <VerticalStackLayout>
-
-                    <Label 
-                        Text="Use masking" />
-
-                    <Switch
+            <Switch
                         x:Name="useMasking"
-                        Toggled="useMasking_Toggled" />
-
-                </VerticalStackLayout>
-
-
-            </HorizontalStackLayout>
-
-            <Label Text="Options" />
+                        Toggled="useMasking_Toggled" 
+                        SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+                    
+           <Label Text="Options" />
 
             <Picker
                 x:Name="sortBy"
                 Title="Select what to sort the pixels by" 
-                SelectedIndexChanged="sortBy_SelectedIndexChanged" />
+                SelectedIndexChanged="sortBy_SelectedIndexChanged" 
+                SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"/>
 
             <Picker
                 x:Name="sortDirection"
                 Title="Select the direction to sort the pixels in" 
-                SelectedIndexChanged="sortDirection_SelectedIndexChanged" />
+                SelectedIndexChanged="sortDirection_SelectedIndexChanged" 
+                SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"/>
+
+            <Button
+                x:Name="sortBtn"
+                Text="Sort"
+                Clicked="sortBtn_Clicked"
+                HorizontalOptions="Fill" 
+                SemanticProperties.Description="Button to run the pixel sorting"/>
 
             <Button
                 x:Name="saveBtn"
                 Text="Save"
                 Clicked="SaveBtn_Clicked"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill"
+                SemanticProperties.Description="Button to save the sorted image to the image gallery"/>
         </VerticalStackLayout>
     </ScrollView>
 
