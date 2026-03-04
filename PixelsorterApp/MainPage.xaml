@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PixelsorterApp.MainPage">
+             x:Class="PixelsorterApp.MainPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <ScrollView>
         <VerticalStackLayout
@@ -18,14 +19,31 @@
             </Image>
             
             <Label
-                    Text="Use masking"  />
+                Text="Use masking"  />
 
             <Switch
-                        x:Name="useMasking"
-                        Toggled="useMasking_Toggled" 
-                        SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
-                    
-           <Label Text="Options" />
+                x:Name="useMasking"
+                Toggled="useMasking_Toggled" 
+                SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+            <Entry
+                x:Name="maskPadding"
+                Keyboard="Numeric"
+                Placeholder="Mask padding (px)"
+                TextChanged="maskPadding_TextChanged"
+                Text="15"
+                IsVisible="False">
+
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior 
+                        Flags="ValidateOnValueChanged"
+                        MinimumValue="1.0"
+                        MaximumValue="100.0"
+                        MaximumDecimalPlaces="0" />
+                </Entry.Behaviors>
+
+            </Entry>
+
+            <Label Text="Options" />
 
             <Picker
                 x:Name="sortBy"

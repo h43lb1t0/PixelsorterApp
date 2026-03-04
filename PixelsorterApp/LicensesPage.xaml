@@ -43,6 +43,12 @@
                 <Label Text="Syncfusion.Maui.Toolkit" FontAttributes="Bold" FontSize="18"/>
                 <Label Text="MIT License" FontSize="14" />
             </VerticalStackLayout>
+
+            <!-- CommunityToolkit.Maui -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="CommunityToolkit.Maui" FontAttributes="Bold" FontSize="18"/>
+                <Label Text="MIT License" FontSize="14" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

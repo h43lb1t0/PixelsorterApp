@@ -24,6 +24,7 @@ namespace PixelsorterApp
         private SortDirections sortingDirection;
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
+        private int maskPaddingAmount = 15;
 
         private void InitializeSortDirectionOptions()
         {
@@ -81,24 +82,19 @@ namespace PixelsorterApp
             {
                 this.imagePath = file.FullPath; // Store the file path
 
-                // Load the picked file into memory so the original file handle isn't held open.
-                using var stream = await file.OpenReadAsync();
-                using var ms = new MemoryStream();
-                await stream.CopyToAsync(ms);
-                var imageBytes = ms.ToArray();
-
-                // Provide a fresh MemoryStream each time the ImageSource requests it to avoid file locks.
-                this.imgSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                // Directly assign the file source for display
+                this.imgSource = ImageSource.FromFile(this.imagePath);
                 break;
             }
-            MainThread.BeginInvokeOnMainThread(async () =>
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                LoadImageBtn.Source = null;
-                await Task.Delay(50); // Small delay to force UI update cycle on Android
                 LoadImageBtn.Source = this.imgSource;
                 sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
             });
         }
+
+        private string? sortedImagePath; // Path to the temporarily saved sorted image
 
         private async void sortBtn_Clicked(object sender, EventArgs e)
         {
@@ -112,12 +108,13 @@ namespace PixelsorterApp
 
             try
             {
-                // Run the CPU/IO-bound sorting on a background thread; return only raw bytes so the UI can be updated safely.
-                var imageBytes = await Task.Run(async () =>
+                // Run the CPU/IO-bound sorting on a background thread; save to a temporary file so the UI can be updated safely.
+                sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
+                await Task.Run(async () =>
                 {
                     if (this.useMask)
                     {
-                        mask = await masker.GetMaskAsync(this.imagePath);
+                        mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
                     }
 
                     var imgData = Sorter.SortImage(
@@ -126,18 +123,14 @@ namespace PixelsorterApp
                                 sortingDirection,
                                 mask
                             );
-                    using var ms = new MemoryStream();
                     using var foo = Image.NdarrayToImgData(imgData);
-                    foo.SaveAsPng(ms);
-                    return ms.ToArray();
+                    foo.SaveAsPng(sortedImagePath);
                 });
 
                 // Back on the UI thread — safe to update UI elements.
-                MainThread.BeginInvokeOnMainThread(async () =>
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    LoadImageBtn.Source = null; // Force UI update on Android
-                    await Task.Delay(50); // Small delay to force UI update cycle on Android
-                    LoadImageBtn.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                    LoadImageBtn.Source = ImageSource.FromFile(sortedImagePath);
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
                 });
@@ -157,13 +150,16 @@ namespace PixelsorterApp
         /// <param name="e"></param>
         private async void SaveBtn_Clicked(object sender, EventArgs e)
         {
-            var imgData = ((StreamImageSource)LoadImageBtn.Source).Stream(CancellationToken.None).Result;
-            using var ms = new MemoryStream();
-            imgData.CopyTo(ms);
-            var imageBytes = ms.ToArray();
-            
+            if (string.IsNullOrEmpty(sortedImagePath) || !File.Exists(sortedImagePath))
+            {
+                await DisplayAlertAsync("Error", "No sorted image available to save.", "OK");
+                return;
+            }
+
+            var imageBytes = await File.ReadAllBytesAsync(sortedImagePath);
+
             var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
-            
+
             if (galleryService != null)
             {
                 var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
@@ -187,6 +183,7 @@ namespace PixelsorterApp
         private void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
             this.useMask = e.Value;
+            maskPadding.IsVisible = e.Value;
         }
 
         private void sortBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -215,6 +212,25 @@ namespace PixelsorterApp
         private async void LicensesBtn_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new LicensesPage());
+        }
+
+        private void maskPadding_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is not Entry entry) return;
+
+            string newText = e.NewTextValue ?? string.Empty;
+            string numericText = new string(newText.Where(char.IsDigit).ToArray());
+
+            if (newText != numericText)
+            {
+                entry.Text = numericText;
+                return;
+            }
+
+            if (int.TryParse(numericText, out int padding))
+            {
+                this.maskPaddingAmount = padding;
+            }
         }
     }
 }
