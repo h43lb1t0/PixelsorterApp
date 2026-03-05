@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{AppThemeBinding Light=#FFF7ED, Dark=#1C1917}">
+             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}">
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Help">
@@ -15,14 +16,14 @@
 
     <ContentPage.Resources>
         <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#7C2D12, Dark=#FED7AA}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
         </Style>
 
         <Style TargetType="Button">
             <Setter Property="CornerRadius" Value="12" />
             <Setter Property="HeightRequest" Value="48" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#EA580C, Dark=#C2410C}" />
-            <Setter Property="TextColor" Value="White" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#FFFFFF}" />
             <Setter Property="FontAttributes" Value="Bold" />
             <Setter Property="VisualStateManager.VisualStateGroups">
                 <VisualStateGroupList>
@@ -30,20 +31,14 @@
                         <VisualState Name="Normal" />
                         <VisualState Name="Disabled">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FDBA74, Dark=#7C2D12}" />
-                                <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFF7ED, Dark=#FED7AA}" />
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}" />
+                                <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFEBEE, Dark=#FFCDD2}" />
                                 <Setter Property="Opacity" Value="0.7" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateGroupList>
             </Setter>
-        </Style>
-
-        <Style TargetType="Entry">
-            <Setter Property="HeightRequest" Value="46" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFEDD5, Dark=#292524}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}" />
         </Style>
     </ContentPage.Resources>
 
@@ -76,15 +71,15 @@
                     Padding="0"
                     CornerRadius="18"
                     BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                    TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
                     FontSize="22"
                     SemanticProperties.Description="Open additional app options" />
             </Grid>
 
             <Border
-                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
+                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
                 StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFFDF9, Dark=#292524}"
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                 Padding="12"
                 StrokeShape="RoundRectangle 16">
                 <Grid>
@@ -92,6 +87,7 @@
                         x:Name="LoadImageBtn"
                         Source="uploadplaceholder.png"
                         Aspect="AspectFit"
+                        MaximumHeightRequest="300"
                         HeightRequest="130">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="LoadImage_Clicked" />
@@ -122,96 +118,121 @@
                     </Grid>
                 </Grid>
             </Border>
-            
-            <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}" Opacity="0.6" />
 
-            <Label Text="Options" FontSize="18" FontAttributes="Bold" />
-
-            <Label Text="Sort by" FontSize="13" Opacity="0.85" />
+            <Label Text="OPTIONS" FontSize="13" TextColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" FontAttributes="Bold" Margin="4,10,4,4" />
 
             <Border
-                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
-                Padding="12,0"
-                StrokeShape="RoundRectangle 10">
-                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
-                    <Picker
-                        x:Name="sortBy"
-                        HeightRequest="46"
-                        BackgroundColor="Transparent"
-                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
-                        SelectedIndexChanged="sortBy_SelectedIndexChanged"
-                        SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
-                    <Label
-                        Grid.Column="1"
-                        Text="⌄"
-                        FontSize="18"
-                        Margin="8,0,2,0"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="Center"
-                        InputTransparent="True"
-                        Opacity="0.9" />
-                </Grid>
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                Padding="0"
+                StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
+                        <Label
+                            Text="Sort by"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <material:PickerField
+                            x:Name="sortBy"
+                            Grid.Column="1"
+                            AllowClear="False"
+                            BorderColor="Transparent"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
+                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
+                        <Label
+                            Grid.Column="2"
+                            Text="⌄"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                            VerticalOptions="Center"
+                            InputTransparent="True"
+                            Opacity="0.7"
+                            Margin="4,0,0,0" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" />
+
+                    <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
+                        <Label
+                            Text="Direction"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <material:PickerField
+                            x:Name="sortDirection"
+                            Grid.Column="1"
+                            AllowClear="False"
+                            BorderColor="Transparent"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
+                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
+                        <Label
+                            Grid.Column="2"
+                            Text="⌄"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                            VerticalOptions="Center"
+                            InputTransparent="True"
+                            Opacity="0.7"
+                            Margin="4,0,0,0" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" />
+
+                    <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
+                        <Label
+                            Text="Use masking"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="useMasking"
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
+                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            Toggled="useMasking_Toggled" 
+                            SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}" />
+
+                    <Grid ColumnDefinitions="*,100" HeightRequest="56" Padding="16,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
+                        <Label
+                            Text="Mask padding (px)"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <material:TextField
+                            x:Name="maskPadding"
+                            Grid.Column="1"
+                            Keyboard="Numeric"
+                            AllowClear="False"
+                            BorderColor="Transparent"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
+                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Fill"
+                            TextChanged="maskPadding_TextChanged"
+                            Text="15"
+                            IsVisible="False">
+
+                            <material:TextField.Behaviors>
+                                <toolkit:NumericValidationBehavior 
+                                        Flags="ValidateOnValueChanged"
+                                        MinimumValue="1.0"
+                                        MaximumValue="100.0"
+                                        MaximumDecimalPlaces="0" />
+                            </material:TextField.Behaviors>
+                        </material:TextField>
+                    </Grid>
+                </VerticalStackLayout>
             </Border>
-
-            <Label Text="Direction" FontSize="13" Opacity="0.85" />
-
-            <Border
-                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
-                Padding="12,0"
-                StrokeShape="RoundRectangle 10">
-                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
-                    <Picker
-                        x:Name="sortDirection"
-                        HeightRequest="46"
-                        BackgroundColor="Transparent"
-                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
-                        SelectedIndexChanged="sortDirection_SelectedIndexChanged"
-                        SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
-                    <Label
-                        Grid.Column="1"
-                        Text="⌄"
-                        FontSize="18"
-                        Margin="8,0,2,0"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="Center"
-                        InputTransparent="True"
-                        Opacity="0.9" />
-                </Grid>
-            </Border>
-
-
-            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
-                <Label
-                    Text="Use masking"
-                    FontSize="16"
-                    VerticalTextAlignment="Center" />
-                <Switch
-                    x:Name="useMasking"
-                    Grid.Column="1"
-                    Toggled="useMasking_Toggled" 
-                    SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
-            </Grid>
-
-            <Entry
-                x:Name="maskPadding"
-                Keyboard="Numeric"
-                Placeholder="Mask padding (px)"
-                TextChanged="maskPadding_TextChanged"
-                Text="15"
-                IsVisible="False">
-
-                <Entry.Behaviors>
-                    <toolkit:NumericValidationBehavior 
-                            Flags="ValidateOnValueChanged"
-                            MinimumValue="1.0"
-                            MaximumValue="100.0"
-                            MaximumDecimalPlaces="0" />
-                </Entry.Behaviors>
-            </Entry>
 
             <Button
                 x:Name="sortBtn"

@@ -74,7 +74,6 @@ namespace PixelsorterApp
         {
             InitializeComponent();
             
-            SizeChanged += OnPageSizeChanged;
             sortBtn.IsVisible = true;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
 
@@ -84,21 +83,23 @@ namespace PixelsorterApp
 
             sortBy.ItemsSource = sortByOptionNames;
             sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
+            sortBy.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(sortBy.SelectedIndex))
+                    sortBy_SelectedIndexChanged(s, EventArgs.Empty);
+            };
 
             UpdateSortDirectionPicker();
+            sortDirection.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(sortDirection.SelectedIndex))
+                    sortDirection_SelectedIndexChanged(s, EventArgs.Empty);
+            };
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
         }
 
-        private void OnPageSizeChanged(object sender, EventArgs e)
-        {
-            if (this.Width > 0 && this.Height > 0)
-            {
-                LoadImageBtn.WidthRequest = this.Width * 2 / 3;
-                LoadImageBtn.HeightRequest = this.Height * 0.7;
-            }
-        }
 
 
 
@@ -119,6 +120,8 @@ namespace PixelsorterApp
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
+                LoadImageBtn.HeightRequest = -1; // remove fixed height request so it resizes based on constraints
+                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity; // allow full aspect-ratio expansion
                 LoadImageBtn.Source = this.imgSource;
                 sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
             });
@@ -255,7 +258,7 @@ namespace PixelsorterApp
 
         private void maskPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is not Entry entry) return;
+            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
             string newText = e.NewTextValue ?? string.Empty;
             string numericText = new string(newText.Where(char.IsDigit).ToArray());
