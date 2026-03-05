@@ -69,7 +69,6 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.41" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
-		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.9" />
 	</ItemGroup>
 
 	<ItemGroup>

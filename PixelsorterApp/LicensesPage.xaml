@@ -37,12 +37,6 @@
                 <Label Text="HuggingfaceHub" FontAttributes="Bold" FontSize="18"/>
                 <Label Text="MIT License" FontSize="14" />
             </VerticalStackLayout>
-            
-            <!-- Syncfusion.Maui.Toolkit -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Syncfusion.Maui.Toolkit" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
 
             <!-- CommunityToolkit.Maui -->
             <VerticalStackLayout Spacing="5">
