@@ -142,7 +142,6 @@
                         BackgroundColor="Transparent"
                         TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
                         SelectedIndexChanged="sortBy_SelectedIndexChanged"
-                        IsEnabled="False"
                         SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
                     <Label
                         Grid.Column="1"
@@ -184,12 +183,6 @@
                 </Grid>
             </Border>
 
-            <Button
-                x:Name="sortBtn"
-                Text="Sort"
-                Clicked="sortBtn_Clicked"
-                HorizontalOptions="Fill" 
-                SemanticProperties.Description="Button to run the pixel sorting"/>
 
             <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                 <Label
@@ -219,6 +212,13 @@
                             MaximumDecimalPlaces="0" />
                 </Entry.Behaviors>
             </Entry>
+
+            <Button
+                x:Name="sortBtn"
+                Text="Sort"
+                Clicked="sortBtn_Clicked"
+                HorizontalOptions="Fill" 
+                SemanticProperties.Description="Button to run the pixel sorting"/>
 
             <Button
                 x:Name="saveBtn"

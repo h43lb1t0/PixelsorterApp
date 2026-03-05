@@ -38,6 +38,37 @@ namespace PixelsorterApp
             }
         }
 
+        private void UpdateSortDirectionPicker()
+        {
+            string? previousSelection = null;
+            if (sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length)
+            {
+                previousSelection = sortDirectionOptionNames[sortDirection.SelectedIndex];
+            }
+
+            sortDirectionOptionNames =
+            [
+                .. sortDirectionOptions.Keys.Where(name => this.useMask || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
+            ];
+
+            sortDirection.ItemsSource = sortDirectionOptionNames;
+
+            int selectedIndex = -1;
+            if (!string.IsNullOrEmpty(previousSelection))
+            {
+                selectedIndex = Array.IndexOf(sortDirectionOptionNames, previousSelection);
+            }
+
+            sortDirection.SelectedIndex = selectedIndex >= 0
+                ? selectedIndex
+                : (sortDirectionOptionNames.Length > 0 ? 0 : -1);
+
+            if (sortDirection.SelectedIndex >= 0)
+            {
+                sortingDirection = sortDirectionOptions[sortDirectionOptionNames[sortDirection.SelectedIndex]];
+            }
+        }
+
 
         public MainPage()
         {
@@ -49,13 +80,12 @@ namespace PixelsorterApp
 
             InitializeSortDirectionOptions();
             sortByOptionNames = [.. sortByOptions.Keys];
-            sortDirectionOptionNames = [.. sortDirectionOptions.Keys];
+            sortDirectionOptionNames = [];
 
             sortBy.ItemsSource = sortByOptionNames;
             sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
 
-            sortDirection.ItemsSource = sortDirectionOptionNames;
-            sortDirection.SelectedIndex = sortDirectionOptionNames.Length > 0 ? 0 : -1;
+            UpdateSortDirectionPicker();
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
@@ -194,6 +224,7 @@ namespace PixelsorterApp
         {
             this.useMask = e.Value;
             maskPadding.IsVisible = e.Value;
+            UpdateSortDirectionPicker();
         }
 
         private void sortBy_SelectedIndexChanged(object sender, EventArgs e)
