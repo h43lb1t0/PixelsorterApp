@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light=#FFF7ED, Dark=#1C1917}">
 
@@ -38,12 +39,6 @@
                     </VisualStateGroup>
                 </VisualStateGroupList>
             </Setter>
-        </Style>
-
-        <Style TargetType="Entry">
-            <Setter Property="HeightRequest" Value="46" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFEDD5, Dark=#292524}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}" />
         </Style>
     </ContentPage.Resources>
 
@@ -127,62 +122,23 @@
 
             <Label Text="Options" FontSize="18" FontAttributes="Bold" />
 
-            <Label Text="Sort by" FontSize="13" Opacity="0.85" />
+            <material:PickerField
+                x:Name="sortBy"
+                Title="Sort by"
+                AllowClear="False"
+                TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                TitleColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                AccentColor="{AppThemeBinding Light=#EA580C, Dark=#C2410C}"
+                SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
 
-            <Border
-                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
-                Padding="12,0"
-                StrokeShape="RoundRectangle 10">
-                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
-                    <Picker
-                        x:Name="sortBy"
-                        HeightRequest="46"
-                        BackgroundColor="Transparent"
-                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
-                        SelectedIndexChanged="sortBy_SelectedIndexChanged"
-                        SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
-                    <Label
-                        Grid.Column="1"
-                        Text="⌄"
-                        FontSize="18"
-                        Margin="8,0,2,0"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="Center"
-                        InputTransparent="True"
-                        Opacity="0.9" />
-                </Grid>
-            </Border>
-
-            <Label Text="Direction" FontSize="13" Opacity="0.85" />
-
-            <Border
-                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
-                Padding="12,0"
-                StrokeShape="RoundRectangle 10">
-                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
-                    <Picker
-                        x:Name="sortDirection"
-                        HeightRequest="46"
-                        BackgroundColor="Transparent"
-                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
-                        SelectedIndexChanged="sortDirection_SelectedIndexChanged"
-                        SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
-                    <Label
-                        Grid.Column="1"
-                        Text="⌄"
-                        FontSize="18"
-                        Margin="8,0,2,0"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="Center"
-                        InputTransparent="True"
-                        Opacity="0.9" />
-                </Grid>
-            </Border>
-
+            <material:PickerField
+                x:Name="sortDirection"
+                Title="Direction"
+                AllowClear="False"
+                TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                TitleColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                AccentColor="{AppThemeBinding Light=#EA580C, Dark=#C2410C}"
+                SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
 
             <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                 <Label
@@ -192,26 +148,32 @@
                 <Switch
                     x:Name="useMasking"
                     Grid.Column="1"
+                    OnColor="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
+                    ThumbColor="{AppThemeBinding Light=#EA580C, Dark=#C2410C}"
                     Toggled="useMasking_Toggled" 
                     SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
             </Grid>
 
-            <Entry
+            <material:TextField
                 x:Name="maskPadding"
                 Keyboard="Numeric"
-                Placeholder="Mask padding (px)"
+                Title="Mask padding (px)"
+                AllowClear="False"
+                TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                TitleColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                AccentColor="{AppThemeBinding Light=#EA580C, Dark=#C2410C}"
                 TextChanged="maskPadding_TextChanged"
                 Text="15"
                 IsVisible="False">
 
-                <Entry.Behaviors>
+                <material:TextField.Behaviors>
                     <toolkit:NumericValidationBehavior 
                             Flags="ValidateOnValueChanged"
                             MinimumValue="1.0"
                             MaximumValue="100.0"
                             MaximumDecimalPlaces="0" />
-                </Entry.Behaviors>
-            </Entry>
+                </material:TextField.Behaviors>
+            </material:TextField>
 
             <Button
                 x:Name="sortBtn"

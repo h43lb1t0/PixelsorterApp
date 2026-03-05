@@ -84,8 +84,18 @@ namespace PixelsorterApp
 
             sortBy.ItemsSource = sortByOptionNames;
             sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
+            sortBy.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(sortBy.SelectedIndex))
+                    sortBy_SelectedIndexChanged(s, EventArgs.Empty);
+            };
 
             UpdateSortDirectionPicker();
+            sortDirection.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(sortDirection.SelectedIndex))
+                    sortDirection_SelectedIndexChanged(s, EventArgs.Empty);
+            };
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
@@ -255,7 +265,7 @@ namespace PixelsorterApp
 
         private void maskPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is not Entry entry) return;
+            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
             string newText = e.NewTextValue ?? string.Empty;
             string numericText = new string(newText.Where(char.IsDigit).ToArray());
