@@ -68,15 +68,40 @@
                 BackgroundColor="{AppThemeBinding Light=#FFFDF9, Dark=#292524}"
                 Padding="12"
                 StrokeShape="RoundRectangle 16">
-                <Image
-                    x:Name="LoadImageBtn"
-                    Source="uploadplaceholder.png"
-                    Aspect="AspectFit"
-                    HeightRequest="260">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="LoadImage_Clicked" />
-                    </Image.GestureRecognizers>
-                </Image>
+                <Grid>
+                    <Image
+                        x:Name="LoadImageBtn"
+                        Source="uploadplaceholder.png"
+                        Aspect="AspectFit"
+                        HeightRequest="260">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="LoadImage_Clicked" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Grid
+                        x:Name="sortingOverlay"
+                        IsVisible="False"
+                        BackgroundColor="#80000000"
+                        InputTransparent="False">
+                        <VerticalStackLayout
+                            Spacing="10"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                            <ActivityIndicator
+                                x:Name="sortingIndicator"
+                                IsRunning="False"
+                                Color="White"
+                                WidthRequest="40"
+                                HeightRequest="40" />
+                            <Label
+                                Text="Sorting..."
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Grid>
             </Border>
             
             <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}" Opacity="0.6" />

@@ -115,6 +115,8 @@ namespace PixelsorterApp
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
+            sortingOverlay.IsVisible = true;
+            sortingIndicator.IsRunning = true;
 
             try
             {
@@ -150,7 +152,12 @@ namespace PixelsorterApp
                 // Handle exceptions (e.g., show an alert)
                 await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
             }
-            sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
+            finally
+            {
+                sortingIndicator.IsRunning = false;
+                sortingOverlay.IsVisible = false;
+                sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
+            }
         }
 
         /// <summary>
