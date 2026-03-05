@@ -2,29 +2,163 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.MainPage"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             BackgroundColor="{AppThemeBinding Light=#FFF7ED, Dark=#1C1917}">
+
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Help">
+            <MenuFlyoutItem Text="Open Source Licenses"
+                            Clicked="LicensesBtn_Clicked" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#7C2D12, Dark=#FED7AA}" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#EA580C, Dark=#C2410C}" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal" />
+                        <VisualState Name="Disabled">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FDBA74, Dark=#7C2D12}" />
+                                <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFF7ED, Dark=#FED7AA}" />
+                                <Setter Property="Opacity" Value="0.7" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="HeightRequest" Value="46" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFEDD5, Dark=#292524}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}" />
+        </Style>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+            Padding="20,20,20,30"
+            Spacing="16">
 
-            <Image
-                x:Name="LoadImageBtn"
-                Source="uploadplaceholder.png"
-                Aspect="AspectFit">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="LoadImage_Clicked" />
-                </Image.GestureRecognizers>
-            </Image>
+            <VerticalStackLayout Spacing="4">
+                <Label
+                    Text="Pixel Sorter"
+                    FontSize="28"
+                    FontAttributes="Bold" />
+                <Label
+                    Text="Load an image, choose options, and sort." 
+                    FontSize="14"
+                    Opacity="0.8" />
+            </VerticalStackLayout>
+
+            <Border
+                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=#FFFDF9, Dark=#292524}"
+                Padding="12"
+                StrokeShape="RoundRectangle 16">
+                <Image
+                    x:Name="LoadImageBtn"
+                    Source="uploadplaceholder.png"
+                    Aspect="AspectFit"
+                    HeightRequest="260">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="LoadImage_Clicked" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Border>
             
-            <Label
-                Text="Use masking"  />
+            <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}" Opacity="0.6" />
 
-            <Switch
-                x:Name="useMasking"
-                Toggled="useMasking_Toggled" 
-                SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+            <Label Text="Options" FontSize="18" FontAttributes="Bold" />
+
+            <Label Text="Sort by" FontSize="13" Opacity="0.85" />
+
+            <Border
+                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
+                Padding="12,0"
+                StrokeShape="RoundRectangle 10">
+                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
+                    <Picker
+                        x:Name="sortBy"
+                        HeightRequest="46"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                        SelectedIndexChanged="sortBy_SelectedIndexChanged"
+                        IsEnabled="False"
+                        SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
+                    <Label
+                        Grid.Column="1"
+                        Text="⌄"
+                        FontSize="18"
+                        Margin="8,0,2,0"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        InputTransparent="True"
+                        Opacity="0.9" />
+                </Grid>
+            </Border>
+
+            <Label Text="Direction" FontSize="13" Opacity="0.85" />
+
+            <Border
+                Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=#FFEDD5, Dark=#292524}"
+                Padding="12,0"
+                StrokeShape="RoundRectangle 10">
+                <Grid ColumnDefinitions="*,Auto" HeightRequest="46">
+                    <Picker
+                        x:Name="sortDirection"
+                        HeightRequest="46"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                        SelectedIndexChanged="sortDirection_SelectedIndexChanged"
+                        SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
+                    <Label
+                        Grid.Column="1"
+                        Text="⌄"
+                        FontSize="18"
+                        Margin="8,0,2,0"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        InputTransparent="True"
+                        Opacity="0.9" />
+                </Grid>
+            </Border>
+
+            <Button
+                x:Name="sortBtn"
+                Text="Sort"
+                Clicked="sortBtn_Clicked"
+                HorizontalOptions="Fill" 
+                SemanticProperties.Description="Button to run the pixel sorting"/>
+
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                <Label
+                    Text="Use masking"
+                    FontSize="16"
+                    VerticalTextAlignment="Center" />
+                <Switch
+                    x:Name="useMasking"
+                    Grid.Column="1"
+                    Toggled="useMasking_Toggled" 
+                    SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+            </Grid>
+
             <Entry
                 x:Name="maskPadding"
                 Keyboard="Numeric"
@@ -35,49 +169,21 @@
 
                 <Entry.Behaviors>
                     <toolkit:NumericValidationBehavior 
-                        Flags="ValidateOnValueChanged"
-                        MinimumValue="1.0"
-                        MaximumValue="100.0"
-                        MaximumDecimalPlaces="0" />
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="1.0"
+                            MaximumValue="100.0"
+                            MaximumDecimalPlaces="0" />
                 </Entry.Behaviors>
-
             </Entry>
-
-            <Label Text="Options" />
-
-            <Picker
-                x:Name="sortBy"
-                Title="Select what to sort the pixels by" 
-                SelectedIndexChanged="sortBy_SelectedIndexChanged" 
-                SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"/>
-
-            <Picker
-                x:Name="sortDirection"
-                Title="Select the direction to sort the pixels in" 
-                SelectedIndexChanged="sortDirection_SelectedIndexChanged" 
-                SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"/>
-
-            <Button
-                x:Name="sortBtn"
-                Text="Sort"
-                Clicked="sortBtn_Clicked"
-                HorizontalOptions="Fill" 
-                SemanticProperties.Description="Button to run the pixel sorting"/>
 
             <Button
                 x:Name="saveBtn"
                 Text="Save"
                 Clicked="SaveBtn_Clicked"
                 HorizontalOptions="Fill"
+                IsVisible="False"
                 SemanticProperties.Description="Button to save the sorted image to the image gallery"/>
 
-            <Button
-                x:Name="licensesBtn"
-                Text="Open Source Licenses"
-                Clicked="LicensesBtn_Clicked"
-                HorizontalOptions="Fill"
-                Margin="0,20,0,0"
-                SemanticProperties.Description="Button to view open source licenses used by this application"/>
         </VerticalStackLayout>
     </ScrollView>
 

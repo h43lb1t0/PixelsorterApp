@@ -42,6 +42,16 @@ namespace PixelsorterApp
         public MainPage()
         {
             InitializeComponent();
+
+            if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                ToolbarItems.Add(new ToolbarItem
+                {
+                    Text = "Open Source Licenses",
+                    Order = ToolbarItemOrder.Secondary,
+                    Command = new Command(async () => await Navigation.PushAsync(new LicensesPage()))
+                });
+            }
             
             SizeChanged += OnPageSizeChanged;
             sortBtn.IsVisible = true;
@@ -52,10 +62,10 @@ namespace PixelsorterApp
             sortDirectionOptionNames = [.. sortDirectionOptions.Keys];
 
             sortBy.ItemsSource = sortByOptionNames;
-            // auto selects first option
-            sortBy.SelectedItem = sortByOptionNames.Length > 0 ? sortByOptionNames[0] : null;
+            sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
+
             sortDirection.ItemsSource = sortDirectionOptionNames;
-            sortDirection.SelectedItem = sortDirectionOptionNames.Length > 0 ? sortDirectionOptionNames[0] : null;
+            sortDirection.SelectedIndex = sortDirectionOptionNames.Length > 0 ? 0 : -1;
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
@@ -188,8 +198,7 @@ namespace PixelsorterApp
 
         private void sortBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
+            int selectedIndex = sortBy.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < sortByOptionNames.Length)
             {
                 var selectedOption = sortByOptionNames[selectedIndex];
@@ -200,8 +209,7 @@ namespace PixelsorterApp
 
         private void sortDirection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
+            int selectedIndex = sortDirection.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < sortDirectionOptionNames.Length)
             {
                 var selectedOption = sortDirectionOptionNames[selectedIndex];
