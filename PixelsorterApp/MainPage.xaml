@@ -92,7 +92,7 @@
                         x:Name="LoadImageBtn"
                         Source="uploadplaceholder.png"
                         Aspect="AspectFit"
-                        HeightRequest="260">
+                        HeightRequest="130">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="LoadImage_Clicked" />
                         </Image.GestureRecognizers>

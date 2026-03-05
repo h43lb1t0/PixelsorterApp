@@ -107,6 +107,7 @@ namespace PixelsorterApp
             saveBtn.IsEnabled = false;
             sortingOverlay.IsVisible = true;
             sortingIndicator.IsRunning = true;
+            LoadImageBtn.IsEnabled = false;
 
             try
             {
@@ -147,6 +148,8 @@ namespace PixelsorterApp
                 sortingIndicator.IsRunning = false;
                 sortingOverlay.IsVisible = false;
                 sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
+                LoadImageBtn.IsEnabled = true;
+
             }
         }
 
