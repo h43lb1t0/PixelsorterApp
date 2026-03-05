@@ -2,47 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.LicensesPage"
+             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
              Title="Open Source Licenses">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
+        </Style>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
             <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
-            <Label Text="This application uses the following open source packages:" />
+            <Label Text="This application uses the following open source packages:" Opacity="0.8" />
 
-            <!-- NumSharp -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="NumSharp" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
+            <Border
+                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                Padding="0"
+                StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="0">
+                    <!-- NumSharp -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="NumSharp" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
 
-            <!-- SixLabors.ImageSharp -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="SixLabors.ImageSharp" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="Six Labors Split License / Apache-2.0" FontSize="14" />
-            </VerticalStackLayout>
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
 
-            <!-- SkiaSharp -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="SkiaSharp" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
+                    <!-- SixLabors.ImageSharp -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="SixLabors.ImageSharp" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="Six Labors Split License / Apache-2.0" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
 
-            <!-- Microsoft.ML.OnnxRuntime -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Microsoft.ML.OnnxRuntime" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
 
-            <!-- HuggingfaceHub -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="HuggingfaceHub" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
+                    <!-- SkiaSharp -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="SkiaSharp" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
 
-            <!-- CommunityToolkit.Maui -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="CommunityToolkit.Maui" FontAttributes="Bold" FontSize="18"/>
-                <Label Text="MIT License" FontSize="14" />
-            </VerticalStackLayout>
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+
+                    <!-- Microsoft.ML.OnnxRuntime -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="Microsoft.ML.OnnxRuntime" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+
+                    <!-- HuggingfaceHub -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="HuggingfaceHub" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+
+                    <!-- CommunityToolkit.Maui -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="CommunityToolkit.Maui" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+
+                    <!-- UraniumUI -->
+                    <VerticalStackLayout Spacing="5" Padding="16,12">
+                        <Label Text="UraniumUI" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="MIT License" FontSize="13" TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
