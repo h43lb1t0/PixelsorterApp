@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -82,6 +82,16 @@
 	  <MauiXaml Update="LicensesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
+		<Exec Command="dotnet tool restore --tool-manifest &quot;$(MSBuildProjectDirectory)\..\.config\dotnet-tools.json&quot;" />
+		<Exec Command="dotnet tool run nuget-license -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+	</Target>
+
+	<ItemGroup>
+		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
 	</ItemGroup>
 
 </Project>
