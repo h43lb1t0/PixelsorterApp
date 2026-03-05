@@ -42,16 +42,6 @@ namespace PixelsorterApp
         public MainPage()
         {
             InitializeComponent();
-
-            if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
-            {
-                ToolbarItems.Add(new ToolbarItem
-                {
-                    Text = "Open Source Licenses",
-                    Order = ToolbarItemOrder.Secondary,
-                    Command = new Command(async () => await Navigation.PushAsync(new LicensesPage()))
-                });
-            }
             
             SizeChanged += OnPageSizeChanged;
             sortBtn.IsVisible = true;

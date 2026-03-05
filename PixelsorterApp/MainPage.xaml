@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light=#FFF7ED, Dark=#1C1917}">
 
     <ContentPage.MenuBarItems>
@@ -51,16 +52,34 @@
             Padding="20,20,20,30"
             Spacing="16">
 
-            <VerticalStackLayout Spacing="4">
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8">
                 <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
                     Text="Pixel Sorter"
                     FontSize="28"
                     FontAttributes="Bold" />
                 <Label
-                    Text="Load an image, choose options, and sort." 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Load an image, choose options, and sort."
                     FontSize="14"
                     Opacity="0.8" />
-            </VerticalStackLayout>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Text="⋮"
+                    Clicked="LicensesBtn_Clicked"
+                    WidthRequest="36"
+                    HeightRequest="36"
+                    Padding="0"
+                    CornerRadius="18"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light=#9A3412, Dark=#FED7AA}"
+                    FontSize="22"
+                    SemanticProperties.Description="Open additional app options" />
+            </Grid>
 
             <Border
                 Stroke="{AppThemeBinding Light=#FDBA74, Dark=#9A3412}"
