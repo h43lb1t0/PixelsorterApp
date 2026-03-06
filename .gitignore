@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /.github/copilot-instructions.md
 /PixelsorterApp/Resources/Raw/licenses.PixelsorterApp.json
 /PixelsorterApp/Resources/Raw/licenses.PixelsorterClassLib.json
+*.keystore
