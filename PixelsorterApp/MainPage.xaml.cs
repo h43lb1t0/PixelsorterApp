@@ -25,6 +25,7 @@ namespace PixelsorterApp
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
         private int maskPaddingAmount = 15;
+        private bool invertMask = false;
 
         private void InitializeSortDirectionOptions()
         {
@@ -98,6 +99,7 @@ namespace PixelsorterApp
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
+            UpdateWhatToSortStateLabel();
         }
 
 
@@ -150,7 +152,7 @@ namespace PixelsorterApp
                 {
                     if (this.useMask)
                     {
-                        mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
+                        mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.invertMask);
                     }
 
                     var imgData = Sorter.SortImage(
@@ -273,6 +275,17 @@ namespace PixelsorterApp
             {
                 this.maskPaddingAmount = padding;
             }
+        }
+
+        private void whatToSort_Toggled(object sender, ToggledEventArgs e)
+        {
+            this.invertMask = e.Value;
+            UpdateWhatToSortStateLabel();
+        }
+
+        private void UpdateWhatToSortStateLabel()
+        {
+            whatToSortStateLabel.Text = this.invertMask ? "Foreground (subject)" : "Background";
         }
     }
 }
