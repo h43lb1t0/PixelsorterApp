@@ -5,10 +5,51 @@
    height="1024"
    version="1.1"
    id="svg108"
+   sodipodi:docname="AppIcon.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+	<sodipodi:namedview
+	   id="namedview1"
+	   pagecolor="#ffffff"
+	   bordercolor="#000000"
+	   borderopacity="0.25"
+	   inkscape:showpageshadow="2"
+	   inkscape:pageopacity="0.0"
+	   inkscape:pagecheckerboard="0"
+	   inkscape:deskcolor="#d1d1d1"
+	   inkscape:zoom="0.66992188"
+	   inkscape:cx="455.27697"
+	   inkscape:cy="531.40525"
+	   inkscape:window-width="1500"
+	   inkscape:window-height="930"
+	   inkscape:window-x="-6"
+	   inkscape:window-y="-6"
+	   inkscape:window-maximized="1"
+	   inkscape:current-layer="svg108" />
 	<defs
 	   id="defs43">
+		<linearGradient
+		   id="linearGradient2"
+		   inkscape:collect="always">
+			<stop
+			   style="stop-color:#800080;stop-opacity:1"
+			   offset="0"
+			   id="stop2" />
+			<stop
+			   style="stop-color:#677821;stop-opacity:1"
+			   offset="1"
+			   id="stop3" />
+		</linearGradient>
+		<rect
+		   x="287.09772"
+		   y="466.5338"
+		   width="555.50392"
+		   height="223.1051"
+		   id="rect2" />
 		<!-- App icon rounded rect clip -->
 		<clipPath
 		   id="icon-clip">
@@ -356,6 +397,21 @@
 			   fill="transparent"
 			   id="rect43" />
 		</pattern>
+		<rect
+		   x="287.09772"
+		   y="466.53381"
+		   width="649.54473"
+		   height="206.68527"
+		   id="rect2-0" />
+		<linearGradient
+		   inkscape:collect="always"
+		   xlink:href="#linearGradient2"
+		   id="linearGradient3"
+		   x1="135.64951"
+		   y1="667.242"
+		   x2="987.98767"
+		   y2="382.13412"
+		   gradientUnits="userSpaceOnUse" />
 	</defs>
 	<!-- Everything clipped to rounded icon shape -->
 	<g
@@ -994,5 +1050,26 @@
 		   x="0"
 		   y="0"
 		   style="display:inline" />
+	</g>
+	<g
+	   id="g2"
+	   transform="translate(-49.072241,1.4927114)"
+	   style="fill-opacity:1;fill:url(#linearGradient3)">
+		<text
+		   xml:space="preserve"
+		   id="text1"
+		   style="font-size:192px;line-height:0.1;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2);fill:url(#linearGradient3);fill-opacity:1"
+		   transform="translate(-176.13994,-5.9708455)"><tspan
+         x="287.09766"
+         y="531.30062"
+         id="tspan4">Pixel</tspan></text>
+		<text
+		   xml:space="preserve"
+		   id="text1-8"
+		   style="font-size:192px;line-height:0.1;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2-0);fill:url(#linearGradient3);fill-opacity:1"
+		   transform="translate(102.90161,142.15163)"><tspan
+         x="287.09766"
+         y="531.30062"
+         id="tspan5">Sorter</tspan></text>
 	</g>
 </svg>
