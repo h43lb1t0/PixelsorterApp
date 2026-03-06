@@ -1,10 +1,5 @@
 ﻿using Android.Content;
 using Android.Provider;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Android.Graphics;
-using System.IO;
 
 namespace PixelsorterApp.Platforms.Android
 {
@@ -54,7 +49,7 @@ namespace PixelsorterApp.Platforms.Android
                         Console.WriteLine("Error saving image: OpenOutputStream returned null");
                         return false;
                     }
-                    
+
                     await outputStream.WriteAsync(imageBytes);
                 }
 

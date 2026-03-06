@@ -1,12 +1,7 @@
-﻿using Microsoft.Maui.Storage;
-using NumSharp;
+﻿using NumSharp;
 using PixelsorterClassLib;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Image = PixelsorterClassLib.Image;
 
 namespace PixelsorterApp
@@ -74,7 +69,7 @@ namespace PixelsorterApp
         public MainPage()
         {
             InitializeComponent();
-            
+
             sortBtn.IsVisible = true;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
 
@@ -209,7 +204,7 @@ namespace PixelsorterApp
             {
                 var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                 var result = await galleryService.SaveImageAsync(imageBytes, fileName);
-                
+
                 if (result)
                 {
                     await DisplayAlertAsync("Success", "Image saved to gallery", "OK");

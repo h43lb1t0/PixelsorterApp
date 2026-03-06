@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PixelsorterApp.Platforms.Windows
+﻿namespace PixelsorterApp.Platforms.Windows
 {
     public class GalleryService : IGalleryService
     {
