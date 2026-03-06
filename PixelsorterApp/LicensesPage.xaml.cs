@@ -46,7 +46,10 @@ namespace PixelsorterApp
 
             return allLicenses
                 .GroupBy(item => $"{item.PackageName}|{item.PackageVersion}", StringComparer.OrdinalIgnoreCase)
-                .Select(group => group.First())
+                .Select(group => group
+                    .OrderByDescending(item => !string.IsNullOrWhiteSpace(item.LicenseUrl))
+                    .ThenByDescending(item => item.LicenseType != "License information unavailable")
+                    .First())
                 .OrderBy(item => item.PackageName)
                 .ToList();
         }
