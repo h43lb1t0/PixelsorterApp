@@ -97,31 +97,55 @@ namespace PixelsorterApp
             UpdateWhatToSortStateLabel();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            SharedImageBridge.SharedImageReceived += OnSharedImageReceived;
+
+            if (SharedImageBridge.TryConsumePendingImagePath(out var pendingImagePath) && pendingImagePath is not null)
+            {
+                LoadImageFromPath(pendingImagePath);
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            SharedImageBridge.SharedImageReceived -= OnSharedImageReceived;
+            base.OnDisappearing();
+        }
+
+        private void OnSharedImageReceived(string sharedImagePath)
+        {
+            LoadImageFromPath(sharedImagePath);
+        }
+
+        private void LoadImageFromPath(string path)
+        {
+            this.imagePath = path;
+            this.imgSource = ImageSource.FromFile(path);
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                LoadImageBtn.HeightRequest = -1;
+                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+                LoadImageBtn.Source = this.imgSource;
+                sortBtn.IsEnabled = true;
+                saveBtn.IsVisible = false;
+            });
+        }
+
 
 
 
         private async void LoadImage_Clicked(object sender, EventArgs e)
         {
-
-            saveBtn.IsVisible = false; // Hide the save button when loading a new image
             var results = await MediaPicker.PickPhotosAsync();
 
             foreach (var file in results)
             {
-                this.imagePath = file.FullPath; // Store the file path
-
-                // Directly assign the file source for display
-                this.imgSource = ImageSource.FromFile(this.imagePath);
+                LoadImageFromPath(file.FullPath);
                 break;
             }
-
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                LoadImageBtn.HeightRequest = -1; // remove fixed height request so it resizes based on constraints
-                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity; // allow full aspect-ratio expansion
-                LoadImageBtn.Source = this.imgSource;
-                sortBtn.IsEnabled = true; // Enable the sort button now that an image is loaded
-            });
         }
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
