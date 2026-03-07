@@ -26,6 +26,7 @@
                         <DataTemplate x:DataType="local:LicenseInfo">
                             <VerticalStackLayout Padding="16" Spacing="4">
                                 <Label Text="{Binding PackageName}" FontSize="16" FontAttributes="Bold" />
+                                <Label Text="{Binding Authors}" FontSize="13" Opacity="0.8" />
                                 <Label Text="{Binding PackageVersion}" FontSize="13" Opacity="0.6" />
                                 <Label Text="{Binding LicenseType}" FontSize="13" Opacity="0.8" />
                                 <Label Text="{Binding LicenseUrl}" FontSize="13" TextColor="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" TextDecorations="Underline">

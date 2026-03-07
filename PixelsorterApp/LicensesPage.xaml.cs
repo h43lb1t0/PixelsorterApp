@@ -83,15 +83,15 @@ namespace PixelsorterApp
                     || !string.IsNullOrWhiteSpace(item.PackageVersion)
                     || !string.IsNullOrWhiteSpace(item.License)))
             {
-                return generatedLicenses
+                return [.. generatedLicenses
                     .Select(item => new LicenseInfo
                     {
                         PackageName = item.PackageId ?? string.Empty,
+                        Authors = $"by {item.Authors ?? string.Empty}",
                         PackageVersion = item.PackageVersion ?? string.Empty,
                         LicenseType = item.License ?? "License information unavailable",
                         LicenseUrl = item.LicenseUrl ?? string.Empty
-                    })
-                    .ToList();
+                    })];
             }
 
             try
@@ -107,6 +107,7 @@ namespace PixelsorterApp
         private sealed class GeneratedLicenseInfo
         {
             public string? PackageId { get; set; }
+            public string? Authors { get; set; }
             public string? PackageVersion { get; set; }
             public string? License { get; set; }
             public string? LicenseUrl { get; set; }
