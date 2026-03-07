@@ -2,7 +2,6 @@
 using PixelsorterClassLib;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using Color = Microsoft.Maui.Graphics.Color;
 using Image = PixelsorterClassLib.Image;
 
 namespace PixelsorterApp
@@ -22,7 +21,6 @@ namespace PixelsorterApp
         private string[] sortDirectionOptionNames;
         private int maskPaddingAmount = 15;
         private bool invertMask = false;
-        private bool isHandlingMaskToggle;
 
         private void InitializeSortDirectionOptions()
         {
@@ -249,11 +247,11 @@ namespace PixelsorterApp
         private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
             bool maskingLicenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
-            if (!maskingLicenseAccepted && !isHandlingMaskToggle)
+            if (!maskingLicenseAccepted && e.Value)
             {
                 var response = await DisplayAlertAsync(
                     "Masking Feature License",
-                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature accept that you won't use picutures created or edited by this tool for any comercial purposes. For further information go to the license page.",
+                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
                     "Accept",
                     "Don't accept"
                     );
@@ -261,9 +259,7 @@ namespace PixelsorterApp
                 
                 if (!response)
                 {
-                    isHandlingMaskToggle = true;
                     useMasking.IsToggled = false;
-                    isHandlingMaskToggle = false;
                     return;
                 }
             }
