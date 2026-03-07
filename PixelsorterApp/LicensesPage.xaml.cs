@@ -10,7 +10,6 @@ namespace PixelsorterApp
         public LicensesPage()
         {
             InitializeComponent();
-            BindingContext = this;
             OpenUrlCommand = new Command<string>(async url =>
             {
                 if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
@@ -18,6 +17,7 @@ namespace PixelsorterApp
                     await Launcher.OpenAsync(uri);
                 }
             });
+            BindingContext = this;
             Loaded += OnLoaded;
         }
 

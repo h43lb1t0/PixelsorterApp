@@ -40,6 +40,25 @@
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </Border>
+            <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8"  />
+            <Border
+                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                Padding="0"
+                StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Padding="16" Spacing="4">
+                    <Label Text="RMBG-1.4" FontSize="16" FontAttributes="Bold" />
+                    <Label Text="Bria.ai" FontSize="13" Opacity="0.8" />
+                    <Label Text="CC-BY-NC" FontSize="13" Opacity="0.8" />
+                    <Label Text="https://creativecommons.org/licenses/by-nc/4.0/" FontSize="13" TextColor="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}" CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" />
+                </VerticalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

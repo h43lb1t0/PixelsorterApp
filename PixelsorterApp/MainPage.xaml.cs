@@ -244,8 +244,26 @@ namespace PixelsorterApp
             }
         }
 
-        private void useMasking_Toggled(object sender, ToggledEventArgs e)
+        private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
+            bool maskingLicenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
+            if (!maskingLicenseAccepted && e.Value)
+            {
+                var response = await DisplayAlertAsync(
+                    "Masking Feature License",
+                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
+                    "Accept",
+                    "Don't accept"
+                    );
+                Preferences.Set("MaskingLicenseAccepted", response);
+                
+                if (!response)
+                {
+                    useMasking.IsToggled = false;
+                    return;
+                }
+            }
+
             this.useMask = e.Value;
             maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
