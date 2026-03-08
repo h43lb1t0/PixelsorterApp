@@ -20,9 +20,9 @@ namespace PixelsorterApp
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
         private int maskPaddingAmount = 15;
-        private bool invertMask = false;
-        private bool lastInvertMaskValue = false;
+        private bool useInvertedMask = false;
         private NDArray? mask = null;
+        private NDArray? invertedMask = null;
         
 
         private void InitializeSortDirectionOptions()
@@ -173,17 +173,16 @@ namespace PixelsorterApp
                 sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
                 await Task.Run(async () =>
                 {
-                    if ((this.useMask && this.mask is null) || (this.useMask && this.lastInvertMaskValue != this.invertMask))
+                    if ((this.useMask && this.mask is null))
                     {
-                        this.mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.invertMask);
-                        lastInvertMaskValue = this.invertMask;
+                        (this.mask, this.invertedMask) = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.useInvertedMask);
                     }
 
                     var imgData = Sorter.SortImage(
                                 Image.LoadImage(this.imagePath),
                                 sortingCriterion ?? sortByOptions.Values.First(),
                                 sortingDirection,
-                                mask
+                                this.useMask ? (this.useInvertedMask ? this.invertedMask : this.mask) : null
                             );
                     using var foo = Image.NdarrayToImgData(imgData);
                     foo.SaveAsPng(sortedImagePath);
@@ -270,7 +269,6 @@ namespace PixelsorterApp
             }
 
             this.useMask = e.Value;
-            lastInvertMaskValue = !e.Value;
             maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
         }
@@ -322,13 +320,13 @@ namespace PixelsorterApp
 
         private void whatToSort_Toggled(object sender, ToggledEventArgs e)
         {
-            this.invertMask = e.Value;
+            this.useInvertedMask = e.Value;
             UpdateWhatToSortStateLabel();
         }
 
         private void UpdateWhatToSortStateLabel()
         {
-            whatToSortStateLabel.Text = this.invertMask ? "Foreground (subject)" : "Background";
+            whatToSortStateLabel.Text = this.useInvertedMask ? "Foreground (subject)" : "Background";
         }
     }
 }
