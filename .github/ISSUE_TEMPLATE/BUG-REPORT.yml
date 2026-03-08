@@ -1,9 +1,8 @@
 name: "Bug Report"
 description: Create a new ticket for a bug.
 title: "[BUG] - <title>"
-labels: [
-  "bug"
-]
+labels:
+  - "bug"
 body:
   - type: textarea
     id: description
@@ -13,6 +12,7 @@ body:
       placeholder: Short and explicit description of your incident...
     validations:
       required: true
+
   - type: dropdown
     id: os
     attributes:
@@ -25,15 +25,17 @@ body:
         - Other
     validations:
       required: true
+
   - type: dropdown
-  id: download
-  attributes:
-    label: How did you download the software?
-    options:
-      - Github Release
-      - Build from source
-  validations:
-    required: true
+    id: download
+    attributes:
+      label: How did you download the software?
+      options:
+        - Github Release
+        - Build from source
+    validations:
+      required: true
+
   - type: textarea
     id: reprod
     attributes:
@@ -47,6 +49,7 @@ body:
       render: bash
     validations:
       required: true
+
   - type: textarea
     id: screenshot
     attributes:
