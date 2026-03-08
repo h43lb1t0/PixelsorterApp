@@ -21,6 +21,9 @@ namespace PixelsorterApp
         private string[] sortDirectionOptionNames;
         private int maskPaddingAmount = 15;
         private bool invertMask = false;
+        private bool lastInvertMaskValue = false;
+        private NDArray? mask = null;
+        
 
         private void InitializeSortDirectionOptions()
         {
@@ -123,6 +126,7 @@ namespace PixelsorterApp
         {
             this.imagePath = path;
             this.imgSource = ImageSource.FromFile(path);
+            this.mask = null; // Clear any existing mask when a new image is loaded
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -155,7 +159,7 @@ namespace PixelsorterApp
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
-            NDArray? mask = null;
+
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
@@ -169,9 +173,9 @@ namespace PixelsorterApp
                 sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
                 await Task.Run(async () =>
                 {
-                    if (this.useMask)
+                    if ((this.useMask && this.mask is null) || (this.useMask && this.lastInvertMaskValue != this.invertMask))
                     {
-                        mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.invertMask);
+                        this.mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.invertMask);
                     }
 
                     var imgData = Sorter.SortImage(
@@ -265,6 +269,7 @@ namespace PixelsorterApp
             }
 
             this.useMask = e.Value;
+            lastInvertMaskValue = !e.Value;
             maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
         }
