@@ -18,6 +18,13 @@ This project serves as the graphical user interface for the core pixel sorting a
 
 > **Note:** Due to platform-specific API requirements, the **Share** feature is currently only implemented for Android, and **Save to Gallery** is implemented for Android and Windows. The core pixel sorting functionality works across all supported platforms.
 
+
+### Android Screenshots
+
+
+<img height="800" alt="Screenshot_20260308-232428" src="https://github.com/user-attachments/assets/32daa09f-42e0-4736-abef-ebe558e5c752" /> <img height="800" alt="Screenshot_20260308-233136" src="https://github.com/user-attachments/assets/390bc7a5-b40a-454f-9168-5f91b3b806e1" />
+
+
 ## Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
