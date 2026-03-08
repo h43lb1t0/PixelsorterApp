@@ -23,7 +23,7 @@ namespace PixelsorterApp
         private bool useInvertedMask = false;
         private NDArray? mask = null;
         private NDArray? invertedMask = null;
-        
+
 
         private void InitializeSortDirectionOptions()
         {
@@ -250,6 +250,11 @@ namespace PixelsorterApp
 
         private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
+            if (e.Value && !checkNetworkAcces())
+            {
+                useMasking.IsToggled = false;
+                return;
+            }
             bool maskingLicenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
             if (!maskingLicenseAccepted && e.Value)
             {
@@ -260,7 +265,7 @@ namespace PixelsorterApp
                     "Don't accept"
                     );
                 Preferences.Set("MaskingLicenseAccepted", response);
-                
+
                 if (!response)
                 {
                     useMasking.IsToggled = false;
@@ -271,6 +276,23 @@ namespace PixelsorterApp
             this.useMask = e.Value;
             maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
+        }
+
+        private bool checkNetworkAcces()
+        {
+            NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+
+            if (Preferences.Get("MaskingLicenseAccepted", false))
+            {
+                return true;
+            }
+
+            if (accessType != NetworkAccess.Internet)
+            {
+                _ = DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                return false;
+            }
+            return true;
         }
 
         private void sortBy_SelectedIndexChanged(object sender, EventArgs e)
