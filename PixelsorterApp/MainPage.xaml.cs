@@ -176,6 +176,7 @@ namespace PixelsorterApp
                     if ((this.useMask && this.mask is null) || (this.useMask && this.lastInvertMaskValue != this.invertMask))
                     {
                         this.mask = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.invertMask);
+                        lastInvertMaskValue = this.invertMask;
                     }
 
                     var imgData = Sorter.SortImage(
