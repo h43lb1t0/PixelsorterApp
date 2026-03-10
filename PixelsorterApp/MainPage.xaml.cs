@@ -283,12 +283,27 @@ namespace PixelsorterApp
             if (!masker.IsModelDownloaded && netAccess)
             {
                 UseLoadingOverlay("Downloading...");
-                await Task.Run(() =>
+                try
                 {
-                    _ = masker.DownloadModel();
-                });
-                loadingIndicator.IsRunning = false;
-                loadingOverlay.IsVisible = false;
+                    await Task.Run(() =>
+                    {
+                        _ = masker.DownloadModel();
+                    });
+                }
+                catch (Exception)
+                {
+                    await DisplayAlertAsync(
+                        "Download failed",
+                        "The masking model could not be downloaded. Please check your internet connection and try again.",
+                        "OK");
+                    useMasking.IsToggled = false;
+                    return;
+                }
+                finally
+                {
+                    loadingIndicator.IsRunning = false;
+                    loadingOverlay.IsVisible = false;
+                }
             }
 
 
