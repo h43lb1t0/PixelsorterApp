@@ -77,6 +77,7 @@
             </Grid>
 
             <Border
+                x:Name="imagePreviewBorder"
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
                 StrokeThickness="1"
                 BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
@@ -87,7 +88,6 @@
                         x:Name="LoadImageBtn"
                         Source="uploadplaceholder.png"
                         Aspect="AspectFit"
-                        MaximumHeightRequest="300"
                         HeightRequest="130">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="LoadImage_Clicked" />
