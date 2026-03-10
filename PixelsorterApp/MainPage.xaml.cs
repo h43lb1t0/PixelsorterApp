@@ -255,7 +255,9 @@ namespace PixelsorterApp
 
         private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
-            if (e.Value && !checkNetworkAcces() && !masker.IsModelDownloaded)
+
+            bool netAccess = checkNetworkAcces();
+            if (e.Value && !netAccess && !masker.IsModelDownloaded)
             {
                 useMasking.IsToggled = false;
                 return;
@@ -278,7 +280,7 @@ namespace PixelsorterApp
                 }
             }
 
-            if (!masker.IsModelDownloaded)
+            if (!masker.IsModelDownloaded && netAccess)
             {
                 UseLoadingOverlay("Downloading...");
                 await Task.Run(() =>
@@ -298,11 +300,6 @@ namespace PixelsorterApp
         private bool checkNetworkAcces()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
-            if (Preferences.Get("MaskingLicenseAccepted", false))
-            {
-                return true;
-            }
 
             if (accessType != NetworkAccess.Internet)
             {
