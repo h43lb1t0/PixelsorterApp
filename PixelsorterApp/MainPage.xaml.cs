@@ -23,6 +23,7 @@ namespace PixelsorterApp
         private bool useInvertedMask = false;
         private NDArray? mask = null;
         private NDArray? invertedMask = null;
+        private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
         private void InitializeSortDirectionOptions()
@@ -73,6 +74,8 @@ namespace PixelsorterApp
         {
             InitializeComponent();
 
+            SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
+
             sortBtn.IsVisible = true;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
 
@@ -98,6 +101,7 @@ namespace PixelsorterApp
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
             UpdateWhatToSortStateLabel();
+            ApplyImageSizeForCurrentDevice();
         }
 
         protected override void OnAppearing()
@@ -131,11 +135,26 @@ namespace PixelsorterApp
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 LoadImageBtn.HeightRequest = -1;
-                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+                ApplyImageSizeForCurrentDevice();
                 LoadImageBtn.Source = this.imgSource;
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
             });
+        }
+
+        private void ApplyImageSizeForCurrentDevice()
+        {
+            if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
+            {
+                imagePreviewBorder.MaximumHeightRequest = this.Height > 0
+                    ? this.Height * DESKTOP_IMAGE_HEIGHT
+                    : double.PositiveInfinity;
+                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+                return;
+            }
+
+            imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+            LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
         }
 
         private void UseLoadingOverlay(String text)
