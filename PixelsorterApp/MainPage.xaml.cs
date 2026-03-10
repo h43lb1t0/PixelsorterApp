@@ -255,7 +255,7 @@ namespace PixelsorterApp
 
         private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
-            if (e.Value && !checkNetworkAcces())
+            if (e.Value && !checkNetworkAcces() && !masker.IsModelDownloaded)
             {
                 useMasking.IsToggled = false;
                 return;
