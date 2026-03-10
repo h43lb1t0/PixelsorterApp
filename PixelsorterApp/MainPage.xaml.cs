@@ -138,6 +138,12 @@ namespace PixelsorterApp
             });
         }
 
+        private void UseLoadingOverlay(String text)
+        {
+            loadingOverlayLabel.Text = text;
+            loadingIndicator.IsRunning = true;
+            loadingOverlay.IsVisible = true;
+        }
 
 
 
@@ -163,8 +169,7 @@ namespace PixelsorterApp
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
-            sortingOverlay.IsVisible = true;
-            sortingIndicator.IsRunning = true;
+            UseLoadingOverlay("Sorting...");
             LoadImageBtn.IsEnabled = false;
 
             try
@@ -203,8 +208,8 @@ namespace PixelsorterApp
             }
             finally
             {
-                sortingIndicator.IsRunning = false;
-                sortingOverlay.IsVisible = false;
+                loadingIndicator.IsRunning = false;
+                loadingOverlay.IsVisible = false;
                 sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
                 LoadImageBtn.IsEnabled = true;
 
@@ -250,13 +255,15 @@ namespace PixelsorterApp
 
         private async void useMasking_Toggled(object sender, ToggledEventArgs e)
         {
-            if (e.Value && !checkNetworkAcces())
+
+            bool netAccess = checkNetworkAcces();
+            if (e.Value && !netAccess && !masker.IsModelDownloaded)
             {
                 useMasking.IsToggled = false;
                 return;
             }
-            bool maskingLicenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
-            if (!maskingLicenseAccepted && e.Value)
+            
+            if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
             {
                 var response = await DisplayAlertAsync(
                     "Masking Feature License",
@@ -273,6 +280,33 @@ namespace PixelsorterApp
                 }
             }
 
+            if (!masker.IsModelDownloaded && netAccess)
+            {
+                UseLoadingOverlay("Downloading...");
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        _ = masker.DownloadModel();
+                    });
+                }
+                catch (Exception)
+                {
+                    await DisplayAlertAsync(
+                        "Download failed",
+                        "The masking model could not be downloaded. Please check your internet connection and try again.",
+                        "OK");
+                    useMasking.IsToggled = false;
+                    return;
+                }
+                finally
+                {
+                    loadingIndicator.IsRunning = false;
+                    loadingOverlay.IsVisible = false;
+                }
+            }
+
+
             this.useMask = e.Value;
             maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
@@ -281,11 +315,6 @@ namespace PixelsorterApp
         private bool checkNetworkAcces()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
-            if (Preferences.Get("MaskingLicenseAccepted", false))
-            {
-                return true;
-            }
 
             if (accessType != NetworkAccess.Internet)
             {

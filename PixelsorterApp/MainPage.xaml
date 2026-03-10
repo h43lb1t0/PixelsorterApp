@@ -95,7 +95,7 @@
                     </Image>
 
                     <Grid
-                        x:Name="sortingOverlay"
+                        x:Name="loadingOverlay"
                         IsVisible="False"
                         BackgroundColor="#80000000"
                         InputTransparent="False">
@@ -104,13 +104,14 @@
                             HorizontalOptions="Center"
                             VerticalOptions="Center">
                             <ActivityIndicator
-                                x:Name="sortingIndicator"
+                                x:Name="loadingIndicator"
                                 IsRunning="False"
                                 Color="White"
                                 WidthRequest="40"
                                 HeightRequest="40" />
                             <Label
-                                Text="Sorting..."
+                                x:Name="loadingOverlayLabel"
+                                Text=""
                                 TextColor="White"
                                 FontAttributes="Bold"
                                 HorizontalTextAlignment="Center" />
