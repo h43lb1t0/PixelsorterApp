@@ -138,6 +138,12 @@ namespace PixelsorterApp
             });
         }
 
+        private void UseLoadingOverlay(String text)
+        {
+            loadingOverlayLabel.Text = text;
+            loadingIndicator.IsRunning = true;
+            loadingOverlay.IsVisible = true;
+        }
 
 
 
@@ -163,8 +169,7 @@ namespace PixelsorterApp
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
-            sortingOverlay.IsVisible = true;
-            sortingIndicator.IsRunning = true;
+            UseLoadingOverlay("Sorting...");
             LoadImageBtn.IsEnabled = false;
 
             try
@@ -203,8 +208,8 @@ namespace PixelsorterApp
             }
             finally
             {
-                sortingIndicator.IsRunning = false;
-                sortingOverlay.IsVisible = false;
+                loadingIndicator.IsRunning = false;
+                loadingOverlay.IsVisible = false;
                 sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
                 LoadImageBtn.IsEnabled = true;
 
@@ -255,8 +260,8 @@ namespace PixelsorterApp
                 useMasking.IsToggled = false;
                 return;
             }
-            bool maskingLicenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
-            if (!maskingLicenseAccepted && e.Value)
+            
+            if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
             {
                 var response = await DisplayAlertAsync(
                     "Masking Feature License",
@@ -272,6 +277,18 @@ namespace PixelsorterApp
                     return;
                 }
             }
+
+            if (!masker.IsModelDownloaded)
+            {
+                UseLoadingOverlay("Downloading...");
+                await Task.Run(() =>
+                {
+                    masker.DownloadModel();
+                });
+                loadingIndicator.IsRunning = false;
+                loadingOverlay.IsVisible = false;
+            }
+
 
             this.useMask = e.Value;
             maskPadding.IsVisible = e.Value;
