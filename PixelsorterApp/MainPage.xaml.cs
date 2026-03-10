@@ -283,7 +283,7 @@ namespace PixelsorterApp
                 UseLoadingOverlay("Downloading...");
                 await Task.Run(() =>
                 {
-                    masker.DownloadModel();
+                    _ = masker.DownloadModel();
                 });
                 loadingIndicator.IsRunning = false;
                 loadingOverlay.IsVisible = false;
