@@ -241,23 +241,17 @@
                             Text="What to sort"
                             FontSize="16"
                             VerticalOptions="Center" />
-                        <Label
-                            x:Name="whatToSortStateLabel"
-                            Grid.Row="1"
-                            Text="Background"
-                            FontSize="13"
-                            Opacity="0.8"
-                            VerticalOptions="Center" />
-                        <Switch
-                            x:Name="whatToSort"
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="1"
-                            VerticalOptions="Center"
-                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
-                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            Toggled="whatToSort_Toggled" 
-                            SemanticProperties.Description="Switch sorting target. Off sorts foreground (subject). On sorts background."/>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
+                            <RadioButton
+                                x:Name="sortBackgroundRadio"
+                                Content="Background"
+                                IsChecked="True"
+                                CheckedChanged="whatToSort_Toggled" />
+                            <RadioButton
+                                x:Name="sortForegroundRadio"
+                                Content="Foreground"
+                                CheckedChanged="whatToSort_Toggled" />
+                        </HorizontalStackLayout>
                     </Grid>
                 </VerticalStackLayout>
             </Border>

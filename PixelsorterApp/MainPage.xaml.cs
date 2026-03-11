@@ -100,7 +100,6 @@ namespace PixelsorterApp
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
-            UpdateWhatToSortStateLabel();
             ApplyImageSizeForCurrentDevice();
         }
 
@@ -388,15 +387,16 @@ namespace PixelsorterApp
             }
         }
 
-        private void whatToSort_Toggled(object sender, ToggledEventArgs e)
+        private void whatToSort_Toggled(object sender, CheckedChangedEventArgs e)
         {
-            this.useInvertedMask = e.Value;
-            UpdateWhatToSortStateLabel();
-        }
-
-        private void UpdateWhatToSortStateLabel()
-        {
-            whatToSortStateLabel.Text = this.useInvertedMask ? "Foreground (subject)" : "Background";
+            if (sender == sortBackgroundRadio && e.Value)
+            {
+                this.useInvertedMask = false;
+            }
+            else if (sender == sortForegroundRadio && e.Value)
+            {
+                this.useInvertedMask = true;
+            }
         }
     }
 }
