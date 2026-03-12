@@ -9,7 +9,6 @@ namespace PixelsorterApp
     public partial class MainPage : ContentPage
     {
 
-        private ImageSource imgSource;
         private string imagePath; // Add field to store the file path
         private readonly Mask masker = new Mask();
         private bool useMask = false;
@@ -19,6 +18,9 @@ namespace PixelsorterApp
         private SortDirections sortingDirection;
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
+        private readonly List<string> imageCaptions = [];
+        private readonly List<string> imagePaths = [];
+        private int currentDisplayedImageIndex = -1;
         private int maskPaddingAmount = 15;
         private bool useInvertedMask = false;
         private NDArray? mask = null;
@@ -101,6 +103,54 @@ namespace PixelsorterApp
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
             ApplyImageSizeForCurrentDevice();
+
+            imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+        }
+
+        private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
+        {
+            currentDisplayedImageIndex = index;
+
+            if (index >= 0 && index < imageCaptions.Count)
+            {
+                whatIsThisLabel.Text = imageCaptions[index];
+            }
+            if (index == 0 && index < imagePaths.Count)
+            {
+                saveBtn.IsEnabled = false;
+            }
+            else
+            {
+                saveBtn.IsEnabled = true;
+            }
+        }
+
+        private string? GetFocusedImagePath()
+        {
+            if (imagePaths.Count == 0)
+            {
+                return null;
+            }
+
+            if (currentDisplayedImageIndex >= 0 && currentDisplayedImageIndex < imagePaths.Count)
+            {
+                return imagePaths[currentDisplayedImageIndex];
+            }
+
+            return imagePaths[^1];
+        }
+
+        private string BuildSortCaption()
+        {
+            var sortByText = sortBy.SelectedIndex >= 0 && sortBy.SelectedIndex < sortByOptionNames.Length
+                ? sortByOptionNames[sortBy.SelectedIndex]
+                : "Unknown";
+
+            var directionText = sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length
+                ? sortDirectionOptionNames[sortDirection.SelectedIndex]
+                : "Unknown";
+
+            return $"Sort by: {sortByText} • Direction: {directionText}";
         }
 
         protected override void OnAppearing()
@@ -128,14 +178,23 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.imgSource = ImageSource.FromFile(path);
             this.mask = null; // Clear any existing mask when a new image is loaded
+            imageCaptions.Clear();
+            imagePaths.Clear();
+            imageCaptions.Add("Original image");
+            imagePaths.Add(path);
+            currentDisplayedImageIndex = 0;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                LoadImageBtn.HeightRequest = -1;
+                imageViewer.PrepareForImage();
                 ApplyImageSizeForCurrentDevice();
-                LoadImageBtn.Source = this.imgSource;
+                imageViewer.ClearImages();
+                imageViewer.ShowImage(path);
+                whatIsThisLabel.Text = imageCaptions[0];
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
+
+                whatIsThisLabel.IsVisible = true;
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
             });
@@ -145,15 +204,15 @@ namespace PixelsorterApp
         {
             if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
             {
-                imagePreviewBorder.MaximumHeightRequest = this.Height > 0
+                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = this.Height > 0
                     ? this.Height * DESKTOP_IMAGE_HEIGHT
                     : double.PositiveInfinity;
-                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
                 return;
             }
 
             imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
-            LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+            imageViewer.MaximumHeightRequest = double.PositiveInfinity;
         }
 
         private void UseLoadingOverlay(String text)
@@ -188,7 +247,7 @@ namespace PixelsorterApp
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
             UseLoadingOverlay("Sorting...");
-            LoadImageBtn.IsEnabled = false;
+            imageViewer.IsEnabled = false;
 
             try
             {
@@ -214,7 +273,12 @@ namespace PixelsorterApp
                 // Back on the UI thread — safe to update UI elements.
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    LoadImageBtn.Source = ImageSource.FromFile(sortedImagePath);
+                    imageViewer.ShowImage(sortedImagePath);
+                    var caption = BuildSortCaption();
+                    imageCaptions.Add(caption);
+                    imagePaths.Add(sortedImagePath);
+                    currentDisplayedImageIndex = imagePaths.Count - 1;
+                    whatIsThisLabel.Text = caption;
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
                 });
@@ -229,7 +293,7 @@ namespace PixelsorterApp
                 loadingIndicator.IsRunning = false;
                 loadingOverlay.IsVisible = false;
                 sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
-                LoadImageBtn.IsEnabled = true;
+                imageViewer.IsEnabled = true;
 
             }
         }
@@ -241,13 +305,15 @@ namespace PixelsorterApp
         /// <param name="e"></param>
         private async void SaveBtn_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(sortedImagePath) || !File.Exists(sortedImagePath))
+            var focusedImagePath = GetFocusedImagePath();
+
+            if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
-                await DisplayAlertAsync("Error", "No sorted image available to save.", "OK");
+                await DisplayAlertAsync("Error", "No image available to save.", "OK");
                 return;
             }
 
-            var imageBytes = await File.ReadAllBytesAsync(sortedImagePath);
+            var imageBytes = await File.ReadAllBytesAsync(focusedImagePath);
 
             var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
 

@@ -4,6 +4,7 @@
              x:Class="PixelsorterApp.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:local="clr-namespace:PixelsorterApp"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}">
 
@@ -83,19 +84,15 @@
                 BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                 Padding="12"
                 StrokeShape="RoundRectangle 16">
-                <Grid>
-                    <Image
-                        x:Name="LoadImageBtn"
-                        Source="uploadplaceholder.png"
-                        Aspect="AspectFit"
-                        HeightRequest="130">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="LoadImage_Clicked" />
-                        </Image.GestureRecognizers>
-                    </Image>
-
+                <Grid RowDefinitions="Auto,Auto">
+                    <local:ImageViewer
+                        x:Name="imageViewer"
+                        Grid.Row="0"
+                        HeightRequest="130"
+                        ImageTapped="LoadImage_Clicked" />
                     <Grid
                         x:Name="loadingOverlay"
+                        Grid.Row="0"
                         IsVisible="False"
                         BackgroundColor="#80000000"
                         InputTransparent="False">
@@ -117,6 +114,15 @@
                                 HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Grid>
+                    <Label
+                        x:Name="whatIsThisLabel"
+                        Grid.Row="1"
+                        Text="Tap to load an image"
+                        TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Margin="0,8,0,0" />
                 </Grid>
             </Border>
 
