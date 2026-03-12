@@ -84,13 +84,15 @@
                 BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                 Padding="12"
                 StrokeShape="RoundRectangle 16">
-                <Grid>
+                <Grid RowDefinitions="Auto,Auto">
                     <local:ImageViewer
                         x:Name="imageViewer"
+                        Grid.Row="0"
                         HeightRequest="130"
                         ImageTapped="LoadImage_Clicked" />
                     <Grid
                         x:Name="loadingOverlay"
+                        Grid.Row="0"
                         IsVisible="False"
                         BackgroundColor="#80000000"
                         InputTransparent="False">
@@ -112,6 +114,15 @@
                                 HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Grid>
+                    <Label
+                        x:Name="whatIsThisLabel"
+                        Grid.Row="1"
+                        Text="Tap to load an image"
+                        TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Margin="0,8,0,0" />
                 </Grid>
             </Border>
 

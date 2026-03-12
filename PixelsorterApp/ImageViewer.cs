@@ -3,6 +3,7 @@ namespace PixelsorterApp;
 public partial class ImageViewer : ContentView
 {
     public event EventHandler? ImageTapped;
+    public event EventHandler<int>? DisplayedImageIndexChanged;
 
     public ImageViewer()
     {
@@ -20,5 +21,10 @@ public partial class ImageViewer : ContentView
     protected void OnImageTapped()
     {
         ImageTapped?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void OnDisplayedImageIndexChanged(int index)
+    {
+        DisplayedImageIndexChanged?.Invoke(this, index);
     }
 }

@@ -25,6 +25,7 @@ public partial class ImageViewer
             }),
             ItemsSource = _images
         };
+        carousel.PositionChanged += (_, e) => OnDisplayedImageIndexChanged(e.CurrentPosition);
         Content = carousel;
     }
 

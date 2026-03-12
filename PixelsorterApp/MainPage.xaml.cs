@@ -18,6 +18,7 @@ namespace PixelsorterApp
         private SortDirections sortingDirection;
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
+        private readonly List<string> imageCaptions = [];
         private int maskPaddingAmount = 15;
         private bool useInvertedMask = false;
         private NDArray? mask = null;
@@ -100,6 +101,29 @@ namespace PixelsorterApp
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
             ApplyImageSizeForCurrentDevice();
+
+            imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+        }
+
+        private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
+        {
+            if (index >= 0 && index < imageCaptions.Count)
+            {
+                whatIsThisLabel.Text = imageCaptions[index];
+            }
+        }
+
+        private string BuildSortCaption()
+        {
+            var sortByText = sortBy.SelectedIndex >= 0 && sortBy.SelectedIndex < sortByOptionNames.Length
+                ? sortByOptionNames[sortBy.SelectedIndex]
+                : "Unknown";
+
+            var directionText = sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length
+                ? sortDirectionOptionNames[sortDirection.SelectedIndex]
+                : "Unknown";
+
+            return $"Sort by: {sortByText} • Direction: {directionText}";
         }
 
         protected override void OnAppearing()
@@ -128,6 +152,8 @@ namespace PixelsorterApp
         {
             this.imagePath = path;
             this.mask = null; // Clear any existing mask when a new image is loaded
+            imageCaptions.Clear();
+            imageCaptions.Add("Original image");
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -135,6 +161,8 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
+                whatIsThisLabel.Text = imageCaptions[0];
+                whatIsThisLabel.IsVisible = true;
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
             });
@@ -144,10 +172,10 @@ namespace PixelsorterApp
         {
             if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
             {
-                imagePreviewBorder.MaximumHeightRequest = this.Height > 0
+                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = this.Height > 0
                     ? this.Height * DESKTOP_IMAGE_HEIGHT
                     : double.PositiveInfinity;
-                imageViewer.MaximumHeightRequest = double.PositiveInfinity;
                 return;
             }
 
@@ -214,6 +242,9 @@ namespace PixelsorterApp
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     imageViewer.ShowImage(sortedImagePath);
+                    var caption = BuildSortCaption();
+                    imageCaptions.Add(caption);
+                    whatIsThisLabel.Text = caption;
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
                 });
