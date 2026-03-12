@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+
+  <data name="HelpMenu" xml:space="preserve"><value>Help</value></data>
+  <data name="OpenSourceLicensesMenuItem" xml:space="preserve"><value>Open Source Licenses</value></data>
+  <data name="AppTitle" xml:space="preserve"><value>Pixel Sorter</value></data>
+  <data name="AppSubtitle" xml:space="preserve"><value>Load an image, choose options, and sort.</value></data>
+  <data name="MoreOptionsSemantic" xml:space="preserve"><value>Open additional app options</value></data>
+  <data name="OptionsHeader" xml:space="preserve"><value>OPTIONS</value></data>
+  <data name="SortByLabel" xml:space="preserve"><value>Sort by</value></data>
+  <data name="SortBySemantic" xml:space="preserve"><value>A dropdown menu to select what to sort the pixels by</value></data>
+  <data name="DirectionLabel" xml:space="preserve"><value>Direction</value></data>
+  <data name="DirectionSemantic" xml:space="preserve"><value>A dropdown to select in what direction to sort the pixels</value></data>
+  <data name="UseMaskingLabel" xml:space="preserve"><value>Use masking</value></data>
+  <data name="UseMaskingSemantic" xml:space="preserve"><value>Toggle switch to turn masking on or off for the subject</value></data>
+  <data name="MaskPaddingLabel" xml:space="preserve"><value>Mask padding (px)</value></data>
+  <data name="WhatToSortLabel" xml:space="preserve"><value>What to sort</value></data>
+  <data name="BackgroundOption" xml:space="preserve"><value>Background</value></data>
+  <data name="BackgroundSemantic" xml:space="preserve"><value>Select to sort pixels based on the background area</value></data>
+  <data name="ForegroundOption" xml:space="preserve"><value>Foreground</value></data>
+  <data name="ForegroundSemantic" xml:space="preserve"><value>Select to sort pixels based on the foreground area</value></data>
+  <data name="SortButton" xml:space="preserve"><value>Sort</value></data>
+  <data name="SortButtonSemantic" xml:space="preserve"><value>Button to run the pixel sorting</value></data>
+  <data name="SaveButton" xml:space="preserve"><value>Save</value></data>
+  <data name="SaveButtonSemantic" xml:space="preserve"><value>Button to save the sorted image to the image gallery</value></data>
+
+  <data name="SortingOverlay" xml:space="preserve"><value>Sorting...</value></data>
+  <data name="DownloadingOverlay" xml:space="preserve"><value>Downloading...</value></data>
+  <data name="ErrorTitle" xml:space="preserve"><value>Error</value></data>
+  <data name="SuccessTitle" xml:space="preserve"><value>Success</value></data>
+  <data name="OkButton" xml:space="preserve"><value>OK</value></data>
+  <data name="ErrorOccurredMessageFormat" xml:space="preserve"><value>An error occurred: {0}</value></data>
+  <data name="NoSortedImageToSave" xml:space="preserve"><value>No sorted image available to save.</value></data>
+  <data name="ImageSavedToGallery" xml:space="preserve"><value>Image saved to gallery</value></data>
+  <data name="FailedToSaveImageToGallery" xml:space="preserve"><value>Failed to save image to gallery</value></data>
+  <data name="GalleryServiceNotAvailable" xml:space="preserve"><value>Gallery service is not available</value></data>
+  <data name="MaskingFeatureLicenseTitle" xml:space="preserve"><value>Masking Feature License</value></data>
+  <data name="MaskingFeatureLicenseMessage" xml:space="preserve"><value>The masking feature uses a pre-trained machine learning model created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for commercial purposes. For more details, see the license page.</value></data>
+  <data name="AcceptButton" xml:space="preserve"><value>Accept</value></data>
+  <data name="DontAcceptButton" xml:space="preserve"><value>Don't accept</value></data>
+  <data name="DownloadFailedTitle" xml:space="preserve"><value>Download failed</value></data>
+  <data name="DownloadFailedMessage" xml:space="preserve"><value>The masking model could not be downloaded. Please check your internet connection and try again.</value></data>
+  <data name="NoInternetTitle" xml:space="preserve"><value>No Internet Connection</value></data>
+  <data name="NoInternetMessage" xml:space="preserve"><value>An internet connection is required to use the masking feature. Please connect to the internet and try again.</value></data>
+
+  <data name="SortBy_Hue" xml:space="preserve"><value>Hue</value></data>
+  <data name="SortBy_Brightness" xml:space="preserve"><value>Brightness</value></data>
+  <data name="SortBy_Saturation" xml:space="preserve"><value>Saturation</value></data>
+  <data name="SortBy_Lightness" xml:space="preserve"><value>Lightness</value></data>
+  <data name="SortBy_Warmth" xml:space="preserve"><value>Warmth</value></data>
+  <data name="SortBy_Coolness" xml:space="preserve"><value>Coolness</value></data>
+
+  <data name="SortDirection_RowLeftToRight" xml:space="preserve"><value>Row left to right</value></data>
+  <data name="SortDirection_RowRightToLeft" xml:space="preserve"><value>Row right to left</value></data>
+  <data name="SortDirection_ColumnTopToBottom" xml:space="preserve"><value>Column top to bottom</value></data>
+  <data name="SortDirection_ColumnBottomToTop" xml:space="preserve"><value>Column bottom to top</value></data>
+  <data name="SortDirection_IntoMask" xml:space="preserve"><value>Into mask</value></data>
+
+  <data name="LicensesPageTitle" xml:space="preserve"><value>Open Source Licenses</value></data>
+  <data name="LicensesPageHeader" xml:space="preserve"><value>Open Source Licenses</value></data>
+  <data name="LicensesPageIntro" xml:space="preserve"><value>This application uses the following open source packages:</value></data>
+  <data name="AdditionalLicensesHeader" xml:space="preserve"><value>Additional Licenses</value></data>
+  <data name="ByPrefix" xml:space="preserve"><value>by</value></data>
+  <data name="LicenseInformationUnavailable" xml:space="preserve"><value>License information unavailable</value></data>
+</root>

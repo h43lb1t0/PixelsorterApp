@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PixelsorterApp"
+             xmlns:localization="clr-namespace:PixelsorterApp.Localization"
              x:Class="PixelsorterApp.LicensesPage"
              BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
-             Title="Open Source Licenses">
+             Title="{localization:Translate LicensesPageTitle}">
     <ContentPage.Resources>
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
@@ -12,8 +13,8 @@
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
-            <Label Text="This application uses the following open source packages:" Opacity="0.8" />
+            <Label Text="{localization:Translate LicensesPageHeader}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="{localization:Translate LicensesPageIntro}" Opacity="0.8" />
 
             <Border
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
@@ -40,7 +41,7 @@
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </Border>
-            <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8"  />
+            <Label Text="{localization:Translate AdditionalLicensesHeader}" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8"  />
             <Border
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
                 StrokeThickness="1"

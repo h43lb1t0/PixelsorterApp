@@ -1,11 +1,13 @@
 using System.Text.Json;
 using System.Windows.Input;
+using PixelsorterApp.Localization;
 
 namespace PixelsorterApp
 {
     public partial class LicensesPage : ContentPage
     {
         public ICommand OpenUrlCommand { get; }
+        private static string T(string key) => LocalizationManager.GetString(key);
 
         public LicensesPage()
         {
@@ -48,7 +50,7 @@ namespace PixelsorterApp
                 .GroupBy(item => $"{item.PackageName}|{item.PackageVersion}", StringComparer.OrdinalIgnoreCase)
                 .Select(group => group
                     .OrderByDescending(item => !string.IsNullOrWhiteSpace(item.LicenseUrl))
-                    .ThenByDescending(item => item.LicenseType != "License information unavailable")
+                    .ThenByDescending(item => item.LicenseType != T("LicenseInformationUnavailable"))
                     .First())
                 .OrderBy(item => item.PackageName)
                 .ToList();
@@ -87,9 +89,9 @@ namespace PixelsorterApp
                     .Select(item => new LicenseInfo
                     {
                         PackageName = item.PackageId ?? string.Empty,
-                        Authors = $"by {item.Authors ?? string.Empty}",
+                        Authors = $"{T("ByPrefix")} {item.Authors ?? string.Empty}",
                         PackageVersion = item.PackageVersion ?? string.Empty,
-                        LicenseType = item.License ?? "License information unavailable",
+                        LicenseType = item.License ?? T("LicenseInformationUnavailable"),
                         LicenseUrl = item.LicenseUrl ?? string.Empty
                     })];
             }

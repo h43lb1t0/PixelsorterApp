@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+
+  <data name="HelpMenu" xml:space="preserve"><value>Hilfe</value></data>
+  <data name="OpenSourceLicensesMenuItem" xml:space="preserve"><value>Open-Source-Lizenzen</value></data>
+  <data name="AppTitle" xml:space="preserve"><value>Pixel-Sorter</value></data>
+  <data name="AppSubtitle" xml:space="preserve"><value>Lade ein Bild, wähl Optionen und sortiere.</value></data>
+  <data name="MoreOptionsSemantic" xml:space="preserve"><value>Weitere App-Optionen öffnen</value></data>
+  <data name="OptionsHeader" xml:space="preserve"><value>OPTIONEN</value></data>
+  <data name="SortByLabel" xml:space="preserve"><value>Sortieren nach</value></data>
+  <data name="SortBySemantic" xml:space="preserve"><value>Dropdown-Menü, um auszuwählen, wonach die Pixel sortiert werden</value></data>
+  <data name="DirectionLabel" xml:space="preserve"><value>Richtung</value></data>
+  <data name="DirectionSemantic" xml:space="preserve"><value>Dropdown-Menü, um die Sortierrichtung der Pixel auszuwählen</value></data>
+  <data name="UseMaskingLabel" xml:space="preserve"><value>Maskierung nutzen</value></data>
+  <data name="UseMaskingSemantic" xml:space="preserve"><value>Schalter, um die Maskierung fürs Motiv ein- oder auszuschalten</value></data>
+  <data name="MaskPaddingLabel" xml:space="preserve"><value>Maskenrand (px)</value></data>
+  <data name="WhatToSortLabel" xml:space="preserve"><value>Was sortieren</value></data>
+  <data name="BackgroundOption" xml:space="preserve"><value>Hintergrund</value></data>
+  <data name="BackgroundSemantic" xml:space="preserve"><value>Wähle das, um Pixel im Hintergrundbereich zu sortieren</value></data>
+  <data name="ForegroundOption" xml:space="preserve"><value>Vordergrund</value></data>
+  <data name="ForegroundSemantic" xml:space="preserve"><value>Wähle das, um Pixel im Vordergrundbereich zu sortieren</value></data>
+  <data name="SortButton" xml:space="preserve"><value>Sortieren</value></data>
+  <data name="SortButtonSemantic" xml:space="preserve"><value>Button zum Starten der Pixel-Sortierung</value></data>
+  <data name="SaveButton" xml:space="preserve"><value>Speichern</value></data>
+  <data name="SaveButtonSemantic" xml:space="preserve"><value>Button zum Speichern des sortierten Bildes in der Galerie</value></data>
+
+  <data name="SortingOverlay" xml:space="preserve"><value>Sortiere ...</value></data>
+  <data name="DownloadingOverlay" xml:space="preserve"><value>Lade herunter ...</value></data>
+  <data name="ErrorTitle" xml:space="preserve"><value>Fehler</value></data>
+  <data name="SuccessTitle" xml:space="preserve"><value>Erfolg</value></data>
+  <data name="OkButton" xml:space="preserve"><value>OK</value></data>
+  <data name="ErrorOccurredMessageFormat" xml:space="preserve"><value>Da ist ein Fehler aufgetreten: {0}</value></data>
+  <data name="NoSortedImageToSave" xml:space="preserve"><value>Kein sortiertes Bild zum Speichern verfügbar.</value></data>
+  <data name="ImageSavedToGallery" xml:space="preserve"><value>Bild in der Galerie gespeichert</value></data>
+  <data name="FailedToSaveImageToGallery" xml:space="preserve"><value>Bild konnte nicht in der Galerie gespeichert werden</value></data>
+  <data name="GalleryServiceNotAvailable" xml:space="preserve"><value>Galerie-Service ist nicht verfügbar</value></data>
+  <data name="MaskingFeatureLicenseTitle" xml:space="preserve"><value>Lizenz der Maskierungsfunktion</value></data>
+  <data name="MaskingFeatureLicenseMessage" xml:space="preserve"><value>Die Maskierungsfunktion nutzt ein vortrainiertes Machine-Learning-Modell von einem Drittanbieter. Wenn du das aktivierst, stimmst du zu, dass du Bilder aus diesem Tool nicht kommerziell nutzt. Mehr Infos findest du auf der Lizenzseite.</value></data>
+  <data name="AcceptButton" xml:space="preserve"><value>Akzeptieren</value></data>
+  <data name="DontAcceptButton" xml:space="preserve"><value>Nicht akzeptieren</value></data>
+  <data name="DownloadFailedTitle" xml:space="preserve"><value>Download fehlgeschlagen</value></data>
+  <data name="DownloadFailedMessage" xml:space="preserve"><value>Das Maskierungsmodell konnte nicht heruntergeladen werden. Bitte prüf deine Internetverbindung und versuch es nochmal.</value></data>
+  <data name="NoInternetTitle" xml:space="preserve"><value>Keine Internetverbindung</value></data>
+  <data name="NoInternetMessage" xml:space="preserve"><value>Für die Maskierungsfunktion brauchst du eine Internetverbindung. Bitte verbinde dich und versuch es nochmal.</value></data>
+
+  <data name="SortBy_Hue" xml:space="preserve"><value>Farbton</value></data>
+  <data name="SortBy_Brightness" xml:space="preserve"><value>Helligkeit</value></data>
+  <data name="SortBy_Saturation" xml:space="preserve"><value>Sättigung</value></data>
+  <data name="SortBy_Lightness" xml:space="preserve"><value>Lichtwert</value></data>
+  <data name="SortBy_Warmth" xml:space="preserve"><value>Wärme</value></data>
+  <data name="SortBy_Coolness" xml:space="preserve"><value>Kühle</value></data>
+
+  <data name="SortDirection_RowLeftToRight" xml:space="preserve"><value>Zeile von links nach rechts</value></data>
+  <data name="SortDirection_RowRightToLeft" xml:space="preserve"><value>Zeile von rechts nach links</value></data>
+  <data name="SortDirection_ColumnTopToBottom" xml:space="preserve"><value>Spalte von oben nach unten</value></data>
+  <data name="SortDirection_ColumnBottomToTop" xml:space="preserve"><value>Spalte von unten nach oben</value></data>
+  <data name="SortDirection_IntoMask" xml:space="preserve"><value>In die Maske</value></data>
+
+  <data name="LicensesPageTitle" xml:space="preserve"><value>Open-Source-Lizenzen</value></data>
+  <data name="LicensesPageHeader" xml:space="preserve"><value>Open-Source-Lizenzen</value></data>
+  <data name="LicensesPageIntro" xml:space="preserve"><value>Diese App nutzt folgende Open-Source-Pakete:</value></data>
+  <data name="AdditionalLicensesHeader" xml:space="preserve"><value>Zusätzliche Lizenzen</value></data>
+  <data name="ByPrefix" xml:space="preserve"><value>von</value></data>
+  <data name="LicenseInformationUnavailable" xml:space="preserve"><value>Keine Lizenzinformationen verfügbar</value></data>
+</root>

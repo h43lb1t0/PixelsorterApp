@@ -4,12 +4,13 @@
              x:Class="PixelsorterApp.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:localization="clr-namespace:PixelsorterApp.Localization"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}">
 
     <ContentPage.MenuBarItems>
-        <MenuBarItem Text="Help">
-            <MenuFlyoutItem Text="Open Source Licenses"
+        <MenuBarItem Text="{localization:Translate HelpMenu}">
+            <MenuFlyoutItem Text="{localization:Translate OpenSourceLicensesMenuItem}"
                             Clicked="LicensesBtn_Clicked" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
@@ -51,13 +52,13 @@
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Pixel Sorter"
+                    Text="{localization:Translate AppTitle}"
                     FontSize="28"
                     FontAttributes="Bold" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="Load an image, choose options, and sort."
+                    Text="{localization:Translate AppSubtitle}"
                     FontSize="14"
                     Opacity="0.8" />
                 <Button
@@ -73,7 +74,7 @@
                     BackgroundColor="Transparent"
                     TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
                     FontSize="22"
-                    SemanticProperties.Description="Open additional app options" />
+                    SemanticProperties.Description="{localization:Translate MoreOptionsSemantic}" />
             </Grid>
 
             <Border
@@ -120,7 +121,7 @@
                 </Grid>
             </Border>
 
-            <Label Text="OPTIONS" FontSize="13" TextColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" FontAttributes="Bold" Margin="4,10,4,4" />
+            <Label Text="{localization:Translate OptionsHeader}" FontSize="13" TextColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" FontAttributes="Bold" Margin="4,10,4,4" />
 
             <Border
                 StrokeThickness="0"
@@ -130,7 +131,7 @@
                 <VerticalStackLayout Spacing="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
                         <Label
-                            Text="Sort by"
+                            Text="{localization:Translate SortByLabel}"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <material:PickerField
@@ -143,7 +144,7 @@
                             AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
                             VerticalOptions="Center"
                             HorizontalOptions="End"
-                            SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
+                            SemanticProperties.Description="{localization:Translate SortBySemantic}" />
                         <Label
                             Grid.Column="2"
                             Text="⌄"
@@ -159,7 +160,7 @@
 
                     <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
                         <Label
-                            Text="Direction"
+                            Text="{localization:Translate DirectionLabel}"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <material:PickerField
@@ -172,7 +173,7 @@
                             AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
                             VerticalOptions="Center"
                             HorizontalOptions="End"
-                            SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
+                            SemanticProperties.Description="{localization:Translate DirectionSemantic}" />
                         <Label
                             Grid.Column="2"
                             Text="⌄"
@@ -188,7 +189,7 @@
 
                     <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
                         <Label
-                            Text="Use masking"
+                            Text="{localization:Translate UseMaskingLabel}"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <Switch
@@ -198,14 +199,14 @@
                             OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
                             ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
                             Toggled="useMasking_Toggled" 
-                            SemanticProperties.Description="Toggle switch to turn on or of masking the subject"/>
+                            SemanticProperties.Description="{localization:Translate UseMaskingSemantic}"/>
                     </Grid>
 
                     <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}" />
 
                     <Grid ColumnDefinitions="*,100" HeightRequest="56" Padding="16,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
                         <Label
-                            Text="Mask padding (px)"
+                            Text="{localization:Translate MaskPaddingLabel}"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <material:TextField
@@ -238,21 +239,21 @@
                     <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
                         <Label
                             Grid.Row="0"
-                            Text="What to sort"
+                            Text="{localization:Translate WhatToSortLabel}"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
                             <RadioButton
                                 x:Name="sortBackgroundRadio"
-                                Content="Background"
+                                Content="{localization:Translate BackgroundOption}"
                                 IsChecked="True"
                                 CheckedChanged="whatToSort_CheckedChanged"
-                                SemanticProperties.Description="Select to sort pixels based on the background area" />
+                                SemanticProperties.Description="{localization:Translate BackgroundSemantic}" />
                             <RadioButton
                                 x:Name="sortForegroundRadio"
-                                Content="Foreground"
+                                Content="{localization:Translate ForegroundOption}"
                                 CheckedChanged="whatToSort_CheckedChanged"
-                                SemanticProperties.Description="Select to sort pixels based on the foreground area" />
+                                SemanticProperties.Description="{localization:Translate ForegroundSemantic}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </VerticalStackLayout>
@@ -260,18 +261,18 @@
 
             <Button
                 x:Name="sortBtn"
-                Text="Sort"
+                Text="{localization:Translate SortButton}"
                 Clicked="sortBtn_Clicked"
                 HorizontalOptions="Fill" 
-                SemanticProperties.Description="Button to run the pixel sorting"/>
+                SemanticProperties.Description="{localization:Translate SortButtonSemantic}"/>
 
             <Button
                 x:Name="saveBtn"
-                Text="Save"
+                Text="{localization:Translate SaveButton}"
                 Clicked="SaveBtn_Clicked"
                 HorizontalOptions="Fill"
                 IsVisible="False"
-                SemanticProperties.Description="Button to save the sorted image to the image gallery"/>
+                SemanticProperties.Description="{localization:Translate SaveButtonSemantic}"/>
 
         </VerticalStackLayout>
     </ScrollView>

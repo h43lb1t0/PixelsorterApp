@@ -1,4 +1,5 @@
 ﻿using NumSharp;
+using PixelsorterApp.Localization;
 using PixelsorterClassLib;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -14,7 +15,8 @@ namespace PixelsorterApp
         private readonly Mask masker = new Mask();
         private bool useMask = false;
         private readonly Dictionary<string, Func<Rgba32, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-        private Dictionary<string, SortDirections> sortDirectionOptions = new();
+        private readonly Dictionary<string, string> localizedSortByOptions = new();
+        private readonly Dictionary<string, SortDirections> sortDirectionOptions = new();
         private Func<Rgba32, float>? sortingCriterion;
         private SortDirections sortingDirection;
         private string[] sortByOptionNames;
@@ -25,38 +27,88 @@ namespace PixelsorterApp
         private NDArray? invertedMask = null;
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
+        private static string T(string key) => LocalizationManager.GetString(key);
+
+        private static readonly IReadOnlyDictionary<SortDirections, string> sortDirectionResourceKeys =
+            new Dictionary<SortDirections, string>
+            {
+                [SortDirections.RowLeftToRight] = "SortDirection_RowLeftToRight",
+                [SortDirections.RowRightToLeft] = "SortDirection_RowRightToLeft",
+                [SortDirections.ColumnTopToBottom] = "SortDirection_ColumnTopToBottom",
+                [SortDirections.ColumnBottomToTop] = "SortDirection_ColumnBottomToTop",
+                [SortDirections.IntoMask] = "SortDirection_IntoMask"
+            };
+
+        private static readonly IReadOnlyDictionary<string, string> sortByResourceKeys =
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                [nameof(SortBy.Hue)] = "SortBy_Hue",
+                [nameof(SortBy.Brightness)] = "SortBy_Brightness",
+                [nameof(SortBy.Saturation)] = "SortBy_Saturation",
+                [nameof(SortBy.Lightness)] = "SortBy_Lightness",
+                [nameof(SortBy.Warmth)] = "SortBy_Warmth",
+                [nameof(SortBy.Coolness)] = "SortBy_Coolness"
+            };
+
 
         private void InitializeSortDirectionOptions()
         {
-            // Populate the dictionary with every SortDirections enum value
-            // keyed by a human-readable name (spaces inserted between capitals).
-
             foreach (SortDirections dir in Enum.GetValues(typeof(SortDirections)))
             {
-                string name = System.Text.RegularExpressions.Regex.Replace(dir.ToString(), "([A-Z])", " $1").Trim();
-                sortDirectionOptions[name] = dir;
+                sortDirectionOptions[GetSortDirectionDisplayName(dir)] = dir;
             }
+        }
+
+        private void InitializeSortByOptions()
+        {
+            foreach (var key in sortByOptions.Keys)
+            {
+                localizedSortByOptions[key] = GetSortByDisplayName(key);
+            }
+        }
+
+        private static string GetSortByDisplayName(string key)
+        {
+            if (sortByResourceKeys.TryGetValue(key, out var resourceKey))
+            {
+                return T(resourceKey);
+            }
+
+            return key;
+        }
+
+        private static string GetSortDirectionDisplayName(SortDirections direction)
+        {
+            if (sortDirectionResourceKeys.TryGetValue(direction, out var resourceKey))
+            {
+                return T(resourceKey);
+            }
+
+            return System.Text.RegularExpressions.Regex.Replace(direction.ToString(), "([A-Z])", " $1").Trim();
         }
 
         private void UpdateSortDirectionPicker()
         {
-            string? previousSelection = null;
+            SortDirections? previousSelection = null;
             if (sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length)
             {
-                previousSelection = sortDirectionOptionNames[sortDirection.SelectedIndex];
+                previousSelection = sortDirectionOptions[sortDirectionOptionNames[sortDirection.SelectedIndex]];
             }
 
             sortDirectionOptionNames =
             [
-                .. sortDirectionOptions.Keys.Where(name => this.useMask || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
+                .. sortDirectionOptions
+                    .Where(option => this.useMask || option.Value != SortDirections.IntoMask)
+                    .Select(option => option.Key)
             ];
 
             sortDirection.ItemsSource = sortDirectionOptionNames;
 
             int selectedIndex = -1;
-            if (!string.IsNullOrEmpty(previousSelection))
+            if (previousSelection.HasValue)
             {
-                selectedIndex = Array.IndexOf(sortDirectionOptionNames, previousSelection);
+                var previousDisplayName = GetSortDirectionDisplayName(previousSelection.Value);
+                selectedIndex = Array.IndexOf(sortDirectionOptionNames, previousDisplayName);
             }
 
             sortDirection.SelectedIndex = selectedIndex >= 0
@@ -79,8 +131,9 @@ namespace PixelsorterApp
             sortBtn.IsVisible = true;
             sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
 
+            InitializeSortByOptions();
             InitializeSortDirectionOptions();
-            sortByOptionNames = [.. sortByOptions.Keys];
+            sortByOptionNames = [.. localizedSortByOptions.Values];
             sortDirectionOptionNames = [];
 
             sortBy.ItemsSource = sortByOptionNames;
@@ -98,7 +151,9 @@ namespace PixelsorterApp
                     sortDirection_SelectedIndexChanged(s, EventArgs.Empty);
             };
 
-            sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
+            sortingCriterion = sortByOptionNames.Length > 0
+                ? sortByOptions[localizedSortByOptions.First(x => x.Value == sortByOptionNames[0]).Key]
+                : null;
             sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
             ApplyImageSizeForCurrentDevice();
         }
@@ -187,7 +242,7 @@ namespace PixelsorterApp
 
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
-            UseLoadingOverlay("Sorting...");
+            UseLoadingOverlay(T("SortingOverlay"));
             LoadImageBtn.IsEnabled = false;
 
             try
@@ -222,7 +277,7 @@ namespace PixelsorterApp
             catch (Exception ex)
             {
                 // Handle exceptions (e.g., show an alert)
-                await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
+                await DisplayAlertAsync(T("ErrorTitle"), string.Format(T("ErrorOccurredMessageFormat"), ex.Message), T("OkButton"));
             }
             finally
             {
@@ -243,7 +298,7 @@ namespace PixelsorterApp
         {
             if (string.IsNullOrEmpty(sortedImagePath) || !File.Exists(sortedImagePath))
             {
-                await DisplayAlertAsync("Error", "No sorted image available to save.", "OK");
+                await DisplayAlertAsync(T("ErrorTitle"), T("NoSortedImageToSave"), T("OkButton"));
                 return;
             }
 
@@ -258,16 +313,16 @@ namespace PixelsorterApp
 
                 if (result)
                 {
-                    await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                    await DisplayAlertAsync(T("SuccessTitle"), T("ImageSavedToGallery"), T("OkButton"));
                 }
                 else
                 {
-                    await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
+                    await DisplayAlertAsync(T("ErrorTitle"), T("FailedToSaveImageToGallery"), T("OkButton"));
                 }
             }
             else
             {
-                await DisplayAlertAsync("Error", "Gallery service is not available", "OK");
+                await DisplayAlertAsync(T("ErrorTitle"), T("GalleryServiceNotAvailable"), T("OkButton"));
             }
         }
 
@@ -284,10 +339,10 @@ namespace PixelsorterApp
             if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
             {
                 var response = await DisplayAlertAsync(
-                    "Masking Feature License",
-                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
-                    "Accept",
-                    "Don't accept"
+                    T("MaskingFeatureLicenseTitle"),
+                    T("MaskingFeatureLicenseMessage"),
+                    T("AcceptButton"),
+                    T("DontAcceptButton")
                     );
                 Preferences.Set("MaskingLicenseAccepted", response);
 
@@ -300,7 +355,7 @@ namespace PixelsorterApp
 
             if (!masker.IsModelDownloaded && netAccess)
             {
-                UseLoadingOverlay("Downloading...");
+                UseLoadingOverlay(T("DownloadingOverlay"));
                 try
                 {
                     await Task.Run(() =>
@@ -311,9 +366,9 @@ namespace PixelsorterApp
                 catch (Exception)
                 {
                     await DisplayAlertAsync(
-                        "Download failed",
-                        "The masking model could not be downloaded. Please check your internet connection and try again.",
-                        "OK");
+                        T("DownloadFailedTitle"),
+                        T("DownloadFailedMessage"),
+                        T("OkButton"));
                     useMasking.IsToggled = false;
                     return;
                 }
@@ -336,7 +391,7 @@ namespace PixelsorterApp
 
             if (accessType != NetworkAccess.Internet)
             {
-                _ = DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                _ = DisplayAlertAsync(T("NoInternetTitle"), T("NoInternetMessage"), T("OkButton"));
                 return false;
             }
             return true;
@@ -348,8 +403,9 @@ namespace PixelsorterApp
             if (selectedIndex >= 0 && selectedIndex < sortByOptionNames.Length)
             {
                 var selectedOption = sortByOptionNames[selectedIndex];
+                var selectedOptionInternalKey = localizedSortByOptions.First(item => item.Value == selectedOption).Key;
                 // Update the sorting criterion based on the selected option
-                sortingCriterion = sortByOptions[selectedOption];
+                sortingCriterion = sortByOptions[selectedOptionInternalKey];
             }
         }
 
