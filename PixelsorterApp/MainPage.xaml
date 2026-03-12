@@ -246,11 +246,13 @@
                                 x:Name="sortBackgroundRadio"
                                 Content="Background"
                                 IsChecked="True"
-                                CheckedChanged="whatToSort_Toggled" />
+                                CheckedChanged="whatToSort_CheckedChanged"
+                                SemanticProperties.Description="Select to sort pixels based on the background area" />
                             <RadioButton
                                 x:Name="sortForegroundRadio"
                                 Content="Foreground"
-                                CheckedChanged="whatToSort_Toggled" />
+                                CheckedChanged="whatToSort_CheckedChanged"
+                                SemanticProperties.Description="Select to sort pixels based on the foreground area" />
                         </HorizontalStackLayout>
                     </Grid>
                 </VerticalStackLayout>

@@ -387,7 +387,7 @@ namespace PixelsorterApp
             }
         }
 
-        private void whatToSort_Toggled(object sender, CheckedChangedEventArgs e)
+        private void whatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (sender == sortBackgroundRadio && e.Value)
             {
