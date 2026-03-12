@@ -28,7 +28,7 @@ public partial class ImageViewer
         Content = carousel;
     }
 
-    public partial void showImage(string filePath)
+    public partial void ShowImage(string filePath)
     {
         _images.Add(ImageSource.FromFile(filePath));
 
@@ -44,7 +44,7 @@ public partial class ImageViewer
         }
     }
 
-    public partial void clearImages()
+    public partial void ClearImages()
     {
         if (Content is CarouselView carousel)
             carousel.ItemsSource = null;
@@ -52,7 +52,7 @@ public partial class ImageViewer
         _images.Clear();
     }
 
-    public partial void prepareForImage()
+    public partial void PrepareForImage()
     {
         //Set autosizing
         HeightRequest = -1;

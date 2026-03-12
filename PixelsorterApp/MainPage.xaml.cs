@@ -131,10 +131,10 @@ namespace PixelsorterApp
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                imageViewer.prepareForImage();
+                imageViewer.PrepareForImage();
                 ApplyImageSizeForCurrentDevice();
-                imageViewer.clearImages();
-                imageViewer.showImage(path);
+                imageViewer.ClearImages();
+                imageViewer.ShowImage(path);
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
             });
@@ -213,7 +213,7 @@ namespace PixelsorterApp
                 // Back on the UI thread — safe to update UI elements.
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    imageViewer.showImage(sortedImagePath);
+                    imageViewer.ShowImage(sortedImagePath);
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
                 });

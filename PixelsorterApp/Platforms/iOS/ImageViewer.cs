@@ -17,17 +17,17 @@ public partial class ImageViewer
         Content = _image;
     }
 
-    public partial void showImage(string filePath)
+    public partial void ShowImage(string filePath)
     {
         _image.Source = ImageSource.FromFile(filePath);
     }
 
-    public partial void clearImages()
+    public partial void ClearImages()
     {
         _image.Source = "uploadplaceholder.png";
     }
 
-    public partial void prepareForImage()
+    public partial void PrepareForImage()
     {
         HeightRequest = -1;
     }

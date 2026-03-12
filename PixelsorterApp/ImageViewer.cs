@@ -11,11 +11,11 @@ public partial class ImageViewer : ContentView
 
     partial void InitializePlatformView();
 
-    public partial void showImage(string filePath);
+    public partial void ShowImage(string filePath);
 
-    public partial void clearImages();
+    public partial void ClearImages();
 
-    public partial void prepareForImage();
+    public partial void PrepareForImage();
 
     protected void OnImageTapped()
     {
