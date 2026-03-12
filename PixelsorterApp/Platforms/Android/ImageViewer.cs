@@ -5,12 +5,13 @@ namespace PixelsorterApp;
 public partial class ImageViewer
 {
     private readonly ObservableCollection<ImageSource> _images = new();
+    private CarouselView _carousel = null!;
 
     partial void InitializePlatformView()
     {
         _images.Add(ImageSource.FromFile("uploadplaceholder.png"));
 
-        var carousel = new CarouselView
+        _carousel = new CarouselView
         {
             Loop = false,
             VerticalOptions = LayoutOptions.Fill,
@@ -18,15 +19,22 @@ public partial class ImageViewer
             {
                 var image = new Microsoft.Maui.Controls.Image { Aspect = Aspect.AspectFit };
                 image.SetBinding(Microsoft.Maui.Controls.Image.SourceProperty, ".");
+                SemanticProperties.SetDescription(image, "Image preview");
+                SemanticProperties.SetHint(image, "Double tap to load a new image");
+
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += (_, _) => OnImageTapped();
                 image.GestureRecognizers.Add(tap);
+
                 return image;
             }),
             ItemsSource = _images
         };
-        carousel.PositionChanged += (_, e) => OnDisplayedImageIndexChanged(e.CurrentPosition);
-        Content = carousel;
+        SemanticProperties.SetDescription(_carousel, "Image preview");
+        SemanticProperties.SetHint(_carousel, "Swipe left or right to browse loaded images");
+        _carousel.PositionChanged += (_, e) => OnDisplayedImageIndexChanged(e.CurrentPosition);
+
+        Content = _carousel;
     }
 
     public partial void ShowImage(string filePath)
@@ -35,20 +43,21 @@ public partial class ImageViewer
 
         SetHeightFromImage(filePath);
 
-        if (Content is CarouselView carousel)
+        if (_carousel is not null)
         {
-            if (carousel.ItemsSource is null)
-                carousel.ItemsSource = _images;
+            if (_carousel.ItemsSource is null)
+                _carousel.ItemsSource = _images;
 
             var targetIndex = _images.Count - 1;
-            Dispatcher.Dispatch(() => carousel.ScrollTo(targetIndex, animate: true)); //Scrolls to latest image
+            Dispatcher.Dispatch(() => _carousel.ScrollTo(targetIndex, animate: true)); //Scrolls to latest image
         }
+
     }
 
     public partial void ClearImages()
     {
-        if (Content is CarouselView carousel)
-            carousel.ItemsSource = null;
+        if (_carousel is not null)
+            _carousel.ItemsSource = null;
 
         _images.Clear();
     }
@@ -81,4 +90,5 @@ public partial class ImageViewer
             HeightRequest = display.Height / display.Density * 0.4;
         }
     }
+
 }

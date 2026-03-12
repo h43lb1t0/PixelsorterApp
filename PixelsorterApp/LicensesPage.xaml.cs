@@ -14,6 +14,7 @@ namespace PixelsorterApp
             {
                 if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
+                    SemanticScreenReader.Announce($"Opening {uri.Host}");
                     await Launcher.OpenAsync(uri);
                 }
             });
