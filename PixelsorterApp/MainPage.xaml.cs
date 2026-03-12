@@ -1,8 +1,7 @@
-﻿using NumSharp;
-using PixelsorterClassLib;
+﻿using PixelsorterClassLib;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using Image = PixelsorterClassLib.Image;
+using PixelsorterImage = PixelsorterClassLib.Image;
 
 namespace PixelsorterApp
 {
@@ -21,8 +20,8 @@ namespace PixelsorterApp
         private string[] sortDirectionOptionNames;
         private int maskPaddingAmount = 15;
         private bool useInvertedMask = false;
-        private NDArray? mask = null;
-        private NDArray? invertedMask = null;
+        private Image<L8>? mask = null;
+        private Image<L8>? invertedMask = null;
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
@@ -129,7 +128,10 @@ namespace PixelsorterApp
         {
             this.imagePath = path;
             this.imgSource = ImageSource.FromFile(path);
-            this.mask = null; // Clear any existing mask when a new image is loaded
+            this.mask?.Dispose();
+            this.mask = null;
+            this.invertedMask?.Dispose();
+            this.invertedMask = null;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -201,14 +203,15 @@ namespace PixelsorterApp
                         (this.mask, this.invertedMask) = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.useInvertedMask);
                     }
 
-                    var imgData = Sorter.SortImage(
-                                Image.LoadImage(this.imagePath),
-                                sortingCriterion ?? sortByOptions.Values.First(),
-                                sortingDirection,
-                                this.useMask ? (this.useInvertedMask ? this.invertedMask : this.mask) : null
-                            );
-                    using var foo = Image.NdarrayToImgData(imgData);
-                    foo.SaveAsPng(sortedImagePath);
+                    using var sourceImage = PixelsorterImage.LoadImage(this.imagePath);
+                    using var sortedImage = Sorter.SortImage(
+                        sourceImage,
+                        sortingCriterion ?? sortByOptions.Values.First(),
+                        sortingDirection,
+                        this.useMask ? (this.useInvertedMask ? this.invertedMask : this.mask) : null
+                    );
+
+                    PixelsorterImage.SaveImage(sortedImage, sortedImagePath);
                 });
 
                 // Back on the UI thread — safe to update UI elements.
@@ -303,10 +306,7 @@ namespace PixelsorterApp
                 UseLoadingOverlay("Downloading...");
                 try
                 {
-                    await Task.Run(() =>
-                    {
-                        _ = masker.DownloadModel();
-                    });
+                    await masker.DownloadModel();
                 }
                 catch (Exception)
                 {
