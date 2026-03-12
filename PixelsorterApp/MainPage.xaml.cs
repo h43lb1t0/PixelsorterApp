@@ -192,6 +192,8 @@ namespace PixelsorterApp
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
                 whatIsThisLabel.Text = imageCaptions[0];
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
+
                 whatIsThisLabel.IsVisible = true;
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
