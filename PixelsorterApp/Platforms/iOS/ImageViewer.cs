@@ -2,18 +2,20 @@ namespace PixelsorterApp;
 
 public partial class ImageViewer
 {
-    private Microsoft.Maui.Controls.Image _image = null!;
+    private ImageButton _image = null!;
 
     partial void InitializePlatformView()
     {
-        _image = new Microsoft.Maui.Controls.Image
+        _image = new ImageButton
         {
             Source = "uploadplaceholder.png",
             Aspect = Aspect.AspectFit,
+            BackgroundColor = Colors.Transparent,
+            Padding = 0
         };
-        var tap = new TapGestureRecognizer();
-        tap.Tapped += (_, _) => OnImageTapped();
-        _image.GestureRecognizers.Add(tap);
+        _image.Clicked += (_, _) => OnImageTapped();
+        SemanticProperties.SetDescription(_image, "Image preview");
+        SemanticProperties.SetHint(_image, "Press Enter to load a new image");
         Content = _image;
     }
 

@@ -114,6 +114,8 @@ namespace PixelsorterApp
             if (index >= 0 && index < imageCaptions.Count)
             {
                 whatIsThisLabel.Text = imageCaptions[index];
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {imageCaptions[index]}");
+                SemanticProperties.SetDescription(imageViewer, $"Image preview. {imageCaptions[index]}");
             }
             if (index == 0 && index < imagePaths.Count)
             {
@@ -193,10 +195,12 @@ namespace PixelsorterApp
                 imageViewer.ShowImage(path);
                 whatIsThisLabel.Text = imageCaptions[0];
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
+                SemanticProperties.SetDescription(imageViewer, "Image preview. Original image. Double tap to load another image.");
 
                 whatIsThisLabel.IsVisible = true;
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
+                SemanticScreenReader.Announce("Image loaded. Ready to sort.");
             });
         }
 
@@ -220,6 +224,7 @@ namespace PixelsorterApp
             loadingOverlayLabel.Text = text;
             loadingIndicator.IsRunning = true;
             loadingOverlay.IsVisible = true;
+            SemanticScreenReader.Announce(text);
         }
 
 
@@ -279,14 +284,18 @@ namespace PixelsorterApp
                     imagePaths.Add(sortedImagePath);
                     currentDisplayedImageIndex = imagePaths.Count - 1;
                     whatIsThisLabel.Text = caption;
+                    SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
+                    SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                    SemanticScreenReader.Announce("Sorting complete. Preview updated.");
                 });
             }
             catch (Exception ex)
             {
                 // Handle exceptions (e.g., show an alert)
                 await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
+                SemanticScreenReader.Announce($"Error: {ex.Message}");
             }
             finally
             {
@@ -310,6 +319,7 @@ namespace PixelsorterApp
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
                 await DisplayAlertAsync("Error", "No image available to save.", "OK");
+                SemanticScreenReader.Announce("No image available to save.");
                 return;
             }
 
@@ -325,15 +335,18 @@ namespace PixelsorterApp
                 if (result)
                 {
                     await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                    SemanticScreenReader.Announce("Image saved to gallery.");
                 }
                 else
                 {
                     await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
+                    SemanticScreenReader.Announce("Failed to save image to gallery.");
                 }
             }
             else
             {
                 await DisplayAlertAsync("Error", "Gallery service is not available", "OK");
+                SemanticScreenReader.Announce("Gallery service is not available.");
             }
         }
 

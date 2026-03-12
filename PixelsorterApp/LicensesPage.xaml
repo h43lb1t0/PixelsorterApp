@@ -4,15 +4,23 @@
              xmlns:local="clr-namespace:PixelsorterApp"
              x:Class="PixelsorterApp.LicensesPage"
              BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
-             Title="Open Source Licenses">
+             Title="Open Source Licenses"
+             SemanticProperties.Description="Open source licenses used by the app">
     <ContentPage.Resources>
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
         </Style>
+        <Style x:Key="LinkButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" SemanticProperties.HeadingLevel="Level1" />
             <Label Text="This application uses the following open source packages:" Opacity="0.8" />
 
             <Border
@@ -25,22 +33,24 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="local:LicenseInfo">
                             <VerticalStackLayout Padding="16" Spacing="4">
-                                <Label Text="{Binding PackageName}" FontSize="16" FontAttributes="Bold" />
+                                <Label Text="{Binding PackageName}" FontSize="16" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
                                 <Label Text="{Binding Authors}" FontSize="13" Opacity="0.8" />
                                 <Label Text="{Binding PackageVersion}" FontSize="13" Opacity="0.6" />
                                 <Label Text="{Binding LicenseType}" FontSize="13" Opacity="0.8" />
-                                <Label Text="{Binding LicenseUrl}" FontSize="13" TextColor="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" TextDecorations="Underline">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}" CommandParameter="{Binding LicenseUrl}" />
-                                    </Label.GestureRecognizers>
-                                </Label>
-                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" />
+                                <Button
+                                    Text="{Binding LicenseUrl}"
+                                    Style="{StaticResource LinkButtonStyle}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
+                                    CommandParameter="{Binding LicenseUrl}"
+                                    SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
+                                    SemanticProperties.Hint="Press Enter to open this license in the browser" />
+                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
                             </VerticalStackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </Border>
-            <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8"  />
+            <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8" SemanticProperties.HeadingLevel="Level2" />
             <Border
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
                 StrokeThickness="1"
@@ -48,15 +58,17 @@
                 Padding="0"
                 StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout Padding="16" Spacing="4">
-                    <Label Text="RMBG-1.4" FontSize="16" FontAttributes="Bold" />
+                    <Label Text="RMBG-1.4" FontSize="16" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level3" />
                     <Label Text="Bria.ai" FontSize="13" Opacity="0.8" />
                     <Label Text="CC-BY-NC" FontSize="13" Opacity="0.8" />
-                    <Label Text="https://creativecommons.org/licenses/by-nc/4.0/" FontSize="13" TextColor="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" TextDecorations="Underline">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}" CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" />
+                    <Button
+                        Text="https://creativecommons.org/licenses/by-nc/4.0/"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
+                        CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/"
+                        SemanticProperties.Description="Open license URL: https://creativecommons.org/licenses/by-nc/4.0/"
+                        SemanticProperties.Hint="Press Enter to open this license in the browser" />
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>
