@@ -211,7 +211,7 @@
                             VerticalOptions="Center"
                             OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
                             ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            Toggled="useMasking_Toggled" 
+                            Toggled="UseMasking_Toggled" 
                             SemanticProperties.Description="Toggle switch to turn masking on or off"
                             SemanticProperties.Hint="Requires internet the first time to download the model"/>
                     </Grid>
@@ -234,7 +234,7 @@
                             AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
                             VerticalOptions="Center"
                             HorizontalOptions="Fill"
-                            TextChanged="maskPadding_TextChanged"
+                            TextChanged="MaskPadding_TextChanged"
                             Text="15"
                             IsVisible="False"
                             SemanticProperties.Description="Mask padding in pixels"
@@ -263,12 +263,12 @@
                                 x:Name="sortBackgroundRadio"
                                 Content="Background"
                                 IsChecked="True"
-                                CheckedChanged="whatToSort_CheckedChanged"
+                                CheckedChanged="WhatToSort_CheckedChanged"
                                 SemanticProperties.Description="Sort pixels in the background area" />
                             <RadioButton
                                 x:Name="sortForegroundRadio"
                                 Content="Foreground"
-                                CheckedChanged="whatToSort_CheckedChanged"
+                                CheckedChanged="WhatToSort_CheckedChanged"
                                 SemanticProperties.Description="Sort pixels in the foreground area" />
                         </HorizontalStackLayout>
                     </Grid>
@@ -278,7 +278,7 @@
             <Button
                 x:Name="sortBtn"
                 Text="Sort"
-                Clicked="sortBtn_Clicked"
+                Clicked="SortBtn_Clicked"
                 HorizontalOptions="Fill" 
                 SemanticProperties.Description="Start pixel sorting"/>
 

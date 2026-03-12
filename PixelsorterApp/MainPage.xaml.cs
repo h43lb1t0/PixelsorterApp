@@ -9,14 +9,14 @@ namespace PixelsorterApp
     public partial class MainPage : ContentPage
     {
 
-        private string imagePath; // Add field to store the file path
-        private readonly Mask masker = new Mask();
+        private string? imagePath; // Add field to store the file path
+        private readonly Mask masker = new();
         private bool useMask = false;
         private readonly Dictionary<string, Func<Rgba32, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-        private Dictionary<string, SortDirections> sortDirectionOptions = new();
+        private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
         private Func<Rgba32, float>? sortingCriterion;
         private SortDirections sortingDirection;
-        private string[] sortByOptionNames;
+        private readonly string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
         private readonly List<string> imageCaptions = [];
         private readonly List<string> imagePaths = [];
@@ -90,14 +90,14 @@ namespace PixelsorterApp
             sortBy.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(sortBy.SelectedIndex))
-                    sortBy_SelectedIndexChanged(s, EventArgs.Empty);
+                    SortBy_SelectedIndexChanged(s, EventArgs.Empty);
             };
 
             UpdateSortDirectionPicker();
             sortDirection.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(sortDirection.SelectedIndex))
-                    sortDirection_SelectedIndexChanged(s, EventArgs.Empty);
+                    SortDirection_SelectedIndexChanged(s, EventArgs.Empty);
             };
 
             sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
@@ -242,7 +242,7 @@ namespace PixelsorterApp
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
 
-        private async void sortBtn_Clicked(object sender, EventArgs e)
+        private async void SortBtn_Clicked(object sender, EventArgs e)
         {
             if (this.imagePath is null) // Check if we have a file path
                 return;
@@ -350,10 +350,10 @@ namespace PixelsorterApp
             }
         }
 
-        private async void useMasking_Toggled(object sender, ToggledEventArgs e)
+        private async void UseMasking_Toggled(object sender, ToggledEventArgs e)
         {
 
-            bool netAccess = checkNetworkAcces();
+            bool netAccess = CheckNetworkAcces();
             if (e.Value && !netAccess && !masker.IsModelDownloaded)
             {
                 useMasking.IsToggled = false;
@@ -409,7 +409,7 @@ namespace PixelsorterApp
             UpdateSortDirectionPicker();
         }
 
-        private bool checkNetworkAcces()
+        private bool CheckNetworkAcces()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
@@ -421,7 +421,7 @@ namespace PixelsorterApp
             return true;
         }
 
-        private void sortBy_SelectedIndexChanged(object sender, EventArgs e)
+        private void SortBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedIndex = sortBy.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < sortByOptionNames.Length)
@@ -432,7 +432,7 @@ namespace PixelsorterApp
             }
         }
 
-        private void sortDirection_SelectedIndexChanged(object sender, EventArgs e)
+        private void SortDirection_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedIndex = sortDirection.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < sortDirectionOptionNames.Length)
@@ -447,7 +447,7 @@ namespace PixelsorterApp
             await Navigation.PushAsync(new LicensesPage());
         }
 
-        private void maskPadding_TextChanged(object sender, TextChangedEventArgs e)
+        private void MaskPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
@@ -466,7 +466,7 @@ namespace PixelsorterApp
             }
         }
 
-        private void whatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (sender == sortBackgroundRadio && e.Value)
             {

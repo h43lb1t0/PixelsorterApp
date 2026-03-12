@@ -10,9 +10,9 @@ namespace PixelsorterApp
         public LicensesPage()
         {
             InitializeComponent();
-            OpenUrlCommand = new Command<string>(async url =>
+            OpenUrlCommand = new Command(static async parameter =>
             {
-                if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                if (parameter is string url && Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
                     SemanticScreenReader.Announce($"Opening {uri.Host}");
                     await Launcher.OpenAsync(uri);
