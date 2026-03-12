@@ -19,6 +19,8 @@ namespace PixelsorterApp
         private string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
         private readonly List<string> imageCaptions = [];
+        private readonly List<string> imagePaths = [];
+        private int currentDisplayedImageIndex = -1;
         private int maskPaddingAmount = 15;
         private bool useInvertedMask = false;
         private NDArray? mask = null;
@@ -107,10 +109,35 @@ namespace PixelsorterApp
 
         private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
+            currentDisplayedImageIndex = index;
+
             if (index >= 0 && index < imageCaptions.Count)
             {
                 whatIsThisLabel.Text = imageCaptions[index];
             }
+            if (index == 0 && index < imagePaths.Count)
+            {
+                saveBtn.IsEnabled = false;
+            }
+            else
+            {
+                saveBtn.IsEnabled = true;
+            }
+        }
+
+        private string? GetFocusedImagePath()
+        {
+            if (imagePaths.Count == 0)
+            {
+                return null;
+            }
+
+            if (currentDisplayedImageIndex >= 0 && currentDisplayedImageIndex < imagePaths.Count)
+            {
+                return imagePaths[currentDisplayedImageIndex];
+            }
+
+            return imagePaths[^1];
         }
 
         private string BuildSortCaption()
@@ -153,7 +180,10 @@ namespace PixelsorterApp
             this.imagePath = path;
             this.mask = null; // Clear any existing mask when a new image is loaded
             imageCaptions.Clear();
+            imagePaths.Clear();
             imageCaptions.Add("Original image");
+            imagePaths.Add(path);
+            currentDisplayedImageIndex = 0;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -244,6 +274,8 @@ namespace PixelsorterApp
                     imageViewer.ShowImage(sortedImagePath);
                     var caption = BuildSortCaption();
                     imageCaptions.Add(caption);
+                    imagePaths.Add(sortedImagePath);
+                    currentDisplayedImageIndex = imagePaths.Count - 1;
                     whatIsThisLabel.Text = caption;
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
@@ -271,13 +303,15 @@ namespace PixelsorterApp
         /// <param name="e"></param>
         private async void SaveBtn_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(sortedImagePath) || !File.Exists(sortedImagePath))
+            var focusedImagePath = GetFocusedImagePath();
+
+            if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
-                await DisplayAlertAsync("Error", "No sorted image available to save.", "OK");
+                await DisplayAlertAsync("Error", "No image available to save.", "OK");
                 return;
             }
 
-            var imageBytes = await File.ReadAllBytesAsync(sortedImagePath);
+            var imageBytes = await File.ReadAllBytesAsync(focusedImagePath);
 
             var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
 
