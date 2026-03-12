@@ -9,7 +9,6 @@ namespace PixelsorterApp
     public partial class MainPage : ContentPage
     {
 
-        private ImageSource imgSource;
         private string imagePath; // Add field to store the file path
         private readonly Mask masker = new Mask();
         private bool useMask = false;
@@ -128,14 +127,14 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.imgSource = ImageSource.FromFile(path);
             this.mask = null; // Clear any existing mask when a new image is loaded
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                LoadImageBtn.HeightRequest = -1;
+                imageViewer.prepareForImage();
                 ApplyImageSizeForCurrentDevice();
-                LoadImageBtn.Source = this.imgSource;
+                imageViewer.clearImages();
+                imageViewer.showImage(path);
                 sortBtn.IsEnabled = true;
                 saveBtn.IsVisible = false;
             });
@@ -148,12 +147,12 @@ namespace PixelsorterApp
                 imagePreviewBorder.MaximumHeightRequest = this.Height > 0
                     ? this.Height * DESKTOP_IMAGE_HEIGHT
                     : double.PositiveInfinity;
-                LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = double.PositiveInfinity;
                 return;
             }
 
             imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
-            LoadImageBtn.MaximumHeightRequest = double.PositiveInfinity;
+            imageViewer.MaximumHeightRequest = double.PositiveInfinity;
         }
 
         private void UseLoadingOverlay(String text)
@@ -188,7 +187,7 @@ namespace PixelsorterApp
             sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
             saveBtn.IsEnabled = false;
             UseLoadingOverlay("Sorting...");
-            LoadImageBtn.IsEnabled = false;
+            imageViewer.IsEnabled = false;
 
             try
             {
@@ -214,7 +213,7 @@ namespace PixelsorterApp
                 // Back on the UI thread — safe to update UI elements.
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    LoadImageBtn.Source = ImageSource.FromFile(sortedImagePath);
+                    imageViewer.showImage(sortedImagePath);
                     saveBtn.IsVisible = true;
                     saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
                 });
@@ -229,7 +228,7 @@ namespace PixelsorterApp
                 loadingIndicator.IsRunning = false;
                 loadingOverlay.IsVisible = false;
                 sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
-                LoadImageBtn.IsEnabled = true;
+                imageViewer.IsEnabled = true;
 
             }
         }
