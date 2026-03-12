@@ -28,10 +28,16 @@ namespace PixelsorterApp
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
+        /// <summary>
+        /// Initializes the available sort direction options by populating a dictionary with the string representations
+        /// of the sort directions.
+        /// </summary>
+        /// <remarks>This method prepares the sortDirectionOptions dictionary for use in UI elements or
+        /// other components that require a mapping between human-readable sort direction names and their corresponding
+        /// enumeration values. It should be called before accessing or displaying sort direction options to ensure the
+        /// dictionary is properly populated.</remarks>
         private void InitializeSortDirectionOptions()
         {
-            // Populate the dictionary with every SortDirections enum value
-            // keyed by a human-readable name (spaces inserted between capitals).
 
             foreach (SortDirections dir in Enum.GetValues(typeof(SortDirections)))
             {
@@ -40,6 +46,13 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Updates the sort direction picker to reflect the current sorting options and selection state.
+        /// </summary>
+        /// <remarks>This method filters the available sorting options based on the current mask usage
+        /// setting and updates the selected index accordingly. If the previous selection is no longer valid, the first
+        /// available option will be selected. The sorting direction is also updated based on the selected
+        /// option.</remarks>
         private void UpdateSortDirectionPicker()
         {
             string? previousSelection = null;
@@ -107,6 +120,16 @@ namespace PixelsorterApp
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
         }
 
+        /// <summary>
+        /// Handles changes to the displayed image index in the image viewer, updating the current image index and
+        /// related UI elements accordingly.
+        /// </summary>
+        /// <remarks>When the displayed image index changes, this method updates the image caption label
+        /// and accessibility descriptions to reflect the new image. The save button is disabled when the first image is
+        /// displayed and enabled for all other images.</remarks>
+        /// <param name="sender">The source of the event, typically the image viewer control that triggered the index change.</param>
+        /// <param name="index">The new index of the displayed image. Must be greater than or equal to 0 and less than the total number of
+        /// available images.</param>
         private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
             currentDisplayedImageIndex = index;
@@ -127,6 +150,12 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Gets the file path of the currently focused image in the image collection.
+        /// </summary>
+        /// <remarks>If the current displayed image index is out of range, the path of the last image in
+        /// the collection is returned.</remarks>
+        /// <returns>The file path of the currently displayed image if the collection is not empty; otherwise, null.</returns>
         private string? GetFocusedImagePath()
         {
             if (imagePaths.Count == 0)
@@ -142,6 +171,13 @@ namespace PixelsorterApp
             return imagePaths[^1];
         }
 
+        /// <summary>
+        /// Constructs a formatted string that indicates the current sorting criteria and direction.
+        /// </summary>
+        /// <remarks>If the selected index for either the sort criteria or direction is invalid, 'Unknown'
+        /// will be displayed for that part of the caption.</remarks>
+        /// <returns>A string representing the sorting criteria and direction, formatted as 'Sort by: {sortByText} • Direction:
+        /// {directionText}'.</returns>
         private string BuildSortCaption()
         {
             var sortByText = sortBy.SelectedIndex >= 0 && sortBy.SelectedIndex < sortByOptionNames.Length
@@ -177,6 +213,13 @@ namespace PixelsorterApp
             LoadImageFromPath(sharedImagePath);
         }
 
+        /// <summary>
+        /// Loads an image from the specified file path and prepares the image viewer to display it.
+        /// </summary>
+        /// <remarks>This method resets any existing image masks, clears previous image captions and
+        /// paths, and updates the user interface to reflect the newly loaded image. It also sets the appropriate UI
+        /// elements to indicate that a new image is ready for further actions such as sorting.</remarks>
+        /// <param name="path">The file path of the image to load. This must be a valid path to an image file.</param>
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
@@ -204,6 +247,14 @@ namespace PixelsorterApp
             });
         }
 
+        /// <summary>
+        /// Adjusts the maximum height of the image viewer and its containing border to optimize image display for the
+        /// current device type.
+        /// </summary>
+        /// <remarks>For desktop devices, the image viewer's maximum height is set relative to the current
+        /// height of the containing element, providing a tailored viewing experience. For non-desktop devices, both the
+        /// image viewer and its border allow unlimited height, enabling flexible image display across various device
+        /// form factors.</remarks>
         private void ApplyImageSizeForCurrentDevice()
         {
             if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
@@ -219,6 +270,12 @@ namespace PixelsorterApp
             imageViewer.MaximumHeightRequest = double.PositiveInfinity;
         }
 
+        /// <summary>
+        /// Displays a loading overlay with the specified message to indicate that a process is in progress.
+        /// </summary>
+        /// <remarks>This method activates the loading overlay, starts the loading indicator animation,
+        /// and announces the message for accessibility purposes.</remarks>
+        /// <param name="text">The message to display on the loading overlay, providing context to the user about the ongoing operation.</param>
         private void UseLoadingOverlay(String text)
         {
             loadingOverlayLabel.Text = text;
@@ -409,6 +466,12 @@ namespace PixelsorterApp
             UpdateSortDirectionPicker();
         }
 
+        /// <summary>
+        /// Determines whether the device currently has internet access required for the masking feature.
+        /// </summary>
+        /// <remarks>If no internet connection is detected, an alert is displayed to inform the user that
+        /// internet access is required to use the masking feature.</remarks>
+        /// <returns>true if an internet connection is available; otherwise, false.</returns>
         private bool CheckNetworkAcces()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
@@ -420,6 +483,7 @@ namespace PixelsorterApp
             }
             return true;
         }
+
 
         private void SortBy_SelectedIndexChanged(object sender, EventArgs e)
         {
