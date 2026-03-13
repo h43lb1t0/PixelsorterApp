@@ -434,15 +434,12 @@ namespace PixelsorterApp
                 }
             }
 
-            if (!masker.IsModelDownloaded && netAccess)
+            if (!masker.IsModelDownloaded && netAccess && e.Value)
             {
                 UseLoadingOverlay("Downloading...");
                 try
                 {
-                    await Task.Run(() =>
-                    {
-                        _ = masker.DownloadModel();
-                    });
+                    await masker.DownloadModel();
                 }
                 catch (Exception)
                 {
