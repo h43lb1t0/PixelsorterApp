@@ -510,6 +510,25 @@ namespace PixelsorterApp
             await Navigation.PushAsync(new LicensesPage());
         }
 
+        private async void PrivacyPolicyBtn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PrivacyPolicyPage());
+        }
+
+        private async void HelpMenuBtn_Clicked(object sender, EventArgs e)
+        {
+            var selection = await DisplayActionSheetAsync("Help", "Cancel", null, "Open Source Licenses", "Privacy Policy");
+
+            if (selection == "Open Source Licenses")
+            {
+                await Navigation.PushAsync(new LicensesPage());
+            }
+            else if (selection == "Privacy Policy")
+            {
+                await Navigation.PushAsync(new PrivacyPolicyPage());
+            }
+        }
+
         private void MaskPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is not UraniumUI.Material.Controls.TextField entry) return;

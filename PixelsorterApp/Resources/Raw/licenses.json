@@ -28,5 +28,38 @@
     "License": "Apache 2.0",
     "LicenseUrl": "https://raw.githubusercontent.com/enisn/UraniumUI/refs/heads/develop/LICENSE",
     "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.ML.OnnxRuntime",
+    "PackageVersion": "1.24.3",
+    "PackageProjectUrl": "https://github.com/Microsoft/onnxruntime",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "This package contains native shared library artifacts for all supported platforms of ONNX Runtime.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "NumSharp",
+    "PackageVersion": "0.30.0",
+    "PackageProjectUrl": "https://github.com/SciSharp",
+    "Copyright": "2021 \u00A9 SciSharp STACK Team",
+    "Authors": "Haiping Chen, Eli Belash, Meinrad Recheis",
+    "Description": "NumSharp is the fundamental library for scientific computing with .NET providing a similar API to python\u0027s numpy scientific library. NumSharp has full N-D, broadcasting and axis support.  If you want to use .NET to get started with machine learning, NumSharp will be your best tool.",
+    "License": "Apache-2.0",
+    "LicenseUrl": "https://licenses.nuget.org/Apache-2.0",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "SixLabors.ImageSharp",
+    "PackageVersion": "3.1.12",
+    "PackageProjectUrl": "https://github.com/SixLabors/ImageSharp",
+    "Copyright": "Copyright \u00A9 Six Labors",
+    "Authors": "Six Labors and contributors",
+    "Description": "A new, fully featured, fully managed, cross-platform, 2D graphics API for .NET",
+    "License": "Six Labors Split License\nVersion 1.0, June 2022\nCopyright (c) Six Labors",
+    "LicenseUrl": "https://github.com/SixLabors/ImageSharp/raw/refs/heads/main/LICENSE",
+    "LicenseInformationOrigin": 5
   }
 ]

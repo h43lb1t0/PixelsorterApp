@@ -30,27 +30,34 @@ namespace PixelsorterApp
 
         public async Task<IReadOnlyList<LicenseInfo>> GetLicensesAsync()
         {
-            var files = new[]
+            // Load licenses.json first for prioritization
+            var prioritizedLicenses = await TryReadLicensesAsync("licenses.json");
+            var prioritizedDict = prioritizedLicenses.ToDictionary(
+                item => $"{item.PackageName}|{item.PackageVersion}",
+                item => item,
+                StringComparer.OrdinalIgnoreCase);
+
+            var generatedFiles = new[]
             {
                 "licenses.PixelsorterApp.json",
-                "licenses.PixelsorterClassLib.json",
-                "licenses.json"
+                "licenses.PixelsorterClassLib.json"
             };
 
-            var allLicenses = new List<LicenseInfo>();
-
-            foreach (var file in files)
+            foreach (var file in generatedFiles)
             {
                 var licenses = await TryReadLicensesAsync(file);
-                allLicenses.AddRange(licenses);
+                foreach (var license in licenses)
+                {
+                    var key = $"{license.PackageName}|{license.PackageVersion}";
+                    // Only add if not already present from licenses.json
+                    if (!prioritizedDict.ContainsKey(key))
+                    {
+                        prioritizedDict[key] = license;
+                    }
+                }
             }
 
-            return allLicenses
-                .GroupBy(item => $"{item.PackageName}|{item.PackageVersion}", StringComparer.OrdinalIgnoreCase)
-                .Select(group => group
-                    .OrderByDescending(item => !string.IsNullOrWhiteSpace(item.LicenseUrl))
-                    .ThenByDescending(item => item.LicenseType != "License information unavailable")
-                    .First())
+            return prioritizedDict.Values
                 .OrderBy(item => item.PackageName)
                 .ToList();
         }

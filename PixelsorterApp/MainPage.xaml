@@ -13,6 +13,8 @@
         <MenuBarItem Text="Help">
             <MenuFlyoutItem Text="Open Source Licenses"
                             Clicked="LicensesBtn_Clicked" />
+            <MenuFlyoutItem Text="Privacy Policy"
+                            Clicked="PrivacyPolicyBtn_Clicked" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
@@ -68,7 +70,7 @@
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Text="⋮"
-                    Clicked="LicensesBtn_Clicked"
+                    Clicked="HelpMenuBtn_Clicked"
                     WidthRequest="36"
                     HeightRequest="36"
                     Padding="0"
@@ -77,7 +79,7 @@
                     TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
                     FontSize="22"
                     SemanticProperties.Description="Open additional app options"
-                    SemanticProperties.Hint="Opens the licenses page" />
+                    SemanticProperties.Hint="Opens help options including licenses and privacy policy" />
             </Grid>
 
             <Border

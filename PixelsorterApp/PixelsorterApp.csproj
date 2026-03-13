@@ -81,6 +81,9 @@
 	  <MauiXaml Update="LicensesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="PrivacyPolicyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
