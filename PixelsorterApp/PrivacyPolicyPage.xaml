@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PixelsorterApp.PrivacyPolicyPage"
+             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
+             Title="Privacy Policy"
+             SemanticProperties.Description="Privacy policy in German and English">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="14">
+            <Label Text="Datenschutzerklärung / Privacy Policy"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <Label Text="Deutsch"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   SemanticProperties.HeadingLevel="Level2" />
+
+            <Label Text="Grundsätzlich offline"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Die PixelsorterApp arbeitet grundsätzlich vollständig offline. Sämtliche Bildverarbeitung (Pixel-Sorting, Maskierung etc.) findet ausschließlich lokal auf Ihrem Endgerät statt. Es werden dabei keine Bilder, Nutzungsdaten oder sonstige personenbezogene Daten an uns oder an Dritte übertragen." />
+
+            <Label Text="Einmaliger Modell-Download von Hugging Face"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Für die Funktion der automatischen Subjekterkennung (Subject Masking) wird ein Machine-Learning-Modell benötigt. Dieses Modell wird einmalig und erst nach expliziter Benutzerinteraktion von der Plattform Hugging Face heruntergeladen." />
+            <Label Text="Beim Download des Modells wird eine Netzwerkverbindung zu den Servern von Hugging Face hergestellt. Dabei können die folgenden Daten an Hugging Face übermittelt werden:" />
+            <Label Text="• Ihre IP-Adresse&#10;• Systeminformationen (User-Agent des aufrufenden Clients)&#10;• Zeitpunkt des Downloads" />
+            <Label Text="Die Datenverarbeitung erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), da der Download erst nach Ihrer aktiven Interaktion ausgelöst wird. Sie können diese Einwilligung für die Zukunft jederzeit widerrufen, indem Sie das heruntergeladene Modell über die Einstellungen der App löschen oder die App vollständig von Ihrem Gerät deinstallieren. Weitere Informationen finden Sie in der Datenschutzerklärung von Hugging Face." />
+            <Label Text="Nach dem einmaligen Download wird das Modell lokal im Dateisystem Ihres Geräts gespeichert. Es finden danach keine weiteren Netzwerkverbindungen zu Hugging Face oder anderen Diensten statt." />
+
+            <Label Text="Bezug über App Stores"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Wenn Sie die App über Plattformen von Drittanbietern (z. B. Apple App Store, Google Play Store, Microsoft Store) herunterladen, erheben diese Anbieter eigenständig Daten (z. B. Download-Statistiken oder Absturzberichte). Auf diese Datenverarbeitung haben wir keinen Einfluss. Es gelten die Datenschutzbestimmungen des jeweiligen Store-Betreibers." />
+
+            <Label Text="Keine Analyse oder Tracking"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Die App enthält keine Analyse-Tools, kein Tracking und keine Werbung. Es werden keinerlei Nutzungsdaten erhoben oder an Dritte weitergegeben." />
+
+            <Label Text="Ihre Rechte"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Sie haben jederzeit das Recht auf:" />
+            <Label Text="• Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten (Art. 15 DSGVO)&#10;• Berichtigung unrichtiger Daten (Art. 16 DSGVO)&#10;• Löschung Ihrer bei uns gespeicherten Daten (Art. 17 DSGVO)&#10;• Einschränkung der Datenverarbeitung (Art. 18 DSGVO)&#10;• Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)&#10;• Datenübertragbarkeit (Art. 20 DSGVO)&#10;• Beschwerderecht: Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO)." />
+
+            <Label Text="Aktualität und Änderung dieser Datenschutzerklärung"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="Diese Datenschutzerklärung ist aktuell gültig und hat den Stand März 2026. Durch die Weiterentwicklung der App oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung anzupassen." />
+
+            <BoxView HeightRequest="1" Margin="0,8" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+
+            <Label Text="English"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   SemanticProperties.HeadingLevel="Level2" />
+
+            <Label Text="Generally Offline"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="The PixelsorterApp generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties." />
+
+            <Label Text="One-Time Model Download from Hugging Face"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="A machine learning model is required for the automatic subject detection feature (subject masking). This model is downloaded once and only after explicit user interaction from the Hugging Face platform." />
+            <Label Text="When downloading the model, a network connection to Hugging Face servers is established. During this process, the following data may be transmitted to Hugging Face:" />
+            <Label Text="• Your IP address&#10;• System information (user agent of the requesting client)&#10;• Time of the download" />
+            <Label Text="Data processing is carried out on the basis of your consent (Art. 6(1)(a) GDPR), because the download is only triggered after your active interaction. You can revoke this consent for the future at any time by deleting the downloaded model in the app settings or by fully uninstalling the app from your device. Further information can be found in Hugging Face's privacy policy." />
+            <Label Text="After the one-time download, the model is stored locally in your device's file system. No further network connections to Hugging Face or other services are made afterwards." />
+
+            <Label Text="Distribution via App Stores"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="If you download the app through third-party platforms (e.g., Apple App Store, Google Play Store, Microsoft Store), these providers independently collect data (e.g., download statistics or crash reports). We have no influence over this data processing. The privacy policies of the respective store operators apply." />
+
+            <Label Text="No Analytics or Tracking"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="The app contains no analytics tools, no tracking, and no advertising. No usage data is collected or shared with third parties." />
+
+            <Label Text="Your Rights"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="You have the right at any time to:" />
+            <Label Text="• Access your personal data stored by us (Art. 15 GDPR)&#10;• Rectification of inaccurate data (Art. 16 GDPR)&#10;• Erasure of your data stored by us (Art. 17 GDPR)&#10;• Restriction of processing (Art. 18 GDPR)&#10;• Objection to processing (Art. 21 GDPR)&#10;• Data portability (Art. 20 GDPR)&#10;• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR)." />
+
+            <Label Text="Current Validity and Changes to This Privacy Policy"
+                   FontSize="17"
+                   FontAttributes="Bold" />
+            <Label Text="This privacy policy is currently valid and reflects the status as of March 2026. As the app evolves or due to changes in legal or regulatory requirements, it may become necessary to update this privacy policy." />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
