@@ -437,6 +437,7 @@ namespace PixelsorterApp
             if (!masker.IsModelDownloaded && netAccess && e.Value)
             {
                 UseLoadingOverlay("Downloading...");
+                sortBtn.IsEnabled = false;
                 try
                 {
                     await masker.DownloadModel();
@@ -454,6 +455,7 @@ namespace PixelsorterApp
                 {
                     loadingIndicator.IsRunning = false;
                     loadingOverlay.IsVisible = false;
+                    sortBtn.IsEnabled = true;
                 }
             }
 
