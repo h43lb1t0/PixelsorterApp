@@ -350,7 +350,7 @@ namespace PixelsorterApp
                         }
                         else
                         {
-                            this.combinedMask = MaskCombiner.AddMasks(this.backgroundMask, this.invertedCannyMask);
+                            this.combinedMask = MaskCombiner.AddMasks(this.backgroundMask, this.cannyMask);
                             this.invertedCombinedMask = MaskCombiner.AddMasks(this.invertedBackgroundMask, this.cannyMask);
                         }
                     }
