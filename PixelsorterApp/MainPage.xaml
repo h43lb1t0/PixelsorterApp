@@ -276,7 +276,7 @@
                     </Grid>
                     <Grid  ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
                         <Label
-                            Text="Use canny masking"
+                            Text="Use Canny masking"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <Switch
@@ -286,8 +286,8 @@
                             OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
                             ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
                             Toggled="UseCanny_Toggled" 
-                            SemanticProperties.Description="Toggle switch to turn masking with canny on or off"
-                            SemanticProperties.Hint="Requires internet the first time to download the model"/>
+                            SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
+                            SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."/>
                     </Grid>
                     <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
                         <Grid.Triggers>
