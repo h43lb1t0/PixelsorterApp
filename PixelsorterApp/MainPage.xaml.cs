@@ -346,12 +346,12 @@ namespace PixelsorterApp
                         if (this.useSubtractMasks)
                         {
                             this.combinedMask = MaskCombiner.SubtractMasks(this.backgroundMask, this.invertedCannyMask);
-                            this.invertedCombinedMask = MaskCombiner.SubtractMasks(this.invertedBackgroundMask, this.invertedCannyMask);
+                            this.invertedCombinedMask = MaskCombiner.SubtractMasks(this.invertedBackgroundMask, this.cannyMask);
                         }
                         else
                         {
                             this.combinedMask = MaskCombiner.AddMasks(this.backgroundMask, this.cannyMask);
-                            this.invertedCombinedMask = MaskCombiner.AddMasks(this.invertedBackgroundMask, this.cannyMask);
+                            this.invertedCombinedMask = MaskCombiner.AddMasks(this.invertedBackgroundMask, this.invertedCannyMask);
                         }
                     }
 
