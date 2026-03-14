@@ -1,8 +1,9 @@
 ﻿using NumSharp;
-using PixelsorterClassLib;
+using PixelsorterClassLib.Core;
+using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using Image = PixelsorterClassLib.Image;
+using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp
 {
@@ -10,8 +11,10 @@ namespace PixelsorterApp
     {
 
         private string? imagePath; // Add field to store the file path
-        private readonly Mask masker = new();
+        private readonly BackgroundMask backgroundMasker = new();
+        private readonly CannyMask cannyMasker = new();
         private bool useMask = false;
+        private bool useCanny = false;
         private readonly Dictionary<string, Func<Rgba32, float>> sortByOptions = SortBy.GetAllSortingCriteria();
         private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
         private Func<Rgba32, float>? sortingCriterion;
@@ -23,8 +26,13 @@ namespace PixelsorterApp
         private int currentDisplayedImageIndex = -1;
         private int maskPaddingAmount = 15;
         private bool useInvertedMask = false;
-        private NDArray? mask = null;
-        private NDArray? invertedMask = null;
+        private bool useSubtractMasks = true;
+        private NDArray? backgroundMask = null;
+        private NDArray? invertedBackgroundMask = null;
+        private NDArray? cannyMask = null;
+        private NDArray? invertedCannyMask = null;
+        private NDArray? combinedMask = null;
+        private NDArray? invertedCombinedMask = null;
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
@@ -223,7 +231,9 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.mask = null; // Clear any existing mask when a new image is loaded
+            this.backgroundMask = null; // Clear any existing mask when a new image is loaded
+            this.cannyMask = null;
+            this.combinedMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -317,16 +327,45 @@ namespace PixelsorterApp
                 sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
                 await Task.Run(async () =>
                 {
-                    if ((this.useMask && this.mask is null))
+                    if ((this.useMask && this.backgroundMask is null))
                     {
-                        (this.mask, this.invertedMask) = await masker.GetMaskAsync(this.imagePath, this.maskPaddingAmount, this.useInvertedMask);
+                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
                     }
 
+                    if (this.useCanny && this.useMask && this.cannyMask is null)
+                    {
+                        (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
+                    }
+
+                    if (this.useMask && this.useCanny && this.combinedMask is null &&
+                        this.backgroundMask is not null &&
+                        this.cannyMask is not null &&
+                        this.invertedBackgroundMask is not null &&
+                        this.invertedCannyMask is not null)
+                    {
+                        if (this.useSubtractMasks)
+                        {
+                            this.combinedMask = MaskCombiner.SubtractMasks(this.backgroundMask, this.invertedCannyMask);
+                            this.invertedCombinedMask = MaskCombiner.SubtractMasks(this.invertedBackgroundMask, this.invertedCannyMask);
+                        }
+                        else
+                        {
+                            this.combinedMask = MaskCombiner.AddMasks(this.backgroundMask, this.invertedCannyMask);
+                            this.invertedCombinedMask = MaskCombiner.AddMasks(this.invertedBackgroundMask, this.cannyMask);
+                        }
+                    }
+
+
+                    var maskToUse = this.useMask
+                    ? (this.useCanny
+                        ? (this.useInvertedMask ? this.invertedCombinedMask : this.combinedMask)
+                        : (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask))
+                    : null;
                     var imgData = Sorter.SortImage(
                                 Image.LoadImage(this.imagePath),
                                 sortingCriterion ?? sortByOptions.Values.First(),
                                 sortingDirection,
-                                this.useMask ? (this.useInvertedMask ? this.invertedMask : this.mask) : null
+                                maskToUse
                             );
                     using var foo = Image.NdarrayToImgData(imgData);
                     foo.SaveAsPng(sortedImagePath);
@@ -411,12 +450,12 @@ namespace PixelsorterApp
         {
 
             bool netAccess = CheckNetworkAcces();
-            if (e.Value && !netAccess && !masker.IsModelDownloaded)
+            if (e.Value && !netAccess && !backgroundMasker.IsReadyToUse)
             {
                 useMasking.IsToggled = false;
                 return;
             }
-            
+
             if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
             {
                 var response = await DisplayAlertAsync(
@@ -434,13 +473,13 @@ namespace PixelsorterApp
                 }
             }
 
-            if (!masker.IsModelDownloaded && netAccess && e.Value)
+            if (!backgroundMasker.IsReadyToUse && netAccess && e.Value)
             {
                 UseLoadingOverlay("Downloading...");
                 sortBtn.IsEnabled = false;
                 try
                 {
-                    await masker.DownloadModel();
+                    await backgroundMasker.DownloadModel();
                 }
                 catch (Exception)
                 {
@@ -557,6 +596,25 @@ namespace PixelsorterApp
             else if (sender == sortForegroundRadio && e.Value)
             {
                 this.useInvertedMask = true;
+            }
+        }
+
+        private void UseCanny_Toggled(object sender, ToggledEventArgs e)
+        {
+            this.useCanny = e.Value;
+        }
+
+        private void HowToCombine_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (sender == subMasksRadio && e.Value)
+            {
+                this.useSubtractMasks = true;
+                this.combinedMask = null;
+            }
+            else if (sender == addMasksRadio && e.Value)
+            {
+                this.useSubtractMasks = false;
+                this.combinedMask = null;
             }
         }
     }

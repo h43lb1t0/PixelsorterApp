@@ -274,6 +274,52 @@
                                 SemanticProperties.Description="Sort pixels in the foreground area" />
                         </HorizontalStackLayout>
                     </Grid>
+                    <Grid  ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
+                        <Label
+                            Text="Use canny masking"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="useCannySwitch"
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
+                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            Toggled="UseCanny_Toggled" 
+                            SemanticProperties.Description="Toggle switch to turn masking with canny on or off"
+                            SemanticProperties.Hint="Requires internet the first time to download the model"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
+                        <Grid.Triggers>
+                            <MultiTrigger TargetType="Grid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding IsVisible, Source={x:Reference maskPadding}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </Grid.Triggers>
+                        <Label
+                            Grid.Row="0"
+                            Text="How to combine Masks"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                            <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
+                                <RadioButton
+                                    x:Name="subMasksRadio"
+                                    Content="Subtract"
+                                    IsChecked="True"
+                                    CheckedChanged="HowToCombine_CheckedChanged"
+                                    SemanticProperties.Description="Subtracts the Canny mask from the machine learning mask." />
+                                <RadioButton
+                                    x:Name="addMasksRadio"
+                                    Content="Add"
+                                    CheckedChanged="HowToCombine_CheckedChanged"
+                                    SemanticProperties.Description="Adds the Canny mask and the machine learning mask" />
+                            </HorizontalStackLayout>    
+                    </Grid>
+
+
                 </VerticalStackLayout>
             </Border>
 
