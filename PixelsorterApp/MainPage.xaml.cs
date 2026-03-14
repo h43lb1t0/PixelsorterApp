@@ -234,6 +234,9 @@ namespace PixelsorterApp
             this.backgroundMask = null; // Clear any existing mask when a new image is loaded
             this.cannyMask = null;
             this.combinedMask = null;
+            this.invertedBackgroundMask = null;
+            this.invertedCannyMask = null;
+            this.invertedCombinedMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -585,6 +588,10 @@ namespace PixelsorterApp
             {
                 this.maskPaddingAmount = padding;
             }
+            this.backgroundMask = null; // Clear existing masks to ensure they are regenerated with the new padding
+            this.invertedBackgroundMask = null;
+            this.cannyMask = null;
+            this.invertedCannyMask = null;
         }
 
         private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)

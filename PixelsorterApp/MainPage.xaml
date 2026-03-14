@@ -301,7 +301,7 @@
                         </Grid.Triggers>
                         <Label
                             Grid.Row="0"
-                            Text="How to combine Masks"
+                            Text="How to combine masks"
                             FontSize="16"
                             VerticalOptions="Center" />
                             <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
@@ -315,7 +315,7 @@
                                     x:Name="addMasksRadio"
                                     Content="Add"
                                     CheckedChanged="HowToCombine_CheckedChanged"
-                                    SemanticProperties.Description="Adds the Canny mask and the machine learning mask" />
+                                    SemanticProperties.Description="Adds the Canny mask and the machine learning mask." />
                             </HorizontalStackLayout>    
                     </Grid>
 
