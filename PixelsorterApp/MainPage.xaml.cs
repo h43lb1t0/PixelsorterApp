@@ -13,7 +13,7 @@ namespace PixelsorterApp
         private string? imagePath; // Add field to store the file path
         private readonly BackgroundMask backgroundMasker = new();
         private readonly CannyMask cannyMasker = new();
-        private bool useMask = false;
+        private bool useSubjectMask = false;
         private bool useCanny = false;
         private readonly Dictionary<string, Func<Rgba32, float>> sortByOptions = SortBy.GetAllSortingCriteria();
         private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
@@ -24,15 +24,14 @@ namespace PixelsorterApp
         private readonly List<string> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
-        private int maskPaddingAmount = 15;
+        private int subjectMaskPaddingAmount = 15;
+        private int cannyThreashold = 30;
         private bool useInvertedMask = false;
         private bool useSubtractMasks = true;
         private NDArray? backgroundMask = null;
         private NDArray? invertedBackgroundMask = null;
         private NDArray? cannyMask = null;
         private NDArray? invertedCannyMask = null;
-        private NDArray? combinedMask = null;
-        private NDArray? invertedCombinedMask = null;
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
@@ -71,7 +70,7 @@ namespace PixelsorterApp
 
             sortDirectionOptionNames =
             [
-                .. sortDirectionOptions.Keys.Where(name => this.useMask || this.useCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
+                .. sortDirectionOptions.Keys.Where(name => this.useSubjectMask || this.useCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
             ];
 
             sortDirection.ItemsSource = sortDirectionOptionNames;
@@ -233,10 +232,8 @@ namespace PixelsorterApp
             this.imagePath = path;
             this.backgroundMask = null; // Clear any existing mask when a new image is loaded
             this.cannyMask = null;
-            this.combinedMask = null;
             this.invertedBackgroundMask = null;
             this.invertedCannyMask = null;
-            this.invertedCombinedMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -312,6 +309,63 @@ namespace PixelsorterApp
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
 
+
+        private async Task<bool> CreateSubjectMask()
+        {
+            if (this.backgroundMask is not null)
+            {
+                return true;
+            }
+            else if (!String.IsNullOrEmpty(this.imagePath))
+            {
+                if (backgroundMasker.IsReadyToUse)
+                {
+                    try
+                    {
+                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, this.subjectMaskPaddingAmount);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlertAsync("Error", $"An error occurred while creating the subject mask: {ex.Message}", "OK");
+                        SemanticScreenReader.Announce($"Error creating subject mask: {ex.Message}");
+                        return false;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> CreateCannyMask()
+        {
+            if (this.cannyMask is not null)
+            {
+                return true;
+            }
+            else if (!String.IsNullOrEmpty(this.imagePath))
+            {
+                try
+                {
+                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, this.cannyThreashold);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlertAsync("Error", $"An error occurred while creating the Canny mask: {ex.Message}", "OK");
+                    SemanticScreenReader.Announce($"Error creating Canny mask: {ex.Message}");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private async void SortBtn_Clicked(object sender, EventArgs e)
         {
             if (this.imagePath is null) // Check if we have a file path
@@ -328,49 +382,32 @@ namespace PixelsorterApp
                 sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
                 await Task.Run(async () =>
                 {
-                    if (this.useMask && (this.backgroundMask is null || this.invertedBackgroundMask is null))
+                    NDArray? maskToUse = null;
+                    if (this.useSubjectMask && this.useCanny)
                     {
-                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
-                    }
+                        bool subjectIsReady = await CreateSubjectMask();
+                        bool cannyIsReady = await CreateCannyMask();
 
-                    if (this.useCanny && (this.cannyMask is null || this.invertedCannyMask is null))
-                    {
-                        (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
-                    }
 
-                    if (this.useMask && this.useCanny &&
-                        (this.combinedMask is null || this.invertedCombinedMask is null)&&
-                        this.backgroundMask is not null &&
-                        this.cannyMask is not null &&
-                        this.invertedBackgroundMask is not null &&
-                        this.invertedCannyMask is not null)
-                    {
+
                         if (this.useSubtractMasks)
                         {
-                            this.combinedMask = MaskCombiner.SubtractMasks(this.backgroundMask, this.invertedCannyMask);
-                            this.invertedCombinedMask = MaskCombiner.SubtractMasks(this.invertedBackgroundMask, this.cannyMask);
+                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.backgroundMask!, this.invertedCannyMask!) : null;
                         }
-                        else
+                        else if (!this.useSubtractMasks)
                         {
-                            this.combinedMask = MaskCombiner.AddMasks(this.backgroundMask, this.cannyMask);
-                            this.invertedCombinedMask = MaskCombiner.AddMasks(this.invertedBackgroundMask, this.invertedCannyMask);
+                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.backgroundMask!, this.cannyMask!) : null;
                         }
-                    }
-
-                    NDArray? maskToUse = null;
-
-                    if (this.useCanny && this.useMask)
-                    {
-                        maskToUse = this.useInvertedMask ? this.invertedCombinedMask : this.combinedMask;
-                    }
-                    else if (this.useMask)
-                    {
-                        maskToUse = this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask;
                     }
                     else if (this.useCanny)
                     {
-                        maskToUse = this.useInvertedMask ? this.invertedCannyMask : this.cannyMask;
+                        maskToUse = await CreateCannyMask() ? this.cannyMask : null;
+                    } else if (this.useSubjectMask)
+                    {
+                        bool isReady = await CreateSubjectMask();
+                        maskToUse = isReady ? (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask) : null;
                     }
+
                     var imgData = Sorter.SortImage(
                                 Image.LoadImage(this.imagePath),
                                 sortingCriterion ?? sortByOptions.Values.First(),
@@ -455,13 +492,13 @@ namespace PixelsorterApp
             }
         }
 
-        private async void UseMasking_Toggled(object sender, ToggledEventArgs e)
+        private async void useSubjectMaskingSwitch_Toggled(object sender, ToggledEventArgs e)
         {
 
             bool netAccess = CheckNetworkAcces();
             if (e.Value && !netAccess && !backgroundMasker.IsReadyToUse)
             {
-                useMasking.IsToggled = false;
+                useSubjectMaskingSwitch.IsToggled = false;
                 return;
             }
 
@@ -477,7 +514,7 @@ namespace PixelsorterApp
 
                 if (!response)
                 {
-                    useMasking.IsToggled = false;
+                    useSubjectMaskingSwitch.IsToggled = false;
                     return;
                 }
             }
@@ -496,7 +533,7 @@ namespace PixelsorterApp
                         "Download failed",
                         "The masking model could not be downloaded. Please check your internet connection and try again.",
                         "OK");
-                    useMasking.IsToggled = false;
+                    useSubjectMaskingSwitch.IsToggled = false;
                     return;
                 }
                 finally
@@ -508,7 +545,7 @@ namespace PixelsorterApp
             }
 
 
-            this.useMask = e.Value;
+            this.useSubjectMask = e.Value;
             UpdateSortDirectionPicker();
         }
 
@@ -576,7 +613,8 @@ namespace PixelsorterApp
             }
         }
 
-        private void MaskPadding_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void cannyThreashold_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
@@ -591,14 +629,33 @@ namespace PixelsorterApp
 
             if (int.TryParse(numericText, out int padding))
             {
-                this.maskPaddingAmount = padding;
+                this.cannyThreashold = padding;
+            }
+            this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
+            this.invertedCannyMask = null;
+
+        }
+
+        private void SubjectMaskPadding_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
+
+            string newText = e.NewTextValue ?? string.Empty;
+            string numericText = new string(newText.Where(char.IsDigit).ToArray());
+
+            if (newText != numericText)
+            {
+                entry.Text = numericText;
+                return;
+            }
+
+            if (int.TryParse(numericText, out int padding))
+            {
+                this.subjectMaskPaddingAmount = padding;
             }
             this.backgroundMask = null; // Clear existing masks to ensure they are regenerated with the new padding
             this.invertedBackgroundMask = null;
-            this.cannyMask = null;
-            this.invertedCannyMask = null;
-            this.combinedMask = null;
-            this.invertedCombinedMask = null;
+  
         }
 
         private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -624,14 +681,10 @@ namespace PixelsorterApp
             if (sender == subMasksRadio && e.Value)
             {
                 this.useSubtractMasks = true;
-                this.combinedMask = null;
-                this.invertedCombinedMask = null;
             }
             else if (sender == addMasksRadio && e.Value)
             {
                 this.useSubtractMasks = false;
-                this.combinedMask = null;
-                this.invertedCombinedMask = null;
             }
         }
 
@@ -641,9 +694,9 @@ namespace PixelsorterApp
             imageViewer.IsEnabled = state;
             sortBy.IsEnabled = state;
             sortDirection.IsEnabled = state;
-            useMasking.IsEnabled = state;
+            useSubjectMaskingSwitch.IsEnabled = state;
             useCannySwitch.IsEnabled = state;
-            maskPadding.IsEnabled = state;
+            subjectMaskPadding.IsEnabled = state;
             sortBackgroundRadio.IsEnabled = state;
             sortForegroundRadio.IsEnabled = state;
             subMasksRadio.IsEnabled = state;

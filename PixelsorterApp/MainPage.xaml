@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PixelsorterApp.MainPage"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             xmlns:local="clr-namespace:PixelsorterApp"
-             Shell.NavBarIsVisible="False"
-             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
-             SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save.">
+<ContentPage
+    x:Class="PixelsorterApp.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BackgroundColor="{AppThemeBinding Light=#FAFAFA,
+                                      Dark=#121212}"
+    SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
+    Shell.NavBarIsVisible="False">
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Help">
-            <MenuFlyoutItem Text="Open Source Licenses"
-                            Clicked="LicensesBtn_Clicked" />
-            <MenuFlyoutItem Text="Privacy Policy"
-                            Clicked="PrivacyPolicyBtn_Clicked" />
+            <MenuFlyoutItem Clicked="LicensesBtn_Clicked" Text="Open Source Licenses" />
+            <MenuFlyoutItem Clicked="PrivacyPolicyBtn_Clicked" Text="Privacy Policy" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
@@ -47,304 +47,437 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="20,20,20,30"
-            Spacing="16">
+        <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
-            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8">
+            <!--  Headder  -->
+            <Grid
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="8"
+                RowDefinitions="Auto,Auto">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Pixel Sorter"
-                    FontSize="28"
                     FontAttributes="Bold"
-                    SemanticProperties.HeadingLevel="Level1" />
+                    FontSize="28"
+                    SemanticProperties.HeadingLevel="Level1"
+                    Text="Pixel Sorter" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="Load an image, choose options, and sort."
                     FontSize="14"
-                    Opacity="0.8" />
+                    Opacity="0.8"
+                    Text="Load an image, choose options, and sort." />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Text="⋮"
-                    Clicked="HelpMenuBtn_Clicked"
-                    WidthRequest="36"
-                    HeightRequest="36"
                     Padding="0"
-                    CornerRadius="18"
                     BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                    Clicked="HelpMenuBtn_Clicked"
+                    CornerRadius="18"
                     FontSize="22"
+                    HeightRequest="36"
                     SemanticProperties.Description="Open additional app options"
-                    SemanticProperties.Hint="Opens help options including licenses and privacy policy" />
+                    SemanticProperties.Hint="Opens help options including licenses and privacy policy"
+                    Text="⋮"
+                    TextColor="{AppThemeBinding Light=#757575,
+                                                Dark=#9E9E9E}"
+                    WidthRequest="36" />
             </Grid>
 
+            <!--  Image box  -->
             <Border
                 x:Name="imagePreviewBorder"
-                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                 Padding="12"
-                StrokeShape="RoundRectangle 16">
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF,
+                                                  Dark=#1E1E1E}"
+                Stroke="{AppThemeBinding Light=#E0E0E0,
+                                         Dark=#303030}"
+                StrokeShape="RoundRectangle 16"
+                StrokeThickness="1">
                 <Grid RowDefinitions="Auto,Auto">
                     <local:ImageViewer
                         x:Name="imageViewer"
                         Grid.Row="0"
                         HeightRequest="130"
-                        SemanticProperties.Description="Image viewer"
-                        ImageTapped="LoadImage_Clicked" />
+                        ImageTapped="LoadImage_Clicked"
+                        SemanticProperties.Description="Image viewer" />
                     <Grid
                         x:Name="loadingOverlay"
                         Grid.Row="0"
-                        IsVisible="False"
                         BackgroundColor="#80000000"
-                        SemanticProperties.Description="Busy"
-                        InputTransparent="False">
+                        InputTransparent="False"
+                        IsVisible="False"
+                        SemanticProperties.Description="Busy">
                         <VerticalStackLayout
-                            Spacing="10"
                             HorizontalOptions="Center"
+                            Spacing="10"
                             VerticalOptions="Center">
                             <ActivityIndicator
                                 x:Name="loadingIndicator"
+                                HeightRequest="40"
                                 IsRunning="False"
-                                Color="White"
                                 WidthRequest="40"
-                                HeightRequest="40" />
+                                Color="White" />
                             <Label
                                 x:Name="loadingOverlayLabel"
-                                Text=""
-                                TextColor="White"
                                 FontAttributes="Bold"
-                                HorizontalTextAlignment="Center" />
+                                HorizontalTextAlignment="Center"
+                                Text=""
+                                TextColor="White" />
                         </VerticalStackLayout>
                     </Grid>
                     <Label
                         x:Name="whatIsThisLabel"
                         Grid.Row="1"
-                        SemanticProperties.Description="Current image caption"
-                        Text="Tap to load an image"
-                        TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
+                        Margin="0,8,0,0"
                         FontSize="12"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Margin="0,8,0,0" />
+                        SemanticProperties.Description="Current image caption"
+                        Text="Tap to load an image"
+                        TextColor="{AppThemeBinding Light=#757575,
+                                                    Dark=#9E9E9E}"
+                        VerticalOptions="Center" />
                 </Grid>
             </Border>
 
-            <Label Text="OPTIONS" FontSize="13" TextColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" FontAttributes="Bold" Margin="4,10,4,4" SemanticProperties.HeadingLevel="Level2" />
+            <Label
+                Margin="4,10,4,4"
+                FontAttributes="Bold"
+                FontSize="13"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="OPTIONS"
+                TextColor="{AppThemeBinding Light=#D32F2F,
+                                            Dark=#E53935}" />
 
             <Border
-                StrokeThickness="0"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                 Padding="0"
-                StrokeShape="RoundRectangle 12">
+                BackgroundColor="{AppThemeBinding Light=#FFFFFF,
+                                                  Dark=#1E1E1E}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0">
                 <VerticalStackLayout Spacing="0">
-                    <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
+                    <Grid
+                        Padding="16,0"
+                        ColumnDefinitions="Auto,*,Auto"
+                        HeightRequest="56">
                         <Label
-                            Text="Sort by"
                             FontSize="16"
+                            Text="Sort by"
                             VerticalOptions="Center" />
                         <material:PickerField
                             x:Name="sortBy"
                             Grid.Column="1"
+                            AccentColor="{AppThemeBinding Light=#D32F2F,
+                                                          Dark=#E53935}"
                             AllowClear="False"
-                            BorderColor="Transparent"
                             BackgroundColor="Transparent"
-                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
-                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            VerticalOptions="Center"
+                            BorderColor="Transparent"
                             HorizontalOptions="End"
-                            SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by" />
+                            SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
+                            TextColor="{AppThemeBinding Light=#212121,
+                                                        Dark=#F5F5F5}"
+                            VerticalOptions="Center" />
                         <Label
                             Grid.Column="2"
-                            Text="⌄"
+                            Margin="4,0,0,0"
+                            AutomationProperties.IsInAccessibleTree="False"
                             FontSize="18"
-                            TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
-                            VerticalOptions="Center"
                             InputTransparent="True"
                             Opacity="0.7"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False" />
+                            Text="⌄"
+                            TextColor="{AppThemeBinding Light=#757575,
+                                                        Dark=#9E9E9E}"
+                            VerticalOptions="Center" />
                     </Grid>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" />
+                    <BoxView
+                        Margin="16,0,0,0"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light=#E0E0E0,
+                                                Dark=#303030}" />
 
-                    <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0">
+                    <Grid
+                        Padding="16,0"
+                        ColumnDefinitions="Auto,*,Auto"
+                        HeightRequest="56">
                         <Label
-                            Text="Direction"
                             FontSize="16"
+                            Text="Direction"
                             VerticalOptions="Center" />
                         <material:PickerField
                             x:Name="sortDirection"
                             Grid.Column="1"
+                            AccentColor="{AppThemeBinding Light=#D32F2F,
+                                                          Dark=#E53935}"
                             AllowClear="False"
-                            BorderColor="Transparent"
                             BackgroundColor="Transparent"
-                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
-                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            VerticalOptions="Center"
+                            BorderColor="Transparent"
                             HorizontalOptions="End"
-                            SemanticProperties.Description="A dropdown to select in what direction to sort the pixels" />
+                            SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
+                            TextColor="{AppThemeBinding Light=#212121,
+                                                        Dark=#F5F5F5}"
+                            VerticalOptions="Center" />
                         <Label
                             Grid.Column="2"
-                            Text="⌄"
+                            Margin="4,0,0,0"
+                            AutomationProperties.IsInAccessibleTree="False"
                             FontSize="18"
-                            TextColor="{AppThemeBinding Light=#757575, Dark=#9E9E9E}"
-                            VerticalOptions="Center"
                             InputTransparent="True"
                             Opacity="0.7"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False" />
-                    </Grid>
-
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" />
-
-                    <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
-                        <Label
-                            Text="Use machine learning masking"
-                            FontSize="16"
+                            Text="⌄"
+                            TextColor="{AppThemeBinding Light=#757575,
+                                                        Dark=#9E9E9E}"
                             VerticalOptions="Center" />
-                        <Switch
-                            x:Name="useMasking"
-                            Grid.Column="1"
-                            VerticalOptions="Center"
-                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
-                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            Toggled="UseMasking_Toggled" 
-                            SemanticProperties.Description="Toggle switch to turn masking on or off"
-                            SemanticProperties.Hint="Requires internet the first time to download the model"/>
                     </Grid>
-                    <Grid  ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10">
+
+                    <BoxView
+                        Margin="16,0,0,0"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light=#E0E0E0,
+                                                Dark=#303030}" />
+
+                    <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                         <Label
-                            Text="Use Canny masking"
                             FontSize="16"
+                            Text="Use Canny masking"
                             VerticalOptions="Center" />
                         <Switch
                             x:Name="useCannySwitch"
                             Grid.Column="1"
-                            VerticalOptions="Center"
-                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
-                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            Toggled="UseCanny_Toggled" 
+                            OnColor="{AppThemeBinding Light=#EF9A9A,
+                                                      Dark=#B71C1C}"
                             SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
-                            SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."/>
+                            SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."
+                            ThumbColor="{AppThemeBinding Light=#D32F2F,
+                                                         Dark=#E53935}"
+                            Toggled="UseCanny_Toggled"
+                            VerticalOptions="Center" />
                     </Grid>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPaddingGrid}}" />
-
-                    <Grid ColumnDefinitions="*,100" x:Name="maskPaddingGrid" HeightRequest="56" Padding="16,0" IsVisible="{Binding IsVisible, Source={x:Reference whatToSortGrid}}">
+                    <Grid
+                        x:Name="cannyMaskGrid"
+                        Padding="16,0"
+                        ColumnDefinitions="*,100"
+                        HeightRequest="56"
+                        IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}">
                         <Label
-                            Text="Mask padding (px)"
                             FontSize="16"
+                            Text="Threshold"
                             VerticalOptions="Center" />
                         <material:TextField
-                            x:Name="maskPadding"
                             Grid.Column="1"
-                            Keyboard="Numeric"
+                            AccentColor="{AppThemeBinding Light=#D32F2F,
+                                                          Dark=#E53935}"
                             AllowClear="False"
-                            BorderColor="Transparent"
                             BackgroundColor="Transparent"
-                            TextColor="{AppThemeBinding Light=#212121, Dark=#F5F5F5}"
-                            AccentColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            VerticalOptions="Center"
+                            BorderColor="Transparent"
                             HorizontalOptions="Fill"
-                            TextChanged="MaskPadding_TextChanged"
-                            Text="15"
-                            SemanticProperties.Description="Mask padding in pixels"
-                            SemanticProperties.Hint="Enter a whole number from 1 to 100">
-
+                            Keyboard="Numeric"
+                            SemanticProperties.Description="Canny threshold"
+                            SemanticProperties.Hint="Enter amount in int percentage"
+                            Text="30"
+                            TextChanged="cannyThreashold_TextChanged"
+                            TextColor="{AppThemeBinding Light=#212121,
+                                                        Dark=#F5F5F5}"
+                            VerticalOptions="Center">
                             <material:TextField.Behaviors>
-                                <toolkit:NumericValidationBehavior 
-                                        Flags="ValidateOnValueChanged"
-                                        MinimumValue="1.0"
-                                        MaximumValue="100.0"
-                                        MaximumDecimalPlaces="0" />
+                                <toolkit:NumericValidationBehavior
+                                    Flags="ValidateOnValueChanged"
+                                    MaximumDecimalPlaces="0"
+                                    MaximumValue="100"
+                                    MinimumValue="1" />
                             </material:TextField.Behaviors>
                         </material:TextField>
                     </Grid>
 
-                    <Grid ColumnDefinitions="*,Auto" x:Name="whatToSortGrid" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
-                        <Grid.Triggers>
-                            <DataTrigger TargetType="Grid" Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True">
-                                <Setter Property="IsVisible" Value="True" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Grid" Binding="{Binding IsToggled, Source={x:Reference useMasking}}" Value="True">
-                                <Setter Property="IsVisible" Value="True" />
-                            </DataTrigger>
-                        </Grid.Triggers>
+                    <BoxView
+                        Margin="16,0,0,0"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light=#E0E0E0,
+                                                Dark=#303030}" />
+
+                    <Grid
+                        Padding="16,0"
+                        ColumnDefinitions="*,Auto"
+                        HeightRequest="56">
                         <Label
-                            Grid.Row="0"
-                            Text="What to sort"
                             FontSize="16"
+                            Text="Use subject masking"
                             VerticalOptions="Center" />
-                        <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
-                            <RadioButton
-                                x:Name="sortBackgroundRadio"
-                                Content="Background"
-                                IsChecked="True"
-                                CheckedChanged="WhatToSort_CheckedChanged"
-                                SemanticProperties.Description="Sort pixels in the background area" />
-                            <RadioButton
-                                x:Name="sortForegroundRadio"
-                                Content="Foreground"
-                                CheckedChanged="WhatToSort_CheckedChanged"
-                                SemanticProperties.Description="Sort pixels in the foreground area" />
-                        </HorizontalStackLayout>
+                        <Switch
+                            x:Name="useSubjectMaskingSwitch"
+                            Grid.Column="1"
+                            OnColor="{AppThemeBinding Light=#EF9A9A,
+                                                      Dark=#B71C1C}"
+                            SemanticProperties.Description="Toggle switch to turn masking on or off"
+                            SemanticProperties.Hint="Requires internet the first time to download the model"
+                            ThumbColor="{AppThemeBinding Light=#D32F2F,
+                                                         Dark=#E53935}"
+                            Toggled="useSubjectMaskingSwitch_Toggled"
+                            VerticalOptions="Center" />
                     </Grid>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference howToCombineGrid}}" />
+                    <Grid
+                        x:Name="subjectMaskPaddingGrid"
+                        Padding="16,0"
+                        ColumnDefinitions="*,100"
+                        HeightRequest="56"
+                        IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}">
+                        <Label
+                            FontSize="16"
+                            Text="Padding (px)"
+                            VerticalOptions="Center" />
+                        <material:TextField
+                            x:Name="subjectMaskPadding"
+                            Grid.Column="1"
+                            AccentColor="{AppThemeBinding Light=#D32F2F,
+                                                          Dark=#E53935}"
+                            AllowClear="False"
+                            BackgroundColor="Transparent"
+                            BorderColor="Transparent"
+                            HorizontalOptions="Fill"
+                            Keyboard="Numeric"
+                            SemanticProperties.Description="Mask padding in pixels"
+                            SemanticProperties.Hint="Enter a whole number from 1 to 100"
+                            Text="15"
+                            TextChanged="SubjectMaskPadding_TextChanged"
+                            TextColor="{AppThemeBinding Light=#212121,
+                                                        Dark=#F5F5F5}"
+                            VerticalOptions="Center">
+                            <material:TextField.Behaviors>
+                                <toolkit:NumericValidationBehavior
+                                    Flags="ValidateOnValueChanged"
+                                    MaximumDecimalPlaces="0"
+                                    MaximumValue="100.0"
+                                    MinimumValue="1.0" />
+                            </material:TextField.Behaviors>
+                        </material:TextField>
+                    </Grid>
 
-                    <Grid ColumnDefinitions="*,Auto" x:Name="howToCombineGrid" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
+                    <Grid
+                        x:Name="whatToSortGrid"
+                        Padding="16,10"
+                        ColumnDefinitions="*,Auto"
+                        IsVisible="False">
                         <Grid.Triggers>
                             <MultiTrigger TargetType="Grid">
                                 <MultiTrigger.Conditions>
-                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
-                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useMasking}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="False" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="False" />
+                            </MultiTrigger>
+                            <MultiTrigger TargetType="Grid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="False" />
                                 </MultiTrigger.Conditions>
                                 <Setter Property="IsVisible" Value="True" />
                             </MultiTrigger>
                         </Grid.Triggers>
                         <Label
-                            Grid.Row="0"
-                            Text="How to combine masks"
                             FontSize="16"
+                            Text="What to sort"
                             VerticalOptions="Center" />
-                            <HorizontalStackLayout Grid.Column="1" Spacing="16" HorizontalOptions="End" VerticalOptions="Center">
-                                <RadioButton
-                                    x:Name="subMasksRadio"
-                                    Content="Subtract"
-                                    IsChecked="True"
-                                    CheckedChanged="HowToCombine_CheckedChanged"
-                                    SemanticProperties.Description="Subtracts the Canny mask from the machine learning mask." />
-                                <RadioButton
-                                    x:Name="addMasksRadio"
-                                    Content="Add"
-                                    CheckedChanged="HowToCombine_CheckedChanged"
-                                    SemanticProperties.Description="Adds the Canny mask and the machine learning mask." />
-                            </HorizontalStackLayout>    
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End"
+                            Spacing="16"
+                            VerticalOptions="Center">
+                            <RadioButton
+                                x:Name="sortBackgroundRadio"
+                                CheckedChanged="WhatToSort_CheckedChanged"
+                                Content="Background"
+                                IsChecked="True"
+                                SemanticProperties.Description="Sort pixels in the background area" />
+                            <RadioButton
+                                x:Name="sortForegroundRadio"
+                                CheckedChanged="WhatToSort_CheckedChanged"
+                                Content="Foreground"
+                                SemanticProperties.Description="Sort pixels in the foreground area" />
+                        </HorizontalStackLayout>
                     </Grid>
 
+                    <BoxView
+                        Margin="16,0,0,0"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light=#E0E0E0,
+                                                Dark=#303030}">
+                        <BoxView.Triggers>
+                            <MultiTrigger TargetType="BoxView">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
 
+                    <Grid
+                        x:Name="howToCombineGrid"
+                        Padding="16,10"
+                        ColumnDefinitions="*,Auto"
+                        IsVisible="False">
+                        <Grid.Triggers>
+                            <MultiTrigger TargetType="Grid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </Grid.Triggers>
+                        <Label
+                            FontSize="16"
+                            Text="How to combine masks"
+                            VerticalOptions="Center" />
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End"
+                            Spacing="16"
+                            VerticalOptions="Center">
+                            <RadioButton
+                                x:Name="subMasksRadio"
+                                CheckedChanged="HowToCombine_CheckedChanged"
+                                Content="Subtract"
+                                IsChecked="True"
+                                SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
+                            <RadioButton
+                                x:Name="addMasksRadio"
+                                CheckedChanged="HowToCombine_CheckedChanged"
+                                Content="Add"
+                                SemanticProperties.Description="Adds the Canny mask and the subject mask." />
+                        </HorizontalStackLayout>
+                        <Label
+                            Grid.Column="1"
+                            Margin="0,32,0,0"
+                            FontSize="12"
+                            HorizontalOptions="End"
+                            SemanticProperties.Description="Combining masks caption"
+                            Text="Canny and subject masks are combined when both masking options are on.&#10;The canny mask is used as second summand or as subtrahend for the subkect mask"
+                            TextColor="{AppThemeBinding Light=#757575,
+                                                        Dark=#9E9E9E}"
+                            VerticalOptions="Center" />
+                    </Grid>
                 </VerticalStackLayout>
             </Border>
 
             <Button
                 x:Name="sortBtn"
-                Text="Sort"
                 Clicked="SortBtn_Clicked"
-                HorizontalOptions="Fill" 
-                SemanticProperties.Description="Start pixel sorting"/>
+                HorizontalOptions="Fill"
+                SemanticProperties.Description="Start pixel sorting"
+                Text="Sort" />
 
             <Button
                 x:Name="saveBtn"
-                Text="Save"
                 Clicked="SaveBtn_Clicked"
                 HorizontalOptions="Fill"
                 IsVisible="False"
-                SemanticProperties.Description="Save the current image to your photo gallery"/>
+                SemanticProperties.Description="Save the current image to your photo gallery"
+                Text="Save" />
 
         </VerticalStackLayout>
     </ScrollView>
