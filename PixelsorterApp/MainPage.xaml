@@ -419,7 +419,8 @@
                         x:Name="howToCombineGrid"
                         Padding="16,10"
                         ColumnDefinitions="*,Auto"
-                        IsVisible="False">
+                        IsVisible="False"
+                        RowDefinitions="Auto,Auto">
                         <Grid.Triggers>
                             <MultiTrigger TargetType="Grid">
                                 <MultiTrigger.Conditions>
@@ -451,15 +452,16 @@
                                 SemanticProperties.Description="Adds the Canny mask and the subject mask." />
                         </HorizontalStackLayout>
                         <Label
-                            Grid.Column="1"
-                            Margin="0,32,0,0"
-                            FontSize="12"
-                            HorizontalOptions="End"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="0,4,0,0"
+                            Padding="2,2,2,2"
+                            FontSize="13"
                             SemanticProperties.Description="Combining masks caption"
-                            Text="Canny and subject masks are combined when both masking options are on.&#10;The canny mask is used as second summand or as subtrahend for the subkect mask"
+                            Text="Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask"
                             TextColor="{AppThemeBinding Light=#757575,
                                                         Dark=#9E9E9E}"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Start" />
                     </Grid>
                 </VerticalStackLayout>
             </Border>
