@@ -330,17 +330,18 @@ namespace PixelsorterApp
                 sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
                 await Task.Run(async () =>
                 {
-                    if ((this.useMask && this.backgroundMask is null))
+                    if (this.useMask && (this.backgroundMask is null || this.invertedBackgroundMask is null))
                     {
                         (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
                     }
 
-                    if (this.useCanny && this.useMask && this.cannyMask is null)
+                    if (this.useCanny && (this.cannyMask is null || this.invertedCannyMask is null))
                     {
                         (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, this.maskPaddingAmount);
                     }
 
-                    if (this.useMask && this.useCanny && this.combinedMask is null &&
+                    if (this.useMask && this.useCanny &&
+                        (this.combinedMask is null || this.invertedCombinedMask is null)&&
                         this.backgroundMask is not null &&
                         this.cannyMask is not null &&
                         this.invertedBackgroundMask is not null &&
@@ -358,12 +359,20 @@ namespace PixelsorterApp
                         }
                     }
 
+                    NDArray? maskToUse = null;
 
-                    var maskToUse = this.useMask
-                    ? (this.useCanny
-                        ? (this.useInvertedMask ? this.invertedCombinedMask : this.combinedMask)
-                        : (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask))
-                    : null;
+                    if (this.useCanny && this.useMask)
+                    {
+                        maskToUse = this.useInvertedMask ? this.invertedCombinedMask : this.combinedMask;
+                    }
+                    else if (this.useMask)
+                    {
+                        maskToUse = this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask;
+                    }
+                    else if (this.useCanny)
+                    {
+                        maskToUse = this.useInvertedMask ? this.invertedCannyMask : this.cannyMask;
+                    }
                     var imgData = Sorter.SortImage(
                                 Image.LoadImage(this.imagePath),
                                 sortingCriterion ?? sortByOptions.Values.First(),
@@ -503,7 +512,6 @@ namespace PixelsorterApp
 
 
             this.useMask = e.Value;
-            maskPadding.IsVisible = e.Value;
             UpdateSortDirectionPicker();
         }
 
@@ -592,6 +600,8 @@ namespace PixelsorterApp
             this.invertedBackgroundMask = null;
             this.cannyMask = null;
             this.invertedCannyMask = null;
+            this.combinedMask = null;
+            this.invertedCombinedMask = null;
         }
 
         private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -617,11 +627,13 @@ namespace PixelsorterApp
             {
                 this.useSubtractMasks = true;
                 this.combinedMask = null;
+                this.invertedCombinedMask = null;
             }
             else if (sender == addMasksRadio && e.Value)
             {
                 this.useSubtractMasks = false;
                 this.combinedMask = null;
+                this.invertedCombinedMask = null;
             }
         }
     }

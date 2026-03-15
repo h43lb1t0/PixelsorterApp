@@ -204,7 +204,7 @@
 
                     <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
                         <Label
-                            Text="Use masking"
+                            Text="Use machine learning masking"
                             FontSize="16"
                             VerticalOptions="Center" />
                         <Switch
@@ -217,10 +217,25 @@
                             SemanticProperties.Description="Toggle switch to turn masking on or off"
                             SemanticProperties.Hint="Requires internet the first time to download the model"/>
                     </Grid>
+                    <Grid  ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10">
+                        <Label
+                            Text="Use Canny masking"
+                            FontSize="16"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="useCannySwitch"
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
+                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
+                            Toggled="UseCanny_Toggled" 
+                            SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
+                            SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."/>
+                    </Grid>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}" />
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPaddingGrid}}" />
 
-                    <Grid ColumnDefinitions="*,100" HeightRequest="56" Padding="16,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
+                    <Grid ColumnDefinitions="*,100" x:Name="maskPaddingGrid" HeightRequest="56" Padding="16,0" IsVisible="{Binding IsVisible, Source={x:Reference whatToSortGrid}}">
                         <Label
                             Text="Mask padding (px)"
                             FontSize="16"
@@ -238,7 +253,6 @@
                             HorizontalOptions="Fill"
                             TextChanged="MaskPadding_TextChanged"
                             Text="15"
-                            IsVisible="False"
                             SemanticProperties.Description="Mask padding in pixels"
                             SemanticProperties.Hint="Enter a whole number from 1 to 100">
 
@@ -252,9 +266,15 @@
                         </material:TextField>
                     </Grid>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}" />
-
-                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
+                    <Grid ColumnDefinitions="*,Auto" x:Name="whatToSortGrid" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
+                        <Grid.Triggers>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsToggled, Source={x:Reference useMasking}}" Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Grid.Triggers>
                         <Label
                             Grid.Row="0"
                             Text="What to sort"
@@ -274,27 +294,15 @@
                                 SemanticProperties.Description="Sort pixels in the foreground area" />
                         </HorizontalStackLayout>
                     </Grid>
-                    <Grid  ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="{Binding IsVisible, Source={x:Reference maskPadding}}">
-                        <Label
-                            Text="Use Canny masking"
-                            FontSize="16"
-                            VerticalOptions="Center" />
-                        <Switch
-                            x:Name="useCannySwitch"
-                            Grid.Column="1"
-                            VerticalOptions="Center"
-                            OnColor="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}"
-                            ThumbColor="{AppThemeBinding Light=#D32F2F, Dark=#E53935}"
-                            Toggled="UseCanny_Toggled" 
-                            SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
-                            SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."/>
-                    </Grid>
-                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="16,0,0,0" IsVisible="{Binding IsVisible, Source={x:Reference howToCombineGrid}}" />
+
+                    <Grid ColumnDefinitions="*,Auto" x:Name="howToCombineGrid" RowDefinitions="Auto,Auto" Padding="16,10" IsVisible="False">
                         <Grid.Triggers>
                             <MultiTrigger TargetType="Grid">
                                 <MultiTrigger.Conditions>
-                                    <BindingCondition Binding="{Binding IsVisible, Source={x:Reference maskPadding}}" Value="True" />
                                     <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
+                                    <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useMasking}}" Value="True" />
                                 </MultiTrigger.Conditions>
                                 <Setter Property="IsVisible" Value="True" />
                             </MultiTrigger>
