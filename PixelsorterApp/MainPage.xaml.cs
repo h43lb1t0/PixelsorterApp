@@ -319,10 +319,8 @@ namespace PixelsorterApp
 
 
 
-            sortBtn.IsEnabled = false; // Disable the sort button while sorting is in progress
-            saveBtn.IsEnabled = false;
+            ToggleUiForSorting(false);
             UseLoadingOverlay("Sorting...");
-            imageViewer.IsEnabled = false;
 
             try
             {
@@ -409,8 +407,7 @@ namespace PixelsorterApp
             {
                 loadingIndicator.IsRunning = false;
                 loadingOverlay.IsVisible = false;
-                sortBtn.IsEnabled = true; // Re-enable the sort button after sorting is complete
-                imageViewer.IsEnabled = true;
+                ToggleUiForSorting(true);
 
             }
         }
@@ -636,6 +633,23 @@ namespace PixelsorterApp
                 this.combinedMask = null;
                 this.invertedCombinedMask = null;
             }
+        }
+
+        private void ToggleUiForSorting(bool state)
+        {
+            sortBtn.IsEnabled = state;
+            imageViewer.IsEnabled = state;
+            sortBy.IsEnabled = state;
+            sortDirection.IsEnabled = state;
+            useMasking.IsEnabled = state;
+            useCannySwitch.IsEnabled = state;
+            maskPadding.IsEnabled = state;
+            sortBackgroundRadio.IsEnabled = state;
+            sortForegroundRadio.IsEnabled = state;
+            subMasksRadio.IsEnabled = state;
+            addMasksRadio.IsEnabled = state;
+            saveBtn.IsEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
+            
         }
     }
 }
