@@ -71,7 +71,7 @@ namespace PixelsorterApp
 
             sortDirectionOptionNames =
             [
-                .. sortDirectionOptions.Keys.Where(name => this.useMask || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
+                .. sortDirectionOptions.Keys.Where(name => this.useMask || this.useCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
             ];
 
             sortDirection.ItemsSource = sortDirectionOptionNames;
@@ -619,6 +619,7 @@ namespace PixelsorterApp
         private void UseCanny_Toggled(object sender, ToggledEventArgs e)
         {
             this.useCanny = e.Value;
+            UpdateSortDirectionPicker();
         }
 
         private void HowToCombine_CheckedChanged(object sender, CheckedChangedEventArgs e)
