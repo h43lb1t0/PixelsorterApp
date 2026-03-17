@@ -260,12 +260,12 @@
                         x:Name="cannyMaskGrid"
                         Padding="16,0"
                         ColumnDefinitions="*,100"
-                        HeightRequest="56"
-                        IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}">
+                        IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}"
+                        MinimumHeightRequest="56">
                         <Label
                             FontSize="16"
                             Text="Threshold"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Start" />
                         <material:TextField
                             Grid.Column="1"
                             AccentColor="{AppThemeBinding Light=#D32F2F,
@@ -281,7 +281,7 @@
                             TextChanged="cannyThreashold_TextChanged"
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
-                            VerticalOptions="Center">
+                            VerticalOptions="Start">
                             <validation:MinValueValidation MinValue="1" />
                             <validation:MaxValueValidation MaxValue="100" />
                             <validation:DigitsOnlyValidation />
@@ -320,12 +320,13 @@
                         x:Name="subjectMaskPaddingGrid"
                         Padding="16,0"
                         ColumnDefinitions="*,100"
-                        HeightRequest="56"
-                        IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}">
+                        IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}"
+                        MinimumHeightRequest="56"
+                        RowDefinitions="Auto">
                         <Label
                             FontSize="16"
                             Text="Padding (px)"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Start" />
                         <material:TextField
                             x:Name="subjectMaskPadding"
                             Grid.Column="1"
@@ -342,7 +343,7 @@
                             TextChanged="SubjectMaskPadding_TextChanged"
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
-                            VerticalOptions="Center">
+                            VerticalOptions="Start">
                             <validation:MinValueValidation MinValue="1" />
                             <validation:MaxValueValidation MaxValue="100" />
                             <validation:DigitsOnlyValidation />
