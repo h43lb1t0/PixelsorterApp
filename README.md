@@ -52,3 +52,8 @@ Because this app relies on a separate class library for its core logic, you will
 ## Related Projects
 
 - **[PixelsorterClassLib](https://github.com/h43lb1t0/PixelsorterClassLib):** The underlying library containing the pixel sorting algorithms used by this app.
+
+
+# License
+With commit `81e05075` the license of this project changed from MIT to EUPL 1.2
+All changes, releases etc. before this commit stay under the MIT license.
