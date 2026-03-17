@@ -51,5 +51,15 @@
     "License": "Six Labors Split License\nVersion 1.0, June 2022\nCopyright (c) Six Labors",
     "LicenseUrl": "https://github.com/SixLabors/ImageSharp/raw/refs/heads/main/LICENSE",
     "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "h43lb1t0.PixelsorterClassLib",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/h43lb1t0/PixelsorterClassLib",
+    "Authors": "Tom & Jonte Haelbich and contributors",
+    "Description": "PixelsorterClassLib is a .NET class library designed for creating advanced pixel sorting effects. It provides extensive control over the sorting criteria and directions, and it even features on-device machine learning capabilities to automatically generate masks for selective sorting.",
+    "License": "EUPL 1.2",
+    "LicenseUrl": "https://github.com/h43lb1t0/PixelsorterClassLib/blob/master/LICENSE.txt",
+    "LicenseInformationOrigin": 5
   }
 ]
