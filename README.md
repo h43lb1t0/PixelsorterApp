@@ -4,6 +4,9 @@ A cross-platform .NET MAUI application for generating pixel sorting effects on i
 
 This project serves as the graphical user interface for the core pixel sorting algorithms provided by the [PixelsorterClassLib](https://github.com/h43lb1t0/PixelsorterClassLib) library.
 
+## Get the App
+Download it either from the [Google Playstore](https://play.google.com/store/apps/details?id=org.haelbich.pixelsorter) or from the [github releases](https://github.com/h43lb1t0/PixelsorterApp/releases) to get the most up to date versions.
+
 ## Features
 
 - **Cross-Platform Interface:** Built with .NET MAUI targeting .NET 10, supporting multiple platforms (Windows, Android, iOS, macOS).
