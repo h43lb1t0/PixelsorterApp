@@ -1,17 +1,7 @@
 [
   {
     "PackageId": "UraniumUI",
-    "PackageVersion": "2.14.0",
-    "PackageProjectUrl": "https://github.com/enisn/UraniumUI",
-    "Authors": "enisn",
-    "Description": "Uranium is a Free \u0026 Open-Source UI Kit for MAUI.",
-    "License": "Apache 2.0",
-    "LicenseUrl": "https://raw.githubusercontent.com/enisn/UraniumUI/refs/heads/develop/LICENSE",
-    "LicenseInformationOrigin": 0
-  },
-  {
-    "PackageId": "UraniumUI.Icons.MaterialIcons",
-    "PackageVersion": "2.14.0",
+    "PackageVersion": "2.15.0",
     "PackageProjectUrl": "https://github.com/enisn/UraniumUI",
     "Authors": "enisn",
     "Description": "Uranium is a Free \u0026 Open-Source UI Kit for MAUI.",
@@ -21,7 +11,7 @@
   },
   {
     "PackageId": "UraniumUI.Material",
-    "PackageVersion": "2.14.0",
+    "PackageVersion": "2.15.0",
     "PackageProjectUrl": "https://github.com/enisn/UraniumUI",
     "Authors": "enisn",
     "Description": "Uranium is a Free \u0026 Open-Source UI Kit for MAUI.",

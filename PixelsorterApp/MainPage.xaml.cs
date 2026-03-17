@@ -3,6 +3,7 @@ using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using UraniumUI.Material.Controls;
 using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp
@@ -618,6 +619,13 @@ namespace PixelsorterApp
         {
             if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
+            var textfield = (TextField)sender;
+
+            if (!textfield.IsValid)
+            {
+                return;
+            }
+
             string newText = e.NewTextValue ?? string.Empty;
             string numericText = new string(newText.Where(char.IsDigit).ToArray());
 
@@ -639,9 +647,16 @@ namespace PixelsorterApp
         private void SubjectMaskPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is not UraniumUI.Material.Controls.TextField entry) return;
+            var textfield = (TextField)sender;
+
+            if (!textfield.IsValid)
+            {
+                return;
+            }
 
             string newText = e.NewTextValue ?? string.Empty;
             string numericText = new string(newText.Where(char.IsDigit).ToArray());
+
 
             if (newText != numericText)
             {

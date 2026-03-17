@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     BackgroundColor="{AppThemeBinding Light=#FAFAFA,
                                       Dark=#121212}"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
@@ -259,12 +260,12 @@
                         x:Name="cannyMaskGrid"
                         Padding="16,0"
                         ColumnDefinitions="*,100"
-                        HeightRequest="56"
-                        IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}">
+                        IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}"
+                        MinimumHeightRequest="56">
                         <Label
                             FontSize="16"
                             Text="Threshold"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Start" />
                         <material:TextField
                             Grid.Column="1"
                             AccentColor="{AppThemeBinding Light=#D32F2F,
@@ -280,14 +281,11 @@
                             TextChanged="cannyThreashold_TextChanged"
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
-                            VerticalOptions="Center">
-                            <material:TextField.Behaviors>
-                                <toolkit:NumericValidationBehavior
-                                    Flags="ValidateOnValueChanged"
-                                    MaximumDecimalPlaces="0"
-                                    MaximumValue="100"
-                                    MinimumValue="1" />
-                            </material:TextField.Behaviors>
+                            VerticalOptions="Start">
+                            <validation:MinValueValidation MinValue="1" />
+                            <validation:MaxValueValidation MaxValue="100" />
+                            <validation:DigitsOnlyValidation />
+                            <validation:RequiredValidation />
                         </material:TextField>
                     </Grid>
 
@@ -322,12 +320,13 @@
                         x:Name="subjectMaskPaddingGrid"
                         Padding="16,0"
                         ColumnDefinitions="*,100"
-                        HeightRequest="56"
-                        IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}">
+                        IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}"
+                        MinimumHeightRequest="56"
+                        RowDefinitions="Auto">
                         <Label
                             FontSize="16"
                             Text="Padding (px)"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Start" />
                         <material:TextField
                             x:Name="subjectMaskPadding"
                             Grid.Column="1"
@@ -344,14 +343,11 @@
                             TextChanged="SubjectMaskPadding_TextChanged"
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
-                            VerticalOptions="Center">
-                            <material:TextField.Behaviors>
-                                <toolkit:NumericValidationBehavior
-                                    Flags="ValidateOnValueChanged"
-                                    MaximumDecimalPlaces="0"
-                                    MaximumValue="100.0"
-                                    MinimumValue="1.0" />
-                            </material:TextField.Behaviors>
+                            VerticalOptions="Start">
+                            <validation:MinValueValidation MinValue="1" />
+                            <validation:MaxValueValidation MaxValue="100" />
+                            <validation:DigitsOnlyValidation />
+                            <validation:RequiredValidation />
                         </material:TextField>
                     </Grid>
 
