@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     BackgroundColor="{AppThemeBinding Light=#FAFAFA,
                                       Dark=#121212}"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
@@ -281,13 +282,10 @@
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
                             VerticalOptions="Center">
-                            <material:TextField.Behaviors>
-                                <toolkit:NumericValidationBehavior
-                                    Flags="ValidateOnValueChanged"
-                                    MaximumDecimalPlaces="0"
-                                    MaximumValue="100"
-                                    MinimumValue="1" />
-                            </material:TextField.Behaviors>
+                            <validation:MinValueValidation MinValue="1" />
+                            <validation:MaxValueValidation MaxValue="100" />
+                            <validation:DigitsOnlyValidation />
+                            <validation:RequiredValidation />
                         </material:TextField>
                     </Grid>
 
@@ -345,13 +343,10 @@
                             TextColor="{AppThemeBinding Light=#212121,
                                                         Dark=#F5F5F5}"
                             VerticalOptions="Center">
-                            <material:TextField.Behaviors>
-                                <toolkit:NumericValidationBehavior
-                                    Flags="ValidateOnValueChanged"
-                                    MaximumDecimalPlaces="0"
-                                    MaximumValue="100.0"
-                                    MinimumValue="1.0" />
-                            </material:TextField.Behaviors>
+                            <validation:MinValueValidation MinValue="1" />
+                            <validation:MaxValueValidation MaxValue="100" />
+                            <validation:DigitsOnlyValidation />
+                            <validation:RequiredValidation />
                         </material:TextField>
                     </Grid>
 
