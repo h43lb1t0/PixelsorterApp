@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /PixelsorterApp/Resources/Raw/licenses.PixelsorterClassLib.json
 *.keystore
 /output.zip
+/Installer/Pixelsorter_Installer.exe
