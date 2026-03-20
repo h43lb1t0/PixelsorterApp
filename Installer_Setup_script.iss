@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "Pixelsorter"
-#define MyAppVersion "0.0.1"
+#define MyAppVersion "0.0.2"
 #define MyAppPublisher "h43lb1t0"
 #define MyAppURL "https://pixelsorter.haelbich.org"
 #define MyAppExeName "PixelsorterApp.exe"
@@ -35,9 +35,34 @@ LicenseFile=D:\Documents\codeing\PixelsorterProject\PixelsorterApp\LICENSE.txt
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=D:\Documents\codeing\PixelsorterProject\PixelsorterApp\Installer
-OutputBaseFilename=Pixelsorter_Installer
+OutputBaseFilename=Pixelsorter_Installer-x64
 SolidCompression=yes
 WizardStyle=modern dynamic
+
+
+[Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  TargetDir: string;
+begin
+  // Trigger this action after the standard uninstall process is complete
+  if CurUninstallStep = usPostUninstall then
+  begin
+    TargetDir := ExpandConstant('{localappdata}\PixelsorterClassLib');
+
+    // Only ask if the directory actually exists
+    if DirExists(TargetDir) then
+    begin
+      // Prompt the user with a Yes/No dialog
+      if MsgBox('Do you also want to remove the PixelsorterClassLib folder (the subject masking model is saved here) and all of its contents?', mbConfirmation, MB_YESNO) = idYes then
+      begin
+        // DelTree removes the directory and all files/subdirectories inside it
+        DelTree(TargetDir, True, True, True);
+      end;
+    end;
+  end;
+end;
+
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
