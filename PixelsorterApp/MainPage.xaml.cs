@@ -2,6 +2,7 @@
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.PixelFormats;
 using UraniumUI.Material.Controls;
 using Image = PixelsorterClassLib.Core.Image;
@@ -16,9 +17,9 @@ namespace PixelsorterApp
         private readonly CannyMask cannyMasker = new();
         private bool useSubjectMask = false;
         private bool useCanny = false;
-        private readonly Dictionary<string, Func<Rgba32, float>> sortByOptions = SortBy.GetAllSortingCriteria();
+        private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
         private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
-        private Func<Rgba32, float>? sortingCriterion;
+        private Func<Hsl, float>? sortingCriterion;
         private SortDirections sortingDirection;
         private readonly string[] sortByOptionNames;
         private string[] sortDirectionOptionNames;
