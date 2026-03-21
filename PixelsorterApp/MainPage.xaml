@@ -95,14 +95,16 @@
                 Stroke="{AppThemeBinding Light=#E0E0E0,
                                          Dark=#303030}"
                 StrokeShape="RoundRectangle 16"
-                StrokeThickness="1">
+                StrokeThickness="1"
+                StyleClass="Elevation3">
                 <Grid RowDefinitions="Auto,Auto">
                     <local:ImageViewer
                         x:Name="imageViewer"
                         Grid.Row="0"
                         HeightRequest="130"
                         ImageTapped="LoadImage_Clicked"
-                        SemanticProperties.Description="Image viewer" />
+                        SemanticProperties.Description="Image viewer"
+                        StyleClass="Elevation5" />
                     <Grid
                         x:Name="loadingOverlay"
                         Grid.Row="0"
@@ -156,7 +158,8 @@
                 BackgroundColor="{AppThemeBinding Light=#FFFFFF,
                                                   Dark=#1E1E1E}"
                 StrokeShape="RoundRectangle 12"
-                StrokeThickness="0">
+                StrokeThickness="0"
+                StyleClass="Elevation3">
                 <VerticalStackLayout Spacing="0">
                     <Grid
                         Padding="16,0"
