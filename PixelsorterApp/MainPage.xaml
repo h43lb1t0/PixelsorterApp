@@ -19,33 +19,8 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
-    <ContentPage.Resources>
-        <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
-        </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="HeightRequest" Value="48" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup Name="CommonStates">
-                        <VisualState Name="Normal" />
-                        <VisualState Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
-                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DisabledTextLight}, Dark={StaticResource DisabledTextDark}}" />
-                                <Setter Property="Opacity" Value="0.7" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
+
 
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">

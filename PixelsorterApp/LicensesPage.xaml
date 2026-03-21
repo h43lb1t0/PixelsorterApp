@@ -6,18 +6,8 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}"
              Title="Open Source Licenses"
              SemanticProperties.Description="Open source licenses used by the app">
-    <ContentPage.Resources>
-        <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
-        </Style>
-        <Style x:Key="LinkButtonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="Transparent" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LinkLight}, Dark={StaticResource LinkDark}}" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="HorizontalOptions" Value="Start" />
-            <Setter Property="FontSize" Value="13" />
-        </Style>
-    </ContentPage.Resources>
+
+
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
             <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" SemanticProperties.HeadingLevel="Level1" />
