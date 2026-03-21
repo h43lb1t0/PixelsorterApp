@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PixelsorterApp.PrivacyPolicyPage"
-             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}"
              Title="Privacy Policy"
              SemanticProperties.Description="Privacy policy in German and English">
     <ScrollView>
@@ -54,7 +54,7 @@
                    FontAttributes="Bold" />
             <Label Text="Diese Datenschutzerklärung ist aktuell gültig und hat den Stand März 2026. Durch die Weiterentwicklung der App oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung anzupassen." />
 
-            <BoxView HeightRequest="1" Margin="0,8" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" />
+            <BoxView HeightRequest="1" Margin="0,8" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" />
 
             <Label Text="English"
                    FontSize="20"

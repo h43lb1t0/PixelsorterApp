@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Extensions;
 using NumSharp;
 using PixelsorterApp.Extensions;
 using PixelsorterClassLib.Core;
@@ -295,7 +295,7 @@ namespace PixelsorterApp
             loadingIndicator.IsRunning = true;
             loadingOverlay.IsVisible = true;
             SemanticScreenReader.Announce(text);
-            (Color, Color) colors = (Color.FromArgb("#FFFFFF"), Color.FromArgb("#1E1E1E"));
+            (Color, Color) colors = ((Color)Application.Current!.Resources["SurfaceLight"], (Color)Application.Current!.Resources["SurfaceDark"]);
 
             if (Application.Current!.RequestedTheme == AppTheme.Light)
             {
@@ -309,8 +309,8 @@ namespace PixelsorterApp
             }
             imagePreviewBorder.SetAppTheme<Brush>(
                 Border.StrokeProperty,
-                new SolidColorBrush(Color.FromArgb("#FFFFFF")), // Light
-                new SolidColorBrush(Color.FromArgb("#1E1E1E"))  // Dark
+                new SolidColorBrush((Color)Application.Current!.Resources["SurfaceLight"]), // Light
+                new SolidColorBrush((Color)Application.Current!.Resources["SurfaceDark"])  // Dark
             );
         }
 
