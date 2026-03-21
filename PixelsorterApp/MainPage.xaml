@@ -22,8 +22,9 @@
 
 
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
             <!--  Headder  -->
             <Grid
@@ -124,7 +125,7 @@
                 FontAttributes="Bold"
                 FontSize="13"
                 SemanticProperties.HeadingLevel="Level2"
-                Text="OPTIONS"
+                Text="SORT SETTINGS"
                 TextColor="{AppThemeBinding Light={StaticResource Primary},
                                             Dark={StaticResource PrimaryDark}}" />
 
@@ -136,86 +137,42 @@
                 StrokeThickness="0"
                 StyleClass="Elevation3">
                 <VerticalStackLayout Spacing="0">
-                    <Grid
-                        Padding="16,0"
-                        ColumnDefinitions="Auto,*,Auto"
-                        HeightRequest="56">
-                        <Label
-                            FontSize="16"
-                            Text="Sort by"
-                            VerticalOptions="Center" />
+                    <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
                         <material:PickerField
                             x:Name="sortBy"
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                          Dark={StaticResource PrimaryDark}}"
+                            Title="Sort by"
+                            AccentColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                             AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="End"
                             SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
-                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                        Dark={StaticResource TextPrimaryDark}}"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="2"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False"
-                            FontSize="18"
-                            InputTransparent="True"
-                            Opacity="0.7"
-                            Text="⌄"
-                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                        Dark={StaticResource TextSecondaryDark}}"
-                            VerticalOptions="Center" />
-                    </Grid>
-
-                    <BoxView
-                        Margin="16,0,0,0"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                Dark={StaticResource DividerDark}}" />
-
-                    <Grid
-                        Padding="16,0"
-                        ColumnDefinitions="Auto,*,Auto"
-                        HeightRequest="56">
-                        <Label
-                            FontSize="16"
-                            Text="Direction"
-                            VerticalOptions="Center" />
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         <material:PickerField
                             x:Name="sortDirection"
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                          Dark={StaticResource PrimaryDark}}"
+                            Title="Direction"
+                            AccentColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                             AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="End"
                             SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
-                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                        Dark={StaticResource TextPrimaryDark}}"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="2"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False"
-                            FontSize="18"
-                            InputTransparent="True"
-                            Opacity="0.7"
-                            Text="⌄"
-                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                        Dark={StaticResource TextSecondaryDark}}"
-                            VerticalOptions="Center" />
-                    </Grid>
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
-                    <BoxView
-                        Margin="16,0,0,0"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                Dark={StaticResource DividerDark}}" />
+            <Label
+                Margin="4,10,4,4"
+                FontAttributes="Bold"
+                FontSize="13"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="MASKING OPTIONS"
+                TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource PrimaryDark}}" />
 
+            <Border
+                Padding="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0"
+                StyleClass="Elevation3">
+                <VerticalStackLayout Spacing="0">
                     <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                         <Label
                             FontSize="16"
@@ -323,7 +280,7 @@
                             Grid.Column="0"
                             Maximum="100"
                             Minimum="1"
-                            SemanticProperties.Description="Canny threshold"
+                            SemanticProperties.Description="Subject mask padding"
                             ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                          Light={StaticResource PrimaryDark}}"
                             ValueChanged="OnSubjectMaskingSliderValueChanged"
@@ -453,15 +410,10 @@
             </Border>
 
             <Button
-                x:Name="sortBtn"
-                Clicked="SortBtn_Clicked"
-                HorizontalOptions="Fill"
-                SemanticProperties.Description="Start pixel sorting"
-                Text="Sort" />
-
-            <Button
                 x:Name="saveBtn"
                 Clicked="SaveBtn_Clicked"
+                Margin="0,16,0,0"
+                Style="{StaticResource SecondaryActionButtonStyle}"
                 HorizontalOptions="Fill"
                 IsVisible="False"
                 SemanticProperties.Description="Save the current image to your photo gallery"
@@ -470,4 +422,16 @@
         </VerticalStackLayout>
     </ScrollView>
 
+    <VerticalStackLayout
+        Grid.Row="1"
+        Padding="20,8,20,16"
+        BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}">
+        <Button
+            x:Name="sortBtn"
+            Clicked="SortBtn_Clicked"
+            HorizontalOptions="Fill"
+            SemanticProperties.Description="Start pixel sorting"
+            Text="Sort" />
+    </VerticalStackLayout>
+</Grid>
 </ContentPage>
