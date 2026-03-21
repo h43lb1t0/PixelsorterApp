@@ -258,37 +258,44 @@
 
                     <Grid
                         x:Name="cannyMaskGrid"
-                        Padding="16,0"
-                        ColumnDefinitions="*,100"
+                        Padding="16,8"
+                        ColumnDefinitions="*, 60"
                         IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}"
-                        MinimumHeightRequest="56">
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="4">
+
                         <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            FontAttributes="Bold"
                             FontSize="16"
                             Text="Threshold"
-                            VerticalOptions="Start" />
-                        <material:TextField
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
-                            AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="Fill"
-                            Keyboard="Numeric"
-                            SemanticProperties.Description="Canny threshold"
-                            SemanticProperties.Hint="Enter amount in int percentage"
-                            Text="30"
-                            TextChanged="cannyThreashold_TextChanged"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Start">
-                            <validation:MinValueValidation MinValue="1" />
-                            <validation:MaxValueValidation MaxValue="100" />
-                            <validation:DigitsOnlyValidation />
-                            <validation:RequiredValidation />
-                        </material:TextField>
-                    </Grid>
+                            VerticalOptions="Center" />
 
+                        <Slider
+                            x:Name="cannyValueSlider"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Maximum="100"
+                            Minimum="1"
+                            SemanticProperties.Description="Canny threshold"
+                            ThumbColor="{AppThemeBinding Dark=#D32F2F,
+                                                         Light=#E53935}"
+                            ValueChanged="OnCannySliderValueChanged"
+                            VerticalOptions="Center"
+                            Value="30" />
+
+                        <Label
+                            x:Name="cannySliderValue"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="14"
+                            HorizontalOptions="End"
+                            TextColor="{AppThemeBinding Dark=White,
+                                                        Light=Black}"
+                            VerticalOptions="Center" />
+                    </Grid>
                     <BoxView
                         Margin="16,0,0,0"
                         HeightRequest="1"
@@ -318,37 +325,42 @@
 
                     <Grid
                         x:Name="subjectMaskPaddingGrid"
-                        Padding="16,0"
-                        ColumnDefinitions="*,100"
+                        Padding="16,8"
+                        ColumnDefinitions="*, 60"
                         IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}"
-                        MinimumHeightRequest="56"
-                        RowDefinitions="Auto">
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="4">
+
                         <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            FontAttributes="Bold"
                             FontSize="16"
-                            Text="Padding (px)"
-                            VerticalOptions="Start" />
-                        <material:TextField
+                            Text="Padding"
+                            VerticalOptions="Center" />
+                        <Slider
                             x:Name="subjectMaskPadding"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Maximum="100"
+                            Minimum="1"
+                            SemanticProperties.Description="Canny threshold"
+                            ThumbColor="{AppThemeBinding Dark=#D32F2F,
+                                                         Light=#E53935}"
+                            ValueChanged="OnSubjectMaskingSliderValueChanged"
+                            VerticalOptions="Center"
+                            Value="15" />
+
+                        <Label
+                            x:Name="subjectPaddingSliderValue"
+                            Grid.Row="1"
                             Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
-                            AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="Fill"
-                            Keyboard="Numeric"
-                            SemanticProperties.Description="Mask padding in pixels"
-                            SemanticProperties.Hint="Enter a whole number from 1 to 100"
-                            Text="15"
-                            TextChanged="SubjectMaskPadding_TextChanged"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Start">
-                            <validation:MinValueValidation MinValue="1" />
-                            <validation:MaxValueValidation MaxValue="100" />
-                            <validation:DigitsOnlyValidation />
-                            <validation:RequiredValidation />
-                        </material:TextField>
+                            FontSize="14"
+                            HorizontalOptions="End"
+                            TextColor="{AppThemeBinding Dark=White,
+                                                        Light=Black}"
+                            VerticalOptions="Center" />
                     </Grid>
 
                     <Grid

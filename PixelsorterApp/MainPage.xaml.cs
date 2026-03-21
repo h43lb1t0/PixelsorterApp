@@ -616,59 +616,45 @@ namespace PixelsorterApp
         }
 
 
-        private void cannyThreashold_TextChanged(object sender, TextChangedEventArgs e)
+        private void OnCannySliderValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
-            var textfield = (TextField)sender;
-
-            if (!textfield.IsValid)
+            if (e.OldValue == e.NewValue)
             {
                 return;
             }
 
-            string newText = e.NewTextValue ?? string.Empty;
-            string numericText = new string(newText.Where(char.IsDigit).ToArray());
-
-            if (newText != numericText)
+            int value = (int)e.NewValue;
+            if (value != e.NewValue)
             {
-                entry.Text = numericText;
-                return;
+                cannyValueSlider.Value = value;
             }
-
-            if (int.TryParse(numericText, out int padding))
-            {
-                this.cannyThreashold = padding;
-            }
+            this.cannyThreashold = (int)e.NewValue;
+            cannySliderValue.Text = $"{value}%";
+      
             this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
             this.invertedCannyMask = null;
 
         }
 
-        private void SubjectMaskPadding_TextChanged(object sender, TextChangedEventArgs e)
+        private void OnSubjectMaskingSliderValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
-            var textfield = (TextField)sender;
 
-            if (!textfield.IsValid)
+            if (e.OldValue == e.NewValue)
             {
                 return;
             }
 
-            string newText = e.NewTextValue ?? string.Empty;
-            string numericText = new string(newText.Where(char.IsDigit).ToArray());
-
-
-            if (newText != numericText)
+            int value = (int)e.NewValue;
+            if (value != e.NewValue)
             {
-                entry.Text = numericText;
-                return;
+                subjectMaskPadding.Value = value;
             }
 
-            if (int.TryParse(numericText, out int padding))
-            {
-                this.subjectMaskPaddingAmount = padding;
-            }
+            subjectPaddingSliderValue.Text = $"{value} px";
+
+
+            this.subjectMaskPaddingAmount = value;
             this.backgroundMask = null; // Clear existing masks to ensure they are regenerated with the new padding
             this.invertedBackgroundMask = null;
   
