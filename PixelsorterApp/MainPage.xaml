@@ -73,6 +73,9 @@
                 StrokeShape="RoundRectangle 16"
                 StrokeThickness="1"
                 StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="12" Opacity="0.08" />
+                </Border.Shadow>
                 <Grid RowDefinitions="Auto,Auto">
                     <local:ImageViewer
                         x:Name="imageViewer"
@@ -134,8 +137,13 @@
                 BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
                                                   Dark={StaticResource SurfaceDark}}"
                 StrokeShape="RoundRectangle 12"
-                StrokeThickness="0"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeThickness="1"
                 StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="10" Opacity="0.10" />
+                </Border.Shadow>
                 <VerticalStackLayout Spacing="0">
                     <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
                         <material:PickerField
@@ -170,8 +178,13 @@
                 BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
                                                   Dark={StaticResource SurfaceDark}}"
                 StrokeShape="RoundRectangle 12"
-                StrokeThickness="0"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeThickness="1"
                 StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="10" Opacity="0.10" />
+                </Border.Shadow>
                 <VerticalStackLayout Spacing="0">
                     <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                         <Label
