@@ -345,6 +345,7 @@
                     <BoxView
                         Margin="16,0,0,0"
                         HeightRequest="1"
+                        IsVisible="False"
                         Color="{AppThemeBinding Light={StaticResource DividerLight},
                                                 Dark={StaticResource DividerDark}}">
                         <BoxView.Triggers>

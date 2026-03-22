@@ -733,6 +733,7 @@ namespace PixelsorterApp
             useSubjectMaskingSwitch.IsEnabled = state;
             useCannySwitch.IsEnabled = state;
             subjectMaskPadding.IsEnabled = state;
+            cannyValueSlider.IsEnabled = state;
             sortBackgroundRadio.IsEnabled = state;
             sortForegroundRadio.IsEnabled = state;
             subMasksRadio.IsEnabled = state;
