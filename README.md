@@ -25,7 +25,7 @@ Download it either from the [Google Playstore](https://play.google.com/store/app
 ### Android Screenshots
 
 
-<img height="800" alt="Screenshot_20260308-232428" src="https://github.com/user-attachments/assets/32daa09f-42e0-4736-abef-ebe558e5c752" /> <img height="800" alt="Screenshot_20260308-233136" src="https://github.com/user-attachments/assets/390bc7a5-b40a-454f-9168-5f91b3b806e1" />
+<img height="800" alt="signal-2026-03-22-222606_003" src="https://github.com/user-attachments/assets/c5df1e88-b19a-4be1-b9ea-3373110f2c04" /> <img height="800" alt="signal-2026-03-22-222606_002" src="https://github.com/user-attachments/assets/7eb90474-9487-4f34-87f1-6d3ed9053f7b" />
 
 
 ## Prerequisites
