@@ -18,10 +18,10 @@
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
     <!--  Page & Surface  -->
-    <Color x:Key="PageBackgroundLight">#FAFAFA</Color>
-    <Color x:Key="PageBackgroundDark">#121212</Color>
-    <Color x:Key="SurfaceLight">#FFFFFF</Color>
-    <Color x:Key="SurfaceDark">#1E1E1E</Color>
+    <Color x:Key="PageBackgroundLight">#F5EFE6</Color>
+    <Color x:Key="PageBackgroundDark">#130B0B</Color>
+    <Color x:Key="SurfaceLight">#FDF8F2</Color>
+    <Color x:Key="SurfaceDark">#201E1C</Color>
 
     <!--  Dividers & Strokes  -->
     <Color x:Key="DividerLight">#E0E0E0</Color>
