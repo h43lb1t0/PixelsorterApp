@@ -414,7 +414,7 @@
                 x:Name="saveBtn"
                 Clicked="SaveBtn_Clicked"
                 Margin="0,16,0,0"
-                Style="{StaticResource SecondaryActionButtonStyle}"
+                Style="{StaticResource SaveButtonStyle}"
                 HorizontalOptions="Fill"
                 IsVisible="False"
                 SemanticProperties.Description="Save the current image to your photo gallery"
