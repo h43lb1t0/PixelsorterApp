@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="PixelsorterApp.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,8 +7,8 @@
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
-    BackgroundColor="{AppThemeBinding Light=#FAFAFA,
-                                      Dark=#121212}"
+    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
+                                      Dark={StaticResource PageBackgroundDark}}"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
     Shell.NavBarIsVisible="False">
 
@@ -19,36 +19,12 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
-    <ContentPage.Resources>
-        <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
-        </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="HeightRequest" Value="48" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#D32F2F, Dark=#E53935}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#FFFFFF}" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup Name="CommonStates">
-                        <VisualState Name="Normal" />
-                        <VisualState Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#EF9A9A, Dark=#B71C1C}" />
-                                <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFEBEE, Dark=#FFCDD2}" />
-                                <Setter Property="Opacity" Value="0.7" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
             <!--  Headder  -->
             <Grid
@@ -81,8 +57,8 @@
                     SemanticProperties.Description="Open additional app options"
                     SemanticProperties.Hint="Opens help options including licenses and privacy policy"
                     Text="⋮"
-                    TextColor="{AppThemeBinding Light=#757575,
-                                                Dark=#9E9E9E}"
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                Dark={StaticResource TextSecondaryDark}}"
                     WidthRequest="36" />
             </Grid>
 
@@ -90,19 +66,24 @@
             <Border
                 x:Name="imagePreviewBorder"
                 Padding="12"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF,
-                                                  Dark=#1E1E1E}"
-                Stroke="{AppThemeBinding Light=#E0E0E0,
-                                         Dark=#303030}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
                 StrokeShape="RoundRectangle 16"
-                StrokeThickness="1">
+                StrokeThickness="1"
+                StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="12" Opacity="0.08" />
+                </Border.Shadow>
                 <Grid RowDefinitions="Auto,Auto">
                     <local:ImageViewer
                         x:Name="imageViewer"
                         Grid.Row="0"
                         HeightRequest="130"
                         ImageTapped="LoadImage_Clicked"
-                        SemanticProperties.Description="Image viewer" />
+                        SemanticProperties.Description="Image viewer"
+                        StyleClass="Elevation5" />
                     <Grid
                         x:Name="loadingOverlay"
                         Grid.Row="0"
@@ -119,13 +100,13 @@
                                 HeightRequest="40"
                                 IsRunning="False"
                                 WidthRequest="40"
-                                Color="White" />
+                                Color="{StaticResource White}" />
                             <Label
                                 x:Name="loadingOverlayLabel"
                                 FontAttributes="Bold"
                                 HorizontalTextAlignment="Center"
                                 Text=""
-                                TextColor="White" />
+                                TextColor="{StaticResource White}" />
                         </VerticalStackLayout>
                     </Grid>
                     <Label
@@ -136,8 +117,8 @@
                         HorizontalOptions="Center"
                         SemanticProperties.Description="Current image caption"
                         Text="Tap to load an image"
-                        TextColor="{AppThemeBinding Light=#757575,
-                                                    Dark=#9E9E9E}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                    Dark={StaticResource TextSecondaryDark}}"
                         VerticalOptions="Center" />
                 </Grid>
             </Border>
@@ -147,97 +128,64 @@
                 FontAttributes="Bold"
                 FontSize="13"
                 SemanticProperties.HeadingLevel="Level2"
-                Text="OPTIONS"
-                TextColor="{AppThemeBinding Light=#D32F2F,
-                                            Dark=#E53935}" />
+                Text="SORT SETTINGS"
+                TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource PrimaryDark}}" />
 
             <Border
                 Padding="0"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF,
-                                                  Dark=#1E1E1E}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
                 StrokeShape="RoundRectangle 12"
-                StrokeThickness="0">
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeThickness="1"
+                StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="10" Opacity="0.10" />
+                </Border.Shadow>
                 <VerticalStackLayout Spacing="0">
-                    <Grid
-                        Padding="16,0"
-                        ColumnDefinitions="Auto,*,Auto"
-                        HeightRequest="56">
-                        <Label
-                            FontSize="16"
-                            Text="Sort by"
-                            VerticalOptions="Center" />
+                    <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
                         <material:PickerField
                             x:Name="sortBy"
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
+                            Title="Sort by"
+                            AccentColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                             AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="End"
                             SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="2"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False"
-                            FontSize="18"
-                            InputTransparent="True"
-                            Opacity="0.7"
-                            Text="⌄"
-                            TextColor="{AppThemeBinding Light=#757575,
-                                                        Dark=#9E9E9E}"
-                            VerticalOptions="Center" />
-                    </Grid>
-
-                    <BoxView
-                        Margin="16,0,0,0"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light=#E0E0E0,
-                                                Dark=#303030}" />
-
-                    <Grid
-                        Padding="16,0"
-                        ColumnDefinitions="Auto,*,Auto"
-                        HeightRequest="56">
-                        <Label
-                            FontSize="16"
-                            Text="Direction"
-                            VerticalOptions="Center" />
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         <material:PickerField
                             x:Name="sortDirection"
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
+                            Title="Direction"
+                            AccentColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                             AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="End"
                             SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="2"
-                            Margin="4,0,0,0"
-                            AutomationProperties.IsInAccessibleTree="False"
-                            FontSize="18"
-                            InputTransparent="True"
-                            Opacity="0.7"
-                            Text="⌄"
-                            TextColor="{AppThemeBinding Light=#757575,
-                                                        Dark=#9E9E9E}"
-                            VerticalOptions="Center" />
-                    </Grid>
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
-                    <BoxView
-                        Margin="16,0,0,0"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light=#E0E0E0,
-                                                Dark=#303030}" />
+            <Label
+                Margin="4,10,4,4"
+                FontAttributes="Bold"
+                FontSize="13"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="MASKING OPTIONS"
+                TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource PrimaryDark}}" />
 
+            <Border
+                Padding="0"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                StrokeShape="RoundRectangle 12"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeThickness="1"
+                StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Offset="0,3" Radius="10" Opacity="0.10" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="0">
                     <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                         <Label
                             FontSize="16"
@@ -246,54 +194,61 @@
                         <Switch
                             x:Name="useCannySwitch"
                             Grid.Column="1"
-                            OnColor="{AppThemeBinding Light=#EF9A9A,
-                                                      Dark=#B71C1C}"
+                            OnColor="{AppThemeBinding Light={StaticResource Secondary},
+                                                      Dark={StaticResource SecondaryDarkText}}"
                             SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
                             SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."
-                            ThumbColor="{AppThemeBinding Light=#D32F2F,
-                                                         Dark=#E53935}"
+                            ThumbColor="{AppThemeBinding Light={StaticResource Primary},
+                                                         Dark={StaticResource PrimaryDark}}"
                             Toggled="UseCanny_Toggled"
                             VerticalOptions="Center" />
                     </Grid>
 
                     <Grid
                         x:Name="cannyMaskGrid"
-                        Padding="16,0"
-                        ColumnDefinitions="*,100"
+                        Padding="16,8"
+                        ColumnDefinitions="*, 60"
                         IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}"
-                        MinimumHeightRequest="56">
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="4">
+
                         <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            FontAttributes="Bold"
                             FontSize="16"
                             Text="Threshold"
-                            VerticalOptions="Start" />
-                        <material:TextField
-                            Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
-                            AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="Fill"
-                            Keyboard="Numeric"
-                            SemanticProperties.Description="Canny threshold"
-                            SemanticProperties.Hint="Enter amount in int percentage"
-                            Text="30"
-                            TextChanged="cannyThreashold_TextChanged"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Start">
-                            <validation:MinValueValidation MinValue="1" />
-                            <validation:MaxValueValidation MaxValue="100" />
-                            <validation:DigitsOnlyValidation />
-                            <validation:RequiredValidation />
-                        </material:TextField>
-                    </Grid>
+                            VerticalOptions="Center" />
 
+                        <Slider
+                            x:Name="cannyValueSlider"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Maximum="100"
+                            Minimum="1"
+                            SemanticProperties.Description="Canny threshold"
+                            ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                                         Light={StaticResource PrimaryDark}}"
+                            ValueChanged="OnCannySliderValueChanged"
+                            VerticalOptions="Center"
+                            Value="30" />
+
+                        <Label
+                            x:Name="cannySliderValue"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="14"
+                            HorizontalOptions="End"
+                            TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                        Light={StaticResource Black}}"
+                            VerticalOptions="Center" />
+                    </Grid>
                     <BoxView
                         Margin="16,0,0,0"
                         HeightRequest="1"
-                        Color="{AppThemeBinding Light=#E0E0E0,
-                                                Dark=#303030}" />
+                        Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                Dark={StaticResource DividerDark}}" />
 
                     <Grid
                         Padding="16,0"
@@ -306,49 +261,54 @@
                         <Switch
                             x:Name="useSubjectMaskingSwitch"
                             Grid.Column="1"
-                            OnColor="{AppThemeBinding Light=#EF9A9A,
-                                                      Dark=#B71C1C}"
+                            OnColor="{AppThemeBinding Light={StaticResource Secondary},
+                                                      Dark={StaticResource SecondaryDarkText}}"
                             SemanticProperties.Description="Toggle switch to turn masking on or off"
                             SemanticProperties.Hint="Requires internet the first time to download the model"
-                            ThumbColor="{AppThemeBinding Light=#D32F2F,
-                                                         Dark=#E53935}"
+                            ThumbColor="{AppThemeBinding Light={StaticResource Primary},
+                                                         Dark={StaticResource PrimaryDark}}"
                             Toggled="useSubjectMaskingSwitch_Toggled"
                             VerticalOptions="Center" />
                     </Grid>
 
                     <Grid
                         x:Name="subjectMaskPaddingGrid"
-                        Padding="16,0"
-                        ColumnDefinitions="*,100"
+                        Padding="16,8"
+                        ColumnDefinitions="*, 60"
                         IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}"
-                        MinimumHeightRequest="56"
-                        RowDefinitions="Auto">
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="4">
+
                         <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            FontAttributes="Bold"
                             FontSize="16"
-                            Text="Padding (px)"
-                            VerticalOptions="Start" />
-                        <material:TextField
+                            Text="Padding"
+                            VerticalOptions="Center" />
+                        <Slider
                             x:Name="subjectMaskPadding"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Maximum="100"
+                            Minimum="1"
+                            SemanticProperties.Description="Subject mask padding"
+                            ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                                         Light={StaticResource PrimaryDark}}"
+                            ValueChanged="OnSubjectMaskingSliderValueChanged"
+                            VerticalOptions="Center"
+                            Value="15" />
+
+                        <Label
+                            x:Name="subjectPaddingSliderValue"
+                            Grid.Row="1"
                             Grid.Column="1"
-                            AccentColor="{AppThemeBinding Light=#D32F2F,
-                                                          Dark=#E53935}"
-                            AllowClear="False"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            HorizontalOptions="Fill"
-                            Keyboard="Numeric"
-                            SemanticProperties.Description="Mask padding in pixels"
-                            SemanticProperties.Hint="Enter a whole number from 1 to 100"
-                            Text="15"
-                            TextChanged="SubjectMaskPadding_TextChanged"
-                            TextColor="{AppThemeBinding Light=#212121,
-                                                        Dark=#F5F5F5}"
-                            VerticalOptions="Start">
-                            <validation:MinValueValidation MinValue="1" />
-                            <validation:MaxValueValidation MaxValue="100" />
-                            <validation:DigitsOnlyValidation />
-                            <validation:RequiredValidation />
-                        </material:TextField>
+                            FontSize="14"
+                            HorizontalOptions="End"
+                            TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                        Light={StaticResource Black}}"
+                            VerticalOptions="Center" />
                     </Grid>
 
                     <Grid
@@ -398,8 +358,9 @@
                     <BoxView
                         Margin="16,0,0,0"
                         HeightRequest="1"
-                        Color="{AppThemeBinding Light=#E0E0E0,
-                                                Dark=#303030}">
+                        IsVisible="False"
+                        Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                Dark={StaticResource DividerDark}}">
                         <BoxView.Triggers>
                             <MultiTrigger TargetType="BoxView">
                                 <MultiTrigger.Conditions>
@@ -455,23 +416,18 @@
                             FontSize="13"
                             SemanticProperties.Description="Combining masks caption"
                             Text="Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask"
-                            TextColor="{AppThemeBinding Light=#757575,
-                                                        Dark=#9E9E9E}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                        Dark={StaticResource TextSecondaryDark}}"
                             VerticalOptions="Start" />
                     </Grid>
                 </VerticalStackLayout>
             </Border>
 
             <Button
-                x:Name="sortBtn"
-                Clicked="SortBtn_Clicked"
-                HorizontalOptions="Fill"
-                SemanticProperties.Description="Start pixel sorting"
-                Text="Sort" />
-
-            <Button
                 x:Name="saveBtn"
                 Clicked="SaveBtn_Clicked"
+                Margin="0,16,0,0"
+                Style="{StaticResource SaveButtonStyle}"
                 HorizontalOptions="Fill"
                 IsVisible="False"
                 SemanticProperties.Description="Save the current image to your photo gallery"
@@ -480,4 +436,16 @@
         </VerticalStackLayout>
     </ScrollView>
 
+    <VerticalStackLayout
+        Grid.Row="1"
+        Padding="20,8,20,16"
+        BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}">
+        <Button
+            x:Name="sortBtn"
+            Clicked="SortBtn_Clicked"
+            HorizontalOptions="Fill"
+            SemanticProperties.Description="Start pixel sorting"
+            Text="Sort" />
+    </VerticalStackLayout>
+</Grid>
 </ContentPage>

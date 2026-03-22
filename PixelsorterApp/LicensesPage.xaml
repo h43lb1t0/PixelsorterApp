@@ -3,30 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PixelsorterApp"
              x:Class="PixelsorterApp.LicensesPage"
-             BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#121212}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}"
              Title="Open Source Licenses"
              SemanticProperties.Description="Open source licenses used by the app">
-    <ContentPage.Resources>
-        <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#212121, Dark=#F5F5F5}" />
-        </Style>
-        <Style x:Key="LinkButtonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="Transparent" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="HorizontalOptions" Value="Start" />
-            <Setter Property="FontSize" Value="13" />
-        </Style>
-    </ContentPage.Resources>
+
+
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
             <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" SemanticProperties.HeadingLevel="Level1" />
             <Label Text="This application uses the following open source packages:" Opacity="0.8" />
 
             <Border
-                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
                 StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                 Padding="0"
                 StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout x:Name="LicensesContainer" Spacing="0">
@@ -44,7 +34,7 @@
                                     CommandParameter="{Binding LicenseUrl}"
                                     SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
                                     SemanticProperties.Hint="Press Enter to open this license in the browser" />
-                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
+                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
                             </VerticalStackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
@@ -52,9 +42,9 @@
             </Border>
             <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8" SemanticProperties.HeadingLevel="Level2" />
             <Border
-                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#303030}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
                 StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                 Padding="0"
                 StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout Padding="16" Spacing="4">
@@ -68,7 +58,7 @@
                         CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/"
                         SemanticProperties.Description="Open license URL: https://creativecommons.org/licenses/by-nc/4.0/"
                         SemanticProperties.Hint="Press Enter to open this license in the browser" />
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E0E0E0, Dark=#303030}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

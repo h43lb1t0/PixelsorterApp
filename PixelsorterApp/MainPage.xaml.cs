@@ -1,10 +1,11 @@
-﻿using NumSharp;
+using CommunityToolkit.Maui.Extensions;
+using NumSharp;
+using PixelsorterApp.Extensions;
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.ColorSpaces;
-using SixLabors.ImageSharp.PixelFormats;
-using UraniumUI.Material.Controls;
+using Color = Microsoft.Maui.Graphics.Color;
 using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp
@@ -288,12 +289,29 @@ namespace PixelsorterApp
         /// <remarks>This method activates the loading overlay, starts the loading indicator animation,
         /// and announces the message for accessibility purposes.</remarks>
         /// <param name="text">The message to display on the loading overlay, providing context to the user about the ongoing operation.</param>
-        private void UseLoadingOverlay(String text)
+        private async Task UseLoadingOverlayAsync(String text)
         {
             loadingOverlayLabel.Text = text;
             loadingIndicator.IsRunning = true;
             loadingOverlay.IsVisible = true;
             SemanticScreenReader.Announce(text);
+            (Color, Color) colors = ((Color)Application.Current!.Resources["SurfaceLight"], (Color)Application.Current!.Resources["SurfaceDark"]);
+
+            if (Application.Current!.RequestedTheme == AppTheme.Light)
+            {
+                colors = (colors.Item2, colors.Item1);
+            }
+
+            while (loadingOverlay.IsVisible)
+            {
+                await imagePreviewBorder.StrokeColorTo(colors.Item1, rate: 16, length: 850, easing: Easing.SinInOut);
+                await imagePreviewBorder.StrokeColorTo(colors.Item2, rate: 16, length: 850, easing: Easing.SinInOut);
+            }
+            imagePreviewBorder.SetAppTheme<Brush>(
+                Border.StrokeProperty,
+                new SolidColorBrush((Color)Application.Current!.Resources["SurfaceLight"]), // Light
+                new SolidColorBrush((Color)Application.Current!.Resources["SurfaceDark"])  // Dark
+            );
         }
 
 
@@ -373,82 +391,86 @@ namespace PixelsorterApp
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
-
-
-            ToggleUiForSorting(false);
-            UseLoadingOverlay("Sorting...");
-
-            try
-            {
-                // Run the CPU/IO-bound sorting on a background thread; save to a temporary file so the UI can be updated safely.
-                sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
-                await Task.Run(async () =>
+            using (new BusyScope(
+                onStart: () =>
                 {
-                    NDArray? maskToUse = null;
-                    if (this.useSubjectMask && this.useCanny)
-                    {
-                        bool subjectIsReady = await CreateSubjectMask();
-                        bool cannyIsReady = await CreateCannyMask();
-
-
-
-                        if (this.useSubtractMasks)
-                        {
-                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.backgroundMask!, this.invertedCannyMask!) : null;
-                        }
-                        else if (!this.useSubtractMasks)
-                        {
-                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.backgroundMask!, this.cannyMask!) : null;
-                        }
-                    }
-                    else if (this.useCanny)
-                    {
-                        maskToUse = await CreateCannyMask() ? this.cannyMask : null;
-                    } else if (this.useSubjectMask)
-                    {
-                        bool isReady = await CreateSubjectMask();
-                        maskToUse = isReady ? (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask) : null;
-                    }
-
-                    var imgData = Sorter.SortImage(
-                                Image.LoadImage(this.imagePath),
-                                sortingCriterion ?? sortByOptions.Values.First(),
-                                sortingDirection,
-                                maskToUse
-                            );
-                    using var foo = Image.NdarrayToImgData(imgData);
-                    foo.SaveAsPng(sortedImagePath);
-                });
-
-                // Back on the UI thread — safe to update UI elements.
-                MainThread.BeginInvokeOnMainThread(() =>
+                    ToggleUiForSorting(false);
+                    _ = UseLoadingOverlayAsync("Sorting...");
+                },
+                onComplete: () =>
                 {
-                    imageViewer.ShowImage(sortedImagePath);
-                    var caption = BuildSortCaption();
-                    imageCaptions.Add(caption);
-                    imagePaths.Add(sortedImagePath);
-                    currentDisplayedImageIndex = imagePaths.Count - 1;
-                    whatIsThisLabel.Text = caption;
-                    SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
-                    SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
-                    saveBtn.IsVisible = true;
-                    saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
-                    SemanticScreenReader.Announce("Sorting complete. Preview updated.");
-                });
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (e.g., show an alert)
-                await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
-                SemanticScreenReader.Announce($"Error: {ex.Message}");
-            }
-            finally
-            {
-                loadingIndicator.IsRunning = false;
-                loadingOverlay.IsVisible = false;
-                ToggleUiForSorting(true);
+                    loadingIndicator.IsRunning = false;
+                    loadingOverlay.IsVisible = false;
+                    ToggleUiForSorting(true);
 
-            }
+                }))
+
+
+                try
+                {
+                    // Run the CPU/IO-bound sorting on a background thread; save to a temporary file so the UI can be updated safely.
+                    sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
+                    await Task.Run(async () =>
+                    {
+                        NDArray? maskToUse = null;
+                        if (this.useSubjectMask && this.useCanny)
+                        {
+                            bool subjectIsReady = await CreateSubjectMask();
+                            bool cannyIsReady = await CreateCannyMask();
+
+
+
+                            if (this.useSubtractMasks)
+                            {
+                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.backgroundMask!, this.invertedCannyMask!) : null;
+                            }
+                            else if (!this.useSubtractMasks)
+                            {
+                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.backgroundMask!, this.cannyMask!) : null;
+                            }
+                        }
+                        else if (this.useCanny)
+                        {
+                            maskToUse = await CreateCannyMask() ? this.cannyMask : null;
+                        }
+                        else if (this.useSubjectMask)
+                        {
+                            bool isReady = await CreateSubjectMask();
+                            maskToUse = isReady ? (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask) : null;
+                        }
+
+                        var imgData = Sorter.SortImage(
+                                    Image.LoadImage(this.imagePath),
+                                    sortingCriterion ?? sortByOptions.Values.First(),
+                                    sortingDirection,
+                                    maskToUse
+                                );
+                        using var foo = Image.NdarrayToImgData(imgData);
+                        foo.SaveAsPng(sortedImagePath);
+                    });
+
+                    // Back on the UI thread — safe to update UI elements.
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        imageViewer.ShowImage(sortedImagePath);
+                        var caption = BuildSortCaption();
+                        imageCaptions.Add(caption);
+                        imagePaths.Add(sortedImagePath);
+                        currentDisplayedImageIndex = imagePaths.Count - 1;
+                        whatIsThisLabel.Text = caption;
+                        SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
+                        SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
+                        saveBtn.IsVisible = true;
+                        saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                        SemanticScreenReader.Announce("Sorting complete. Preview updated.");
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (e.g., show an alert)
+                    await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
+                    SemanticScreenReader.Announce($"Error: {ex.Message}");
+                }
         }
 
         /// <summary>
@@ -523,27 +545,39 @@ namespace PixelsorterApp
 
             if (!backgroundMasker.IsReadyToUse && netAccess && e.Value)
             {
-                UseLoadingOverlay("Downloading...");
-                sortBtn.IsEnabled = false;
-                try
+                using (new BusyScope(
+                onStart: () =>
                 {
-                    await backgroundMasker.DownloadModel();
-                }
-                catch (Exception)
-                {
-                    await DisplayAlertAsync(
-                        "Download failed",
-                        "The masking model could not be downloaded. Please check your internet connection and try again.",
-                        "OK");
-                    useSubjectMaskingSwitch.IsToggled = false;
-                    return;
-                }
-                finally
+                    ToggleUiForSorting(false);
+                    _ = UseLoadingOverlayAsync("Downloading...");
+                },
+                onComplete: () =>
                 {
                     loadingIndicator.IsRunning = false;
                     loadingOverlay.IsVisible = false;
-                    sortBtn.IsEnabled = true;
-                }
+                    ToggleUiForSorting(true);
+
+                }))
+
+                    try
+                    {
+                        await backgroundMasker.DownloadModel();
+                    }
+                    catch (Exception)
+                    {
+                        await DisplayAlertAsync(
+                            "Download failed",
+                            "The masking model could not be downloaded. Please check your internet connection and try again.",
+                            "OK");
+                        useSubjectMaskingSwitch.IsToggled = false;
+                        return;
+                    }
+                    finally
+                    {
+                        loadingIndicator.IsRunning = false;
+                        loadingOverlay.IsVisible = false;
+                        sortBtn.IsEnabled = true;
+                    }
             }
 
 
@@ -616,62 +650,48 @@ namespace PixelsorterApp
         }
 
 
-        private void cannyThreashold_TextChanged(object sender, TextChangedEventArgs e)
+        private void OnCannySliderValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
 
-            var textfield = (TextField)sender;
-
-            if (!textfield.IsValid)
+            if (e.OldValue == e.NewValue)
             {
                 return;
             }
 
-            string newText = e.NewTextValue ?? string.Empty;
-            string numericText = new string(newText.Where(char.IsDigit).ToArray());
-
-            if (newText != numericText)
+            int value = (int)e.NewValue;
+            if (value != e.NewValue)
             {
-                entry.Text = numericText;
-                return;
+                cannyValueSlider.Value = value;
             }
+            this.cannyThreashold = (int)e.NewValue;
+            cannySliderValue.Text = $"{value}%";
 
-            if (int.TryParse(numericText, out int padding))
-            {
-                this.cannyThreashold = padding;
-            }
             this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
             this.invertedCannyMask = null;
 
         }
 
-        private void SubjectMaskPadding_TextChanged(object sender, TextChangedEventArgs e)
+        private void OnSubjectMaskingSliderValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (sender is not UraniumUI.Material.Controls.TextField entry) return;
-            var textfield = (TextField)sender;
 
-            if (!textfield.IsValid)
+            if (e.OldValue == e.NewValue)
             {
                 return;
             }
 
-            string newText = e.NewTextValue ?? string.Empty;
-            string numericText = new string(newText.Where(char.IsDigit).ToArray());
-
-
-            if (newText != numericText)
+            int value = (int)e.NewValue;
+            if (value != e.NewValue)
             {
-                entry.Text = numericText;
-                return;
+                subjectMaskPadding.Value = value;
             }
 
-            if (int.TryParse(numericText, out int padding))
-            {
-                this.subjectMaskPaddingAmount = padding;
-            }
+            subjectPaddingSliderValue.Text = $"{value} px";
+
+
+            this.subjectMaskPaddingAmount = value;
             this.backgroundMask = null; // Clear existing masks to ensure they are regenerated with the new padding
             this.invertedBackgroundMask = null;
-  
+
         }
 
         private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -713,12 +733,13 @@ namespace PixelsorterApp
             useSubjectMaskingSwitch.IsEnabled = state;
             useCannySwitch.IsEnabled = state;
             subjectMaskPadding.IsEnabled = state;
+            cannyValueSlider.IsEnabled = state;
             sortBackgroundRadio.IsEnabled = state;
             sortForegroundRadio.IsEnabled = state;
             subMasksRadio.IsEnabled = state;
             addMasksRadio.IsEnabled = state;
             saveBtn.IsEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
-            
+
         }
     }
 }
