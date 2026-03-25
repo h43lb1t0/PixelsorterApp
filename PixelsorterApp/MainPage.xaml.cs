@@ -28,7 +28,7 @@ namespace PixelsorterApp
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
         private int subjectMaskPaddingAmount = 15;
-        private int cannyThreashold = 30;
+        private float cannyThreashold = 0.3f;
         private bool useInvertedMask = false;
         private bool useSubtractMasks = true;
         private NDArray? backgroundMask = null;
@@ -342,7 +342,7 @@ namespace PixelsorterApp
                 {
                     try
                     {
-                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, this.subjectMaskPaddingAmount);
+                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(this.subjectMaskPaddingAmount));
                         return true;
                     }
                     catch (Exception ex)
@@ -370,7 +370,7 @@ namespace PixelsorterApp
             {
                 try
                 {
-                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, this.cannyThreashold);
+                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, new CannyMaskOptions(this.cannyThreashold));
                     return true;
                 }
                 catch (Exception ex)
@@ -663,7 +663,7 @@ namespace PixelsorterApp
             {
                 cannyValueSlider.Value = value;
             }
-            this.cannyThreashold = (int)e.NewValue;
+            this.cannyThreashold = (int)e.NewValue / 100f;
             cannySliderValue.Text = $"{value}%";
 
             this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
