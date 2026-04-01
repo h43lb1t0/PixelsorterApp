@@ -34,9 +34,9 @@ namespace PixelsorterApp
         // Subject/Background mask
         private bool useSubjectMask = false;
         private int subjectMaskPaddingAmount = 15;
-        private bool useInvertedMask = false;
-        private NDArray? backgroundMask = null;
-        private NDArray? invertedBackgroundMask = null;
+        private bool useInvertedSubjectMask = false;
+        private NDArray? subjectMask = null;
+        private NDArray? invertedSubjectMask = null;
 
         // Canny mask
         private bool useCanny = false;
@@ -248,9 +248,9 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.backgroundMask = null; // Clear any existing mask when a new image is loaded
+            this.subjectMask = null; // Clear any existing mask when a new image is loaded
             this.cannyMask = null;
-            this.invertedBackgroundMask = null;
+            this.invertedSubjectMask = null;
             this.invertedCannyMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
@@ -347,7 +347,7 @@ namespace PixelsorterApp
 
         private async Task<bool> CreateSubjectMask()
         {
-            if (this.backgroundMask is not null)
+            if (this.subjectMask is not null)
             {
                 return true;
             }
@@ -357,7 +357,7 @@ namespace PixelsorterApp
                 {
                     try
                     {
-                        (this.backgroundMask, this.invertedBackgroundMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(this.subjectMaskPaddingAmount));
+                        (this.subjectMask, this.invertedSubjectMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(this.subjectMaskPaddingAmount));
                         return true;
                     }
                     catch (Exception ex)
@@ -437,11 +437,11 @@ namespace PixelsorterApp
 
                             if (this.useSubtractMasks)
                             {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.backgroundMask!, this.invertedCannyMask!) : null;
+                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
                             }
                             else if (!this.useSubtractMasks)
                             {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.backgroundMask!, this.cannyMask!) : null;
+                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
                             }
                         }
                         else if (this.useCanny)
@@ -451,7 +451,7 @@ namespace PixelsorterApp
                         else if (this.useSubjectMask)
                         {
                             bool isReady = await CreateSubjectMask();
-                            maskToUse = isReady ? (this.useInvertedMask ? this.invertedBackgroundMask : this.backgroundMask) : null;
+                            maskToUse = isReady ? (this.useInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
                         }
 
                         var imgData = Sorter.SortImage(
@@ -704,8 +704,8 @@ namespace PixelsorterApp
 
 
             this.subjectMaskPaddingAmount = value;
-            this.backgroundMask = null; // Clear existing masks to ensure they are regenerated with the new padding
-            this.invertedBackgroundMask = null;
+            this.subjectMask = null; // Clear existing masks to ensure they are regenerated with the new padding
+            this.invertedSubjectMask = null;
 
         }
 
@@ -713,11 +713,11 @@ namespace PixelsorterApp
         {
             if (sender == sortBackgroundRadio && e.Value)
             {
-                this.useInvertedMask = false;
+                this.useInvertedSubjectMask = false;
             }
             else if (sender == sortForegroundRadio && e.Value)
             {
-                this.useInvertedMask = true;
+                this.useInvertedSubjectMask = true;
             }
         }
 
