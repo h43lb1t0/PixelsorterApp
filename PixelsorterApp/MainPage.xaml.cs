@@ -12,30 +12,45 @@ namespace PixelsorterApp
 {
     public partial class MainPage : ContentPage
     {
+        // other
+        private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
-        private string? imagePath; // Add field to store the file path
+        // image
+        private string? imagePath;
+
+        // Basic sorting options
+        private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
+        private Func<Hsl, float>? sortingCriterion;
+        private readonly string[] sortByOptionNames;
+        
+        private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
+        private SortDirections sortingDirection;
+        private string[] sortDirectionOptionNames;
+
+        // Masker
         private readonly BackgroundMask backgroundMasker = new();
         private readonly CannyMask cannyMasker = new();
+
+        // Subject/Background mask
         private bool useSubjectMask = false;
+        private int subjectMaskPaddingAmount = 15;
+        private bool useInvertedMask = false;
+        private NDArray? backgroundMask = null;
+        private NDArray? invertedBackgroundMask = null;
+
+        // Canny mask
         private bool useCanny = false;
-        private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-        private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
-        private Func<Hsl, float>? sortingCriterion;
-        private SortDirections sortingDirection;
-        private readonly string[] sortByOptionNames;
-        private string[] sortDirectionOptionNames;
+        private float cannyThreashold = 0.3f;
+        private NDArray? cannyMask = null;
+        private NDArray? invertedCannyMask = null;
+        
+        // Combine masks
+        private bool useSubtractMasks = true;
+
+        // image viewer
         private readonly List<string> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
-        private int subjectMaskPaddingAmount = 15;
-        private float cannyThreashold = 0.3f;
-        private bool useInvertedMask = false;
-        private bool useSubtractMasks = true;
-        private NDArray? backgroundMask = null;
-        private NDArray? invertedBackgroundMask = null;
-        private NDArray? cannyMask = null;
-        private NDArray? invertedCannyMask = null;
-        private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
 
 
         /// <summary>
