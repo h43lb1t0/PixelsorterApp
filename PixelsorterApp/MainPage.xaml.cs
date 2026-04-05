@@ -1,10 +1,8 @@
 using CommunityToolkit.Maui.Extensions;
-using NumSharp;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
-using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
 using Color = Microsoft.Maui.Graphics.Color;
 
@@ -19,12 +17,6 @@ namespace PixelsorterApp
 
         // image
         private string? imagePath;
-
-        private NDArray? subjectMask = null;
-        private NDArray? invertedSubjectMask = null;
-
-        private NDArray? cannyMask = null;
-        private NDArray? invertedCannyMask = null;
 
         // image viewer
         private readonly List<string> imageCaptions = [];
@@ -48,27 +40,12 @@ namespace PixelsorterApp
             this.viewModel.IsSaveEnabled = false;
             ApplyImageSizeForCurrentDevice();
 
-            this.viewModel.PropertyChanged += ViewModel_PropertyChanged;
             this.viewModel.SortRequested += async () => await SortAsync();
             this.viewModel.SaveRequested += async () => await SaveAsync();
             this.viewModel.OpenLicensesRequested += async () => await OpenLicensesAsync();
             this.viewModel.OpenPrivacyPolicyRequested += async () => await OpenPrivacyPolicyAsync();
             this.viewModel.OpenHelpRequested += async () => await OpenHelpAsync();
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
-        }
-
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(MainPageViewModel.CannyThresholdPercent))
-            {
-                cannyMask = null;
-                invertedCannyMask = null;
-            }
-            else if (e.PropertyName == nameof(MainPageViewModel.SubjectMaskPadding))
-            {
-                subjectMask = null;
-                invertedSubjectMask = null;
-            }
         }
 
         /// <summary>
@@ -163,10 +140,6 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.subjectMask = null; // Clear any existing mask when a new image is loaded
-            this.cannyMask = null;
-            this.invertedSubjectMask = null;
-            this.invertedCannyMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -260,63 +233,6 @@ namespace PixelsorterApp
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
 
-
-        private async Task<bool> CreateSubjectMask()
-        {
-            if (this.subjectMask is not null)
-            {
-                return true;
-            }
-            else if (!String.IsNullOrEmpty(this.imagePath))
-            {
-                if (imageProcessingService.IsBackgroundMaskReady)
-                {
-                    try
-                    {
-                        (this.subjectMask, this.invertedSubjectMask) = await imageProcessingService.CreateSubjectMaskAsync(this.imagePath, viewModel.SubjectMaskPadding);
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        await DisplayAlertAsync("Error", $"An error occurred while creating the subject mask: {ex.Message}", "OK");
-                        SemanticScreenReader.Announce($"Error creating subject mask: {ex.Message}");
-                        return false;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private async Task<bool> CreateCannyMask()
-        {
-            if (this.cannyMask is not null)
-            {
-                return true;
-            }
-            else if (!String.IsNullOrEmpty(this.imagePath))
-            {
-                try
-                {
-                    (this.cannyMask, this.invertedCannyMask) = await imageProcessingService.CreateCannyMaskAsync(this.imagePath, viewModel.CannyThreshold);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlertAsync("Error", $"An error occurred while creating the Canny mask: {ex.Message}", "OK");
-                    SemanticScreenReader.Announce($"Error creating Canny mask: {ex.Message}");
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private async Task SortAsync()
         {
             if (this.imagePath is null) // Check if we have a file path
@@ -339,30 +255,14 @@ namespace PixelsorterApp
 
                 try
                 {
-                    NDArray? maskToUse = null;
-                    if (viewModel.UseSubjectMask && viewModel.UseCanny)
-                    {
-                        bool subjectIsReady = await CreateSubjectMask();
-                        bool cannyIsReady = await CreateCannyMask();
-
-                        if (viewModel.UseSubtractMasks)
-                        {
-                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
-                        }
-                        else if (!viewModel.UseSubtractMasks)
-                        {
-                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
-                        }
-                    }
-                    else if (viewModel.UseCanny)
-                    {
-                        maskToUse = await CreateCannyMask() ? this.cannyMask : null;
-                    }
-                    else if (viewModel.UseSubjectMask)
-                    {
-                        bool isReady = await CreateSubjectMask();
-                        maskToUse = isReady ? (viewModel.UseInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
-                    }
+                    var maskToUse = await imageProcessingService.BuildMaskAsync(
+                        this.imagePath,
+                        viewModel.UseSubjectMask,
+                        viewModel.UseCanny,
+                        viewModel.UseSubtractMasks,
+                        viewModel.UseInvertedSubjectMask,
+                        viewModel.SubjectMaskPadding,
+                        viewModel.CannyThreshold);
 
                     sortedImagePath = await imageProcessingService.SortImageAsync(
                         this.imagePath,
