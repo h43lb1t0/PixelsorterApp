@@ -3,7 +3,6 @@ using PixelsorterApp.Extensions;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
-using SixLabors.ImageSharp;
 using Color = Microsoft.Maui.Graphics.Color;
 
 namespace PixelsorterApp
@@ -35,28 +34,57 @@ namespace PixelsorterApp
 
             SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
 
-            sortBtn.IsVisible = true;
             this.viewModel.IsSortEnabled = false;
             this.viewModel.IsSaveVisible = false;
             this.viewModel.IsSaveEnabled = false;
             ApplyImageSizeForCurrentDevice();
 
-            this.viewModel.SortRequested += async () => await SortAsync();
-            this.viewModel.SaveRequested += async () => await SaveAsync();
-            this.viewModel.LoadImageRequested += async () => await LoadImageAsync();
-            this.viewModel.OpenLicensesRequested += async () => await OpenLicensesAsync();
-            this.viewModel.OpenPrivacyPolicyRequested += async () => await OpenPrivacyPolicyAsync();
-            this.viewModel.OpenHelpRequested += async () => await OpenHelpAsync();
+            this.viewModel.SortRequested += OnSortRequested;
+            this.viewModel.SaveRequested += OnSaveRequested;
+            this.viewModel.LoadImageRequested += OnLoadImageRequested;
+            this.viewModel.OpenLicensesRequested += OnOpenLicensesRequested;
+            this.viewModel.OpenPrivacyPolicyRequested += OnOpenPrivacyPolicyRequested;
+            this.viewModel.OpenHelpRequested += OnOpenHelpRequested;
             this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
         }
 
-        private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
             {
-                _ = HandleSubjectMaskEnabledAsync();
+                await HandleSubjectMaskEnabledAsync();
             }
+        }
+
+        private void OnSortRequested()
+        {
+            _ = SortAsync();
+        }
+
+        private void OnSaveRequested()
+        {
+            _ = SaveAsync();
+        }
+
+        private void OnLoadImageRequested()
+        {
+            _ = LoadImageAsync();
+        }
+
+        private void OnOpenLicensesRequested()
+        {
+            _ = OpenLicensesAsync();
+        }
+
+        private void OnOpenPrivacyPolicyRequested()
+        {
+            _ = OpenPrivacyPolicyAsync();
+        }
+
+        private void OnOpenHelpRequested()
+        {
+            _ = OpenHelpAsync();
         }
 
         /// <summary>
@@ -231,7 +259,7 @@ namespace PixelsorterApp
 
 
 
-        private async void LoadImage_Clicked(object sender, EventArgs e)
+        private void LoadImage_Clicked(object sender, EventArgs e)
         {
             if (viewModel.LoadImageCommand.CanExecute(null))
             {
