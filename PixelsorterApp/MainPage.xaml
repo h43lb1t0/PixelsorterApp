@@ -6,7 +6,9 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+    x:DataType="viewModels:MainPageViewModel"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
                                       Dark={StaticResource PageBackgroundDark}}"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
@@ -121,7 +123,7 @@
                             FontSize="12"
                             HorizontalOptions="Center"
                             SemanticProperties.Description="Current image caption"
-                            Text="Tap to load an image"
+                            Text="{Binding CurrentCaption}"
                             TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                         Dark={StaticResource TextSecondaryDark}}"
                             VerticalOptions="Center" />
@@ -159,6 +161,8 @@
                             <material:PickerField
                                 x:Name="sortBy"
                                 Title="Sort by"
+                                ItemsSource="{Binding SortByOptions}"
+                                SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
@@ -168,6 +172,8 @@
                             <material:PickerField
                                 x:Name="sortDirection"
                                 Title="Direction"
+                                ItemsSource="{Binding SortDirectionOptions}"
+                                SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
@@ -213,6 +219,7 @@
                             <Switch
                                 x:Name="useCannySwitch"
                                 Grid.Column="1"
+                                IsToggled="{Binding UseCanny, Mode=TwoWay}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
@@ -280,6 +287,7 @@
                             <Switch
                                 x:Name="useSubjectMaskingSwitch"
                                 Grid.Column="1"
+                                IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking on or off"
@@ -447,7 +455,8 @@
                     Margin="0,16,0,0"
                     Clicked="SaveBtn_Clicked"
                     HorizontalOptions="Fill"
-                    IsVisible="False"
+                    IsVisible="{Binding IsSaveVisible}"
+                    IsEnabled="{Binding IsSaveEnabled}"
                     SemanticProperties.Description="Save the current image to your photo gallery"
                     Style="{StaticResource SaveButtonStyle}"
                     Text="Save" />
@@ -464,6 +473,7 @@
                 x:Name="sortBtn"
                 Clicked="SortBtn_Clicked"
                 HorizontalOptions="Fill"
+                IsEnabled="{Binding IsSortEnabled}"
                 SemanticProperties.Description="Start pixel sorting"
                 Text="Sort" />
         </VerticalStackLayout>

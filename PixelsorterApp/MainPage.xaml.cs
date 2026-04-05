@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Extensions;
 using NumSharp;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
@@ -14,18 +15,10 @@ namespace PixelsorterApp
     {
         // other
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
+        private readonly MainPageViewModel viewModel;
 
         // image
         private string? imagePath;
-
-        // Basic sorting options
-        private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-        private Func<Hsl, float>? sortingCriterion;
-        private readonly string[] sortByOptionNames;
-        
-        private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
-        private SortDirections sortingDirection;
-        private string[] sortDirectionOptionNames;
 
         // Masker
         private readonly BackgroundMask backgroundMasker = new();
@@ -53,93 +46,19 @@ namespace PixelsorterApp
         private int currentDisplayedImageIndex = -1;
 
 
-        /// <summary>
-        /// Initializes the available sort direction options by populating a dictionary with the string representations
-        /// of the sort directions.
-        /// </summary>
-        /// <remarks>This method prepares the sortDirectionOptions dictionary for use in UI elements or
-        /// other components that require a mapping between human-readable sort direction names and their corresponding
-        /// enumeration values. It should be called before accessing or displaying sort direction options to ensure the
-        /// dictionary is properly populated.</remarks>
-        private void InitializeSortDirectionOptions()
+        public MainPage(MainPageViewModel viewModel)
         {
+            this.viewModel = viewModel;
 
-            foreach (SortDirections dir in Enum.GetValues(typeof(SortDirections)))
-            {
-                string name = System.Text.RegularExpressions.Regex.Replace(dir.ToString(), "([A-Z])", " $1").Trim();
-                sortDirectionOptions[name] = dir;
-            }
-        }
-
-        /// <summary>
-        /// Updates the sort direction picker to reflect the current sorting options and selection state.
-        /// </summary>
-        /// <remarks>This method filters the available sorting options based on the current mask usage
-        /// setting and updates the selected index accordingly. If the previous selection is no longer valid, the first
-        /// available option will be selected. The sorting direction is also updated based on the selected
-        /// option.</remarks>
-        private void UpdateSortDirectionPicker()
-        {
-            string? previousSelection = null;
-            if (sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length)
-            {
-                previousSelection = sortDirectionOptionNames[sortDirection.SelectedIndex];
-            }
-
-            sortDirectionOptionNames =
-            [
-                .. sortDirectionOptions.Keys.Where(name => this.useSubjectMask || this.useCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
-            ];
-
-            sortDirection.ItemsSource = sortDirectionOptionNames;
-
-            int selectedIndex = -1;
-            if (!string.IsNullOrEmpty(previousSelection))
-            {
-                selectedIndex = Array.IndexOf(sortDirectionOptionNames, previousSelection);
-            }
-
-            sortDirection.SelectedIndex = selectedIndex >= 0
-                ? selectedIndex
-                : (sortDirectionOptionNames.Length > 0 ? 0 : -1);
-
-            if (sortDirection.SelectedIndex >= 0)
-            {
-                sortingDirection = sortDirectionOptions[sortDirectionOptionNames[sortDirection.SelectedIndex]];
-            }
-        }
-
-
-        public MainPage()
-        {
             InitializeComponent();
+            BindingContext = this.viewModel;
 
             SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
 
             sortBtn.IsVisible = true;
-            sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
-
-            InitializeSortDirectionOptions();
-            sortByOptionNames = [.. sortByOptions.Keys];
-            sortDirectionOptionNames = [];
-
-            sortBy.ItemsSource = sortByOptionNames;
-            sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
-            sortBy.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(sortBy.SelectedIndex))
-                    SortBy_SelectedIndexChanged(s, EventArgs.Empty);
-            };
-
-            UpdateSortDirectionPicker();
-            sortDirection.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(sortDirection.SelectedIndex))
-                    SortDirection_SelectedIndexChanged(s, EventArgs.Empty);
-            };
-
-            sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
-            sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
+            this.viewModel.IsSortEnabled = false;
+            this.viewModel.IsSaveVisible = false;
+            this.viewModel.IsSaveEnabled = false;
             ApplyImageSizeForCurrentDevice();
 
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
@@ -161,18 +80,12 @@ namespace PixelsorterApp
 
             if (index >= 0 && index < imageCaptions.Count)
             {
-                whatIsThisLabel.Text = imageCaptions[index];
+                viewModel.CurrentCaption = imageCaptions[index];
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {imageCaptions[index]}");
                 SemanticProperties.SetDescription(imageViewer, $"Image preview. {imageCaptions[index]}");
             }
-            if (index == 0 && index < imagePaths.Count)
-            {
-                saveBtn.IsEnabled = false;
-            }
-            else
-            {
-                saveBtn.IsEnabled = true;
-            }
+
+            viewModel.IsSaveEnabled = index > 0 && index < imagePaths.Count;
         }
 
         /// <summary>
@@ -205,13 +118,8 @@ namespace PixelsorterApp
         /// {directionText}'.</returns>
         private string BuildSortCaption()
         {
-            var sortByText = sortBy.SelectedIndex >= 0 && sortBy.SelectedIndex < sortByOptionNames.Length
-                ? sortByOptionNames[sortBy.SelectedIndex]
-                : "Unknown";
-
-            var directionText = sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length
-                ? sortDirectionOptionNames[sortDirection.SelectedIndex]
-                : "Unknown";
+            var sortByText = viewModel.SelectedSortByName;
+            var directionText = viewModel.SelectedSortDirectionName;
 
             return $"Sort by: {sortByText} • Direction: {directionText}";
         }
@@ -264,13 +172,14 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                whatIsThisLabel.Text = imageCaptions[0];
+                viewModel.CurrentCaption = imageCaptions[0];
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
                 SemanticProperties.SetDescription(imageViewer, "Image preview. Original image. Double tap to load another image.");
 
                 whatIsThisLabel.IsVisible = true;
-                sortBtn.IsEnabled = true;
-                saveBtn.IsVisible = false;
+                viewModel.IsSortEnabled = true;
+                viewModel.IsSaveVisible = false;
+                viewModel.IsSaveEnabled = false;
                 SemanticScreenReader.Announce("Image loaded. Ready to sort.");
             });
         }
@@ -428,7 +337,7 @@ namespace PixelsorterApp
                     await Task.Run(async () =>
                     {
                         NDArray? maskToUse = null;
-                        if (this.useSubjectMask && this.useCanny)
+                        if (viewModel.UseSubjectMask && viewModel.UseCanny)
                         {
                             bool subjectIsReady = await CreateSubjectMask();
                             bool cannyIsReady = await CreateCannyMask();
@@ -444,11 +353,11 @@ namespace PixelsorterApp
                                 maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
                             }
                         }
-                        else if (this.useCanny)
+                        else if (viewModel.UseCanny)
                         {
                             maskToUse = await CreateCannyMask() ? this.cannyMask : null;
                         }
-                        else if (this.useSubjectMask)
+                        else if (viewModel.UseSubjectMask)
                         {
                             bool isReady = await CreateSubjectMask();
                             maskToUse = isReady ? (this.useInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
@@ -456,8 +365,8 @@ namespace PixelsorterApp
 
                         var imgData = Sorter.SortImage(
                                     Image.LoadImage(this.imagePath),
-                                    sortingCriterion ?? sortByOptions.Values.First(),
-                                    sortingDirection,
+                                    viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
+                                    viewModel.SortingDirection,
                                     maskToUse
                                 );
                         using var foo = Image.NdarrayToImgData(imgData);
@@ -472,11 +381,11 @@ namespace PixelsorterApp
                         imageCaptions.Add(caption);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        whatIsThisLabel.Text = caption;
+                        viewModel.CurrentCaption = caption;
                         SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
                         SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
-                        saveBtn.IsVisible = true;
-                        saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                        viewModel.IsSaveVisible = true;
+                        viewModel.IsSaveEnabled = true;
                         SemanticScreenReader.Announce("Sorting complete. Preview updated.");
                     });
                 }
@@ -591,13 +500,10 @@ namespace PixelsorterApp
                     {
                         loadingIndicator.IsRunning = false;
                         loadingOverlay.IsVisible = false;
-                        sortBtn.IsEnabled = true;
+                        viewModel.IsSortEnabled = true;
                     }
             }
 
-
-            this.useSubjectMask = e.Value;
-            UpdateSortDirectionPicker();
         }
 
         /// <summary>
@@ -618,27 +524,6 @@ namespace PixelsorterApp
             return true;
         }
 
-
-        private void SortBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int selectedIndex = sortBy.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < sortByOptionNames.Length)
-            {
-                var selectedOption = sortByOptionNames[selectedIndex];
-                // Update the sorting criterion based on the selected option
-                sortingCriterion = sortByOptions[selectedOption];
-            }
-        }
-
-        private void SortDirection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int selectedIndex = sortDirection.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < sortDirectionOptionNames.Length)
-            {
-                var selectedOption = sortDirectionOptionNames[selectedIndex];
-                sortingDirection = sortDirectionOptions[selectedOption];
-            }
-        }
 
         private async void LicensesBtn_Clicked(object sender, EventArgs e)
         {
@@ -723,8 +608,6 @@ namespace PixelsorterApp
 
         private void UseCanny_Toggled(object sender, ToggledEventArgs e)
         {
-            this.useCanny = e.Value;
-            UpdateSortDirectionPicker();
         }
 
         private void HowToCombine_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -741,7 +624,7 @@ namespace PixelsorterApp
 
         private void ToggleUiForSorting(bool state)
         {
-            sortBtn.IsEnabled = state;
+            viewModel.IsSortEnabled = state;
             imageViewer.IsEnabled = state;
             sortBy.IsEnabled = state;
             sortDirection.IsEnabled = state;
@@ -753,7 +636,7 @@ namespace PixelsorterApp
             sortForegroundRadio.IsEnabled = state;
             subMasksRadio.IsEnabled = state;
             addMasksRadio.IsEnabled = state;
-            saveBtn.IsEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
+            viewModel.IsSaveEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
 
         }
     }

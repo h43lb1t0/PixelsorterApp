@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using PixelsorterApp.ViewModels;
 using UraniumUI;
 
 namespace PixelsorterApp
@@ -17,6 +18,11 @@ namespace PixelsorterApp
             .UseMauiCommunityToolkit()
             .UseUraniumUI()
             .UseUraniumUIMaterial();
+
+            builder.Services.AddSingleton<AppShell>();
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<MainPageViewModel>();
+
 #if ANDROID
             builder.Services.AddSingleton<IGalleryService, Platforms.Android.GalleryService>();
 #endif
