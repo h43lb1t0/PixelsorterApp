@@ -16,8 +16,8 @@
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Help">
-            <MenuFlyoutItem Clicked="LicensesBtn_Clicked" Text="Open Source Licenses" />
-            <MenuFlyoutItem Clicked="PrivacyPolicyBtn_Clicked" Text="Privacy Policy" />
+            <MenuFlyoutItem Command="{Binding OpenLicensesCommand}" Text="Open Source Licenses" />
+            <MenuFlyoutItem Command="{Binding OpenPrivacyPolicyCommand}" Text="Privacy Policy" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
@@ -52,7 +52,7 @@
                         Grid.Column="1"
                         Padding="0"
                         BackgroundColor="Transparent"
-                        Clicked="HelpMenuBtn_Clicked"
+                        Command="{Binding OpenHelpCommand}"
                         CornerRadius="18"
                         FontSize="22"
                         HeightRequest="36"
@@ -427,7 +427,7 @@
                 <Button
                     x:Name="saveBtn"
                     Margin="0,16,0,0"
-                    Clicked="SaveBtn_Clicked"
+                    Command="{Binding SaveCommand}"
                     HorizontalOptions="Fill"
                     IsVisible="{Binding IsSaveVisible}"
                     IsEnabled="{Binding IsSaveEnabled}"
@@ -445,7 +445,7 @@
                                               Dark={StaticResource PageBackgroundDark}}">
             <Button
                 x:Name="sortBtn"
-                Clicked="SortBtn_Clicked"
+                Command="{Binding SortCommand}"
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
                 SemanticProperties.Description="Start pixel sorting"

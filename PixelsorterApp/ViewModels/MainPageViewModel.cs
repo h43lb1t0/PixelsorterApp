@@ -2,6 +2,7 @@ using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -25,8 +26,14 @@ public sealed class MainPageViewModel : BaseViewModel
     private bool useSubtractMasks = true;
     private string currentCaption = "Tap to load an image";
 
+    private readonly Command sortCommand;
+    private readonly Command saveCommand;
+
     public MainPageViewModel()
     {
+        sortCommand = new Command(() => SortRequested?.Invoke(), () => IsSortEnabled);
+        saveCommand = new Command(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
+
         foreach (SortDirections direction in Enum.GetValues(typeof(SortDirections)))
         {
             string name = Regex.Replace(direction.ToString(), "([A-Z])", " $1").Trim();
@@ -83,7 +90,15 @@ public sealed class MainPageViewModel : BaseViewModel
     public bool IsSortEnabled
     {
         get => isSortEnabled;
-        set => SetProperty(ref isSortEnabled, value);
+        set
+        {
+            if (!SetProperty(ref isSortEnabled, value))
+            {
+                return;
+            }
+
+            sortCommand.ChangeCanExecute();
+        }
     }
 
     public bool IsSaveVisible
@@ -95,7 +110,15 @@ public sealed class MainPageViewModel : BaseViewModel
     public bool IsSaveEnabled
     {
         get => isSaveEnabled;
-        set => SetProperty(ref isSaveEnabled, value);
+        set
+        {
+            if (!SetProperty(ref isSaveEnabled, value))
+            {
+                return;
+            }
+
+            saveCommand.ChangeCanExecute();
+        }
     }
 
     public bool IsInteractionEnabled
@@ -231,6 +254,26 @@ public sealed class MainPageViewModel : BaseViewModel
     public bool ShowWhatToSort => UseSubjectMask && !UseCanny;
 
     public bool ShowHowToCombine => UseSubjectMask && UseCanny;
+
+    public ICommand SortCommand => sortCommand;
+
+    public ICommand SaveCommand => saveCommand;
+
+    public ICommand OpenLicensesCommand => new Command(() => OpenLicensesRequested?.Invoke());
+
+    public ICommand OpenPrivacyPolicyCommand => new Command(() => OpenPrivacyPolicyRequested?.Invoke());
+
+    public ICommand OpenHelpCommand => new Command(() => OpenHelpRequested?.Invoke());
+
+    public event Action? SortRequested;
+
+    public event Action? SaveRequested;
+
+    public event Action? OpenLicensesRequested;
+
+    public event Action? OpenPrivacyPolicyRequested;
+
+    public event Action? OpenHelpRequested;
 
     public IReadOnlyList<string> SortByOptions { get; }
 

@@ -49,6 +49,11 @@ namespace PixelsorterApp
             ApplyImageSizeForCurrentDevice();
 
             this.viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            this.viewModel.SortRequested += async () => await SortAsync();
+            this.viewModel.SaveRequested += async () => await SaveAsync();
+            this.viewModel.OpenLicensesRequested += async () => await OpenLicensesAsync();
+            this.viewModel.OpenPrivacyPolicyRequested += async () => await OpenPrivacyPolicyAsync();
+            this.viewModel.OpenHelpRequested += async () => await OpenHelpAsync();
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
         }
 
@@ -312,7 +317,7 @@ namespace PixelsorterApp
             }
         }
 
-        private async void SortBtn_Clicked(object sender, EventArgs e)
+        private async Task SortAsync()
         {
             if (this.imagePath is null) // Check if we have a file path
                 return;
@@ -394,7 +399,7 @@ namespace PixelsorterApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void SaveBtn_Clicked(object sender, EventArgs e)
+        private async Task SaveAsync()
         {
             var focusedImagePath = GetFocusedImagePath();
 
@@ -505,17 +510,17 @@ namespace PixelsorterApp
         }
 
 
-        private async void LicensesBtn_Clicked(object sender, EventArgs e)
+        private async Task OpenLicensesAsync()
         {
             await Navigation.PushAsync(new LicensesPage());
         }
 
-        private async void PrivacyPolicyBtn_Clicked(object sender, EventArgs e)
+        private async Task OpenPrivacyPolicyAsync()
         {
             await Navigation.PushAsync(new PrivacyPolicyPage());
         }
 
-        private async void HelpMenuBtn_Clicked(object sender, EventArgs e)
+        private async Task OpenHelpAsync()
         {
             var selection = await DisplayActionSheetAsync("Help", "Cancel", null, "Open Source Licenses", "Privacy Policy");
 
