@@ -1,13 +1,12 @@
 using CommunityToolkit.Maui.Extensions;
 using NumSharp;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces;
 using Color = Microsoft.Maui.Graphics.Color;
-using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp
 {
@@ -16,13 +15,10 @@ namespace PixelsorterApp
         // other
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
         private readonly MainPageViewModel viewModel;
+        private readonly IImageProcessingService imageProcessingService;
 
         // image
         private string? imagePath;
-
-        // Masker
-        private readonly BackgroundMask backgroundMasker = new();
-        private readonly CannyMask cannyMasker = new();
 
         private NDArray? subjectMask = null;
         private NDArray? invertedSubjectMask = null;
@@ -36,9 +32,10 @@ namespace PixelsorterApp
         private int currentDisplayedImageIndex = -1;
 
 
-        public MainPage(MainPageViewModel viewModel)
+        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService)
         {
             this.viewModel = viewModel;
+            this.imageProcessingService = imageProcessingService;
 
             InitializeComponent();
             BindingContext = this.viewModel;
@@ -267,11 +264,11 @@ namespace PixelsorterApp
             }
             else if (!String.IsNullOrEmpty(this.imagePath))
             {
-                if (backgroundMasker.IsReadyToUse)
+                if (imageProcessingService.IsBackgroundMaskReady)
                 {
                     try
                     {
-                        (this.subjectMask, this.invertedSubjectMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(viewModel.SubjectMaskPadding));
+                        (this.subjectMask, this.invertedSubjectMask) = await imageProcessingService.CreateSubjectMaskAsync(this.imagePath, viewModel.SubjectMaskPadding);
                         return true;
                     }
                     catch (Exception ex)
@@ -299,7 +296,7 @@ namespace PixelsorterApp
             {
                 try
                 {
-                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, new CannyMaskOptions(viewModel.CannyThreshold));
+                    (this.cannyMask, this.invertedCannyMask) = await imageProcessingService.CreateCannyMaskAsync(this.imagePath, viewModel.CannyThreshold);
                     return true;
                 }
                 catch (Exception ex)
@@ -337,46 +334,36 @@ namespace PixelsorterApp
 
                 try
                 {
-                    // Run the CPU/IO-bound sorting on a background thread; save to a temporary file so the UI can be updated safely.
-                    sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
-                    await Task.Run(async () =>
+                    NDArray? maskToUse = null;
+                    if (viewModel.UseSubjectMask && viewModel.UseCanny)
                     {
-                        NDArray? maskToUse = null;
-                        if (viewModel.UseSubjectMask && viewModel.UseCanny)
+                        bool subjectIsReady = await CreateSubjectMask();
+                        bool cannyIsReady = await CreateCannyMask();
+
+                        if (viewModel.UseSubtractMasks)
                         {
-                            bool subjectIsReady = await CreateSubjectMask();
-                            bool cannyIsReady = await CreateCannyMask();
-
-
-
-                            if (viewModel.UseSubtractMasks)
-                            {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
-                            }
-                            else if (!viewModel.UseSubtractMasks)
-                            {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
-                            }
+                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
                         }
-                        else if (viewModel.UseCanny)
+                        else if (!viewModel.UseSubtractMasks)
                         {
-                            maskToUse = await CreateCannyMask() ? this.cannyMask : null;
+                            maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
                         }
-                        else if (viewModel.UseSubjectMask)
-                        {
-                            bool isReady = await CreateSubjectMask();
-                            maskToUse = isReady ? (viewModel.UseInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
-                        }
+                    }
+                    else if (viewModel.UseCanny)
+                    {
+                        maskToUse = await CreateCannyMask() ? this.cannyMask : null;
+                    }
+                    else if (viewModel.UseSubjectMask)
+                    {
+                        bool isReady = await CreateSubjectMask();
+                        maskToUse = isReady ? (viewModel.UseInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
+                    }
 
-                        var imgData = Sorter.SortImage(
-                                    Image.LoadImage(this.imagePath),
-                                    viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
-                                    viewModel.SortingDirection,
-                                    maskToUse
-                                );
-                        using var foo = Image.NdarrayToImgData(imgData);
-                        foo.SaveAsPng(sortedImagePath);
-                    });
+                    sortedImagePath = await imageProcessingService.SortImageAsync(
+                        this.imagePath,
+                        viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
+                        viewModel.SortingDirection,
+                        maskToUse);
 
                     // Back on the UI thread — safe to update UI elements.
                     MainThread.BeginInvokeOnMainThread(() =>
@@ -418,30 +405,18 @@ namespace PixelsorterApp
                 return;
             }
 
-            var imageBytes = await File.ReadAllBytesAsync(focusedImagePath);
+            var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+            var result = await imageProcessingService.SaveImageToGalleryAsync(focusedImagePath, fileName);
 
-            var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
-
-            if (galleryService != null)
+            if (result)
             {
-                var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                var result = await galleryService.SaveImageAsync(imageBytes, fileName);
-
-                if (result)
-                {
-                    await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
-                    SemanticScreenReader.Announce("Image saved to gallery.");
-                }
-                else
-                {
-                    await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
-                    SemanticScreenReader.Announce("Failed to save image to gallery.");
-                }
+                await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                SemanticScreenReader.Announce("Image saved to gallery.");
             }
             else
             {
-                await DisplayAlertAsync("Error", "Gallery service is not available", "OK");
-                SemanticScreenReader.Announce("Gallery service is not available.");
+                await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
+                SemanticScreenReader.Announce("Failed to save image to gallery.");
             }
         }
 
@@ -449,7 +424,7 @@ namespace PixelsorterApp
         {
 
             bool netAccess = CheckNetworkAcces();
-            if (e.Value && !netAccess && !backgroundMasker.IsReadyToUse)
+            if (e.Value && !netAccess && !imageProcessingService.IsBackgroundMaskReady)
             {
                 useSubjectMaskingSwitch.IsToggled = false;
                 return;
@@ -472,7 +447,7 @@ namespace PixelsorterApp
                 }
             }
 
-            if (!backgroundMasker.IsReadyToUse && netAccess && e.Value)
+            if (!imageProcessingService.IsBackgroundMaskReady && netAccess && e.Value)
             {
                 using (new BusyScope(
                 onStart: () =>
@@ -490,7 +465,7 @@ namespace PixelsorterApp
 
                     try
                     {
-                        await backgroundMasker.DownloadModel();
+                        await imageProcessingService.DownloadBackgroundModelAsync();
                     }
                     catch (Exception)
                     {
