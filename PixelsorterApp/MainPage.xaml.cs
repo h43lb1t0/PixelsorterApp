@@ -22,6 +22,7 @@ namespace PixelsorterApp
         private readonly List<string> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
+        private bool suppressSubjectMaskChangeHandling;
 
 
         public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService)
@@ -45,7 +46,16 @@ namespace PixelsorterApp
             this.viewModel.OpenLicensesRequested += async () => await OpenLicensesAsync();
             this.viewModel.OpenPrivacyPolicyRequested += async () => await OpenPrivacyPolicyAsync();
             this.viewModel.OpenHelpRequested += async () => await OpenHelpAsync();
+            this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+        }
+
+        private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
+            {
+                _ = HandleSubjectMaskEnabledAsync();
+            }
         }
 
         /// <summary>
@@ -325,17 +335,28 @@ namespace PixelsorterApp
             }
         }
 
-        private async void useSubjectMaskingSwitch_Toggled(object sender, ToggledEventArgs e)
+        private async Task HandleSubjectMaskEnabledAsync()
         {
-
-            bool netAccess = CheckNetworkAcces();
-            if (e.Value && !netAccess && !imageProcessingService.IsBackgroundMaskReady)
+            if (suppressSubjectMaskChangeHandling)
             {
-                useSubjectMaskingSwitch.IsToggled = false;
                 return;
             }
 
-            if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
+            if (!viewModel.UseSubjectMask)
+            {
+                return;
+            }
+
+            bool netAccess = await CheckNetworkAccessAsync();
+            if (!netAccess && !imageProcessingService.IsBackgroundMaskReady)
+            {
+                suppressSubjectMaskChangeHandling = true;
+                viewModel.UseSubjectMask = false;
+                suppressSubjectMaskChangeHandling = false;
+                return;
+            }
+
+            if (!Preferences.Get("MaskingLicenseAccepted", false))
             {
                 var response = await DisplayAlertAsync(
                     "Masking Feature License",
@@ -347,12 +368,14 @@ namespace PixelsorterApp
 
                 if (!response)
                 {
-                    useSubjectMaskingSwitch.IsToggled = false;
+                    suppressSubjectMaskChangeHandling = true;
+                    viewModel.UseSubjectMask = false;
+                    suppressSubjectMaskChangeHandling = false;
                     return;
                 }
             }
 
-            if (!imageProcessingService.IsBackgroundMaskReady && netAccess && e.Value)
+            if (!imageProcessingService.IsBackgroundMaskReady && netAccess)
             {
                 using (new BusyScope(
                 onStart: () =>
@@ -378,7 +401,9 @@ namespace PixelsorterApp
                             "Download failed",
                             "The masking model could not be downloaded. Please check your internet connection and try again.",
                             "OK");
-                        useSubjectMaskingSwitch.IsToggled = false;
+                        suppressSubjectMaskChangeHandling = true;
+                        viewModel.UseSubjectMask = false;
+                        suppressSubjectMaskChangeHandling = false;
                         return;
                     }
                     finally
@@ -397,13 +422,13 @@ namespace PixelsorterApp
         /// <remarks>If no internet connection is detected, an alert is displayed to inform the user that
         /// internet access is required to use the masking feature.</remarks>
         /// <returns>true if an internet connection is available; otherwise, false.</returns>
-        private bool CheckNetworkAcces()
+        private async Task<bool> CheckNetworkAccessAsync()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType != NetworkAccess.Internet)
             {
-                _ = DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                await DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
                 return false;
             }
             return true;

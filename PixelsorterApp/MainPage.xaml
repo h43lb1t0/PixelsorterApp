@@ -299,7 +299,6 @@
                                 SemanticProperties.Hint="Requires internet the first time to download the model"
                                 ThumbColor="{AppThemeBinding Light={StaticResource Primary},
                                                              Dark={StaticResource PrimaryDark}}"
-                                Toggled="useSubjectMaskingSwitch_Toggled"
                                 VerticalOptions="Center" />
                         </Grid>
 
