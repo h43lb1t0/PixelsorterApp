@@ -31,6 +31,7 @@ namespace PixelsorterApp
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddSingleton<IImageProcessingService, ImageProcessingService>();
+            builder.Services.AddSingleton<IHelpNavigationService, HelpNavigationService>();
 
 #if ANDROID
             builder.Services.AddSingleton<IGalleryService, Platforms.Android.GalleryService>();

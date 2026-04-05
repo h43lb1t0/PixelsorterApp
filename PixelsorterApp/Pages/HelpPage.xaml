@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PixelsorterApp.Pages.HelpPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+    Title="HelpPage">
+    <indiko:MarkdownView
+        x:Name="MarkdownDisplay"
+        MarkdownText="{Binding MyMarkdownContent}"
+        Theme="{AppThemeBinding Light={StaticResource PageBackgroundLight},
+                                Dark={StaticResource PageBackgroundDark}}" />
+</ContentPage>
