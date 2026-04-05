@@ -24,21 +24,11 @@ namespace PixelsorterApp
         private readonly BackgroundMask backgroundMasker = new();
         private readonly CannyMask cannyMasker = new();
 
-        // Subject/Background mask
-        private bool useSubjectMask = false;
-        private int subjectMaskPaddingAmount = 15;
-        private bool useInvertedSubjectMask = false;
         private NDArray? subjectMask = null;
         private NDArray? invertedSubjectMask = null;
 
-        // Canny mask
-        private bool useCanny = false;
-        private float cannyThreashold = 0.3f;
         private NDArray? cannyMask = null;
         private NDArray? invertedCannyMask = null;
-        
-        // Combine masks
-        private bool useSubtractMasks = true;
 
         // image viewer
         private readonly List<string> imageCaptions = [];
@@ -61,7 +51,22 @@ namespace PixelsorterApp
             this.viewModel.IsSaveEnabled = false;
             ApplyImageSizeForCurrentDevice();
 
+            this.viewModel.PropertyChanged += ViewModel_PropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainPageViewModel.CannyThresholdPercent))
+            {
+                cannyMask = null;
+                invertedCannyMask = null;
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.SubjectMaskPadding))
+            {
+                subjectMask = null;
+                invertedSubjectMask = null;
+            }
         }
 
         /// <summary>
@@ -266,7 +271,7 @@ namespace PixelsorterApp
                 {
                     try
                     {
-                        (this.subjectMask, this.invertedSubjectMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(this.subjectMaskPaddingAmount));
+                        (this.subjectMask, this.invertedSubjectMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(viewModel.SubjectMaskPadding));
                         return true;
                     }
                     catch (Exception ex)
@@ -294,7 +299,7 @@ namespace PixelsorterApp
             {
                 try
                 {
-                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, new CannyMaskOptions(this.cannyThreashold));
+                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, new CannyMaskOptions(viewModel.CannyThreshold));
                     return true;
                 }
                 catch (Exception ex)
@@ -344,11 +349,11 @@ namespace PixelsorterApp
 
 
 
-                            if (this.useSubtractMasks)
+                            if (viewModel.UseSubtractMasks)
                             {
                                 maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
                             }
-                            else if (!this.useSubtractMasks)
+                            else if (!viewModel.UseSubtractMasks)
                             {
                                 maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
                             }
@@ -360,7 +365,7 @@ namespace PixelsorterApp
                         else if (viewModel.UseSubjectMask)
                         {
                             bool isReady = await CreateSubjectMask();
-                            maskToUse = isReady ? (this.useInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
+                            maskToUse = isReady ? (viewModel.UseInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
                         }
 
                         var imgData = Sorter.SortImage(
@@ -548,80 +553,6 @@ namespace PixelsorterApp
                 await Navigation.PushAsync(new PrivacyPolicyPage());
             }
         }
-
-
-        private void OnCannySliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-
-            if (e.OldValue == e.NewValue)
-            {
-                return;
-            }
-
-            int value = (int)e.NewValue;
-            if (value != e.NewValue)
-            {
-                cannyValueSlider.Value = value;
-            }
-            this.cannyThreashold = (int)e.NewValue / 100f;
-            cannySliderValue.Text = $"{value}%";
-
-            this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
-            this.invertedCannyMask = null;
-
-        }
-
-        private void OnSubjectMaskingSliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-
-            if (e.OldValue == e.NewValue)
-            {
-                return;
-            }
-
-            int value = (int)e.NewValue;
-            if (value != e.NewValue)
-            {
-                subjectMaskPadding.Value = value;
-            }
-
-            subjectPaddingSliderValue.Text = $"{value} px";
-
-
-            this.subjectMaskPaddingAmount = value;
-            this.subjectMask = null; // Clear existing masks to ensure they are regenerated with the new padding
-            this.invertedSubjectMask = null;
-
-        }
-
-        private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            if (sender == sortBackgroundRadio && e.Value)
-            {
-                this.useInvertedSubjectMask = false;
-            }
-            else if (sender == sortForegroundRadio && e.Value)
-            {
-                this.useInvertedSubjectMask = true;
-            }
-        }
-
-        private void UseCanny_Toggled(object sender, ToggledEventArgs e)
-        {
-        }
-
-        private void HowToCombine_CheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            if (sender == subMasksRadio && e.Value)
-            {
-                this.useSubtractMasks = true;
-            }
-            else if (sender == addMasksRadio && e.Value)
-            {
-                this.useSubtractMasks = false;
-            }
-        }
-
         private void ToggleUiForSorting(bool state)
         {
             viewModel.IsSortEnabled = state;

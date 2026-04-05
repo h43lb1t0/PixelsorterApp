@@ -18,6 +18,10 @@ public sealed class MainPageViewModel : BaseViewModel
     private bool isSaveEnabled;
     private int selectedSortByIndex;
     private int selectedSortDirectionIndex;
+    private int cannyThresholdPercent = 30;
+    private int subjectMaskPadding = 15;
+    private bool useInvertedSubjectMask;
+    private bool useSubtractMasks = true;
     private string currentCaption = "Tap to load an image";
 
     public MainPageViewModel()
@@ -52,6 +56,9 @@ public sealed class MainPageViewModel : BaseViewModel
             }
 
             RefreshSortDirectionOptions();
+            OnPropertyChanged(nameof(ShowSubjectPadding));
+            OnPropertyChanged(nameof(ShowWhatToSort));
+            OnPropertyChanged(nameof(ShowHowToCombine));
         }
     }
 
@@ -66,6 +73,9 @@ public sealed class MainPageViewModel : BaseViewModel
             }
 
             RefreshSortDirectionOptions();
+            OnPropertyChanged(nameof(ShowCannyThreshold));
+            OnPropertyChanged(nameof(ShowWhatToSort));
+            OnPropertyChanged(nameof(ShowHowToCombine));
         }
     }
 
@@ -92,6 +102,128 @@ public sealed class MainPageViewModel : BaseViewModel
         get => currentCaption;
         set => SetProperty(ref currentCaption, value);
     }
+
+    public int CannyThresholdPercent
+    {
+        get => cannyThresholdPercent;
+        set
+        {
+            int clamped = Math.Clamp(value, 1, 99);
+            if (!SetProperty(ref cannyThresholdPercent, clamped))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(CannyThresholdText));
+        }
+    }
+
+    public float CannyThreshold => CannyThresholdPercent / 100f;
+
+    public string CannyThresholdText => $"{CannyThresholdPercent}%";
+
+    public int SubjectMaskPadding
+    {
+        get => subjectMaskPadding;
+        set
+        {
+            int clamped = Math.Clamp(value, 1, 100);
+            if (!SetProperty(ref subjectMaskPadding, clamped))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(SubjectMaskPaddingText));
+        }
+    }
+
+    public string SubjectMaskPaddingText => $"{SubjectMaskPadding} px";
+
+    public bool UseInvertedSubjectMask
+    {
+        get => useInvertedSubjectMask;
+        set
+        {
+            if (!SetProperty(ref useInvertedSubjectMask, value))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(SortBackgroundSelected));
+            OnPropertyChanged(nameof(SortForegroundSelected));
+        }
+    }
+
+    public bool SortBackgroundSelected
+    {
+        get => !UseInvertedSubjectMask;
+        set
+        {
+            if (value)
+            {
+                UseInvertedSubjectMask = false;
+            }
+        }
+    }
+
+    public bool SortForegroundSelected
+    {
+        get => UseInvertedSubjectMask;
+        set
+        {
+            if (value)
+            {
+                UseInvertedSubjectMask = true;
+            }
+        }
+    }
+
+    public bool UseSubtractMasks
+    {
+        get => useSubtractMasks;
+        set
+        {
+            if (!SetProperty(ref useSubtractMasks, value))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(UseSubtractMasksSelected));
+            OnPropertyChanged(nameof(UseAddMasksSelected));
+        }
+    }
+
+    public bool UseSubtractMasksSelected
+    {
+        get => UseSubtractMasks;
+        set
+        {
+            if (value)
+            {
+                UseSubtractMasks = true;
+            }
+        }
+    }
+
+    public bool UseAddMasksSelected
+    {
+        get => !UseSubtractMasks;
+        set
+        {
+            if (value)
+            {
+                UseSubtractMasks = false;
+            }
+        }
+    }
+
+    public bool ShowCannyThreshold => UseCanny;
+
+    public bool ShowSubjectPadding => UseSubjectMask;
+
+    public bool ShowWhatToSort => UseSubjectMask && !UseCanny;
+
+    public bool ShowHowToCombine => UseSubjectMask && UseCanny;
 
     public IReadOnlyList<string> SortByOptions { get; }
 

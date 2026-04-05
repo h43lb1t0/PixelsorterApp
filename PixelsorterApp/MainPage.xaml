@@ -226,7 +226,6 @@
                                 SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."
                                 ThumbColor="{AppThemeBinding Light={StaticResource Primary},
                                                              Dark={StaticResource PrimaryDark}}"
-                                Toggled="UseCanny_Toggled"
                                 VerticalOptions="Center" />
                         </Grid>
 
@@ -234,7 +233,7 @@
                             x:Name="cannyMaskGrid"
                             Padding="16,8"
                             ColumnDefinitions="*, 60"
-                            IsVisible="{Binding IsToggled, Source={x:Reference useCannySwitch}}"
+                            IsVisible="{Binding ShowCannyThreshold}"
                             RowDefinitions="Auto, Auto"
                             RowSpacing="4">
 
@@ -256,9 +255,8 @@
                                 SemanticProperties.Description="Canny threshold"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
-                                ValueChanged="OnCannySliderValueChanged"
                                 VerticalOptions="Center"
-                                Value="30" />
+                                Value="{Binding CannyThresholdPercent, Mode=TwoWay}" />
 
                             <Label
                                 x:Name="cannySliderValue"
@@ -266,6 +264,7 @@
                                 Grid.Column="1"
                                 FontSize="14"
                                 HorizontalOptions="End"
+                                Text="{Binding CannyThresholdText}"
                                 TextColor="{AppThemeBinding Dark={StaticResource White},
                                                             Light={StaticResource Black}}"
                                 VerticalOptions="Center" />
@@ -302,7 +301,7 @@
                             x:Name="subjectMaskPaddingGrid"
                             Padding="16,8"
                             ColumnDefinitions="*, 60"
-                            IsVisible="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}"
+                            IsVisible="{Binding ShowSubjectPadding}"
                             RowDefinitions="Auto, Auto"
                             RowSpacing="4">
 
@@ -323,9 +322,8 @@
                                 SemanticProperties.Description="Subject mask padding"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
-                                ValueChanged="OnSubjectMaskingSliderValueChanged"
                                 VerticalOptions="Center"
-                                Value="15" />
+                                Value="{Binding SubjectMaskPadding, Mode=TwoWay}" />
 
                             <Label
                                 x:Name="subjectPaddingSliderValue"
@@ -333,6 +331,7 @@
                                 Grid.Column="1"
                                 FontSize="14"
                                 HorizontalOptions="End"
+                                Text="{Binding SubjectMaskPaddingText}"
                                 TextColor="{AppThemeBinding Dark={StaticResource White},
                                                             Light={StaticResource Black}}"
                                 VerticalOptions="Center" />
@@ -342,23 +341,7 @@
                             x:Name="whatToSortGrid"
                             Padding="16,10"
                             ColumnDefinitions="*,Auto"
-                            IsVisible="False">
-                            <Grid.Triggers>
-                                <MultiTrigger TargetType="Grid">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="False" />
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="False" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible" Value="False" />
-                                </MultiTrigger>
-                                <MultiTrigger TargetType="Grid">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="False" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible" Value="True" />
-                                </MultiTrigger>
-                            </Grid.Triggers>
+                            IsVisible="{Binding ShowWhatToSort}">
                             <Label
                                 FontSize="16"
                                 Text="What to sort"
@@ -370,14 +353,13 @@
                                 VerticalOptions="Center">
                                 <RadioButton
                                     x:Name="sortBackgroundRadio"
-                                    CheckedChanged="WhatToSort_CheckedChanged"
                                     Content="Background"
-                                    IsChecked="True"
+                                    IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
                                     SemanticProperties.Description="Sort pixels in the background area" />
                                 <RadioButton
                                     x:Name="sortForegroundRadio"
-                                    CheckedChanged="WhatToSort_CheckedChanged"
                                     Content="Foreground"
+                                    IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
                                     SemanticProperties.Description="Sort pixels in the foreground area" />
                             </HorizontalStackLayout>
                         </Grid>
@@ -385,35 +367,17 @@
                         <BoxView
                             Margin="16,0,0,0"
                             HeightRequest="1"
-                            IsVisible="False"
+                            IsVisible="{Binding ShowHowToCombine}"
                             Color="{AppThemeBinding Light={StaticResource DividerLight},
                                                     Dark={StaticResource DividerDark}}">
-                            <BoxView.Triggers>
-                                <MultiTrigger TargetType="BoxView">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible" Value="True" />
-                                </MultiTrigger>
-                            </BoxView.Triggers>
                         </BoxView>
 
                         <Grid
                             x:Name="howToCombineGrid"
                             Padding="16,10"
                             ColumnDefinitions="*,Auto"
-                            IsVisible="False"
+                            IsVisible="{Binding ShowHowToCombine}"
                             RowDefinitions="Auto,Auto">
-                            <Grid.Triggers>
-                                <MultiTrigger TargetType="Grid">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useCannySwitch}}" Value="True" />
-                                        <BindingCondition Binding="{Binding IsToggled, Source={x:Reference useSubjectMaskingSwitch}}" Value="True" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible" Value="True" />
-                                </MultiTrigger>
-                            </Grid.Triggers>
                             <Label
                                 FontSize="16"
                                 Text="How to combine masks"
@@ -425,14 +389,13 @@
                                 VerticalOptions="Center">
                                 <RadioButton
                                     x:Name="subMasksRadio"
-                                    CheckedChanged="HowToCombine_CheckedChanged"
                                     Content="Subtract"
-                                    IsChecked="True"
+                                    IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
                                     SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
                                 <RadioButton
                                     x:Name="addMasksRadio"
-                                    CheckedChanged="HowToCombine_CheckedChanged"
                                     Content="Add"
+                                    IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
                                     SemanticProperties.Description="Adds the Canny mask and the subject mask." />
                             </HorizontalStackLayout>
                             <Label
