@@ -1,148 +1,120 @@
 using CommunityToolkit.Maui.Extensions;
-using NumSharp;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.Services;
+using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
-using PixelsorterClassLib.Masks;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces;
 using Color = Microsoft.Maui.Graphics.Color;
-using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp
 {
+    /// <summary>
+    /// Code-behind host for the main page that bridges platform/UI interactions with <see cref="MainPageViewModel"/>.
+    /// </summary>
     public partial class MainPage : ContentPage
     {
         // other
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
+        private readonly MainPageViewModel viewModel;
+        private readonly IImageProcessingService imageProcessingService;
 
         // image
         private string? imagePath;
-
-        // Basic sorting options
-        private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-        private Func<Hsl, float>? sortingCriterion;
-        private readonly string[] sortByOptionNames;
-        
-        private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
-        private SortDirections sortingDirection;
-        private string[] sortDirectionOptionNames;
-
-        // Masker
-        private readonly BackgroundMask backgroundMasker = new();
-        private readonly CannyMask cannyMasker = new();
-
-        // Subject/Background mask
-        private bool useSubjectMask = false;
-        private int subjectMaskPaddingAmount = 15;
-        private bool useInvertedSubjectMask = false;
-        private NDArray? subjectMask = null;
-        private NDArray? invertedSubjectMask = null;
-
-        // Canny mask
-        private bool useCanny = false;
-        private float cannyThreashold = 0.3f;
-        private NDArray? cannyMask = null;
-        private NDArray? invertedCannyMask = null;
-        
-        // Combine masks
-        private bool useSubtractMasks = true;
 
         // image viewer
         private readonly List<string> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
-
-
-        /// <summary>
-        /// Initializes the available sort direction options by populating a dictionary with the string representations
-        /// of the sort directions.
-        /// </summary>
-        /// <remarks>This method prepares the sortDirectionOptions dictionary for use in UI elements or
-        /// other components that require a mapping between human-readable sort direction names and their corresponding
-        /// enumeration values. It should be called before accessing or displaying sort direction options to ensure the
-        /// dictionary is properly populated.</remarks>
-        private void InitializeSortDirectionOptions()
-        {
-
-            foreach (SortDirections dir in Enum.GetValues(typeof(SortDirections)))
-            {
-                string name = System.Text.RegularExpressions.Regex.Replace(dir.ToString(), "([A-Z])", " $1").Trim();
-                sortDirectionOptions[name] = dir;
-            }
-        }
+        private bool suppressSubjectMaskChangeHandling;
 
         /// <summary>
-        /// Updates the sort direction picker to reflect the current sorting options and selection state.
+        /// Initializes a new instance of the <see cref="MainPage"/> class.
         /// </summary>
-        /// <remarks>This method filters the available sorting options based on the current mask usage
-        /// setting and updates the selected index accordingly. If the previous selection is no longer valid, the first
-        /// available option will be selected. The sorting direction is also updated based on the selected
-        /// option.</remarks>
-        private void UpdateSortDirectionPicker()
+        /// <param name="viewModel">The view model bound to this page.</param>
+        /// <param name="imageProcessingService">Service used for image processing operations.</param>
+        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService)
         {
-            string? previousSelection = null;
-            if (sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length)
-            {
-                previousSelection = sortDirectionOptionNames[sortDirection.SelectedIndex];
-            }
+            this.viewModel = viewModel;
+            this.imageProcessingService = imageProcessingService;
 
-            sortDirectionOptionNames =
-            [
-                .. sortDirectionOptions.Keys.Where(name => this.useSubjectMask || this.useCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
-            ];
-
-            sortDirection.ItemsSource = sortDirectionOptionNames;
-
-            int selectedIndex = -1;
-            if (!string.IsNullOrEmpty(previousSelection))
-            {
-                selectedIndex = Array.IndexOf(sortDirectionOptionNames, previousSelection);
-            }
-
-            sortDirection.SelectedIndex = selectedIndex >= 0
-                ? selectedIndex
-                : (sortDirectionOptionNames.Length > 0 ? 0 : -1);
-
-            if (sortDirection.SelectedIndex >= 0)
-            {
-                sortingDirection = sortDirectionOptions[sortDirectionOptionNames[sortDirection.SelectedIndex]];
-            }
-        }
-
-
-        public MainPage()
-        {
             InitializeComponent();
+            BindingContext = this.viewModel;
 
             SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
 
-            sortBtn.IsVisible = true;
-            sortBtn.IsEnabled = false; // Disable the sort button until an image is loaded
-
-            InitializeSortDirectionOptions();
-            sortByOptionNames = [.. sortByOptions.Keys];
-            sortDirectionOptionNames = [];
-
-            sortBy.ItemsSource = sortByOptionNames;
-            sortBy.SelectedIndex = sortByOptionNames.Length > 0 ? 0 : -1;
-            sortBy.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(sortBy.SelectedIndex))
-                    SortBy_SelectedIndexChanged(s, EventArgs.Empty);
-            };
-
-            UpdateSortDirectionPicker();
-            sortDirection.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(sortDirection.SelectedIndex))
-                    SortDirection_SelectedIndexChanged(s, EventArgs.Empty);
-            };
-
-            sortingCriterion = sortByOptionNames.Length > 0 ? sortByOptions[sortByOptionNames[0]] : null;
-            sortingDirection = sortDirectionOptionNames.Length > 0 ? sortDirectionOptions[sortDirectionOptionNames[0]] : SortDirections.RowRightToLeft;
+            this.viewModel.IsSortEnabled = false;
+            this.viewModel.IsSaveVisible = false;
+            this.viewModel.IsSaveEnabled = false;
             ApplyImageSizeForCurrentDevice();
 
+            this.viewModel.SortRequested += OnSortRequested;
+            this.viewModel.SaveRequested += OnSaveRequested;
+            this.viewModel.LoadImageRequested += OnLoadImageRequested;
+            this.viewModel.OpenLicensesRequested += OnOpenLicensesRequested;
+            this.viewModel.OpenPrivacyPolicyRequested += OnOpenPrivacyPolicyRequested;
+            this.viewModel.OpenHelpRequested += OnOpenHelpRequested;
+            this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+        }
+
+        /// <summary>
+        /// Handles view model property changes that require page-level async UI logic.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">Property change event arguments.</param>
+        private async void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
+            {
+                await HandleSubjectMaskEnabledAsync();
+            }
+        }
+
+        /// <summary>
+        /// Handles sort requests raised by the view model.
+        /// </summary>
+        private void OnSortRequested()
+        {
+            _ = SortAsync();
+        }
+
+        /// <summary>
+        /// Handles save requests raised by the view model.
+        /// </summary>
+        private void OnSaveRequested()
+        {
+            _ = SaveAsync();
+        }
+
+        /// <summary>
+        /// Handles image load requests raised by the view model.
+        /// </summary>
+        private void OnLoadImageRequested()
+        {
+            _ = LoadImageAsync();
+        }
+
+        /// <summary>
+        /// Handles licenses navigation requests raised by the view model.
+        /// </summary>
+        private void OnOpenLicensesRequested()
+        {
+            _ = OpenLicensesAsync();
+        }
+
+        /// <summary>
+        /// Handles privacy policy navigation requests raised by the view model.
+        /// </summary>
+        private void OnOpenPrivacyPolicyRequested()
+        {
+            _ = OpenPrivacyPolicyAsync();
+        }
+
+        /// <summary>
+        /// Handles help menu requests raised by the view model.
+        /// </summary>
+        private void OnOpenHelpRequested()
+        {
+            _ = OpenHelpAsync();
         }
 
         /// <summary>
@@ -161,18 +133,12 @@ namespace PixelsorterApp
 
             if (index >= 0 && index < imageCaptions.Count)
             {
-                whatIsThisLabel.Text = imageCaptions[index];
+                viewModel.CurrentCaption = imageCaptions[index];
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {imageCaptions[index]}");
                 SemanticProperties.SetDescription(imageViewer, $"Image preview. {imageCaptions[index]}");
             }
-            if (index == 0 && index < imagePaths.Count)
-            {
-                saveBtn.IsEnabled = false;
-            }
-            else
-            {
-                saveBtn.IsEnabled = true;
-            }
+
+            viewModel.IsSaveEnabled = index > 0 && index < imagePaths.Count;
         }
 
         /// <summary>
@@ -205,17 +171,15 @@ namespace PixelsorterApp
         /// {directionText}'.</returns>
         private string BuildSortCaption()
         {
-            var sortByText = sortBy.SelectedIndex >= 0 && sortBy.SelectedIndex < sortByOptionNames.Length
-                ? sortByOptionNames[sortBy.SelectedIndex]
-                : "Unknown";
-
-            var directionText = sortDirection.SelectedIndex >= 0 && sortDirection.SelectedIndex < sortDirectionOptionNames.Length
-                ? sortDirectionOptionNames[sortDirection.SelectedIndex]
-                : "Unknown";
+            var sortByText = viewModel.SelectedSortByName;
+            var directionText = viewModel.SelectedSortDirectionName;
 
             return $"Sort by: {sortByText} • Direction: {directionText}";
         }
 
+        /// <summary>
+        /// Subscribes to shared-image events when the page becomes visible.
+        /// </summary>
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -227,12 +191,19 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Unsubscribes from shared-image events when the page is no longer visible.
+        /// </summary>
         protected override void OnDisappearing()
         {
             SharedImageBridge.SharedImageReceived -= OnSharedImageReceived;
             base.OnDisappearing();
         }
 
+        /// <summary>
+        /// Handles incoming shared image notifications.
+        /// </summary>
+        /// <param name="sharedImagePath">Path to the shared image file.</param>
         private void OnSharedImageReceived(string sharedImagePath)
         {
             LoadImageFromPath(sharedImagePath);
@@ -248,10 +219,6 @@ namespace PixelsorterApp
         private void LoadImageFromPath(string path)
         {
             this.imagePath = path;
-            this.subjectMask = null; // Clear any existing mask when a new image is loaded
-            this.cannyMask = null;
-            this.invertedSubjectMask = null;
-            this.invertedCannyMask = null;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -264,13 +231,14 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                whatIsThisLabel.Text = imageCaptions[0];
+                viewModel.CurrentCaption = imageCaptions[0];
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
                 SemanticProperties.SetDescription(imageViewer, "Image preview. Original image. Double tap to load another image.");
 
                 whatIsThisLabel.IsVisible = true;
-                sortBtn.IsEnabled = true;
-                saveBtn.IsVisible = false;
+                viewModel.IsSortEnabled = true;
+                viewModel.IsSaveVisible = false;
+                viewModel.IsSaveEnabled = false;
                 SemanticScreenReader.Announce("Image loaded. Ready to sort.");
             });
         }
@@ -329,9 +297,23 @@ namespace PixelsorterApp
             );
         }
 
+        /// <summary>
+        /// Handles taps on the image viewer and routes them to the load-image command.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">Event arguments.</param>
+        private void LoadImage_Clicked(object sender, EventArgs e)
+        {
+            if (viewModel.LoadImageCommand.CanExecute(null))
+            {
+                viewModel.LoadImageCommand.Execute(null);
+            }
+        }
 
-
-        private async void LoadImage_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Opens the platform photo picker and loads the first selected image.
+        /// </summary>
+        private async Task LoadImageAsync()
         {
             var results = await MediaPicker.PickPhotosAsync();
 
@@ -344,64 +326,10 @@ namespace PixelsorterApp
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
 
-
-        private async Task<bool> CreateSubjectMask()
-        {
-            if (this.subjectMask is not null)
-            {
-                return true;
-            }
-            else if (!String.IsNullOrEmpty(this.imagePath))
-            {
-                if (backgroundMasker.IsReadyToUse)
-                {
-                    try
-                    {
-                        (this.subjectMask, this.invertedSubjectMask) = await backgroundMasker.GetMaskAsync(this.imagePath, new BackgroundMaskOptions(this.subjectMaskPaddingAmount));
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        await DisplayAlertAsync("Error", $"An error occurred while creating the subject mask: {ex.Message}", "OK");
-                        SemanticScreenReader.Announce($"Error creating subject mask: {ex.Message}");
-                        return false;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private async Task<bool> CreateCannyMask()
-        {
-            if (this.cannyMask is not null)
-            {
-                return true;
-            }
-            else if (!String.IsNullOrEmpty(this.imagePath))
-            {
-                try
-                {
-                    (this.cannyMask, this.invertedCannyMask) = await cannyMasker.GetMaskAsync(this.imagePath, new CannyMaskOptions(this.cannyThreashold));
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlertAsync("Error", $"An error occurred while creating the Canny mask: {ex.Message}", "OK");
-                    SemanticScreenReader.Announce($"Error creating Canny mask: {ex.Message}");
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private async void SortBtn_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Sorts the currently loaded image using current view model settings.
+        /// </summary>
+        private async Task SortAsync()
         {
             if (this.imagePath is null) // Check if we have a file path
                 return;
@@ -423,46 +351,20 @@ namespace PixelsorterApp
 
                 try
                 {
-                    // Run the CPU/IO-bound sorting on a background thread; save to a temporary file so the UI can be updated safely.
-                    sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
-                    await Task.Run(async () =>
-                    {
-                        NDArray? maskToUse = null;
-                        if (this.useSubjectMask && this.useCanny)
-                        {
-                            bool subjectIsReady = await CreateSubjectMask();
-                            bool cannyIsReady = await CreateCannyMask();
+                    var maskToUse = await imageProcessingService.BuildMaskAsync(
+                        this.imagePath,
+                        viewModel.UseSubjectMask,
+                        viewModel.UseCanny,
+                        viewModel.UseSubtractMasks,
+                        viewModel.UseInvertedSubjectMask,
+                        viewModel.SubjectMaskPadding,
+                        viewModel.CannyThreshold);
 
-
-
-                            if (this.useSubtractMasks)
-                            {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.SubtractMasks(this.subjectMask!, this.invertedCannyMask!) : null;
-                            }
-                            else if (!this.useSubtractMasks)
-                            {
-                                maskToUse = (subjectIsReady && cannyIsReady) ? MaskCombiner.AddMasks(this.subjectMask!, this.cannyMask!) : null;
-                            }
-                        }
-                        else if (this.useCanny)
-                        {
-                            maskToUse = await CreateCannyMask() ? this.cannyMask : null;
-                        }
-                        else if (this.useSubjectMask)
-                        {
-                            bool isReady = await CreateSubjectMask();
-                            maskToUse = isReady ? (this.useInvertedSubjectMask ? this.invertedSubjectMask : this.subjectMask) : null;
-                        }
-
-                        var imgData = Sorter.SortImage(
-                                    Image.LoadImage(this.imagePath),
-                                    sortingCriterion ?? sortByOptions.Values.First(),
-                                    sortingDirection,
-                                    maskToUse
-                                );
-                        using var foo = Image.NdarrayToImgData(imgData);
-                        foo.SaveAsPng(sortedImagePath);
-                    });
+                    sortedImagePath = await imageProcessingService.SortImageAsync(
+                        this.imagePath,
+                        viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
+                        viewModel.SortingDirection,
+                        maskToUse);
 
                     // Back on the UI thread — safe to update UI elements.
                     MainThread.BeginInvokeOnMainThread(() =>
@@ -472,11 +374,11 @@ namespace PixelsorterApp
                         imageCaptions.Add(caption);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        whatIsThisLabel.Text = caption;
+                        viewModel.CurrentCaption = caption;
                         SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
                         SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
-                        saveBtn.IsVisible = true;
-                        saveBtn.IsEnabled = true; // Enable the save button now that sorting is complete
+                        viewModel.IsSaveVisible = true;
+                        viewModel.IsSaveEnabled = true;
                         SemanticScreenReader.Announce("Sorting complete. Preview updated.");
                     });
                 }
@@ -489,11 +391,9 @@ namespace PixelsorterApp
         }
 
         /// <summary>
-        /// Saves the image to the Gallery/Photos album on the user's device. This is necessary because the image is currently saved to a temporary location that may not be accessible to the user.
+        /// Saves the currently focused image to the device gallery.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void SaveBtn_Clicked(object sender, EventArgs e)
+        private async Task SaveAsync()
         {
             var focusedImagePath = GetFocusedImagePath();
 
@@ -504,44 +404,44 @@ namespace PixelsorterApp
                 return;
             }
 
-            var imageBytes = await File.ReadAllBytesAsync(focusedImagePath);
+            var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+            var result = await imageProcessingService.SaveImageToGalleryAsync(focusedImagePath, fileName);
 
-            var galleryService = Application.Current?.Handler?.MauiContext?.Services?.GetService<IGalleryService>();
-
-            if (galleryService != null)
+            if (result)
             {
-                var fileName = $"pixelsorted_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                var result = await galleryService.SaveImageAsync(imageBytes, fileName);
-
-                if (result)
-                {
-                    await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
-                    SemanticScreenReader.Announce("Image saved to gallery.");
-                }
-                else
-                {
-                    await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
-                    SemanticScreenReader.Announce("Failed to save image to gallery.");
-                }
+                await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                SemanticScreenReader.Announce("Image saved to gallery.");
             }
             else
             {
-                await DisplayAlertAsync("Error", "Gallery service is not available", "OK");
-                SemanticScreenReader.Announce("Gallery service is not available.");
+                await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
+                SemanticScreenReader.Announce("Failed to save image to gallery.");
             }
         }
 
-        private async void useSubjectMaskingSwitch_Toggled(object sender, ToggledEventArgs e)
+        /// <summary>
+        /// Validates and initializes subject masking when the user enables it.
+        /// </summary>
+        private async Task HandleSubjectMaskEnabledAsync()
         {
-
-            bool netAccess = CheckNetworkAcces();
-            if (e.Value && !netAccess && !backgroundMasker.IsReadyToUse)
+            if (suppressSubjectMaskChangeHandling)
             {
-                useSubjectMaskingSwitch.IsToggled = false;
                 return;
             }
 
-            if (!Preferences.Get("MaskingLicenseAccepted", false) && e.Value)
+            if (!viewModel.UseSubjectMask)
+            {
+                return;
+            }
+
+            bool netAccess = await CheckNetworkAccessAsync();
+            if (!netAccess && !imageProcessingService.IsBackgroundMaskReady)
+            {
+                DisableSubjectMaskWithoutReentry();
+                return;
+            }
+
+            if (!Preferences.Get("MaskingLicenseAccepted", false))
             {
                 var response = await DisplayAlertAsync(
                     "Masking Feature License",
@@ -553,12 +453,12 @@ namespace PixelsorterApp
 
                 if (!response)
                 {
-                    useSubjectMaskingSwitch.IsToggled = false;
+                    DisableSubjectMaskWithoutReentry();
                     return;
                 }
             }
 
-            if (!backgroundMasker.IsReadyToUse && netAccess && e.Value)
+            if (!imageProcessingService.IsBackgroundMaskReady && netAccess)
             {
                 using (new BusyScope(
                 onStart: () =>
@@ -576,7 +476,7 @@ namespace PixelsorterApp
 
                     try
                     {
-                        await backgroundMasker.DownloadModel();
+                        await imageProcessingService.DownloadBackgroundModelAsync();
                     }
                     catch (Exception)
                     {
@@ -584,20 +484,17 @@ namespace PixelsorterApp
                             "Download failed",
                             "The masking model could not be downloaded. Please check your internet connection and try again.",
                             "OK");
-                        useSubjectMaskingSwitch.IsToggled = false;
+                        DisableSubjectMaskWithoutReentry();
                         return;
                     }
                     finally
                     {
                         loadingIndicator.IsRunning = false;
                         loadingOverlay.IsVisible = false;
-                        sortBtn.IsEnabled = true;
+                        viewModel.IsSortEnabled = true;
                     }
             }
 
-
-            this.useSubjectMask = e.Value;
-            UpdateSortDirectionPicker();
         }
 
         /// <summary>
@@ -606,51 +503,49 @@ namespace PixelsorterApp
         /// <remarks>If no internet connection is detected, an alert is displayed to inform the user that
         /// internet access is required to use the masking feature.</remarks>
         /// <returns>true if an internet connection is available; otherwise, false.</returns>
-        private bool CheckNetworkAcces()
+        private async Task<bool> CheckNetworkAccessAsync()
         {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType != NetworkAccess.Internet)
             {
-                _ = DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                await DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
                 return false;
             }
             return true;
         }
 
-
-        private void SortBy_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Disables subject masking without reentering property-change handling logic.
+        /// </summary>
+        private void DisableSubjectMaskWithoutReentry()
         {
-            int selectedIndex = sortBy.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < sortByOptionNames.Length)
-            {
-                var selectedOption = sortByOptionNames[selectedIndex];
-                // Update the sorting criterion based on the selected option
-                sortingCriterion = sortByOptions[selectedOption];
-            }
+            suppressSubjectMaskChangeHandling = true;
+            viewModel.UseSubjectMask = false;
+            suppressSubjectMaskChangeHandling = false;
         }
 
-        private void SortDirection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int selectedIndex = sortDirection.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < sortDirectionOptionNames.Length)
-            {
-                var selectedOption = sortDirectionOptionNames[selectedIndex];
-                sortingDirection = sortDirectionOptions[selectedOption];
-            }
-        }
 
-        private async void LicensesBtn_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Navigates to the licenses page.
+        /// </summary>
+        private async Task OpenLicensesAsync()
         {
             await Navigation.PushAsync(new LicensesPage());
         }
 
-        private async void PrivacyPolicyBtn_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Navigates to the privacy policy page.
+        /// </summary>
+        private async Task OpenPrivacyPolicyAsync()
         {
             await Navigation.PushAsync(new PrivacyPolicyPage());
         }
 
-        private async void HelpMenuBtn_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Shows help actions and navigates based on user selection.
+        /// </summary>
+        private async Task OpenHelpAsync()
         {
             var selection = await DisplayActionSheetAsync("Help", "Cancel", null, "Open Source Licenses", "Privacy Policy");
 
@@ -664,96 +559,15 @@ namespace PixelsorterApp
             }
         }
 
-
-        private void OnCannySliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-
-            if (e.OldValue == e.NewValue)
-            {
-                return;
-            }
-
-            int value = (int)e.NewValue;
-            if (value != e.NewValue)
-            {
-                cannyValueSlider.Value = value;
-            }
-            this.cannyThreashold = (int)e.NewValue / 100f;
-            cannySliderValue.Text = $"{value}%";
-
-            this.cannyMask = null; // Clear existing masks to ensure they are regenerated with the new padding
-            this.invertedCannyMask = null;
-
-        }
-
-        private void OnSubjectMaskingSliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-
-            if (e.OldValue == e.NewValue)
-            {
-                return;
-            }
-
-            int value = (int)e.NewValue;
-            if (value != e.NewValue)
-            {
-                subjectMaskPadding.Value = value;
-            }
-
-            subjectPaddingSliderValue.Text = $"{value} px";
-
-
-            this.subjectMaskPaddingAmount = value;
-            this.subjectMask = null; // Clear existing masks to ensure they are regenerated with the new padding
-            this.invertedSubjectMask = null;
-
-        }
-
-        private void WhatToSort_CheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            if (sender == sortBackgroundRadio && e.Value)
-            {
-                this.useInvertedSubjectMask = false;
-            }
-            else if (sender == sortForegroundRadio && e.Value)
-            {
-                this.useInvertedSubjectMask = true;
-            }
-        }
-
-        private void UseCanny_Toggled(object sender, ToggledEventArgs e)
-        {
-            this.useCanny = e.Value;
-            UpdateSortDirectionPicker();
-        }
-
-        private void HowToCombine_CheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            if (sender == subMasksRadio && e.Value)
-            {
-                this.useSubtractMasks = true;
-            }
-            else if (sender == addMasksRadio && e.Value)
-            {
-                this.useSubtractMasks = false;
-            }
-        }
-
+        /// <summary>
+        /// Toggles enabled state for sorting-related UI interactions.
+        /// </summary>
+        /// <param name="state"><see langword="true"/> to enable interactions; otherwise, <see langword="false"/>.</param>
         private void ToggleUiForSorting(bool state)
         {
-            sortBtn.IsEnabled = state;
-            imageViewer.IsEnabled = state;
-            sortBy.IsEnabled = state;
-            sortDirection.IsEnabled = state;
-            useSubjectMaskingSwitch.IsEnabled = state;
-            useCannySwitch.IsEnabled = state;
-            subjectMaskPadding.IsEnabled = state;
-            cannyValueSlider.IsEnabled = state;
-            sortBackgroundRadio.IsEnabled = state;
-            sortForegroundRadio.IsEnabled = state;
-            subMasksRadio.IsEnabled = state;
-            addMasksRadio.IsEnabled = state;
-            saveBtn.IsEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
+            viewModel.IsSortEnabled = state;
+            viewModel.IsInteractionEnabled = state;
+            viewModel.IsSaveEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
 
         }
     }
