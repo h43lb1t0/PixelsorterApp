@@ -7,6 +7,9 @@ using Color = Microsoft.Maui.Graphics.Color;
 
 namespace PixelsorterApp
 {
+    /// <summary>
+    /// Code-behind host for the main page that bridges platform/UI interactions with <see cref="MainPageViewModel"/>.
+    /// </summary>
     public partial class MainPage : ContentPage
     {
         // other
@@ -23,7 +26,11 @@ namespace PixelsorterApp
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainPage"/> class.
+        /// </summary>
+        /// <param name="viewModel">The view model bound to this page.</param>
+        /// <param name="imageProcessingService">Service used for image processing operations.</param>
         public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService)
         {
             this.viewModel = viewModel;
@@ -49,6 +56,11 @@ namespace PixelsorterApp
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
         }
 
+        /// <summary>
+        /// Handles view model property changes that require page-level async UI logic.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">Property change event arguments.</param>
         private async void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
@@ -57,31 +69,49 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Handles sort requests raised by the view model.
+        /// </summary>
         private void OnSortRequested()
         {
             _ = SortAsync();
         }
 
+        /// <summary>
+        /// Handles save requests raised by the view model.
+        /// </summary>
         private void OnSaveRequested()
         {
             _ = SaveAsync();
         }
 
+        /// <summary>
+        /// Handles image load requests raised by the view model.
+        /// </summary>
         private void OnLoadImageRequested()
         {
             _ = LoadImageAsync();
         }
 
+        /// <summary>
+        /// Handles licenses navigation requests raised by the view model.
+        /// </summary>
         private void OnOpenLicensesRequested()
         {
             _ = OpenLicensesAsync();
         }
 
+        /// <summary>
+        /// Handles privacy policy navigation requests raised by the view model.
+        /// </summary>
         private void OnOpenPrivacyPolicyRequested()
         {
             _ = OpenPrivacyPolicyAsync();
         }
 
+        /// <summary>
+        /// Handles help menu requests raised by the view model.
+        /// </summary>
         private void OnOpenHelpRequested()
         {
             _ = OpenHelpAsync();
@@ -147,6 +177,9 @@ namespace PixelsorterApp
             return $"Sort by: {sortByText} • Direction: {directionText}";
         }
 
+        /// <summary>
+        /// Subscribes to shared-image events when the page becomes visible.
+        /// </summary>
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -158,12 +191,19 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Unsubscribes from shared-image events when the page is no longer visible.
+        /// </summary>
         protected override void OnDisappearing()
         {
             SharedImageBridge.SharedImageReceived -= OnSharedImageReceived;
             base.OnDisappearing();
         }
 
+        /// <summary>
+        /// Handles incoming shared image notifications.
+        /// </summary>
+        /// <param name="sharedImagePath">Path to the shared image file.</param>
         private void OnSharedImageReceived(string sharedImagePath)
         {
             LoadImageFromPath(sharedImagePath);
@@ -257,6 +297,11 @@ namespace PixelsorterApp
             );
         }
 
+        /// <summary>
+        /// Handles taps on the image viewer and routes them to the load-image command.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">Event arguments.</param>
         private void LoadImage_Clicked(object sender, EventArgs e)
         {
             if (viewModel.LoadImageCommand.CanExecute(null))
@@ -265,6 +310,9 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Opens the platform photo picker and loads the first selected image.
+        /// </summary>
         private async Task LoadImageAsync()
         {
             var results = await MediaPicker.PickPhotosAsync();
@@ -278,6 +326,9 @@ namespace PixelsorterApp
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
 
+        /// <summary>
+        /// Sorts the currently loaded image using current view model settings.
+        /// </summary>
         private async Task SortAsync()
         {
             if (this.imagePath is null) // Check if we have a file path
@@ -340,10 +391,8 @@ namespace PixelsorterApp
         }
 
         /// <summary>
-        /// Saves the image to the Gallery/Photos album on the user's device. This is necessary because the image is currently saved to a temporary location that may not be accessible to the user.
+        /// Saves the currently focused image to the device gallery.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private async Task SaveAsync()
         {
             var focusedImagePath = GetFocusedImagePath();
@@ -370,6 +419,9 @@ namespace PixelsorterApp
             }
         }
 
+        /// <summary>
+        /// Validates and initializes subject masking when the user enables it.
+        /// </summary>
         private async Task HandleSubjectMaskEnabledAsync()
         {
             if (suppressSubjectMaskChangeHandling)
@@ -463,6 +515,9 @@ namespace PixelsorterApp
             return true;
         }
 
+        /// <summary>
+        /// Disables subject masking without reentering property-change handling logic.
+        /// </summary>
         private void DisableSubjectMaskWithoutReentry()
         {
             suppressSubjectMaskChangeHandling = true;
@@ -471,16 +526,25 @@ namespace PixelsorterApp
         }
 
 
+        /// <summary>
+        /// Navigates to the licenses page.
+        /// </summary>
         private async Task OpenLicensesAsync()
         {
             await Navigation.PushAsync(new LicensesPage());
         }
 
+        /// <summary>
+        /// Navigates to the privacy policy page.
+        /// </summary>
         private async Task OpenPrivacyPolicyAsync()
         {
             await Navigation.PushAsync(new PrivacyPolicyPage());
         }
 
+        /// <summary>
+        /// Shows help actions and navigates based on user selection.
+        /// </summary>
         private async Task OpenHelpAsync()
         {
             var selection = await DisplayActionSheetAsync("Help", "Cancel", null, "Open Source Licenses", "Privacy Policy");
@@ -494,6 +558,11 @@ namespace PixelsorterApp
                 await Navigation.PushAsync(new PrivacyPolicyPage());
             }
         }
+
+        /// <summary>
+        /// Toggles enabled state for sorting-related UI interactions.
+        /// </summary>
+        /// <param name="state"><see langword="true"/> to enable interactions; otherwise, <see langword="false"/>.</param>
         private void ToggleUiForSorting(bool state)
         {
             viewModel.IsSortEnabled = state;

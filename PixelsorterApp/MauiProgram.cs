@@ -6,8 +6,15 @@ using UraniumUI;
 
 namespace PixelsorterApp
 {
+    /// <summary>
+    /// Configures MAUI app services, fonts, and platform integrations.
+    /// </summary>
     public static class MauiProgram
     {
+        /// <summary>
+        /// Creates and configures the MAUI application.
+        /// </summary>
+        /// <returns>The configured <see cref="MauiApp"/> instance.</returns>
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();

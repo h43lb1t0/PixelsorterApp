@@ -8,6 +8,10 @@ using Image = PixelsorterClassLib.Core.Image;
 
 namespace PixelsorterApp.Services;
 
+/// <summary>
+/// Provides image sorting, mask generation, and gallery save operations.
+/// </summary>
+/// <param name="serviceProvider">Service provider used to resolve platform-specific dependencies.</param>
 public sealed class ImageProcessingService(IServiceProvider serviceProvider) : IImageProcessingService
 {
     private readonly BackgroundMask backgroundMasker = new();
@@ -21,23 +25,28 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     private NDArray? cannyMask;
     private NDArray? invertedCannyMask;
 
+    /// <inheritdoc/>
     public bool IsBackgroundMaskReady => backgroundMasker.IsReadyToUse;
 
+    /// <inheritdoc/>
     public Task DownloadBackgroundModelAsync()
     {
         return backgroundMasker.DownloadModel();
     }
 
+    /// <inheritdoc/>
     public Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, int padding)
     {
         return backgroundMasker.GetMaskAsync(imagePath, new BackgroundMaskOptions(padding));
     }
 
+    /// <inheritdoc/>
     public Task<(NDArray CannyMask, NDArray InvertedCannyMask)> CreateCannyMaskAsync(string imagePath, float threshold)
     {
         return cannyMasker.GetMaskAsync(imagePath, new CannyMaskOptions(threshold));
     }
 
+    /// <inheritdoc/>
     public async Task<NDArray?> BuildMaskAsync(
         string imagePath,
         bool useSubjectMask,
@@ -94,6 +103,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         return null;
     }
 
+    /// <inheritdoc/>
     public async Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse)
     {
         var sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
@@ -113,6 +123,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         return sortedImagePath;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> SaveImageToGalleryAsync(string imagePath, string fileName)
     {
         if (!File.Exists(imagePath))
@@ -130,6 +141,10 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         return await galleryService.SaveImageAsync(imageBytes, fileName);
     }
 
+    /// <summary>
+    /// Resets cached masks when the requested image path changes.
+    /// </summary>
+    /// <param name="imagePath">Path of the image being processed.</param>
     private void EnsureCacheScope(string imagePath)
     {
         if (string.Equals(cachedImagePath, imagePath, StringComparison.Ordinal))
@@ -146,6 +161,11 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         invertedCannyMask = null;
     }
 
+    /// <summary>
+    /// Ensures that subject masks are available for the current image and padding settings.
+    /// </summary>
+    /// <param name="imagePath">Path of the image being processed.</param>
+    /// <param name="padding">Subject mask padding in pixels.</param>
     private async Task EnsureSubjectMaskAsync(string imagePath, int padding)
     {
         if (subjectMask is not null && invertedSubjectMask is not null && cachedSubjectPadding == padding)
@@ -164,6 +184,11 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         cachedSubjectPadding = padding;
     }
 
+    /// <summary>
+    /// Ensures that Canny masks are available for the current image and threshold settings.
+    /// </summary>
+    /// <param name="imagePath">Path of the image being processed.</param>
+    /// <param name="threshold">Canny threshold in normalized 0-1 range.</param>
     private async Task EnsureCannyMaskAsync(string imagePath, float threshold)
     {
         if (cannyMask is not null && invertedCannyMask is not null && Math.Abs(cachedCannyThreshold - threshold) < 0.0001f)
