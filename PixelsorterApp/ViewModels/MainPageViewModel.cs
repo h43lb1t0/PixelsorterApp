@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
@@ -9,25 +10,107 @@ namespace PixelsorterApp.ViewModels;
 /// <summary>
 /// Represents UI state and commands for the main pixel sorting screen.
 /// </summary>
-public sealed class MainPageViewModel : BaseViewModel
+public sealed partial class MainPageViewModel : BaseViewModel
 {
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
 
-    private bool isBusy;
-    private bool useSubjectMask;
-    private bool useCanny;
-    private bool isSortEnabled;
-    private bool isSaveVisible;
-    private bool isSaveEnabled;
-    private bool isInteractionEnabled = true;
-    private int selectedSortByIndex;
-    private int selectedSortDirectionIndex;
-    private int cannyThresholdPercent = 30;
-    private int subjectMaskPadding = 15;
-    private bool useInvertedSubjectMask;
-    private bool useSubtractMasks = true;
-    private string currentCaption = "Tap to load an image";
+    /// <summary>
+    /// Gets or sets a value indicating whether the page is busy.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsBusy { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether subject masking is enabled.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowSubjectPadding))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
+    [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    public partial bool UseSubjectMask { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether Canny masking is enabled.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowCannyThreshold))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
+    [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    public partial bool UseCanny { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether sorting is currently enabled.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsSortEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the save button should be visible.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsSaveVisible { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether saving is currently enabled.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsSaveEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether interactive controls should be enabled.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsInteractionEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the selected sort criterion index.
+    /// </summary>
+    [ObservableProperty]
+    public partial int SelectedSortByIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the selected sort direction index.
+    /// </summary>
+    [ObservableProperty]
+    public partial int SelectedSortDirectionIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Canny threshold value in percent (1-99).
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CannyThreshold))]
+    [NotifyPropertyChangedFor(nameof(CannyThresholdText))]
+    public partial int CannyThresholdPercent { get; set; } = 30;
+
+    /// <summary>
+    /// Gets or sets the subject mask padding in pixels (1-100).
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SubjectMaskPaddingText))]
+    public partial int SubjectMaskPadding { get; set; } = 15;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the subject mask should be inverted.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortBackgroundSelected))]
+    [NotifyPropertyChangedFor(nameof(SortForegroundSelected))]
+    public partial bool UseInvertedSubjectMask { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether masks should be combined by subtraction.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UseSubtractMasksSelected))]
+    [NotifyPropertyChangedFor(nameof(UseAddMasksSelected))]
+    public partial bool UseSubtractMasks { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the caption shown for the currently displayed image.
+    /// </summary>
+    [ObservableProperty]
+    public partial string CurrentCaption { get; set; } = "Tap to load an image";
 
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;
@@ -48,7 +131,7 @@ public sealed class MainPageViewModel : BaseViewModel
         openPrivacyPolicyCommand = new RelayCommand(() => OpenPrivacyPolicyRequested?.Invoke());
         openHelpCommand = new RelayCommand(() => OpenHelpRequested?.Invoke());
 
-        foreach (SortDirections direction in Enum.GetValues(typeof(SortDirections)))
+        foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
             string name = Regex.Replace(direction.ToString(), "([A-Z])", " $1").Trim();
             sortDirectionOptions[name] = direction;
@@ -62,142 +145,6 @@ public sealed class MainPageViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the page is busy.
-    /// </summary>
-    public bool IsBusy
-    {
-        get => isBusy;
-        set => SetProperty(ref isBusy, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether subject masking is enabled.
-    /// </summary>
-    public bool UseSubjectMask
-    {
-        get => useSubjectMask;
-        set
-        {
-            if (!SetProperty(ref useSubjectMask, value))
-            {
-                return;
-            }
-
-            RefreshSortDirectionOptions();
-            OnPropertyChanged(nameof(ShowSubjectPadding));
-            OnPropertyChanged(nameof(ShowWhatToSort));
-            OnPropertyChanged(nameof(ShowHowToCombine));
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether Canny masking is enabled.
-    /// </summary>
-    public bool UseCanny
-    {
-        get => useCanny;
-        set
-        {
-            if (!SetProperty(ref useCanny, value))
-            {
-                return;
-            }
-
-            RefreshSortDirectionOptions();
-            OnPropertyChanged(nameof(ShowCannyThreshold));
-            OnPropertyChanged(nameof(ShowWhatToSort));
-            OnPropertyChanged(nameof(ShowHowToCombine));
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether sorting is currently enabled.
-    /// </summary>
-    public bool IsSortEnabled
-    {
-        get => isSortEnabled;
-        set
-        {
-            if (!SetProperty(ref isSortEnabled, value))
-            {
-                return;
-            }
-
-            sortCommand.NotifyCanExecuteChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the save button should be visible.
-    /// </summary>
-    public bool IsSaveVisible
-    {
-        get => isSaveVisible;
-        set => SetProperty(ref isSaveVisible, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether saving is currently enabled.
-    /// </summary>
-    public bool IsSaveEnabled
-    {
-        get => isSaveEnabled;
-        set
-        {
-            if (!SetProperty(ref isSaveEnabled, value))
-            {
-                return;
-            }
-
-            saveCommand.NotifyCanExecuteChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether interactive controls should be enabled.
-    /// </summary>
-    public bool IsInteractionEnabled
-    {
-        get => isInteractionEnabled;
-        set
-        {
-            if (!SetProperty(ref isInteractionEnabled, value))
-            {
-                return;
-            }
-
-            loadImageCommand.NotifyCanExecuteChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the caption shown for the currently displayed image.
-    /// </summary>
-    public string CurrentCaption
-    {
-        get => currentCaption;
-        set => SetProperty(ref currentCaption, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the Canny threshold value in percent (1-99).
-    /// </summary>
-    public int CannyThresholdPercent
-    {
-        get => cannyThresholdPercent;
-        set
-        {
-            int clamped = Math.Clamp(value, 1, 99);
-            if (!SetProperty(ref cannyThresholdPercent, clamped))
-            {
-                return;
-            }
-
-            OnPropertyChanged(nameof(CannyThresholdText));
-        }
-    }
-
-    /// <summary>
     /// Gets the Canny threshold value as a 0-1 floating point number.
     /// </summary>
     public float CannyThreshold => CannyThresholdPercent / 100f;
@@ -208,45 +155,9 @@ public sealed class MainPageViewModel : BaseViewModel
     public string CannyThresholdText => $"{CannyThresholdPercent}%";
 
     /// <summary>
-    /// Gets or sets the subject mask padding in pixels (1-100).
-    /// </summary>
-    public int SubjectMaskPadding
-    {
-        get => subjectMaskPadding;
-        set
-        {
-            int clamped = Math.Clamp(value, 1, 100);
-            if (!SetProperty(ref subjectMaskPadding, clamped))
-            {
-                return;
-            }
-
-            OnPropertyChanged(nameof(SubjectMaskPaddingText));
-        }
-    }
-
-    /// <summary>
     /// Gets the formatted subject mask padding label.
     /// </summary>
     public string SubjectMaskPaddingText => $"{SubjectMaskPadding} px";
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the subject mask should be inverted.
-    /// </summary>
-    public bool UseInvertedSubjectMask
-    {
-        get => useInvertedSubjectMask;
-        set
-        {
-            if (!SetProperty(ref useInvertedSubjectMask, value))
-            {
-                return;
-            }
-
-            OnPropertyChanged(nameof(SortBackgroundSelected));
-            OnPropertyChanged(nameof(SortForegroundSelected));
-        }
-    }
 
     /// <summary>
     /// Gets or sets a value indicating whether background sorting is selected.
@@ -275,24 +186,6 @@ public sealed class MainPageViewModel : BaseViewModel
             {
                 UseInvertedSubjectMask = true;
             }
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether masks should be combined by subtraction.
-    /// </summary>
-    public bool UseSubtractMasks
-    {
-        get => useSubtractMasks;
-        set
-        {
-            if (!SetProperty(ref useSubtractMasks, value))
-            {
-                return;
-            }
-
-            OnPropertyChanged(nameof(UseSubtractMasksSelected));
-            OnPropertyChanged(nameof(UseAddMasksSelected));
         }
     }
 
@@ -417,24 +310,6 @@ public sealed class MainPageViewModel : BaseViewModel
     public ObservableCollection<string> SortDirectionOptions { get; } = [];
 
     /// <summary>
-    /// Gets or sets the selected sort criterion index.
-    /// </summary>
-    public int SelectedSortByIndex
-    {
-        get => selectedSortByIndex;
-        set => SetProperty(ref selectedSortByIndex, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the selected sort direction index.
-    /// </summary>
-    public int SelectedSortDirectionIndex
-    {
-        get => selectedSortDirectionIndex;
-        set => SetProperty(ref selectedSortDirectionIndex, value);
-    }
-
-    /// <summary>
     /// Gets the currently selected sorting criterion delegate.
     /// </summary>
     public Func<Hsl, float>? SortingCriterion =>
@@ -502,6 +377,49 @@ public sealed class MainPageViewModel : BaseViewModel
         if (SelectedSortDirectionIndex < 0 || SelectedSortDirectionIndex >= SortDirectionOptions.Count)
         {
             SelectedSortDirectionIndex = 0;
+        }
+    }
+
+    partial void OnUseSubjectMaskChanged(bool value)
+    {
+        RefreshSortDirectionOptions();
+    }
+
+    partial void OnUseCannyChanged(bool value)
+    {
+        RefreshSortDirectionOptions();
+    }
+
+    partial void OnIsSortEnabledChanged(bool value)
+    {
+        sortCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnIsSaveEnabledChanged(bool value)
+    {
+        saveCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnIsInteractionEnabledChanged(bool value)
+    {
+        loadImageCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnCannyThresholdPercentChanged(int value)
+    {
+        var clamped = Math.Clamp(value, 1, 99);
+        if (value != clamped)
+        {
+            CannyThresholdPercent = clamped;
+        }
+    }
+
+    partial void OnSubjectMaskPaddingChanged(int value)
+    {
+        var clamped = Math.Clamp(value, 1, 100);
+        if (value != clamped)
+        {
+            SubjectMaskPadding = clamped;
         }
     }
 }
