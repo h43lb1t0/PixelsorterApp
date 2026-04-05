@@ -257,8 +257,6 @@ namespace PixelsorterApp
             );
         }
 
-
-
         private void LoadImage_Clicked(object sender, EventArgs e)
         {
             if (viewModel.LoadImageCommand.CanExecute(null))
@@ -387,9 +385,7 @@ namespace PixelsorterApp
             bool netAccess = await CheckNetworkAccessAsync();
             if (!netAccess && !imageProcessingService.IsBackgroundMaskReady)
             {
-                suppressSubjectMaskChangeHandling = true;
-                viewModel.UseSubjectMask = false;
-                suppressSubjectMaskChangeHandling = false;
+                DisableSubjectMaskWithoutReentry();
                 return;
             }
 
@@ -405,9 +401,7 @@ namespace PixelsorterApp
 
                 if (!response)
                 {
-                    suppressSubjectMaskChangeHandling = true;
-                    viewModel.UseSubjectMask = false;
-                    suppressSubjectMaskChangeHandling = false;
+                    DisableSubjectMaskWithoutReentry();
                     return;
                 }
             }
@@ -438,9 +432,7 @@ namespace PixelsorterApp
                             "Download failed",
                             "The masking model could not be downloaded. Please check your internet connection and try again.",
                             "OK");
-                        suppressSubjectMaskChangeHandling = true;
-                        viewModel.UseSubjectMask = false;
-                        suppressSubjectMaskChangeHandling = false;
+                        DisableSubjectMaskWithoutReentry();
                         return;
                     }
                     finally
@@ -469,6 +461,13 @@ namespace PixelsorterApp
                 return false;
             }
             return true;
+        }
+
+        private void DisableSubjectMaskWithoutReentry()
+        {
+            suppressSubjectMaskChangeHandling = true;
+            viewModel.UseSubjectMask = false;
+            suppressSubjectMaskChangeHandling = false;
         }
 
 
