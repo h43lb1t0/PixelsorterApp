@@ -1,8 +1,8 @@
+using CommunityToolkit.Mvvm.Input;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using System.Windows.Input;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -29,24 +29,24 @@ public sealed class MainPageViewModel : BaseViewModel
     private bool useSubtractMasks = true;
     private string currentCaption = "Tap to load an image";
 
-    private readonly Command sortCommand;
-    private readonly Command saveCommand;
-    private readonly Command loadImageCommand;
-    private readonly Command openLicensesCommand;
-    private readonly Command openPrivacyPolicyCommand;
-    private readonly Command openHelpCommand;
+    private readonly IRelayCommand sortCommand;
+    private readonly IRelayCommand saveCommand;
+    private readonly IRelayCommand loadImageCommand;
+    private readonly IRelayCommand openLicensesCommand;
+    private readonly IRelayCommand openPrivacyPolicyCommand;
+    private readonly IRelayCommand openHelpCommand;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
     public MainPageViewModel()
     {
-        sortCommand = new Command(() => SortRequested?.Invoke(), () => IsSortEnabled);
-        saveCommand = new Command(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
-        loadImageCommand = new Command(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
-        openLicensesCommand = new Command(() => OpenLicensesRequested?.Invoke());
-        openPrivacyPolicyCommand = new Command(() => OpenPrivacyPolicyRequested?.Invoke());
-        openHelpCommand = new Command(() => OpenHelpRequested?.Invoke());
+        sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
+        saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
+        loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
+        openLicensesCommand = new RelayCommand(() => OpenLicensesRequested?.Invoke());
+        openPrivacyPolicyCommand = new RelayCommand(() => OpenPrivacyPolicyRequested?.Invoke());
+        openHelpCommand = new RelayCommand(() => OpenHelpRequested?.Invoke());
 
         foreach (SortDirections direction in Enum.GetValues(typeof(SortDirections)))
         {
@@ -123,7 +123,7 @@ public sealed class MainPageViewModel : BaseViewModel
                 return;
             }
 
-            sortCommand.ChangeCanExecute();
+            sortCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -149,7 +149,7 @@ public sealed class MainPageViewModel : BaseViewModel
                 return;
             }
 
-            saveCommand.ChangeCanExecute();
+            saveCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -166,7 +166,7 @@ public sealed class MainPageViewModel : BaseViewModel
                 return;
             }
 
-            loadImageCommand.ChangeCanExecute();
+            loadImageCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -349,32 +349,32 @@ public sealed class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets the command that requests image sorting.
     /// </summary>
-    public ICommand SortCommand => sortCommand;
+    public IRelayCommand SortCommand => sortCommand;
 
     /// <summary>
     /// Gets the command that requests saving the focused image.
     /// </summary>
-    public ICommand SaveCommand => saveCommand;
+    public IRelayCommand SaveCommand => saveCommand;
 
     /// <summary>
     /// Gets the command that requests image loading.
     /// </summary>
-    public ICommand LoadImageCommand => loadImageCommand;
+    public IRelayCommand LoadImageCommand => loadImageCommand;
 
     /// <summary>
     /// Gets the command that requests opening the licenses page.
     /// </summary>
-    public ICommand OpenLicensesCommand => openLicensesCommand;
+    public IRelayCommand OpenLicensesCommand => openLicensesCommand;
 
     /// <summary>
     /// Gets the command that requests opening the privacy policy page.
     /// </summary>
-    public ICommand OpenPrivacyPolicyCommand => openPrivacyPolicyCommand;
+    public IRelayCommand OpenPrivacyPolicyCommand => openPrivacyPolicyCommand;
 
     /// <summary>
     /// Gets the command that requests opening the help menu.
     /// </summary>
-    public ICommand OpenHelpCommand => openHelpCommand;
+    public IRelayCommand OpenHelpCommand => openHelpCommand;
 
     /// <summary>
     /// Occurs when sorting is requested.
