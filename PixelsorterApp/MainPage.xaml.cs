@@ -43,6 +43,7 @@ namespace PixelsorterApp
 
             this.viewModel.SortRequested += async () => await SortAsync();
             this.viewModel.SaveRequested += async () => await SaveAsync();
+            this.viewModel.LoadImageRequested += async () => await LoadImageAsync();
             this.viewModel.OpenLicensesRequested += async () => await OpenLicensesAsync();
             this.viewModel.OpenPrivacyPolicyRequested += async () => await OpenPrivacyPolicyAsync();
             this.viewModel.OpenHelpRequested += async () => await OpenHelpAsync();
@@ -231,6 +232,14 @@ namespace PixelsorterApp
 
 
         private async void LoadImage_Clicked(object sender, EventArgs e)
+        {
+            if (viewModel.LoadImageCommand.CanExecute(null))
+            {
+                viewModel.LoadImageCommand.Execute(null);
+            }
+        }
+
+        private async Task LoadImageAsync()
         {
             var results = await MediaPicker.PickPhotosAsync();
 

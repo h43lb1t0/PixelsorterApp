@@ -28,11 +28,19 @@ public sealed class MainPageViewModel : BaseViewModel
 
     private readonly Command sortCommand;
     private readonly Command saveCommand;
+    private readonly Command loadImageCommand;
+    private readonly Command openLicensesCommand;
+    private readonly Command openPrivacyPolicyCommand;
+    private readonly Command openHelpCommand;
 
     public MainPageViewModel()
     {
         sortCommand = new Command(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new Command(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
+        loadImageCommand = new Command(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
+        openLicensesCommand = new Command(() => OpenLicensesRequested?.Invoke());
+        openPrivacyPolicyCommand = new Command(() => OpenPrivacyPolicyRequested?.Invoke());
+        openHelpCommand = new Command(() => OpenHelpRequested?.Invoke());
 
         foreach (SortDirections direction in Enum.GetValues(typeof(SortDirections)))
         {
@@ -124,7 +132,15 @@ public sealed class MainPageViewModel : BaseViewModel
     public bool IsInteractionEnabled
     {
         get => isInteractionEnabled;
-        set => SetProperty(ref isInteractionEnabled, value);
+        set
+        {
+            if (!SetProperty(ref isInteractionEnabled, value))
+            {
+                return;
+            }
+
+            loadImageCommand.ChangeCanExecute();
+        }
     }
 
     public string CurrentCaption
@@ -259,15 +275,19 @@ public sealed class MainPageViewModel : BaseViewModel
 
     public ICommand SaveCommand => saveCommand;
 
-    public ICommand OpenLicensesCommand => new Command(() => OpenLicensesRequested?.Invoke());
+    public ICommand LoadImageCommand => loadImageCommand;
 
-    public ICommand OpenPrivacyPolicyCommand => new Command(() => OpenPrivacyPolicyRequested?.Invoke());
+    public ICommand OpenLicensesCommand => openLicensesCommand;
 
-    public ICommand OpenHelpCommand => new Command(() => OpenHelpRequested?.Invoke());
+    public ICommand OpenPrivacyPolicyCommand => openPrivacyPolicyCommand;
+
+    public ICommand OpenHelpCommand => openHelpCommand;
 
     public event Action? SortRequested;
 
     public event Action? SaveRequested;
+
+    public event Action? LoadImageRequested;
 
     public event Action? OpenLicensesRequested;
 
