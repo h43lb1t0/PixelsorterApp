@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.CannyMaskOptionsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:DataType="viewModels:MainPageViewModel">
+
+    <VerticalStackLayout Spacing="0">
+        <Grid Padding="16,10" ColumnDefinitions="*,Auto">
+            <Label
+                FontSize="16"
+                Text="Use Canny masking"
+                VerticalOptions="Center" />
+            <Switch
+                Grid.Column="1"
+                IsEnabled="{Binding IsInteractionEnabled}"
+                IsToggled="{Binding UseCanny, Mode=TwoWay}"
+                OnColor="{AppThemeBinding Light={StaticResource Secondary},
+                                          Dark={StaticResource SecondaryDarkText}}"
+                SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
+                SemanticProperties.Hint="Uses edge detection to create an additional mask for sorting. Processed on device."
+                ThumbColor="{AppThemeBinding Light={StaticResource Primary},
+                                             Dark={StaticResource PrimaryDark}}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Grid
+            Padding="16,8"
+            ColumnDefinitions="*, 60"
+            IsVisible="{Binding ShowCannyThreshold}"
+            RowDefinitions="Auto, Auto"
+            RowSpacing="4">
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontSize="16"
+                Text="Threshold"
+                VerticalOptions="Center" />
+
+            <Slider
+                Grid.Row="1"
+                Grid.Column="0"
+                IsEnabled="{Binding IsInteractionEnabled}"
+                Maximum="99"
+                Minimum="1"
+                SemanticProperties.Description="Canny threshold"
+                ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                             Light={StaticResource PrimaryDark}}"
+                VerticalOptions="Center"
+                Value="{Binding CannyThresholdPercent, Mode=TwoWay}" />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                HorizontalOptions="End"
+                Text="{Binding CannyThresholdText}"
+                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                            Light={StaticResource Black}}"
+                VerticalOptions="Center" />
+        </Grid>
+    </VerticalStackLayout>
+</ContentView>
