@@ -20,13 +20,27 @@ Refactor the app from a code-behind-heavy `MainPage` toward an MVVM-oriented str
 
 ## 2) Introduced MVVM base and main view model
 
-- Added `ViewModels/BaseViewModel.cs` implementing `INotifyPropertyChanged` helpers.
+- Added `ViewModels/BaseViewModel.cs` and migrated it to `CommunityToolkit.Mvvm.ComponentModel.ObservableObject`.
 - Added and expanded `ViewModels/MainPageViewModel.cs` to hold:
   - UI state (`IsSortEnabled`, `IsSaveVisible`, `IsSaveEnabled`, `IsInteractionEnabled`, `CurrentCaption`)
   - Sort settings and selected options
   - Mask settings (subject/canny toggles, threshold/padding, combine mode)
   - Derived/visibility properties for XAML sections
   - Commands and request events for UI actions
+
+## 2.1) CommunityToolkit.Mvvm adoption
+
+- Added/confirmed package reference:
+  - `CommunityToolkit.Mvvm`
+- Migrated commands to toolkit commands:
+  - `RelayCommand`
+  - `IRelayCommand`
+  - `NotifyCanExecuteChanged()` usage
+- Migrated view model properties to toolkit source generators:
+  - `[ObservableProperty]`
+  - Converted to **partial property** form (recommended by analyzer `MVVMTK0042`)
+  - Used `[NotifyPropertyChangedFor(...)]` for dependent/computed properties
+- Moved side effects into generator hooks (`partial void OnXChanged(...)`) where needed.
 
 ## 3) Moved XAML from event/state-driven to binding-driven
 
@@ -61,6 +75,13 @@ Refactor the app from a code-behind-heavy `MainPage` toward an MVVM-oriented str
 - bridge wiring between view model request events and async page methods
 - page lifecycle subscriptions for shared image handling
 
+### Event bridge note
+
+- The current design uses a pragmatic bridge:
+  - view model commands trigger request events
+  - `MainPage` handles platform/UI-only operations (navigation, action sheet, media picker, alerts)
+- This keeps non-UI state/behavior in MVVM while preserving MAUI/platform integration points in the view.
+
 ## 6) Subject-mask enable flow modernized
 
 - Removed direct switch toggle logic from XAML event dependency.
@@ -84,12 +105,14 @@ Refactor the app from a code-behind-heavy `MainPage` toward an MVVM-oriented str
 
 - Fixed Android startup crash related to resource dictionary timing.
 - Reverted `ImageViewer` tap behavior from `EventToCommandBehavior` back to direct `ImageTapped` handler because that behavior broke image loading with the custom control.
+- Fixed analyzer warning `MVVMTK0042` by converting generated members to partial-property `[ObservableProperty]` syntax.
 
 ## Current architecture status
 
 ### Mostly MVVM
 
 - State lives in `MainPageViewModel`
+- `CommunityToolkit.Mvvm` drives state/command implementation
 - Commands/events drive user actions
 - Processing logic is in service layer
 
