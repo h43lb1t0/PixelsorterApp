@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.SubjectMaskOptionsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:DataType="viewModels:MainPageViewModel">
+
+    <VerticalStackLayout Spacing="0">
+        <Grid
+            Padding="16,0"
+            ColumnDefinitions="*,Auto"
+            HeightRequest="56">
+            <Label
+                FontSize="16"
+                Text="Use subject masking"
+                VerticalOptions="Center" />
+            <Switch
+                Grid.Column="1"
+                IsEnabled="{Binding IsInteractionEnabled}"
+                IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
+                OnColor="{AppThemeBinding Light={StaticResource Secondary},
+                                          Dark={StaticResource SecondaryDarkText}}"
+                SemanticProperties.Description="Toggle switch to turn masking on or off"
+                SemanticProperties.Hint="Requires internet the first time to download the model"
+                ThumbColor="{AppThemeBinding Light={StaticResource Primary},
+                                             Dark={StaticResource PrimaryDark}}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Grid
+            Padding="16,8"
+            ColumnDefinitions="*, 60"
+            IsVisible="{Binding ShowSubjectPadding}"
+            RowDefinitions="Auto, Auto"
+            RowSpacing="4">
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontSize="16"
+                Text="Padding"
+                VerticalOptions="Center" />
+            <Slider
+                Grid.Row="1"
+                Grid.Column="0"
+                IsEnabled="{Binding IsInteractionEnabled}"
+                Maximum="100"
+                Minimum="1"
+                SemanticProperties.Description="Subject mask padding"
+                ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                             Light={StaticResource PrimaryDark}}"
+                VerticalOptions="Center"
+                Value="{Binding SubjectMaskPadding, Mode=TwoWay}" />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                HorizontalOptions="End"
+                Text="{Binding SubjectMaskPaddingText}"
+                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                            Light={StaticResource Black}}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Grid
+            Padding="16,10"
+            ColumnDefinitions="*,Auto"
+            IsVisible="{Binding ShowWhatToSort}">
+            <Label
+                FontSize="16"
+                Text="What to sort"
+                VerticalOptions="Center" />
+            <HorizontalStackLayout
+                Grid.Column="1"
+                HorizontalOptions="End"
+                Spacing="16"
+                VerticalOptions="Center">
+                <RadioButton
+                    Content="Background"
+                    IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Sort pixels in the background area" />
+                <RadioButton
+                    Content="Foreground"
+                    IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Sort pixels in the foreground area" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <BoxView
+            Margin="16,0,0,0"
+            HeightRequest="1"
+            IsVisible="{Binding ShowHowToCombine}"
+            Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                    Dark={StaticResource DividerDark}}" />
+
+        <Grid
+            Padding="16,10"
+            ColumnDefinitions="*,Auto"
+            IsVisible="{Binding ShowHowToCombine}"
+            RowDefinitions="Auto,Auto">
+            <Label
+                FontSize="16"
+                Text="How to combine masks"
+                VerticalOptions="Center" />
+            <HorizontalStackLayout
+                Grid.Column="1"
+                HorizontalOptions="End"
+                Spacing="16"
+                VerticalOptions="Center">
+                <RadioButton
+                    Content="Subtract"
+                    IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
+                <RadioButton
+                    Content="Add"
+                    IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Adds the Canny mask and the subject mask." />
+            </HorizontalStackLayout>
+            <Label
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0,4,0,0"
+                Padding="2,2,2,2"
+                FontSize="13"
+                SemanticProperties.Description="Combining masks caption"
+                Text="Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask"
+                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                            Dark={StaticResource TextSecondaryDark}}"
+                VerticalOptions="Start" />
+        </Grid>
+    </VerticalStackLayout>
+</ContentView>
