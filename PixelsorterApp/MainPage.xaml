@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:MainPageViewModel"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
                                       Dark={StaticResource PageBackgroundDark}}"
@@ -162,24 +162,24 @@
                             <material:PickerField
                                 x:Name="sortBy"
                                 Title="Sort by"
-                                ItemsSource="{Binding SortByOptions}"
-                                SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
-                                IsEnabled="{Binding IsInteractionEnabled}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
+                                IsEnabled="{Binding IsInteractionEnabled}"
+                                ItemsSource="{Binding SortByOptions}"
+                                SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
                             <material:PickerField
                                 x:Name="sortDirection"
                                 Title="Direction"
-                                ItemsSource="{Binding SortDirectionOptions}"
-                                SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
-                                IsEnabled="{Binding IsInteractionEnabled}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
+                                IsEnabled="{Binding IsInteractionEnabled}"
+                                ItemsSource="{Binding SortDirectionOptions}"
+                                SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
@@ -222,8 +222,8 @@
                             <Switch
                                 x:Name="useCannySwitch"
                                 Grid.Column="1"
-                                IsToggled="{Binding UseCanny, Mode=TwoWay}"
                                 IsEnabled="{Binding IsInteractionEnabled}"
+                                IsToggled="{Binding UseCanny, Mode=TwoWay}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
@@ -254,9 +254,9 @@
                                 x:Name="cannyValueSlider"
                                 Grid.Row="1"
                                 Grid.Column="0"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 Maximum="99"
                                 Minimum="1"
-                                IsEnabled="{Binding IsInteractionEnabled}"
                                 SemanticProperties.Description="Canny threshold"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
@@ -291,8 +291,8 @@
                             <Switch
                                 x:Name="useSubjectMaskingSwitch"
                                 Grid.Column="1"
-                                IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
                                 IsEnabled="{Binding IsInteractionEnabled}"
+                                IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking on or off"
@@ -322,9 +322,9 @@
                                 x:Name="subjectMaskPadding"
                                 Grid.Row="1"
                                 Grid.Column="0"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 Maximum="100"
                                 Minimum="1"
-                                IsEnabled="{Binding IsInteractionEnabled}"
                                 SemanticProperties.Description="Subject mask padding"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
@@ -377,8 +377,7 @@
                             HeightRequest="1"
                             IsVisible="{Binding ShowHowToCombine}"
                             Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                    Dark={StaticResource DividerDark}}">
-                        </BoxView>
+                                                    Dark={StaticResource DividerDark}}" />
 
                         <Grid
                             x:Name="howToCombineGrid"
@@ -428,8 +427,8 @@
                     Margin="0,16,0,0"
                     Command="{Binding SaveCommand}"
                     HorizontalOptions="Fill"
-                    IsVisible="{Binding IsSaveVisible}"
                     IsEnabled="{Binding IsSaveEnabled}"
+                    IsVisible="{Binding IsSaveVisible}"
                     SemanticProperties.Description="Save the current image to your photo gallery"
                     Style="{StaticResource SaveButtonStyle}"
                     Text="Save" />
