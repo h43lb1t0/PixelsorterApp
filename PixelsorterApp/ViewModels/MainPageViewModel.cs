@@ -16,6 +16,7 @@ public sealed class MainPageViewModel : BaseViewModel
     private bool isSortEnabled;
     private bool isSaveVisible;
     private bool isSaveEnabled;
+    private bool isInteractionEnabled = true;
     private int selectedSortByIndex;
     private int selectedSortDirectionIndex;
     private int cannyThresholdPercent = 30;
@@ -95,6 +96,12 @@ public sealed class MainPageViewModel : BaseViewModel
     {
         get => isSaveEnabled;
         set => SetProperty(ref isSaveEnabled, value);
+    }
+
+    public bool IsInteractionEnabled
+    {
+        get => isInteractionEnabled;
+        set => SetProperty(ref isInteractionEnabled, value);
     }
 
     public string CurrentCaption

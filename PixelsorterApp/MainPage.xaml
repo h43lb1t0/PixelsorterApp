@@ -89,6 +89,7 @@
                             Grid.Row="0"
                             HeightRequest="130"
                             ImageTapped="LoadImage_Clicked"
+                            IsEnabled="{Binding IsInteractionEnabled}"
                             SemanticProperties.Description="Image viewer"
                             StyleClass="Elevation5" />
                         <Grid
@@ -163,6 +164,7 @@
                                 Title="Sort by"
                                 ItemsSource="{Binding SortByOptions}"
                                 SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
@@ -174,6 +176,7 @@
                                 Title="Direction"
                                 ItemsSource="{Binding SortDirectionOptions}"
                                 SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
@@ -220,6 +223,7 @@
                                 x:Name="useCannySwitch"
                                 Grid.Column="1"
                                 IsToggled="{Binding UseCanny, Mode=TwoWay}"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking with Canny on or off"
@@ -252,6 +256,7 @@
                                 Grid.Column="0"
                                 Maximum="99"
                                 Minimum="1"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 SemanticProperties.Description="Canny threshold"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
@@ -287,6 +292,7 @@
                                 x:Name="useSubjectMaskingSwitch"
                                 Grid.Column="1"
                                 IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                                           Dark={StaticResource SecondaryDarkText}}"
                                 SemanticProperties.Description="Toggle switch to turn masking on or off"
@@ -319,6 +325,7 @@
                                 Grid.Column="0"
                                 Maximum="100"
                                 Minimum="1"
+                                IsEnabled="{Binding IsInteractionEnabled}"
                                 SemanticProperties.Description="Subject mask padding"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
@@ -355,11 +362,13 @@
                                     x:Name="sortBackgroundRadio"
                                     Content="Background"
                                     IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
                                     SemanticProperties.Description="Sort pixels in the background area" />
                                 <RadioButton
                                     x:Name="sortForegroundRadio"
                                     Content="Foreground"
                                     IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
                                     SemanticProperties.Description="Sort pixels in the foreground area" />
                             </HorizontalStackLayout>
                         </Grid>
@@ -391,11 +400,13 @@
                                     x:Name="subMasksRadio"
                                     Content="Subtract"
                                     IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
                                     SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
                                 <RadioButton
                                     x:Name="addMasksRadio"
                                     Content="Add"
                                     IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
                                     SemanticProperties.Description="Adds the Canny mask and the subject mask." />
                             </HorizontalStackLayout>
                             <Label

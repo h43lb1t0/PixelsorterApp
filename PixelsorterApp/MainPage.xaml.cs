@@ -556,17 +556,7 @@ namespace PixelsorterApp
         private void ToggleUiForSorting(bool state)
         {
             viewModel.IsSortEnabled = state;
-            imageViewer.IsEnabled = state;
-            sortBy.IsEnabled = state;
-            sortDirection.IsEnabled = state;
-            useSubjectMaskingSwitch.IsEnabled = state;
-            useCannySwitch.IsEnabled = state;
-            subjectMaskPadding.IsEnabled = state;
-            cannyValueSlider.IsEnabled = state;
-            sortBackgroundRadio.IsEnabled = state;
-            sortForegroundRadio.IsEnabled = state;
-            subMasksRadio.IsEnabled = state;
-            addMasksRadio.IsEnabled = state;
+            viewModel.IsInteractionEnabled = state;
             viewModel.IsSaveEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
 
         }
