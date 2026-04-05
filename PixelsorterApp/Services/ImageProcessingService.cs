@@ -24,6 +24,16 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     private NDArray? invertedSubjectMask;
     private NDArray? cannyMask;
     private NDArray? invertedCannyMask;
+    private MaskBuildCacheKey? cachedMaskBuildKey;
+    private NDArray? cachedBuiltMask;
+
+    private readonly record struct MaskBuildCacheKey(
+        bool UseSubjectMask,
+        bool UseCanny,
+        bool UseSubtractMasks,
+        bool UseInvertedSubjectMask,
+        int SubjectMaskPadding,
+        int CannyThresholdBucket);
 
     /// <inheritdoc/>
     public bool IsBackgroundMaskReady => backgroundMasker.IsReadyToUse;
@@ -58,8 +68,23 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     {
         EnsureCacheScope(imagePath);
 
+        var cacheKey = new MaskBuildCacheKey(
+            useSubjectMask,
+            useCanny,
+            useSubtractMasks,
+            useInvertedSubjectMask,
+            subjectMaskPadding,
+            GetCannyThresholdBucket(cannyThreshold));
+
+        if (cachedMaskBuildKey is MaskBuildCacheKey existingCacheKey && existingCacheKey == cacheKey)
+        {
+            return cachedBuiltMask;
+        }
+
         if (!useSubjectMask && !useCanny)
         {
+            cachedMaskBuildKey = cacheKey;
+            cachedBuiltMask = null;
             return null;
         }
 
@@ -77,29 +102,42 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         {
             if (subjectMask is null || invertedCannyMask is null || cannyMask is null)
             {
+                cachedMaskBuildKey = cacheKey;
+                cachedBuiltMask = null;
                 return null;
             }
 
-            return useSubtractMasks
+            cachedBuiltMask = useSubtractMasks
                 ? MaskCombiner.SubtractMasks(subjectMask, invertedCannyMask)
                 : MaskCombiner.AddMasks(subjectMask, cannyMask);
+
+            cachedMaskBuildKey = cacheKey;
+            return cachedBuiltMask;
         }
 
         if (useCanny)
         {
-            return cannyMask;
+            cachedMaskBuildKey = cacheKey;
+            cachedBuiltMask = cannyMask;
+            return cachedBuiltMask;
         }
 
         if (useSubjectMask)
         {
             if (subjectMask is null || invertedSubjectMask is null)
             {
+                cachedMaskBuildKey = cacheKey;
+                cachedBuiltMask = null;
                 return null;
             }
 
-            return useInvertedSubjectMask ? invertedSubjectMask : subjectMask;
+            cachedBuiltMask = useInvertedSubjectMask ? invertedSubjectMask : subjectMask;
+            cachedMaskBuildKey = cacheKey;
+            return cachedBuiltMask;
         }
 
+        cachedMaskBuildKey = cacheKey;
+        cachedBuiltMask = null;
         return null;
     }
 
@@ -159,6 +197,13 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         invertedSubjectMask = null;
         cannyMask = null;
         invertedCannyMask = null;
+        cachedMaskBuildKey = null;
+        cachedBuiltMask = null;
+    }
+
+    private static int GetCannyThresholdBucket(float threshold)
+    {
+        return (int)MathF.Round(threshold * 10000f);
     }
 
     /// <summary>
