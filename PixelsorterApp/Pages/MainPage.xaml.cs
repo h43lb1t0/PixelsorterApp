@@ -49,9 +49,6 @@ namespace PixelsorterApp
             this.viewModel.SortRequested += OnSortRequested;
             this.viewModel.SaveRequested += OnSaveRequested;
             this.viewModel.LoadImageRequested += OnLoadImageRequested;
-            this.viewModel.OpenLicensesRequested += OnOpenLicensesRequested;
-            this.viewModel.OpenPrivacyPolicyRequested += OnOpenPrivacyPolicyRequested;
-            this.viewModel.OpenHelpRequested += OnOpenHelpRequested;
             this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
         }
@@ -91,30 +88,6 @@ namespace PixelsorterApp
         private void OnLoadImageRequested()
         {
             _ = LoadImageAsync();
-        }
-
-        /// <summary>
-        /// Handles licenses navigation requests raised by the view model.
-        /// </summary>
-        private void OnOpenLicensesRequested()
-        {
-            _ = OpenLicensesAsync();
-        }
-
-        /// <summary>
-        /// Handles privacy policy navigation requests raised by the view model.
-        /// </summary>
-        private void OnOpenPrivacyPolicyRequested()
-        {
-            _ = OpenPrivacyPolicyAsync();
-        }
-
-        /// <summary>
-        /// Handles help menu requests raised by the view model.
-        /// </summary>
-        private void OnOpenHelpRequested()
-        {
-            _ = OpenHelpAsync();
         }
 
         /// <summary>
@@ -523,40 +496,6 @@ namespace PixelsorterApp
             suppressSubjectMaskChangeHandling = true;
             viewModel.UseSubjectMask = false;
             suppressSubjectMaskChangeHandling = false;
-        }
-
-
-        /// <summary>
-        /// Navigates to the licenses page.
-        /// </summary>
-        private async Task OpenLicensesAsync()
-        {
-            await Navigation.PushAsync(new LicensesPage());
-        }
-
-        /// <summary>
-        /// Navigates to the privacy policy page.
-        /// </summary>
-        private async Task OpenPrivacyPolicyAsync()
-        {
-            await Navigation.PushAsync(new PrivacyPolicyPage());
-        }
-
-        /// <summary>
-        /// Shows help actions and navigates based on user selection.
-        /// </summary>
-        private async Task OpenHelpAsync()
-        {
-            var selection = await DisplayActionSheetAsync("Help", "Cancel", null, "Open Source Licenses", "Privacy Policy");
-
-            if (selection == "Open Source Licenses")
-            {
-                await Navigation.PushAsync(new LicensesPage());
-            }
-            else if (selection == "Privacy Policy")
-            {
-                await Navigation.PushAsync(new PrivacyPolicyPage());
-            }
         }
 
         /// <summary>

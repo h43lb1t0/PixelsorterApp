@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
+    private readonly IHelpNavigationService helpNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
 
@@ -115,21 +117,17 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;
     private readonly IRelayCommand loadImageCommand;
-    private readonly IRelayCommand openLicensesCommand;
-    private readonly IRelayCommand openPrivacyPolicyCommand;
-    private readonly IRelayCommand openHelpCommand;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
-    public MainPageViewModel()
+    public MainPageViewModel(IHelpNavigationService helpNavigationService)
     {
+        this.helpNavigationService = helpNavigationService;
+
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
         loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
-        openLicensesCommand = new RelayCommand(() => OpenLicensesRequested?.Invoke());
-        openPrivacyPolicyCommand = new RelayCommand(() => OpenPrivacyPolicyRequested?.Invoke());
-        openHelpCommand = new RelayCommand(() => OpenHelpRequested?.Invoke());
 
         foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
@@ -254,20 +252,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     public IRelayCommand LoadImageCommand => loadImageCommand;
 
-    /// <summary>
-    /// Gets the command that requests opening the licenses page.
-    /// </summary>
-    public IRelayCommand OpenLicensesCommand => openLicensesCommand;
-
-    /// <summary>
-    /// Gets the command that requests opening the privacy policy page.
-    /// </summary>
-    public IRelayCommand OpenPrivacyPolicyCommand => openPrivacyPolicyCommand;
-
-    /// <summary>
-    /// Gets the command that requests opening the help menu.
-    /// </summary>
-    public IRelayCommand OpenHelpCommand => openHelpCommand;
+    [RelayCommand]
+    private async Task OpenHelpAsync()
+    {
+        await helpNavigationService.ShowHelpMenuAsync();
+    }
 
     /// <summary>
     /// Occurs when sorting is requested.
@@ -283,21 +272,6 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Occurs when image loading is requested.
     /// </summary>
     public event Action? LoadImageRequested;
-
-    /// <summary>
-    /// Occurs when navigation to licenses is requested.
-    /// </summary>
-    public event Action? OpenLicensesRequested;
-
-    /// <summary>
-    /// Occurs when navigation to privacy policy is requested.
-    /// </summary>
-    public event Action? OpenPrivacyPolicyRequested;
-
-    /// <summary>
-    /// Occurs when opening help actions is requested.
-    /// </summary>
-    public event Action? OpenHelpRequested;
 
     /// <summary>
     /// Gets the available sort criteria names.
