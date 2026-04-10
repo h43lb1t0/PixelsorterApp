@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Indiko.Maui.Controls.Markdown;
 using Microsoft.Extensions.Logging;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
@@ -25,7 +26,8 @@ namespace PixelsorterApp
             })
             .UseMauiCommunityToolkit()
             .UseUraniumUI()
-            .UseUraniumUIMaterial();
+            .UseUraniumUIMaterial().
+            UseMarkdownView();
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();
