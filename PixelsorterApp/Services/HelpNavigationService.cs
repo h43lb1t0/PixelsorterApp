@@ -13,7 +13,7 @@ public sealed class HelpNavigationService : IHelpNavigationService
         }
 
         var selection = await currentPage.DisplayActionSheetAsync(
-            "Help",
+            "Help & Info",
             "Cancel",
             null,
             "Help Page",
