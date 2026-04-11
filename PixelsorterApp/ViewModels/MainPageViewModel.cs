@@ -17,7 +17,7 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
-    private const string BasePresetPath = "presets/base.toml";
+    private readonly string BasePresetPath = "presets/" + Preferences.Get("defaultPreset", "base.toml");
     private const string TomlMapPath = "presets/tomlMap.json";
 
     private readonly IHelpNavigationService helpNavigationService;
