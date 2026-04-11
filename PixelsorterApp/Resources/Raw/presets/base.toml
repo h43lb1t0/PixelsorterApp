@@ -1,0 +1,17 @@
+﻿[sort_settings]
+sort_by = "cool"
+direction = "LR"
+
+[masking_options]
+use_canny = true
+use_subject = false
+
+[canny_options]
+threashold = 45
+
+[subject_settings]
+padding = 15
+what_to_sort = "background"
+
+[mask_combination]
+mode "sub"

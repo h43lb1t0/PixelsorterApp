@@ -1,0 +1,26 @@
+{
+  "sortBy": {
+    "hue": "SortBy.Hue",
+    "sat": "SortBy.Saturation",
+    "light": "SortBy.Lightness",
+    "warm": "SortBy.Warmth",
+    "cool": "SortBy.Coolness",
+    "chroma": "SortBy.Chroma",
+    "vib": "SortBy.PerceivedVibrancy"
+  },
+  "direction": {
+    "lr": "SortDirections.RowLeftToRight",
+    "rl": "SortDirections.RowRightToLeft",
+    "tb": "SortDirections.ColumnTopToBottom",
+    "bt": "SortDirections.ColumnBottomToTop",
+    "im": "SortDirections.IntoMask"
+  },
+  "maskCombination": {
+    "sub": "UseSubtractMasksSelected",
+    "add": "UseAddMasksSelected"
+  },
+  "whatToSort": {
+    "background": "SortBackgroundSelected",
+    "foreground": "SortForegroundSelected"
+  }
+}

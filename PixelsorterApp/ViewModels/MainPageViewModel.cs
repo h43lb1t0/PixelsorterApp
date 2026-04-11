@@ -4,7 +4,11 @@ using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Tomlyn;
+using Tomlyn.Serialization;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -13,6 +17,9 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
+    private const string BasePresetPath = "presets/base.toml";
+    private const string TomlMapPath = "presets/tomlMap.json";
+
     private readonly IHelpNavigationService helpNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
@@ -140,6 +147,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         RefreshSortDirectionOptions();
         SelectedSortDirectionIndex = SortDirectionOptions.Count > 0 ? 0 : -1;
+
+        _ = LoadPresetDefaultsAsync();
     }
 
     /// <summary>
@@ -352,6 +361,229 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             SelectedSortDirectionIndex = 0;
         }
+    }
+
+    private async Task LoadPresetDefaultsAsync()
+    {
+        try
+        {
+            var tomlContent = await ReadAppPackageTextAsync(BasePresetPath);
+            var mapContent = await ReadAppPackageTextAsync(TomlMapPath);
+
+            var map = JsonSerializer.Deserialize<TomlMap>(mapContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+
+            if (map is null)
+            {
+                return;
+            }
+
+            ApplyPreset(tomlContent, map);
+        }
+        catch
+        {
+        }
+    }
+
+    private static async Task<string> ReadAppPackageTextAsync(string path)
+    {
+        using var stream = await FileSystem.OpenAppPackageFileAsync(path);
+        using var reader = new StreamReader(stream);
+        return await reader.ReadToEndAsync();
+    }
+
+    private void ApplyPreset(string tomlContent, TomlMap map)
+    {
+        var sanitizedToml = Regex.Replace(
+            tomlContent,
+            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
+            "mode = \"${value}\"");
+
+        if (!TomlSerializer.TryDeserialize(sanitizedToml, out PresetToml? preset, null) || preset is null)
+        {
+            return;
+        }
+
+        if (preset.MaskingOptions is not null)
+        {
+            UseCanny = preset.MaskingOptions.UseCanny;
+            UseSubjectMask = preset.MaskingOptions.UseSubject;
+        }
+
+        if (preset.CannyOptions is not null)
+        {
+            CannyThresholdPercent = preset.CannyOptions.Threshold > 0
+                ? preset.CannyOptions.Threshold
+                : preset.CannyOptions.LegacyThreshold;
+        }
+
+        if (preset.SubjectSettings is not null)
+        {
+            SubjectMaskPadding = preset.SubjectSettings.Padding;
+            if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
+            {
+                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
+                {
+                    UseInvertedSubjectMask = string.Equals(
+                        whatToSortMapped,
+                        nameof(SortForegroundSelected),
+                        StringComparison.Ordinal);
+                }
+                else
+                {
+                    UseInvertedSubjectMask = string.Equals(preset.SubjectSettings.WhatToSort, "foreground", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.SortSettings?.SortBy)
+            && TryGetMappedValue(map.SortBy, preset.SortSettings.SortBy, out var sortByMapped))
+        {
+            var sortByName = sortByMapped.Split('.').Last();
+            var sortByIndex = FindIndex(SortByOptions, sortByName);
+            if (sortByIndex >= 0)
+            {
+                SelectedSortByIndex = sortByIndex;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.MaskCombination?.Mode)
+            && TryGetMappedValue(map.MaskCombination, preset.MaskCombination.Mode, out var maskCombinationMapped))
+        {
+            UseSubtractMasks = string.Equals(
+                maskCombinationMapped,
+                nameof(UseSubtractMasksSelected),
+                StringComparison.Ordinal);
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.SortSettings?.Direction)
+            && TryGetMappedValue(map.Direction, preset.SortSettings.Direction, out var directionMapped)
+            && Enum.TryParse<SortDirections>(directionMapped.Split('.').Last(), out var direction))
+        {
+            var directionName = sortDirectionOptions
+                .FirstOrDefault(option => option.Value == direction)
+                .Key;
+
+            if (!string.IsNullOrWhiteSpace(directionName))
+            {
+                var directionIndex = SortDirectionOptions.IndexOf(directionName);
+                if (directionIndex >= 0)
+                {
+                    SelectedSortDirectionIndex = directionIndex;
+                }
+            }
+        }
+    }
+
+    private static int FindIndex(IReadOnlyList<string> items, string value)
+    {
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (string.Equals(items[i], value, StringComparison.Ordinal))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private static bool TryGetMappedValue(IReadOnlyDictionary<string, string>? map, string key, out string value)
+    {
+        value = string.Empty;
+
+        if (map is null)
+        {
+            return false;
+        }
+
+        foreach (var pair in map)
+        {
+            if (string.Equals(pair.Key, key, StringComparison.OrdinalIgnoreCase))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private sealed class TomlMap
+    {
+        [JsonPropertyName("sortBy")]
+        public Dictionary<string, string>? SortBy { get; init; }
+
+        [JsonPropertyName("direction")]
+        public Dictionary<string, string>? Direction { get; init; }
+
+        [JsonPropertyName("maskCombination")]
+        public Dictionary<string, string>? MaskCombination { get; init; }
+
+        [JsonPropertyName("whatToSort")]
+        public Dictionary<string, string>? WhatToSort { get; init; }
+    }
+
+    private sealed class PresetToml
+    {
+        [TomlPropertyName("sort_settings")]
+        public SortSettings? SortSettings { get; init; }
+
+        [TomlPropertyName("masking_options")]
+        public MaskingOptions? MaskingOptions { get; init; }
+
+        [TomlPropertyName("canny_options")]
+        public CannyOptions? CannyOptions { get; init; }
+
+        [TomlPropertyName("subject_settings")]
+        public SubjectSettings? SubjectSettings { get; init; }
+
+        [TomlPropertyName("mask_combination")]
+        public MaskCombination? MaskCombination { get; init; }
+    }
+
+    private sealed class SortSettings
+    {
+        [TomlPropertyName("sort_by")]
+        public string? SortBy { get; init; }
+
+        [TomlPropertyName("direction")]
+        public string? Direction { get; init; }
+    }
+
+    private sealed class MaskingOptions
+    {
+        [TomlPropertyName("use_canny")]
+        public bool UseCanny { get; init; }
+
+        [TomlPropertyName("use_subject")]
+        public bool UseSubject { get; init; }
+    }
+
+    private sealed class CannyOptions
+    {
+        [TomlPropertyName("threshold")]
+        public int Threshold { get; init; } = 30;
+
+        [TomlPropertyName("threashold")]
+        public int LegacyThreshold { get; init; }
+    }
+
+    private sealed class SubjectSettings
+    {
+        [TomlPropertyName("padding")]
+        public int Padding { get; init; } = 15;
+
+        [TomlPropertyName("what_to_sort")]
+        public string? WhatToSort { get; init; }
+    }
+
+    private sealed class MaskCombination
+    {
+        [TomlPropertyName("mode")]
+        public string? Mode { get; init; }
     }
 
     partial void OnUseSubjectMaskChanged(bool value)
