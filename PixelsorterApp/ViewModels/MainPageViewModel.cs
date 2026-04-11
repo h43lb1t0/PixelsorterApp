@@ -414,14 +414,20 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         if (preset.CannyOptions is not null)
         {
-            CannyThresholdPercent = preset.CannyOptions.Threshold > 0
-                ? preset.CannyOptions.Threshold
-                : preset.CannyOptions.LegacyThreshold;
+            var threshold = preset.CannyOptions.Threshold ?? preset.CannyOptions.LegacyThreshold;
+            if (threshold is > 0)
+            {
+                CannyThresholdPercent = threshold.Value;
+            }
         }
 
         if (preset.SubjectSettings is not null)
         {
-            SubjectMaskPadding = preset.SubjectSettings.Padding;
+            if (preset.SubjectSettings.Padding is > 0)
+            {
+                SubjectMaskPadding = preset.SubjectSettings.Padding.Value;
+            }
+
             if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
             {
                 if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
@@ -565,16 +571,16 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private sealed class CannyOptions
     {
         [TomlPropertyName("threshold")]
-        public int Threshold { get; init; } = 30;
+        public int? Threshold { get; init; }
 
         [TomlPropertyName("threashold")]
-        public int LegacyThreshold { get; init; }
+        public int? LegacyThreshold { get; init; }
     }
 
     private sealed class SubjectSettings
     {
         [TomlPropertyName("padding")]
-        public int Padding { get; init; } = 15;
+        public int? Padding { get; init; }
 
         [TomlPropertyName("what_to_sort")]
         public string? WhatToSort { get; init; }
