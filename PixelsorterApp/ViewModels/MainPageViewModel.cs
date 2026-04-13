@@ -17,12 +17,23 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
-    private readonly string BasePresetPath = "presets/" + Preferences.Get("defaultPreset", "base.toml");
+    private readonly string DefaultPresetPath = "presets/" + Preferences.Get("defaultPreset", "base.toml");
+    private readonly string BasePresetPath = "presets/" + "base.toml";
+    private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
     private const string TomlMapPath = "presets/tomlMap.json";
 
+
+
     private readonly IHelpNavigationService helpNavigationService;
+    private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
+    private readonly Dictionary<string, string> AvilablePresets = [];
+    private const string NewPresetOptionLabel = "new preset";
+    private bool suppressPresetSelectionChangedHandling;
+    private bool isNavigatingToPresetPage;
+    private string? lastValidPresetOption;
+
 
     /// <summary>
     /// Gets or sets a value indicating whether the page is busy.
@@ -85,6 +96,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial int SelectedSortDirectionIndex { get; set; }
 
     /// <summary>
+    /// Gets or sets the selected preset option.
+    /// </summary>
+    [ObservableProperty]
+    public partial string? SelectedPresetOption { get; set; }
+
+    /// <summary>
     /// Gets or sets the Canny threshold value in percent (1-99).
     /// </summary>
     [ObservableProperty]
@@ -128,9 +145,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
-    public MainPageViewModel(IHelpNavigationService helpNavigationService)
+    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService)
     {
         this.helpNavigationService = helpNavigationService;
+        this.presetNavigationService = presetNavigationService;
 
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
@@ -148,7 +166,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
         RefreshSortDirectionOptions();
         SelectedSortDirectionIndex = SortDirectionOptions.Count > 0 ? 0 : -1;
 
-        _ = LoadPresetDefaultsAsync();
+        GetAvilablePresets();
+        SelectedPresetOption = FindDefaultPresetOption() ?? PresetOptions.FirstOrDefault();
+        lastValidPresetOption = SelectedPresetOption;
     }
 
     /// <summary>
@@ -293,6 +313,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public ObservableCollection<string> SortDirectionOptions { get; } = [];
 
     /// <summary>
+    /// Gets the available preset names.
+    /// </summary>
+    public ObservableCollection<string> PresetOptions { get; } = [];
+
+    /// <summary>
     /// Gets the currently selected sorting criterion delegate.
     /// </summary>
     public Func<Hsl, float>? SortingCriterion =>
@@ -363,11 +388,55 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    private async Task LoadPresetDefaultsAsync()
+    private void GetAvilablePresets()
     {
         try
         {
-            var tomlContent = await ReadAppPackageTextAsync(BasePresetPath);
+            AvilablePresets.Clear();
+            PresetOptions.Clear();
+
+            AvilablePresets.Add("Base", BasePresetPath);
+            if (Directory.Exists(UserPresetsPath))
+            {
+                var files = Directory.GetFiles(UserPresetsPath, "*.toml");
+                foreach (var file in files)
+                {
+                    AvilablePresets[Path.GetFileNameWithoutExtension(file)] = file;
+                }
+            }
+
+            foreach (var presetName in AvilablePresets.Keys)
+            {
+                PresetOptions.Add(presetName);
+            }
+
+            PresetOptions.Add("new preset");
+        }
+        catch
+        {
+        }
+    }
+
+    private string? FindDefaultPresetOption()
+    {
+        foreach (var preset in AvilablePresets)
+        {
+            if (string.Equals(preset.Value, DefaultPresetPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return preset.Key;
+            }
+        }
+
+        return null;
+    }
+
+    private async Task LoadPresetAsync(string presetPath)
+    {
+        try
+        {
+            var tomlContent = Path.IsPathRooted(presetPath)
+                ? await File.ReadAllTextAsync(presetPath)
+                : await ReadAppPackageTextAsync(presetPath);
             var mapContent = await ReadAppPackageTextAsync(TomlMapPath);
 
             var map = JsonSerializer.Deserialize<TomlMap>(mapContent, new JsonSerializerOptions
@@ -633,5 +702,58 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             SubjectMaskPadding = clamped;
         }
+    }
+
+    partial void OnSelectedPresetOptionChanged(string? value)
+    {
+        if (suppressPresetSelectionChangedHandling)
+        {
+            return;
+        }
+
+        _ = HandleSelectedPresetOptionChangedAsync(value);
+    }
+
+    private async Task HandleSelectedPresetOptionChangedAsync(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        if (string.Equals(value, NewPresetOptionLabel, StringComparison.Ordinal))
+        {
+            if (isNavigatingToPresetPage)
+            {
+                return;
+            }
+
+            isNavigatingToPresetPage = true;
+            try
+            {
+                await presetNavigationService.ShowCreatePresetPageAsync();
+            }
+            finally
+            {
+                isNavigatingToPresetPage = false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(lastValidPresetOption))
+            {
+                suppressPresetSelectionChangedHandling = true;
+                SelectedPresetOption = lastValidPresetOption;
+                suppressPresetSelectionChangedHandling = false;
+            }
+
+            return;
+        }
+
+        if (!AvilablePresets.TryGetValue(value, out var presetPath))
+        {
+            return;
+        }
+
+        lastValidPresetOption = value;
+        await LoadPresetAsync(presetPath);
     }
 }

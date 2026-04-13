@@ -3,8 +3,11 @@
     x:Class="PixelsorterApp.Views.PresetsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
-    <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
+    x:DataType="viewModels:MainPageViewModel">
+    <VerticalStackLayout Spacing="16">
         <Label
             Margin="4,10,4,4"
             FontAttributes="Bold"
@@ -33,16 +36,16 @@
 
             <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                 <material:PickerField
-                    x:Name="sortBy"
-                    Title="Sort by"
+                    x:Name="presetPicker"
+                    Title="Presets"
                     Grid.Row="0"
                     AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                   Dark={StaticResource PrimaryDark}}"
                     AllowClear="False"
                     IsEnabled="{Binding IsInteractionEnabled}"
-                    ItemsSource="{Binding SortByOptions}"
-                    SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
-                    SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
+                    ItemsSource="{Binding PresetOptions}"
+                    SelectedItem="{Binding SelectedPresetOption, Mode=TwoWay}"
+                    SemanticProperties.Description="A dropdown menu to select a preset"
                     TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                 Dark={StaticResource TextPrimaryDark}}" />
             </Grid>
