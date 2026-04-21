@@ -86,7 +86,7 @@
 	  <MauiXaml Update="Pages\LicensesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\PresetPage.xaml">
+	  <MauiXaml Update="Pages\PresetsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
@@ -112,8 +112,19 @@
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 	</Target>
 
+	<Target Name="EnsureResizetizerIntermediateDirectories" BeforeTargets="ResizetizeImages" Condition="'$(_ResizetizerIsAndroidApp)' == 'True'">
+		<MakeDir Directories="$(_MauiIntermediateImages)" />
+		<MakeDir Directories="$(_MauiIntermediateImages)\drawable;$(_MauiIntermediateImages)\mipmap-mdpi;$(_MauiIntermediateImages)\mipmap-hdpi;$(_MauiIntermediateImages)\mipmap-xhdpi;$(_MauiIntermediateImages)\mipmap-xxhdpi;$(_MauiIntermediateImages)\mipmap-xxxhdpi" />
+	</Target>
+
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\PresetsPage.xaml.cs">
+	    <DependentUpon>PresetsPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

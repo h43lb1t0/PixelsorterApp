@@ -31,6 +31,7 @@ namespace PixelsorterApp
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<Pages.PresetsPage>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddTransient<PresetsPageViewModel>();
             builder.Services.AddSingleton<IImageProcessingService, ImageProcessingService>();

@@ -20,7 +20,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly string DefaultPresetPath = "presets/" + Preferences.Get("defaultPreset", "base.toml");
     private readonly string BasePresetPath = "presets/" + "base.toml";
     private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
-    private const string TomlMapPath = "presets/tomlMap.json";
+    public const string TomlMapPath = "presets/tomlMap.json";
 
 
 
