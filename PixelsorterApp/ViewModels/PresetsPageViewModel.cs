@@ -28,10 +28,14 @@ namespace PixelsorterApp.ViewModels
         private readonly bool subtractMask;
 
         private readonly string tomlMapPath;
+
         private readonly TomlMap? tomlMap;
 
         [ObservableProperty]
         public partial string PresetToml {  get; set; }
+
+        [ObservableProperty]
+        public partial string TomlMapString { get; set; }
 
 
         public PresetsPageViewModel(MainPageViewModel mainViewModel)
@@ -52,8 +56,39 @@ namespace PixelsorterApp.ViewModels
 
             tomlMapPath = MainPageViewModel.TomlMapPath;
             tomlMap = LoadTomlMap();
+            TomlMapString = FormatTomlMap(tomlMap);
 
             PresetToml = CreateToml();
+        }
+
+        private static string FormatTomlMap(TomlMap? map)
+        {
+            if (map == null)
+            {
+                return string.Empty;
+            }
+
+            StringBuilder sb = new();
+
+            void AppendOptions(string header, Dictionary<string, string>? options)
+            {
+                if (options is { Count: > 0 })
+                {
+                    sb.AppendLine(header);
+                    foreach (string key in options.Keys)
+                    {
+                        sb.AppendLine($"  - {key}");
+                    }
+                    sb.AppendLine();
+                }
+            }
+
+            AppendOptions("Sort By Options:", map.SortBy);
+            AppendOptions("Direction Options:", map.Direction);
+            AppendOptions("What To Sort Options:", map.WhatToSort);
+            AppendOptions("Mask Combination Options:", map.MaskCombination);
+
+            return sb.ToString().TrimEnd();
         }
 
         private string CreateToml()
