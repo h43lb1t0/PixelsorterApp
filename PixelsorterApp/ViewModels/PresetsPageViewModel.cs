@@ -2,6 +2,7 @@
 using SixLabors.ImageSharp.ColorSpaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -27,6 +28,7 @@ namespace PixelsorterApp.ViewModels
         private readonly bool subtractMask;
 
         private readonly string tomlMapPath;
+        private readonly TomlMap? tomlMap;
 
         [ObservableProperty]
         public partial string PresetToml {  get; set; }
@@ -49,39 +51,142 @@ namespace PixelsorterApp.ViewModels
             subtractMask = _mainViewModel.UseSubtractMasks;
 
             tomlMapPath = MainPageViewModel.TomlMapPath;
+            tomlMap = LoadTomlMap();
 
             PresetToml = CreateToml();
         }
 
         private string CreateToml()
         {
+            string sortByKey = ResolveMapKey(tomlMap?.SortBy, sortBy, "cool");
+            string directionKey = ResolveMapKey(tomlMap?.Direction, sortDirection, "lr");
+            string whatToSortKey = subjectBackground
+                ? ResolveBooleanMapKey(tomlMap?.WhatToSort, "SortForegroundSelected", "SortBackgroundSelected", true, "foreground", "background")
+                : ResolveBooleanMapKey(tomlMap?.WhatToSort, "SortForegroundSelected", "SortBackgroundSelected", false, "foreground", "background");
+            string maskCombinationKey = subtractMask
+                ? ResolveBooleanMapKey(tomlMap?.MaskCombination, "UseSubtractMasksSelected", "UseAddMasksSelected", true, "sub", "add")
+                : ResolveBooleanMapKey(tomlMap?.MaskCombination, "UseSubtractMasksSelected", "UseAddMasksSelected", false, "sub", "add");
+
             StringBuilder sb = new();
 
             sb.AppendLine("[sort_settings]");
-            sb.AppendLine($"sort_by={sortBy}");
-            sb.AppendLine($"direction={sortDirection}");
+            sb.AppendLine($"sort_by = \"{sortByKey}\"");
+            sb.AppendLine($"direction = \"{directionKey}\"");
             sb.AppendLine("");
 
             sb.AppendLine("[masking_options]");
-            sb.AppendLine($"use_canny={cannyMasking}");
-            sb.AppendLine($"use_subject={subjectMasking}");
+            sb.AppendLine($"use_canny = {cannyMasking.ToString().ToLowerInvariant()}");
+            sb.AppendLine($"use_subject = {subjectMasking.ToString().ToLowerInvariant()}");
             sb.AppendLine("");
 
             sb.AppendLine("[canny_options]");
-            sb.AppendLine($"threashold={cannyThreashold}");
+            sb.AppendLine($"threashold = {cannyThreashold}");
             sb.AppendLine("");
 
             sb.AppendLine("[subject_settings]");
-            sb.AppendLine($"padding={subjectPadding}");
-            sb.AppendLine($"what_to_sort={subjectBackground}");
+            sb.AppendLine($"padding = {subjectPadding}");
+            sb.AppendLine($"what_to_sort = \"{whatToSortKey}\"");
             sb.AppendLine("");
 
             sb.AppendLine("[mask_combination]");
-            sb.AppendLine($"mode={subtractMask}");
+            sb.AppendLine($"mode = \"{maskCombinationKey}\"");
 
             return sb.ToString();
 
 
+        }
+
+        private TomlMap? LoadTomlMap()
+        {
+            try
+            {
+                using Stream stream = FileSystem.OpenAppPackageFileAsync(tomlMapPath).GetAwaiter().GetResult();
+                using StreamReader reader = new(stream);
+                string content = reader.ReadToEnd();
+
+                return JsonSerializer.Deserialize<TomlMap>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string ResolveMapKey(Dictionary<string, string>? map, string selectedValue, string fallback)
+        {
+            if (map is null)
+            {
+                return fallback;
+            }
+
+            string normalizedSelected = Normalize(selectedValue);
+            foreach ((string key, string mappedValue) in map)
+            {
+                string symbolName = mappedValue.Contains('.') ? mappedValue[(mappedValue.LastIndexOf('.') + 1)..] : mappedValue;
+                if (Normalize(symbolName) == normalizedSelected)
+                {
+                    return key;
+                }
+            }
+
+            return fallback;
+        }
+
+        private static string ResolveBooleanMapKey(
+            Dictionary<string, string>? map,
+            string trueSymbol,
+            string falseSymbol,
+            bool selectedValue,
+            string trueFallback,
+            string falseFallback)
+        {
+            if (map is null)
+            {
+                return selectedValue ? trueFallback : falseFallback;
+            }
+
+            foreach ((string key, string mappedValue) in map)
+            {
+                if (string.Equals(mappedValue, trueSymbol, StringComparison.Ordinal))
+                {
+                    if (selectedValue)
+                    {
+                        return key;
+                    }
+                }
+                else if (string.Equals(mappedValue, falseSymbol, StringComparison.Ordinal))
+                {
+                    if (!selectedValue)
+                    {
+                        return key;
+                    }
+                }
+            }
+
+            return selectedValue ? trueFallback : falseFallback;
+        }
+
+        private static string Normalize(string value)
+        {
+            return Regex.Replace(value, "[^A-Za-z0-9]", string.Empty).ToLowerInvariant();
+        }
+
+        private sealed class TomlMap
+        {
+            [JsonPropertyName("sortBy")]
+            public Dictionary<string, string>? SortBy { get; set; }
+
+            [JsonPropertyName("direction")]
+            public Dictionary<string, string>? Direction { get; set; }
+
+            [JsonPropertyName("maskCombination")]
+            public Dictionary<string, string>? MaskCombination { get; set; }
+
+            [JsonPropertyName("whatToSort")]
+            public Dictionary<string, string>? WhatToSort { get; set; }
         }
     }
 }

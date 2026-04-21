@@ -14,4 +14,4 @@ padding = 15
 what_to_sort = "background"
 
 [mask_combination]
-mode "sub"
+mode = "add"
