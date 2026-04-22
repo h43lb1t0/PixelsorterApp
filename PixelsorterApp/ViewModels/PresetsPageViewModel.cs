@@ -1,4 +1,5 @@
 ﻿using PixelsorterClassLib.Core;
+using PixelsorterApp.Services;
 using SixLabors.ImageSharp.ColorSpaces;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,14 @@ using Tomlyn;
 using Tomlyn.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 
 namespace PixelsorterApp.ViewModels
 {
     public sealed partial class PresetsPageViewModel : BaseViewModel
     {
         private readonly MainPageViewModel _mainViewModel;
+        private readonly ITomlValidationService tomlValidationService;
         private readonly string sortBy;
         private readonly string sortDirection;
         private readonly bool cannyMasking;
@@ -37,10 +40,16 @@ namespace PixelsorterApp.ViewModels
         [ObservableProperty]
         public partial string TomlMapString { get; set; }
 
+        [ObservableProperty]
+        public partial string SavePresetValidationMessage { get; set; }
 
-        public PresetsPageViewModel(MainPageViewModel mainViewModel)
+        private readonly IAsyncRelayCommand savePresetCommand;
+
+
+        public PresetsPageViewModel(MainPageViewModel mainViewModel, ITomlValidationService tomlValidationService)
         {
             _mainViewModel = mainViewModel;
+            this.tomlValidationService = tomlValidationService;
 
             sortBy = _mainViewModel.SelectedSortByName;
             sortDirection = _mainViewModel.SelectedSortDirectionName;
@@ -59,7 +68,26 @@ namespace PixelsorterApp.ViewModels
             TomlMapString = FormatTomlMap(tomlMap);
 
             PresetToml = CreateToml();
+            SavePresetValidationMessage = string.Empty;
+
+            savePresetCommand = new AsyncRelayCommand(ValidatePresetAsync);
+
         }
+
+        public IAsyncRelayCommand SavePresetCommand => savePresetCommand;
+
+        private async Task ValidatePresetAsync()
+        {
+            (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml);
+
+            SavePresetValidationMessage = isValid
+                ? "TOML is valid."
+                : string.IsNullOrWhiteSpace(errors)
+                    ? "TOML is invalid."
+                    : $"TOML is invalid: {errors}";
+            Debug.WriteLine($"Errors: {errors}");
+        }
+
 
         private static string FormatTomlMap(TomlMap? map)
         {

@@ -10,5 +10,8 @@
         <Label Text="{Binding TomlMapString}" />
         <material:EditorField Title="Description" Text="{Binding PresetToml}" />
 
+        <Button Text="Save Preset" Command="{Binding SavePresetCommand}" />
+        <Label Text="{Binding SavePresetValidationMessage}" />
+
     </VerticalStackLayout>
 </ContentPage>
