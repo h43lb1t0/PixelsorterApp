@@ -6,12 +6,15 @@
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     Title="PresetPage">
-    <VerticalStackLayout>
-        <Label Text="{Binding TomlMapString}" />
-        <material:EditorField Title="Description" Text="{Binding PresetToml}" />
+    <ScrollView>
+        
+        <VerticalStackLayout>
+            <Label Text="{Binding TomlMapString}" />
+            <material:EditorField Title="Description" Text="{Binding PresetToml}" />
 
-        <Button Text="Save Preset" Command="{Binding SavePresetCommand}" />
-        <Label Text="{Binding SavePresetValidationMessage}" />
+            <Button Text="Save Preset" Command="{Binding SavePresetCommand}" />
+            <Label Text="{Binding SavePresetValidationMessage}" />
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

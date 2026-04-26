@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -17,6 +19,13 @@ namespace PixelsorterApp.Services
 
         public async Task<(bool isValid, string errors)> Validate(string conent)
         {
+            conent = conent.Replace("\r\n", "\n").Replace('\r', '\n');
+
+            conent = Regex.Replace(
+            conent,
+            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
+            "mode = \"${value}\"");
+
             var errors = new List<string>();
 
             if (string.IsNullOrWhiteSpace(conent))
@@ -30,8 +39,17 @@ namespace PixelsorterApp.Services
                 return (false, "Failed to load toml map.");
             }
 
-            TomlTable model;
-            if (!TomlSerializer.TryDeserialize(conent, out model, new TomlSerializerOptions()) || model is null)
+            TomlTable? model;
+            try
+            {
+                model = TomlSerializer.Deserialize<TomlTable>(conent, new TomlSerializerOptions());
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Invalid TOML syntax: {ex.Message}");
+            }
+
+            if (model is null)
             {
                 return (false, "Invalid TOML syntax.");
             }
