@@ -19,12 +19,6 @@ namespace PixelsorterApp.Services
 
         public async Task<(bool isValid, string errors)> Validate(string conent)
         {
-            conent = conent.Replace("\r\n", "\n").Replace('\r', '\n');
-
-            conent = Regex.Replace(
-            conent,
-            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
-            "mode = \"${value}\"");
 
             var errors = new List<string>();
 

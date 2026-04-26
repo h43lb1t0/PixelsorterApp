@@ -78,6 +78,12 @@ namespace PixelsorterApp.ViewModels
 
         private async Task ValidatePresetAsync()
         {
+            PresetToml = PresetToml.Replace("\r\n", "\n").Replace('\r', '\n');
+
+            PresetToml = Regex.Replace(
+            PresetToml,
+            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
+            "mode = \"${value}\"");
             (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml);
 
             SavePresetValidationMessage = isValid
