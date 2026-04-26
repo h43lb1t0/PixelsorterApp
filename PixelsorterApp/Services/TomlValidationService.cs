@@ -50,6 +50,7 @@ namespace PixelsorterApp.Services
 
             var sortSettings = GetTable(model, "sort_settings", errors);
             var maskingOptions = GetTable(model, "masking_options", errors);
+            var cannyOptions = GetTable(model, "canny_options", errors);
             var subjectSettings = GetTable(model, "subject_settings", errors);
             var maskCombination = GetTable(model, "mask_combination", errors);
 
@@ -57,6 +58,8 @@ namespace PixelsorterApp.Services
             string direction = GetString(sortSettings, "direction", errors);
             bool useSubject = GetBool(maskingOptions, "use_subject", errors);
             bool useCanny = GetBool(maskingOptions, "use_canny", errors);
+            int cannyThreashold = GetInt(cannyOptions, "threashold", errors);
+            int subjectPadding = GetInt(subjectSettings, "padding", errors);
             string whatToSort = GetString(subjectSettings, "what_to_sort", errors);
             string mode = GetString(maskCombination, "mode", errors);
 
@@ -68,6 +71,16 @@ namespace PixelsorterApp.Services
             if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny)
             {
                 errors.Add("Direction 'im' (Into Mask) requires at least one mask to be enabled.");
+            }
+
+            if (cannyThreashold is <= 0 or >= 100)
+            {
+                errors.Add("canny_options.threashold must be in range (0, 100).");
+            }
+
+            if (subjectPadding is < 1 or > 100)
+            {
+                errors.Add("subject_settings.padding must be in range [1, 100].");
             }
 
             if (useSubject)
@@ -120,6 +133,17 @@ namespace PixelsorterApp.Services
 
             errors.Add($"Missing or invalid boolean value: {key}.");
             return false;
+        }
+
+        private static int GetInt(TomlTable table, string key, List<string> errors)
+        {
+            if (table.TryGetValue(key, out object? value) && value is long l)
+            {
+                return (int)l;
+            }
+
+            errors.Add($"Missing or invalid integer value: {key}.");
+            return 0;
         }
 
         private static void ValidateMappedOption(string value, Dictionary<string, string> map, string fieldName, List<string> errors)
