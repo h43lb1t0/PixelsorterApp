@@ -432,6 +432,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     private async Task LoadPresetAsync(string presetPath)
     {
+        // TODO: Use TomlValidationService here to prevent errors from manuel edited file outsite the app
         try
         {
             var tomlContent = Path.IsPathRooted(presetPath)
