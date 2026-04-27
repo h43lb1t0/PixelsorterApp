@@ -17,7 +17,7 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
-    private readonly string DefaultPresetPath = "presets/" + Preferences.Get("defaultPreset", "base.toml");
+    private readonly string defaultPresetPreference = Preferences.Get("defaultPreset", "base.toml");
     private readonly string BasePresetPath = "presets/" + "base.toml";
     private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
     public const string TomlMapPath = "presets/tomlMap.json";
@@ -419,9 +419,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     private string? FindDefaultPresetOption()
     {
+        string normalizedDefaultPreset = Path.GetFileName(defaultPresetPreference);
+
         foreach (var preset in AvilablePresets)
         {
-            if (string.Equals(preset.Value, DefaultPresetPath, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(preset.Key, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(preset.Value, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(Path.GetFileName(preset.Value), normalizedDefaultPreset, StringComparison.OrdinalIgnoreCase))
             {
                 return preset.Key;
             }

@@ -39,6 +39,9 @@ namespace PixelsorterApp.ViewModels
         public partial string PresetName { get; set; }
 
         [ObservableProperty]
+        public partial bool MakeDefaultPreset { get; set; } = false;
+
+        [ObservableProperty]
         public partial string SavePresetValidationMessage { get; set; }
 
         [RelayCommand(CanExecute = nameof(CanSubmit))]
@@ -115,6 +118,10 @@ namespace PixelsorterApp.ViewModels
                 }
                 await File.WriteAllTextAsync(filePath, PresetToml);
                 SavePresetValidationMessage = "Preset saved successfully.";
+                if (MakeDefaultPreset)
+                {
+                    Preferences.Set("defaultPreset", fileName);
+                }
                 _mainViewModel.GetAvilablePresets();
             }
             catch (Exception ex)
