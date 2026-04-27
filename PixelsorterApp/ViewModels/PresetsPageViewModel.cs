@@ -79,6 +79,14 @@ namespace PixelsorterApp.ViewModels
             IsTomlMapVisible = !IsTomlMapVisible;
         }
 
+        [RelayCommand]
+        private void SetBaseAsDefaultPreset()
+        {
+            Preferences.Set("defaultPreset", "base.toml");
+            MakeDefaultPreset = false;
+            SavePresetValidationMessage = "Base preset set as default.";
+        }
+
         public ObservableCollection<PresetListItem> AvilablePresets { get; set; }
 
 

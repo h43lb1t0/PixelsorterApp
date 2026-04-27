@@ -80,6 +80,10 @@
                             Text="Set as default preset"
                             VerticalOptions="Center" />
                     </Grid>
+                    <Button
+                        Command="{Binding SetBaseAsDefaultPresetCommand}"
+                        Style="{StaticResource SecondaryActionButtonStyle}"
+                        Text="Set base preset as default" />
                     <Button Command="{Binding SavePresetCommand}" Text="Save Preset" />
                     <Label
                         FontSize="13"
