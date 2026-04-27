@@ -8,20 +8,79 @@
     Title="PresetPage">
     <ScrollView>
 
-        
+
 
         <VerticalStackLayout>
-            <Label Text="Preset Details" FontAttributes="Bold" FontSize="20" Margin="10" />
+            <Label
+                Margin="10"
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Preset Details" />
             <Label Text="Create your preset by configuring the options below. The currently shown preset is based on your selections. Use the tomlMap to find out how to configure each option." />
             <Label Text="{Binding TomlMapString}" />
             <material:EditorField Title="Description" Text="{Binding PresetToml}" />
 
-            <Button Text="Save Preset" Command="{Binding SavePresetCommand}" />
+            <Button Command="{Binding SavePresetCommand}" Text="Save Preset" />
             <Label Text="{Binding SavePresetValidationMessage}" />
 
             <material:TextField Title="Preset Name" Text="{Binding PresetName}" />
             <Label Text="Set as default preset" />
             <material:CheckBox IsChecked="{Binding MakeDefaultPreset}" />
+
+            <Border
+                Margin="30"
+                Padding="10"
+                StrokeThickness="1"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Preset" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontAttributes="Bold"
+                            Text="Edit" />
+                        <Label
+                            Grid.Column="2"
+                            Margin="12,0,0,0"
+                            FontAttributes="Bold"
+                            Text="Delete" />
+                    </Grid>
+
+                    <CollectionView ItemsSource="{Binding AvilablePresets}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid
+                                    Padding="0,6"
+                                    ColumnDefinitions="*,Auto,Auto">
+                                    <Label
+                                        Grid.Column="0"
+                                        VerticalOptions="Center"
+                                        Text="{Binding Name}" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Margin="12,0,0,0"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditPresetCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Edit" />
+                                    <Button
+                                        Grid.Column="2"
+                                        Margin="12,0,0,0"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePresetCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Delete" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

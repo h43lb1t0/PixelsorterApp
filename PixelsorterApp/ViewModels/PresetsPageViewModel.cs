@@ -1,11 +1,12 @@
-﻿using PixelsorterApp.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PixelsorterApp.Services;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics;
 
 namespace PixelsorterApp.ViewModels
 {
@@ -56,6 +57,8 @@ namespace PixelsorterApp.ViewModels
 
         private bool CanSubmit() => !string.IsNullOrWhiteSpace(PresetName);
 
+        public ObservableCollection<PresetListItem> AvilablePresets { get; set; }
+
 
         public PresetsPageViewModel(MainPageViewModel mainViewModel, ITomlValidationService tomlValidationService)
         {
@@ -82,6 +85,9 @@ namespace PixelsorterApp.ViewModels
             SavePresetValidationMessage = string.Empty;
 
             PresetName = $"Preset {_mainViewModel.PresetOptions.Count + 1}";
+
+            AvilablePresets = new ObservableCollection<PresetListItem>();
+            RefreshAvailablePresets();
 
         }
 
@@ -123,11 +129,38 @@ namespace PixelsorterApp.ViewModels
                     Preferences.Set("defaultPreset", fileName);
                 }
                 _mainViewModel.GetAvilablePresets();
+                RefreshAvailablePresets();
             }
             catch (Exception ex)
             {
                 SavePresetValidationMessage = $"Error saving preset: {ex.Message}";
             }
+        }
+
+        [RelayCommand]
+        private async Task EditPresetAsync(PresetListItem? preset)
+        {
+            if (preset is null)
+            {
+                return;
+            }
+
+            await LoadPresetTomlFromFileAsync(preset.Name);
+            SavePresetValidationMessage = $"Loaded preset '{preset.Name}'.";
+        }
+
+        [RelayCommand]
+        private async Task DeletePresetAsync(PresetListItem? preset)
+        {
+            if (preset is null)
+            {
+                return;
+            }
+
+            await DeletePresetFileAsync(preset.Name);
+            _mainViewModel.GetAvilablePresets();
+            RefreshAvailablePresets();
+            SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
         }
 
 
@@ -279,6 +312,26 @@ namespace PixelsorterApp.ViewModels
             return Regex.Replace(value, "[^A-Za-z0-9]", string.Empty).ToLowerInvariant();
         }
 
+        private void RefreshAvailablePresets()
+        {
+            AvilablePresets.Clear();
+            foreach (string preset in _mainViewModel.PresetOptions)
+            {
+                if (string.Equals(preset, "new preset", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(preset, "base", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                AvilablePresets.Add(new PresetListItem { Name = preset });
+            }
+        }
+
+        public sealed class PresetListItem
+        {
+            public required string Name { get; init; }
+        }
+
         private sealed class TomlMap
         {
             [JsonPropertyName("sortBy")]
@@ -292,6 +345,34 @@ namespace PixelsorterApp.ViewModels
 
             [JsonPropertyName("whatToSort")]
             public Dictionary<string, string>? WhatToSort { get; set; }
+        }
+
+        private async Task LoadPresetTomlFromFileAsync(string presetName)
+        {
+            string fileName = $"{presetName}.toml";
+            string filePath = Path.Combine(UserPresetsPath, fileName);
+            PresetToml = await ReadAppPackageTextAsync(filePath);
+            PresetName = presetName;
+            if (Preferences.Get("defaultPreset", String.Empty) == fileName)
+            {
+                MakeDefaultPreset = true;
+            }
+        }
+
+        private Task DeletePresetFileAsync(string presetName)
+        {
+            string fileName = $"{presetName}.toml";
+            string filePath = Path.Combine(UserPresetsPath, fileName);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                if (Preferences.Get("defaultPreset", String.Empty) == fileName)
+                {
+                    Preferences.Set("defaultPreset", "base.toml");
+                }
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
