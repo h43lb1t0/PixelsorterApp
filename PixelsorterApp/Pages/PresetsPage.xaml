@@ -5,34 +5,114 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
-    Title="PresetPage">
+    x:DataType="viewModels:PresetsPageViewModel"
+    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
+                                      Dark={StaticResource PageBackgroundDark}}"
+    Title="Presets">
     <ScrollView>
-
-
-
-        <VerticalStackLayout>
+        <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
             <Label
-                Margin="10"
                 FontAttributes="Bold"
-                FontSize="20"
-                Text="Preset Details" />
-            <Label Text="Create your preset by configuring the options below. The currently shown preset is based on your selections. Use the tomlMap to find out how to configure each option." />
-            <Label Text="{Binding TomlMapString}" />
-            <material:EditorField Title="Description" Text="{Binding PresetToml}" />
-
-            <Button Command="{Binding SavePresetCommand}" Text="Save Preset" />
-            <Label Text="{Binding SavePresetValidationMessage}" />
-
-            <material:TextField Title="Preset Name" Text="{Binding PresetName}" />
-            <Label Text="Set as default preset" />
-            <material:CheckBox IsChecked="{Binding MakeDefaultPreset}" />
+                FontSize="13"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="PRESET DETAILS"
+                TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource PrimaryDark}}" />
 
             <Border
-                Margin="30"
-                Padding="10"
-                StrokeThickness="1"
+                Padding="16"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
                 Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}">
+                                         Dark={StaticResource DividerDark}}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1"
+                StyleClass="Elevation3">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{AppThemeBinding Light={StaticResource Black},
+                                                Dark={StaticResource White}}"
+                        Opacity="0.10"
+                        Radius="10"
+                        Offset="0,3" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Create your preset by configuring the options below. The currently shown preset is based on your selections. Use the TOML map to find out how to configure each option." />
+                    <Button
+                        Command="{Binding ToggleTomlMapVisibilityCommand}"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource SecondaryActionButtonStyle}"
+                        Text="{Binding TomlMapToggleText}" />
+                    <Border
+                        IsVisible="{Binding IsTomlMapVisible}"
+                        Padding="10"
+                        Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                                 Dark={StaticResource DividerDark}}"
+                        StrokeShape="RoundRectangle 8"
+                        StrokeThickness="1">
+                        <Label Text="{Binding TomlMapString}" />
+                    </Border>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        Text="Preset TOML"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource PrimaryDark}}" />
+                    <Border
+                        Padding="10"
+                        Stroke="{AppThemeBinding Light={StaticResource Primary},
+                                                 Dark={StaticResource PrimaryDark}}"
+                        StrokeShape="RoundRectangle 12"
+                        StrokeThickness="1">
+                        <Editor
+                            AutoSize="TextChanges"
+                            Text="{Binding PresetToml}"
+                            VerticalOptions="Start" />
+                    </Border>
+                    <material:TextField Title="Preset Name" Text="{Binding PresetName}" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <material:CheckBox
+                            Grid.Column="0"
+                            IsChecked="{Binding MakeDefaultPreset}"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="Set as default preset"
+                            VerticalOptions="Center" />
+                    </Grid>
+                    <Button Command="{Binding SavePresetCommand}" Text="Save Preset" />
+                    <Label
+                        FontSize="13"
+                        Text="{Binding SavePresetValidationMessage}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                    Dark={StaticResource TextSecondaryDark}}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="13"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="AVAILABLE PRESETS"
+                TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource PrimaryDark}}" />
+
+            <Border
+                Padding="16"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{AppThemeBinding Light={StaticResource Black},
+                                                Dark={StaticResource White}}"
+                        Opacity="0.10"
+                        Radius="10"
+                        Offset="0,3" />
+                </Border.Shadow>
                 <VerticalStackLayout Spacing="8">
                     <Grid ColumnDefinitions="*,Auto,Auto">
                         <Label
@@ -53,7 +133,7 @@
 
                     <CollectionView ItemsSource="{Binding AvilablePresets}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="viewModels:PresetsPageViewModel+PresetListItem">
                                 <Grid
                                     Padding="0,6"
                                     ColumnDefinitions="*,Auto,Auto">
@@ -66,12 +146,14 @@
                                         Margin="12,0,0,0"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditPresetCommand}"
                                         CommandParameter="{Binding .}"
+                                        Style="{StaticResource SecondaryActionButtonStyle}"
                                         Text="Edit" />
                                     <Button
                                         Grid.Column="2"
                                         Margin="12,0,0,0"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePresetCommand}"
                                         CommandParameter="{Binding .}"
+                                        Style="{StaticResource SecondaryActionButtonStyle}"
                                         Text="Delete" />
                                 </Grid>
                             </DataTemplate>
@@ -79,8 +161,6 @@
                     </CollectionView>
                 </VerticalStackLayout>
             </Border>
-
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

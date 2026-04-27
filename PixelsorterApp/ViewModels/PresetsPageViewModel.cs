@@ -42,8 +42,24 @@ namespace PixelsorterApp.ViewModels
         [ObservableProperty]
         public partial bool MakeDefaultPreset { get; set; } = false;
 
+        private bool isTomlMapVisible;
+
+        public bool IsTomlMapVisible
+        {
+            get => isTomlMapVisible;
+            set
+            {
+                if (SetProperty(ref isTomlMapVisible, value))
+                {
+                    OnPropertyChanged(nameof(TomlMapToggleText));
+                }
+            }
+        }
+
         [ObservableProperty]
         public partial string SavePresetValidationMessage { get; set; }
+
+        public string TomlMapToggleText => IsTomlMapVisible ? "Hide TOML map" : "Show TOML map";
 
         [RelayCommand(CanExecute = nameof(CanSubmit))]
         private async Task SavePreset()
@@ -56,6 +72,12 @@ namespace PixelsorterApp.ViewModels
         }
 
         private bool CanSubmit() => !string.IsNullOrWhiteSpace(PresetName);
+
+        [RelayCommand]
+        private void ToggleTomlMapVisibility()
+        {
+            IsTomlMapVisible = !IsTomlMapVisible;
+        }
 
         public ObservableCollection<PresetListItem> AvilablePresets { get; set; }
 
@@ -145,8 +167,15 @@ namespace PixelsorterApp.ViewModels
                 return;
             }
 
-            await LoadPresetTomlFromFileAsync(preset.Name);
-            SavePresetValidationMessage = $"Loaded preset '{preset.Name}'.";
+            try
+            {
+                await LoadPresetTomlFromFileAsync(preset.Name);
+                SavePresetValidationMessage = $"Loaded preset '{preset.Name}'.";
+            }
+            catch (Exception ex)
+            {
+                SavePresetValidationMessage = $"Error loading preset '{preset.Name}': {ex.Message}";
+            }
         }
 
         [RelayCommand]
@@ -351,12 +380,14 @@ namespace PixelsorterApp.ViewModels
         {
             string fileName = $"{presetName}.toml";
             string filePath = Path.Combine(UserPresetsPath, fileName);
-            PresetToml = await ReadAppPackageTextAsync(filePath);
+            PresetToml = Path.IsPathRooted(filePath)
+                ? await File.ReadAllTextAsync(filePath)
+                : await ReadAppPackageTextAsync(filePath);
             PresetName = presetName;
-            if (Preferences.Get("defaultPreset", String.Empty) == fileName)
-            {
-                MakeDefaultPreset = true;
-            }
+            MakeDefaultPreset = string.Equals(
+                Preferences.Get("defaultPreset", string.Empty),
+                fileName,
+                StringComparison.OrdinalIgnoreCase);
         }
 
         private Task DeletePresetFileAsync(string presetName)
