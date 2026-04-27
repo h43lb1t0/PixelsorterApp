@@ -106,7 +106,7 @@ namespace PixelsorterApp.ViewModels
             PresetToml = CreateToml();
             SavePresetValidationMessage = string.Empty;
 
-            PresetName = $"Preset {_mainViewModel.PresetOptions.Count + 1}";
+            PresetName = $"Preset {_mainViewModel.PresetOptions.Count}";
 
             AvilablePresets = new ObservableCollection<PresetListItem>();
             RefreshAvailablePresets();
@@ -135,7 +135,7 @@ namespace PixelsorterApp.ViewModels
 
         private async Task SavePresetAsync()
         {
-            string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count + 1}" : PresetName;
+            string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count}" : PresetName;
             string fileName = $"{presetName}.toml";
             string filePath = Path.Combine(UserPresetsPath, fileName);
             try
