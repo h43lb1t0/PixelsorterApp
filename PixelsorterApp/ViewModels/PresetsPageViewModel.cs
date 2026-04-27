@@ -27,6 +27,7 @@ namespace PixelsorterApp.ViewModels
         private readonly bool subjectMasking;
         private readonly int subjectPadding;
         private readonly bool subjectBackground;
+        private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
 
         private readonly bool subtractMask;
 
@@ -41,9 +42,23 @@ namespace PixelsorterApp.ViewModels
         public partial string TomlMapString { get; set; }
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SavePresetCommand))]
+        public partial string PresetName { get; set; }
+
+        [ObservableProperty]
         public partial string SavePresetValidationMessage { get; set; }
 
-        private readonly IAsyncRelayCommand savePresetCommand;
+        [RelayCommand(CanExecute = nameof(CanSubmit))]
+        private async Task SavePreset()
+        {
+            bool isValid = await ValidatePresetAsync();
+            if (isValid)
+            {
+                await SavePresetAsync();
+            }
+        }
+
+        private bool CanSubmit() => !string.IsNullOrWhiteSpace(PresetName);
 
 
         public PresetsPageViewModel(MainPageViewModel mainViewModel, ITomlValidationService tomlValidationService)
@@ -70,13 +85,12 @@ namespace PixelsorterApp.ViewModels
             PresetToml = CreateToml();
             SavePresetValidationMessage = string.Empty;
 
-            savePresetCommand = new AsyncRelayCommand(ValidatePresetAsync);
+            PresetName = $"Preset {_mainViewModel.PresetOptions.Count + 1}";
 
         }
 
-        public IAsyncRelayCommand SavePresetCommand => savePresetCommand;
 
-        private async Task ValidatePresetAsync()
+        private async Task<bool> ValidatePresetAsync()
         {
             PresetToml = PresetToml.Replace("\r\n", "\n").Replace('\r', '\n');
 
@@ -92,6 +106,28 @@ namespace PixelsorterApp.ViewModels
                     ? "TOML is invalid."
                     : $"TOML is invalid: {errors}";
             Debug.WriteLine($"Errors: {errors}");
+            return isValid;
+        }
+
+        private async Task SavePresetAsync()
+        {
+            string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count + 1}" : PresetName;
+            string fileName = $"{presetName}.toml";
+            string filePath = Path.Combine(UserPresetsPath, fileName);
+            try
+            {
+                if (!Directory.Exists(UserPresetsPath))
+                {
+                    Directory.CreateDirectory(UserPresetsPath);
+                }
+                await File.WriteAllTextAsync(filePath, PresetToml);
+                SavePresetValidationMessage = "Preset saved successfully.";
+                _mainViewModel.GetAvilablePresets();
+            }
+            catch (Exception ex)
+            {
+                SavePresetValidationMessage = $"Error saving preset: {ex.Message}";
+            }
         }
 
 

@@ -7,14 +7,19 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     Title="PresetPage">
     <ScrollView>
+
         
+
         <VerticalStackLayout>
+        <Label Text="Preset Details" FontAttributes="Bold" FontSize="20" Margin="10" />
+            <Label Text="Create your preset by configuring the options below. The currently shown preset is based on your selections. Use the tomlMap to find out how to configure each option." />
             <Label Text="{Binding TomlMapString}" />
             <material:EditorField Title="Description" Text="{Binding PresetToml}" />
 
             <Button Text="Save Preset" Command="{Binding SavePresetCommand}" />
             <Label Text="{Binding SavePresetValidationMessage}" />
 
+        <material:TextField Title="Preset Name" Text="{Binding PresetName}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

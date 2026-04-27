@@ -388,7 +388,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    private void GetAvilablePresets()
+    public void GetAvilablePresets()
     {
         try
         {
