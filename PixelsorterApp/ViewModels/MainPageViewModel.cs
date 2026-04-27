@@ -17,6 +17,8 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
+    private readonly ITomlValidationService tomlValidationService;
+
     private readonly string defaultPresetPreference = Preferences.Get("defaultPreset", "base.toml");
     private readonly string BasePresetPath = "presets/" + "base.toml";
     private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
@@ -145,10 +147,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
-    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService)
+    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService, ITomlValidationService tomlValidationService)
     {
         this.helpNavigationService = helpNavigationService;
         this.presetNavigationService = presetNavigationService;
+        this.tomlValidationService = tomlValidationService;
 
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
@@ -169,6 +172,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         GetAvilablePresets();
         SelectedPresetOption = FindDefaultPresetOption() ?? PresetOptions.FirstOrDefault();
         lastValidPresetOption = SelectedPresetOption;
+        this.tomlValidationService = tomlValidationService;
     }
 
     /// <summary>
@@ -436,7 +440,6 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     private async Task LoadPresetAsync(string presetPath)
     {
-        // TODO: Use TomlValidationService here to prevent errors from manuel edited file outsite the app
         try
         {
             var tomlContent = Path.IsPathRooted(presetPath)
@@ -465,10 +468,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     private void ApplyPreset(string tomlContent, TomlMap map)
     {
-        var sanitizedToml = Regex.Replace(
-            tomlContent,
-            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
-            "mode = \"${value}\"");
+        var sanitizedToml = tomlValidationService.Sanitize(tomlContent);
+
 
         if (!TomlSerializer.TryDeserialize(sanitizedToml, out PresetToml? preset, null) || preset is null)
         {

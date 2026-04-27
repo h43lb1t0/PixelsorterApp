@@ -178,6 +178,16 @@ namespace PixelsorterApp.Services
             }
         }
 
+        public string Sanitize(string content)
+        {
+            content = content.Replace("\r\n", "\n").Replace('\r', '\n');
+
+            return Regex.Replace(
+            content,
+            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
+            "mode = \"${value}\"");
+        }
+
         private sealed class TomlMap
         {
             public Dictionary<string, string> SortBy { get; set; } = [];

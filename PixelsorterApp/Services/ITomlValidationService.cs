@@ -7,5 +7,7 @@ namespace PixelsorterApp.Services
     public interface ITomlValidationService
     {
     Task<(bool isValid, string errors)> Validate(string content);
+
+    String Sanitize(string content);
     }
 }
