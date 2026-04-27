@@ -200,6 +200,8 @@
                     Style="{StaticResource SaveButtonStyle}"
                     Text="Save" />
 
+                <views:PresetsView />
+
             </VerticalStackLayout>
         </ScrollView>
 
