@@ -392,6 +392,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Populates the list of available presets and preset options by scanning the base and user preset directories.
+    /// </summary>
+    /// <remarks>This method clears and repopulates the collections that track available presets and their
+    /// display options. It adds the base preset and any user-defined presets found in the specified directory. A
+    /// special option for creating a new preset is also appended to the options list. Call this method to refresh the
+    /// preset lists after changes to the preset files.</remarks>
     public void GetAvilablePresets()
     {
         try
@@ -421,6 +428,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Finds the key of the preset that matches the default preset preference, using case-insensitive comparison on
+    /// both keys and values.
+    /// </summary>
+    /// <remarks>The method compares the default preset preference against both the keys and values of
+    /// available presets, as well as the file name portion of each preset value. This allows for flexible matching
+    /// based on either the full path or just the file name.</remarks>
+    /// <returns>The key of the matching preset if found; otherwise, null.</returns>
     private string? FindDefaultPresetOption()
     {
         string normalizedDefaultPreset = Path.GetFileName(defaultPresetPreference);
@@ -438,6 +453,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
         return null;
     }
 
+    /// <summary>
+    /// Asynchronously loads a preset from the specified path and applies it using the associated TOML map.
+    /// </summary>
+    /// <remarks>If the specified preset path is not rooted, the method attempts to read the file from the
+    /// application package. The method silently ignores errors that occur during loading or deserialization.</remarks>
+    /// <param name="presetPath">The path to the preset file to load. Can be an absolute file system path or a relative path within the
+    /// application package.</param>
+    /// <returns>A task that represents the asynchronous load operation.</returns>
     private async Task LoadPresetAsync(string presetPath)
     {
         try
@@ -466,6 +489,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     
 
+    /// <summary>
+    /// Applies the settings from a TOML-formatted preset to the current configuration using the specified mapping.
+    /// </summary>
+    /// <remarks>If the TOML content is invalid or does not contain applicable settings, no changes are made.
+    /// Only recognized and valid preset options are applied to the current configuration.</remarks>
+    /// <param name="tomlContent">The TOML-formatted string containing the preset settings to apply. Cannot be null or empty.</param>
+    /// <param name="map">A mapping object that defines how preset values are translated to internal configuration options. Cannot be
+    /// null.</param>
     private void ApplyPreset(string tomlContent, TomlMap map)
     {
         var sanitizedToml = tomlValidationService.Sanitize(tomlContent);
@@ -553,6 +584,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Searches for the specified string and returns the zero-based index of its first occurrence in the given
+    /// read-only list.
+    /// </summary>
+    /// <param name="items">The read-only list of strings to search.</param>
+    /// <param name="value">The string value to locate in the list. The comparison is case-sensitive and uses ordinal comparison.</param>
+    /// <returns>The zero-based index of the first occurrence of the specified value in the list; otherwise, -1 if the value is
+    /// not found.</returns>
     private static int FindIndex(IReadOnlyList<string> items, string value)
     {
         for (var i = 0; i < items.Count; i++)
@@ -566,6 +605,18 @@ public sealed partial class MainPageViewModel : BaseViewModel
         return -1;
     }
 
+    /// <summary>
+    /// Attempts to retrieve the value associated with the specified key from the provided dictionary, using a
+    /// case-insensitive key comparison.
+    /// </summary>
+    /// <remarks>If the dictionary is null or does not contain the specified key, the method returns false and
+    /// the out parameter is set to an empty string. Key comparison is performed using ordinal, case-insensitive
+    /// matching.</remarks>
+    /// <param name="map">The dictionary to search for the specified key. Can be null.</param>
+    /// <param name="key">The key to locate in the dictionary. The comparison is case-insensitive.</param>
+    /// <param name="value">When this method returns, contains the value associated with the specified key if the key is found; otherwise,
+    /// an empty string.</param>
+    /// <returns>true if the dictionary contains an entry with the specified key; otherwise, false.</returns>
     private static bool TryGetMappedValue(IReadOnlyDictionary<string, string>? map, string key, out string value)
     {
         value = string.Empty;
@@ -587,6 +638,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
         return false;
     }
 
+    /// <summary>
+    /// Represents a collection of TOML mapping configurations for sorting and masking operations.
+    /// </summary>
+    /// <remarks>This class is used to deserialize TOML configuration sections related to sorting and masking.
+    /// Each property corresponds to a specific mapping, where the key is typically a field or identifier and the value
+    /// specifies the associated configuration. All properties are read-only after initialization.</remarks>
     private sealed class TomlMap
     {
         [JsonPropertyName("sortBy")]
@@ -602,6 +659,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
         public Dictionary<string, string>? WhatToSort { get; init; }
     }
 
+    /// <summary>
+    /// Represents a deserialized TOML preset containing configuration options for sorting, masking, edge detection,
+    /// subject settings, and mask combination.
+    /// </summary>
+    /// <remarks>This class is used to map TOML configuration files to strongly typed objects for use within
+    /// the application. Each property corresponds to a specific section in the TOML file and may be null if not
+    /// specified in the configuration.</remarks>
     private sealed class PresetToml
     {
         [TomlPropertyName("sort_settings")]
@@ -620,6 +684,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
         public MaskCombination? MaskCombination { get; init; }
     }
 
+    /// <summary>
+    /// Represents the configuration settings for sorting, including the property to sort by and the sort direction.
+    /// </summary>
     private sealed class SortSettings
     {
         [TomlPropertyName("sort_by")]
@@ -629,6 +696,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
         public string? Direction { get; init; }
     }
 
+    /// <summary>
+    /// Represents configuration options for controlling masking behavior in image processing operations.
+    /// </summary>
+    /// <remarks>This class encapsulates settings that determine which masking techniques are applied, such as
+    /// Canny edge detection or subject-based masking. It is intended to be used as a container for related masking
+    /// flags when configuring processing pipelines.</remarks>
     private sealed class MaskingOptions
     {
         [TomlPropertyName("use_canny")]
@@ -638,6 +711,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         public bool UseSubject { get; init; }
     }
 
+    
     private sealed class CannyOptions
     {
         [TomlPropertyName("threshold")]
