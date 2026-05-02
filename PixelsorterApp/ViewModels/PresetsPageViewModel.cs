@@ -44,6 +44,11 @@ namespace PixelsorterApp.ViewModels
 
         private bool isTomlMapVisible;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the TOML map is visible.
+        /// </summary>
+        /// <remarks>Changing this property raises the PropertyChanged event for the TomlMapToggleText
+        /// property, allowing the user interface to update accordingly.</remarks>
         public bool IsTomlMapVisible
         {
             get => isTomlMapVisible;
@@ -61,6 +66,13 @@ namespace PixelsorterApp.ViewModels
 
         public string TomlMapToggleText => IsTomlMapVisible ? "Hide TOML map" : "Show TOML map";
 
+        /// <summary>
+        /// Validates the current preset and saves it asynchronously if all validation criteria are met.
+        /// </summary>
+        /// <remarks>This method first performs asynchronous validation of the preset. If validation
+        /// succeeds, the preset is saved. Ensure that the preset is in a valid state before invoking this method to
+        /// avoid unnecessary operations.</remarks>
+        /// <returns></returns>
         [RelayCommand(CanExecute = nameof(CanSubmit))]
         private async Task SavePreset()
         {
@@ -122,6 +134,12 @@ namespace PixelsorterApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Validates the current TOML preset asynchronously and indicates whether it is valid.
+        /// </summary>
+        /// <remarks>This method sanitizes the TOML preset before validation. It also updates the preset
+        /// validation message to reflect the result, including any validation errors.</remarks>
+        /// <returns>true if the TOML preset is valid; otherwise, false.</returns>
         private async Task<bool> ValidatePresetAsync()
         {
             PresetToml = tomlValidationService.Sanitize(PresetToml);
@@ -136,6 +154,15 @@ namespace PixelsorterApp.ViewModels
             return isValid;
         }
 
+        /// <summary>
+        /// Asynchronously saves the current preset to a file in TOML format, creating the necessary directory if it
+        /// does not exist.
+        /// </summary>
+        /// <remarks>If the preset name is not provided, a default name is generated based on the count of
+        /// existing presets. The method updates the default preset if the 'MakeDefaultPreset' flag is set to <see
+        /// langword="true"/>. Any errors encountered during the save operation are captured and reflected in the
+        /// 'SavePresetValidationMessage'.</remarks>
+        /// <returns>A task that represents the asynchronous save operation.</returns>
         private async Task SavePresetAsync()
         {
             string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count}" : PresetName;
@@ -162,6 +189,14 @@ namespace PixelsorterApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Loads the specified preset from a file and updates the validation message to reflect the result of the
+        /// operation.
+        /// </summary>
+        /// <remarks>If an error occurs during the loading process, the validation message is updated with
+        /// the error details.</remarks>
+        /// <param name="preset">The preset to load. Must not be null; otherwise, the method returns without performing any action.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         [RelayCommand]
         private async Task EditPresetAsync(PresetListItem? preset)
         {
@@ -181,6 +216,13 @@ namespace PixelsorterApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Deletes the specified preset asynchronously and updates the list of available presets upon completion.
+        /// </summary>
+        /// <remarks>After deleting the preset, this method refreshes the available presets and updates
+        /// the validation message to reflect the deletion status.</remarks>
+        /// <param name="preset">The preset to delete. This parameter must not be null; if null, the method performs no action.</param>
+        /// <returns>A task that represents the asynchronous delete operation.</returns>
         [RelayCommand]
         private async Task DeletePresetAsync(PresetListItem? preset)
         {
@@ -196,6 +238,16 @@ namespace PixelsorterApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Formats the specified TomlMap into a human-readable string that lists the available sorting options by
+        /// category.
+        /// </summary>
+        /// <remarks>The output includes headers for each category (Sort By, Direction, What To Sort, and
+        /// Mask Combination) followed by the available options in each. This method is useful for displaying the
+        /// current sorting configuration in a readable format, such as in a UI or log.</remarks>
+        /// <param name="map">The TomlMap containing sorting configuration options to format. If null, the method returns an empty string.</param>
+        /// <returns>A string representation of the TomlMap's options, organized by category. Returns an empty string if the map
+        /// is null.</returns>
         private static string FormatTomlMap(TomlMap? map)
         {
             if (map == null)
@@ -226,6 +278,14 @@ namespace PixelsorterApp.ViewModels
             return sb.ToString().TrimEnd();
         }
 
+        /// <summary>
+        /// Generates a TOML configuration string that represents the current sorting, masking, and subject settings.
+        /// </summary>
+        /// <remarks>The generated TOML string reflects the current state of the relevant settings,
+        /// including sorting preferences, masking options, and subject configuration. This method is useful for
+        /// exporting or persisting the application's configuration in a standardized format.</remarks>
+        /// <returns>A string containing the TOML-formatted configuration, structured with sections for sort settings, masking
+        /// options, canny options, subject settings, and mask combination.</returns>
         private string CreateToml()
         {
             string sortByKey = ResolveMapKey(tomlMap?.SortBy, sortBy, "cool");
@@ -266,6 +326,14 @@ namespace PixelsorterApp.ViewModels
 
         }
 
+        /// <summary>
+        /// Loads the TOML map from a JSON file located at the path specified by 'tomlMapPath'. 
+        /// The method attempts to read the file, deserialize its content into a TomlMap object, and return it. 
+        /// If any error occurs during this process (e.g., file not found, invalid JSON), 
+        /// the method catches the exception and returns null, indicating that the TOML map could not be loaded 
+        /// successfully.
+        /// </summary>
+        /// <returns>The loaded TOML map, or null if loading failed.</returns>
         private TomlMap? LoadTomlMap()
         {
             try
@@ -285,6 +353,19 @@ namespace PixelsorterApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Retrieves the key from the specified map whose mapped value matches the provided selected value after
+        /// normalization. Returns a fallback value if no matching key is found or if the map is null.
+        /// </summary>
+        /// <remarks>Both the selected value and the mapped values are normalized before comparison. If a
+        /// mapped value contains a period ('.'), only the substring after the last period is used for matching. This
+        /// method does not throw exceptions for null maps.</remarks>
+        /// <param name="map">A dictionary mapping string keys to string values. The method searches this map for a value that matches the
+        /// normalized selected value. Can be null.</param>
+        /// <param name="selectedValue">The value to match against the mapped values in the dictionary. This value is normalized before comparison.</param>
+        /// <param name="fallback">The value to return if the map is null or if no matching key is found.</param>
+        /// <returns>The key from the map that corresponds to the normalized selected value, or the fallback value if no match is
+        /// found.</returns>
         private static string ResolveMapKey(Dictionary<string, string>? map, string selectedValue, string fallback)
         {
             if (map is null)
@@ -305,6 +386,23 @@ namespace PixelsorterApp.ViewModels
             return fallback;
         }
 
+        /// <summary>
+        /// Resolves and returns the key from a boolean mapping dictionary that corresponds to the specified boolean
+        /// value and its associated symbol. If no matching key is found or the mapping is null, returns the provided
+        /// fallback key for the selected value.
+        /// </summary>
+        /// <remarks>Comparison of symbols is case-sensitive using ordinal comparison. If multiple keys
+        /// map to the same symbol, the first matching key encountered is returned.</remarks>
+        /// <param name="map">A dictionary mapping string keys to string values representing boolean symbols. May be null, in which case
+        /// the appropriate fallback key is returned.</param>
+        /// <param name="trueSymbol">The string symbol in the mapping that represents a true value.</param>
+        /// <param name="falseSymbol">The string symbol in the mapping that represents a false value.</param>
+        /// <param name="selectedValue">A boolean value indicating which symbol to resolve in the mapping. If true, the method searches for the true
+        /// symbol; otherwise, it searches for the false symbol.</param>
+        /// <param name="trueFallback">The fallback key to return if the mapping is null or no key is found for the true symbol.</param>
+        /// <param name="falseFallback">The fallback key to return if the mapping is null or no key is found for the false symbol.</param>
+        /// <returns>The key from the mapping that corresponds to the selected value and its symbol, or the appropriate fallback
+        /// key if no match is found.</returns>
         private static string ResolveBooleanMapKey(
             Dictionary<string, string>? map,
             string trueSymbol,
@@ -364,6 +462,13 @@ namespace PixelsorterApp.ViewModels
             public required string Name { get; init; }
         }
 
+        /// <summary>
+        /// Represents a collection of sorting and filtering criteria for TOML data.
+        /// </summary>
+        /// <remarks>The TomlMap class encapsulates parameters that define how TOML data should be sorted
+        /// and filtered. Each property is a dictionary that allows specifying flexible key-value pairs for sorting
+        /// fields, directions, mask combinations, and target elements. This class is typically used for deserializing
+        /// TOML configuration data that controls sorting and filtering behavior in an application.</remarks>
         private sealed class TomlMap
         {
             [JsonPropertyName("sortBy")]
