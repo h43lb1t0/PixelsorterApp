@@ -4,7 +4,12 @@ using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Tomlyn;
+using Tomlyn.Serialization;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -13,9 +18,25 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
+    private readonly ITomlValidationService tomlValidationService;
+
+    private readonly string defaultPresetPreference = Preferences.Get("defaultPreset", "base.toml");
+    private readonly string BasePresetPath = "presets/" + "base.toml";
+    private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
+    public const string TomlMapPath = "presets/tomlMap.json";
+
+
+
     private readonly IHelpNavigationService helpNavigationService;
+    private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
+    private readonly Dictionary<string, string> AvailablePresets = [];
+    private const string NewPresetOptionLabel = "new preset";
+    private bool suppressPresetSelectionChangedHandling;
+    private bool isNavigatingToPresetPage;
+    private string? lastValidPresetOption;
+
 
     /// <summary>
     /// Gets or sets a value indicating whether the page is busy.
@@ -78,6 +99,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial int SelectedSortDirectionIndex { get; set; }
 
     /// <summary>
+    /// Gets or sets the selected preset option.
+    /// </summary>
+    [ObservableProperty]
+    public partial string? SelectedPresetOption { get; set; }
+
+    /// <summary>
     /// Gets or sets the Canny threshold value in percent (1-99).
     /// </summary>
     [ObservableProperty]
@@ -121,9 +148,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
-    public MainPageViewModel(IHelpNavigationService helpNavigationService)
+    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService, ITomlValidationService tomlValidationService)
     {
         this.helpNavigationService = helpNavigationService;
+        this.presetNavigationService = presetNavigationService;
+        this.tomlValidationService = tomlValidationService;
 
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
@@ -140,6 +169,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         RefreshSortDirectionOptions();
         SelectedSortDirectionIndex = SortDirectionOptions.Count > 0 ? 0 : -1;
+
+        GetAvailablePresets();
+        SelectedPresetOption = FindDefaultPresetOption() ?? PresetOptions.FirstOrDefault();
+        lastValidPresetOption = SelectedPresetOption;
     }
 
     /// <summary>
@@ -284,6 +317,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public ObservableCollection<string> SortDirectionOptions { get; } = [];
 
     /// <summary>
+    /// Gets the available preset names.
+    /// </summary>
+    public ObservableCollection<string> PresetOptions { get; } = [];
+
+    /// <summary>
     /// Gets the currently selected sorting criterion delegate.
     /// </summary>
     public Func<Hsl, float>? SortingCriterion =>
@@ -354,6 +392,360 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Populates the list of available presets and preset options by scanning the base and user preset directories.
+    /// </summary>
+    /// <remarks>This method clears and repopulates the collections that track available presets and their
+    /// display options. It adds the base preset and any user-defined presets found in the specified directory. A
+    /// special option for creating a new preset is also appended to the options list. Call this method to refresh the
+    /// preset lists after changes to the preset files.</remarks>
+    public void GetAvailablePresets()
+    {
+        try
+        {
+            AvailablePresets.Clear();
+            PresetOptions.Clear();
+
+            AvailablePresets.Add("Base", BasePresetPath);
+            if (Directory.Exists(UserPresetsPath))
+            {
+                var files = Directory.GetFiles(UserPresetsPath, "*.toml");
+                foreach (var file in files)
+                {
+                    AvailablePresets[Path.GetFileNameWithoutExtension(file)] = file;
+                }
+            }
+
+            foreach (var presetName in AvailablePresets.Keys)
+            {
+                PresetOptions.Add(presetName);
+            }
+
+            PresetOptions.Add("new preset");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error loading presets: {ex}");
+        }
+    }
+
+    /// <summary>
+    /// Finds the key of the preset that matches the default preset preference, using case-insensitive comparison on
+    /// both keys and values.
+    /// </summary>
+    /// <remarks>The method compares the default preset preference against both the keys and values of
+    /// available presets, as well as the file name portion of each preset value. This allows for flexible matching
+    /// based on either the full path or just the file name.</remarks>
+    /// <returns>The key of the matching preset if found; otherwise, null.</returns>
+    private string? FindDefaultPresetOption()
+    {
+        string normalizedDefaultPreset = Path.GetFileName(defaultPresetPreference);
+
+        foreach (var preset in AvailablePresets)
+        {
+            if (string.Equals(preset.Key, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(preset.Value, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(Path.GetFileName(preset.Value), normalizedDefaultPreset, StringComparison.OrdinalIgnoreCase))
+            {
+                return preset.Key;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Asynchronously loads a preset from the specified path and applies it using the associated TOML map.
+    /// </summary>
+    /// <remarks>If the specified preset path is not rooted, the method attempts to read the file from the
+    /// application package. The method silently ignores errors that occur during loading or deserialization.</remarks>
+    /// <param name="presetPath">The path to the preset file to load. Can be an absolute file system path or a relative path within the
+    /// application package.</param>
+    /// <returns>A task that represents the asynchronous load operation.</returns>
+    private async Task LoadPresetAsync(string presetPath)
+    {
+        try
+        {
+            var tomlContent = Path.IsPathRooted(presetPath)
+                ? await File.ReadAllTextAsync(presetPath)
+                : await ReadAppPackageTextAsync(presetPath);
+            var mapContent = await ReadAppPackageTextAsync(TomlMapPath);
+
+            var map = JsonSerializer.Deserialize<TomlMap>(mapContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+
+            if (map is null)
+            {
+                return;
+            }
+
+            ApplyPreset(tomlContent, map);
+        }
+        catch
+        {
+        }
+    }
+
+    
+
+    /// <summary>
+    /// Applies the settings from a TOML-formatted preset to the current configuration using the specified mapping.
+    /// </summary>
+    /// <remarks>If the TOML content is invalid or does not contain applicable settings, no changes are made.
+    /// Only recognized and valid preset options are applied to the current configuration.</remarks>
+    /// <param name="tomlContent">The TOML-formatted string containing the preset settings to apply. Cannot be null or empty.</param>
+    /// <param name="map">A mapping object that defines how preset values are translated to internal configuration options. Cannot be
+    /// null.</param>
+    private void ApplyPreset(string tomlContent, TomlMap map)
+    {
+        var sanitizedToml = tomlValidationService.Sanitize(tomlContent);
+
+
+        if (!TomlSerializer.TryDeserialize(sanitizedToml, out PresetToml? preset, null) || preset is null)
+        {
+            return;
+        }
+
+        if (preset.MaskingOptions is not null)
+        {
+            UseCanny = preset.MaskingOptions.UseCanny;
+            UseSubjectMask = preset.MaskingOptions.UseSubject;
+        }
+
+        if (preset.CannyOptions is not null)
+        {
+            var threshold = preset.CannyOptions.Threshold;
+            if (threshold is > 0)
+            {
+                CannyThresholdPercent = threshold.Value;
+            }
+        }
+
+        if (preset.SubjectSettings is not null)
+        {
+            if (preset.SubjectSettings.Padding is > 0)
+            {
+                SubjectMaskPadding = preset.SubjectSettings.Padding.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
+            {
+                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
+                {
+                    UseInvertedSubjectMask = string.Equals(
+                        whatToSortMapped,
+                        nameof(SortForegroundSelected),
+                        StringComparison.Ordinal);
+                }
+                else
+                {
+                    UseInvertedSubjectMask = string.Equals(preset.SubjectSettings.WhatToSort, "foreground", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.SortSettings?.SortBy)
+            && TryGetMappedValue(map.SortBy, preset.SortSettings.SortBy, out var sortByMapped))
+        {
+            var sortByName = sortByMapped.Split('.').Last();
+            var sortByIndex = FindIndex(SortByOptions, sortByName);
+            if (sortByIndex >= 0)
+            {
+                SelectedSortByIndex = sortByIndex;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.MaskCombination?.Mode)
+            && TryGetMappedValue(map.MaskCombination, preset.MaskCombination.Mode, out var maskCombinationMapped))
+        {
+            UseSubtractMasks = string.Equals(
+                maskCombinationMapped,
+                nameof(UseSubtractMasksSelected),
+                StringComparison.Ordinal);
+        }
+
+        if (!string.IsNullOrWhiteSpace(preset.SortSettings?.Direction)
+            && TryGetMappedValue(map.Direction, preset.SortSettings.Direction, out var directionMapped)
+            && Enum.TryParse<SortDirections>(directionMapped.Split('.').Last(), out var direction))
+        {
+            var directionName = sortDirectionOptions
+                .FirstOrDefault(option => option.Value == direction)
+                .Key;
+
+            if (!string.IsNullOrWhiteSpace(directionName))
+            {
+                var directionIndex = SortDirectionOptions.IndexOf(directionName);
+                if (directionIndex >= 0)
+                {
+                    SelectedSortDirectionIndex = directionIndex;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Searches for the specified string and returns the zero-based index of its first occurrence in the given
+    /// read-only list.
+    /// </summary>
+    /// <param name="items">The read-only list of strings to search.</param>
+    /// <param name="value">The string value to locate in the list. The comparison is case-sensitive and uses ordinal comparison.</param>
+    /// <returns>The zero-based index of the first occurrence of the specified value in the list; otherwise, -1 if the value is
+    /// not found.</returns>
+    private static int FindIndex(IReadOnlyList<string> items, string value)
+    {
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (string.Equals(items[i], value, StringComparison.Ordinal))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Attempts to retrieve the value associated with the specified key from the provided dictionary, using a
+    /// case-insensitive key comparison.
+    /// </summary>
+    /// <remarks>If the dictionary is null or does not contain the specified key, the method returns false and
+    /// the out parameter is set to an empty string. Key comparison is performed using ordinal, case-insensitive
+    /// matching.</remarks>
+    /// <param name="map">The dictionary to search for the specified key. Can be null.</param>
+    /// <param name="key">The key to locate in the dictionary. The comparison is case-insensitive.</param>
+    /// <param name="value">When this method returns, contains the value associated with the specified key if the key is found; otherwise,
+    /// an empty string.</param>
+    /// <returns>true if the dictionary contains an entry with the specified key; otherwise, false.</returns>
+    private static bool TryGetMappedValue(IReadOnlyDictionary<string, string>? map, string key, out string value)
+    {
+        value = string.Empty;
+
+        if (map is null)
+        {
+            return false;
+        }
+
+        foreach (var pair in map)
+        {
+            if (string.Equals(pair.Key, key, StringComparison.OrdinalIgnoreCase))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Represents a collection of TOML mapping configurations for sorting and masking operations.
+    /// </summary>
+    /// <remarks>This class is used to deserialize TOML configuration sections related to sorting and masking.
+    /// Each property corresponds to a specific mapping, where the key is typically a field or identifier and the value
+    /// specifies the associated configuration. All properties are read-only after initialization.</remarks>
+    private sealed class TomlMap
+    {
+        [JsonPropertyName("sortBy")]
+        public Dictionary<string, string>? SortBy { get; init; }
+
+        [JsonPropertyName("direction")]
+        public Dictionary<string, string>? Direction { get; init; }
+
+        [JsonPropertyName("maskCombination")]
+        public Dictionary<string, string>? MaskCombination { get; init; }
+
+        [JsonPropertyName("whatToSort")]
+        public Dictionary<string, string>? WhatToSort { get; init; }
+    }
+
+    /// <summary>
+    /// Represents a deserialized TOML preset containing configuration options for sorting, masking, edge detection,
+    /// subject settings, and mask combination.
+    /// </summary>
+    /// <remarks>This class is used to map TOML configuration files to strongly typed objects for use within
+    /// the application. Each property corresponds to a specific section in the TOML file and may be null if not
+    /// specified in the configuration.</remarks>
+    private sealed class PresetToml
+    {
+        [TomlPropertyName("sort_settings")]
+        public SortSettings? SortSettings { get; init; }
+
+        [TomlPropertyName("masking_options")]
+        public MaskingOptions? MaskingOptions { get; init; }
+
+        [TomlPropertyName("canny_options")]
+        public CannyOptions? CannyOptions { get; init; }
+
+        [TomlPropertyName("subject_settings")]
+        public SubjectSettings? SubjectSettings { get; init; }
+
+        [TomlPropertyName("mask_combination")]
+        public MaskCombination? MaskCombination { get; init; }
+    }
+
+    /// <summary>
+    /// Represents the configuration settings for sorting, including the property to sort by and the sort direction.
+    /// </summary>
+    private sealed class SortSettings
+    {
+        [TomlPropertyName("sort_by")]
+        public string? SortBy { get; init; }
+
+        [TomlPropertyName("direction")]
+        public string? Direction { get; init; }
+    }
+
+    /// <summary>
+    /// Represents configuration options for controlling masking behavior in image processing operations.
+    /// </summary>
+    /// <remarks>This class encapsulates settings that determine which masking techniques are applied, such as
+    /// Canny edge detection or subject-based masking. It is intended to be used as a container for related masking
+    /// flags when configuring processing pipelines.</remarks>
+    private sealed class MaskingOptions
+    {
+        [TomlPropertyName("use_canny")]
+        public bool UseCanny { get; init; }
+
+        [TomlPropertyName("use_subject")]
+        public bool UseSubject { get; init; }
+    }
+
+    
+    /// <summary>
+    /// Represents configuration options for the Canny edge detection algorithm.
+    /// </summary>
+    /// <remarks>This class encapsulates parameters that control the behavior of the Canny algorithm, such as
+    /// the edge detection threshold. It is intended to be used as a container for algorithm settings when processing
+    /// images.</remarks>
+    private sealed class CannyOptions
+    {
+        [TomlPropertyName("threshold")]
+        public int? Threshold { get; init; }
+    }
+
+    /// <summary>
+    /// Represents configuration options for subject-based masking.
+    /// </summary>
+    private sealed class SubjectSettings
+    {
+        [TomlPropertyName("padding")]
+        public int? Padding { get; init; }
+
+        [TomlPropertyName("what_to_sort")]
+        public string? WhatToSort { get; init; }
+    }
+
+    /// <summary>
+    /// Represents a combination of masks used for configuration settings.
+    /// </summary>
+    private sealed class MaskCombination
+    {
+        [TomlPropertyName("mode")]
+        public string? Mode { get; init; }
+    }
+
     partial void OnUseSubjectMaskChanged(bool value)
     {
         RefreshSortDirectionOptions();
@@ -395,5 +787,83 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             SubjectMaskPadding = clamped;
         }
+    }
+
+    partial void OnSelectedPresetOptionChanged(string? value)
+    {
+        if (suppressPresetSelectionChangedHandling)
+        {
+            return;
+        }
+
+        _ = HandleSelectedPresetOptionChangedSafelyAsync(value);
+    }
+
+    private async Task HandleSelectedPresetOptionChangedSafelyAsync(string? value)
+    {
+        try
+        {
+            await HandleSelectedPresetOptionChangedAsync(value);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Failed to handle preset selection change: {ex}");
+        }
+    }
+
+    /// <summary>
+    /// Handles changes to the selected preset option asynchronously, navigating to the preset creation page if the user
+    /// selects the option to create a new preset.
+    /// </summary>
+    /// <remarks>If the selected value corresponds to the option for creating a new preset, the method
+    /// navigates to the preset creation page and restores the previous selection if necessary. If a valid preset is
+    /// selected, the method loads the associated preset.</remarks>
+    /// <param name="value">The new preset option selected by the user. This value cannot be null or whitespace.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    private async Task HandleSelectedPresetOptionChangedAsync(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        if (string.Equals(value, NewPresetOptionLabel, StringComparison.Ordinal))
+        {
+            if (isNavigatingToPresetPage)
+            {
+                return;
+            }
+
+            isNavigatingToPresetPage = true;
+            try
+            {
+                await presetNavigationService.ShowCreatePresetPageAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                isNavigatingToPresetPage = false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(lastValidPresetOption))
+            {
+                suppressPresetSelectionChangedHandling = true;
+                SelectedPresetOption = lastValidPresetOption;
+                suppressPresetSelectionChangedHandling = false;
+            }
+
+            return;
+        }
+
+        if (!AvailablePresets.TryGetValue(value, out var presetPath))
+        {
+            return;
+        }
+
+        lastValidPresetOption = value;
+        await LoadPresetAsync(presetPath);
     }
 }

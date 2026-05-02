@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.PresetsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
+    x:DataType="viewModels:MainPageViewModel">
+    <VerticalStackLayout Spacing="16">
+        <Label
+            Margin="4,10,4,4"
+            FontAttributes="Bold"
+            FontSize="13"
+            SemanticProperties.HeadingLevel="Level2"
+            Text="PRESETS"
+            TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                        Dark={StaticResource PrimaryDark}}" />
+        <Border
+            Padding="0"
+            BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                              Dark={StaticResource SurfaceDark}}"
+            Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                     Dark={StaticResource DividerDark}}"
+            StrokeShape="RoundRectangle 12"
+            StrokeThickness="1"
+            StyleClass="Elevation3">
+            <Border.Shadow>
+                <Shadow
+                    Brush="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                    Opacity="0.10"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <Grid Padding="16,10" ColumnDefinitions="*,Auto">
+                <material:PickerField
+                    x:Name="presetPicker"
+                    Title="Presets"
+                    Grid.Row="0"
+                    AccentColor="{AppThemeBinding Light={StaticResource Primary},
+                                                  Dark={StaticResource PrimaryDark}}"
+                    AllowClear="False"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    ItemsSource="{Binding PresetOptions}"
+                    SelectedItem="{Binding SelectedPresetOption, Mode=TwoWay}"
+                    SemanticProperties.Description="A dropdown menu to select a preset"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                Dark={StaticResource TextPrimaryDark}}" />
+            </Grid>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

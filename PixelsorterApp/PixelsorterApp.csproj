@@ -70,6 +70,7 @@
 		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.5.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
+		<PackageReference Include="Tomlyn" Version="2.3.0" />
 		<PackageReference Include="UraniumUI" Version="2.15.0" />
 		<PackageReference Include="UraniumUI.Material" Version="2.15.0" />
 	</ItemGroup>
@@ -85,6 +86,9 @@
 	  <MauiXaml Update="Pages\LicensesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\PresetsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -92,6 +96,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MaskingOptionsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PresetsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SubjectMaskOptionsView.xaml">
@@ -105,8 +112,16 @@
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 	</Target>
 
+
+
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\PresetsPage.xaml.cs">
+	    <DependentUpon>PresetsPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

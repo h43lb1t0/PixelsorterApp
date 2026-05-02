@@ -7,4 +7,10 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public abstract class BaseViewModel : ObservableObject
 {
+    public static async Task<string> ReadAppPackageTextAsync(string path)
+    {
+        using var stream = await FileSystem.OpenAppPackageFileAsync(path);
+        using var reader = new StreamReader(stream);
+        return await reader.ReadToEndAsync();
+    }
 }

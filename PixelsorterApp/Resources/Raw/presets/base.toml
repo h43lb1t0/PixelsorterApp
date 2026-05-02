@@ -1,0 +1,17 @@
+﻿[sort_settings]
+sort_by = "hue"
+direction = "lr"
+
+[masking_options]
+use_canny = false
+use_subject = false
+
+[canny_options]
+threshold = 30
+
+[subject_settings]
+padding = 15
+what_to_sort = "background"
+
+[mask_combination]
+mode = "add"
