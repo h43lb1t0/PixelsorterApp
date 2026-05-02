@@ -515,7 +515,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         if (preset.CannyOptions is not null)
         {
-            var threshold = preset.CannyOptions.Threshold ?? preset.CannyOptions.LegacyThreshold;
+            var threshold = preset.CannyOptions.Threshold;
             if (threshold is > 0)
             {
                 CannyThresholdPercent = threshold.Value;
@@ -712,15 +712,21 @@ public sealed partial class MainPageViewModel : BaseViewModel
     }
 
     
+    /// <summary>
+    /// Represents configuration options for the Canny edge detection algorithm.
+    /// </summary>
+    /// <remarks>This class encapsulates parameters that control the behavior of the Canny algorithm, such as
+    /// the edge detection threshold. It is intended to be used as a container for algorithm settings when processing
+    /// images.</remarks>
     private sealed class CannyOptions
     {
         [TomlPropertyName("threshold")]
         public int? Threshold { get; init; }
-
-        [TomlPropertyName("threashold")]
-        public int? LegacyThreshold { get; init; }
     }
 
+    /// <summary>
+    /// Represents configuration options for subject-based masking.
+    /// </summary>
     private sealed class SubjectSettings
     {
         [TomlPropertyName("padding")]
@@ -730,6 +736,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
         public string? WhatToSort { get; init; }
     }
 
+    /// <summary>
+    /// Represents a combination of masks used for configuration settings.
+    /// </summary>
     private sealed class MaskCombination
     {
         [TomlPropertyName("mode")]
@@ -789,6 +798,15 @@ public sealed partial class MainPageViewModel : BaseViewModel
         _ = HandleSelectedPresetOptionChangedAsync(value);
     }
 
+    /// <summary>
+    /// Handles changes to the selected preset option asynchronously, navigating to the preset creation page if the user
+    /// selects the option to create a new preset.
+    /// </summary>
+    /// <remarks>If the selected value corresponds to the option for creating a new preset, the method
+    /// navigates to the preset creation page and restores the previous selection if necessary. If a valid preset is
+    /// selected, the method loads the associated preset.</remarks>
+    /// <param name="value">The new preset option selected by the user. This value cannot be null or whitespace.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     private async Task HandleSelectedPresetOptionChangedAsync(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
