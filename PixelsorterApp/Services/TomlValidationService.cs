@@ -17,6 +17,15 @@ namespace PixelsorterApp.Services
             this.imageProcessingService = imageProcessingService;
         }
 
+        /// <summary>
+        /// Validates the provided TOML content against required settings and rules.
+        /// </summary>
+        /// <remarks>This method checks for the presence and validity of required settings, enforces value
+        /// constraints, and ensures that dependencies are met before enabling certain features. If validation fails,
+        /// the returned error string contains one or more messages describing the issues found.</remarks>
+        /// <param name="conent">The TOML content to validate. This parameter cannot be null or empty.</param>
+        /// <returns>A tuple containing a boolean that indicates whether the TOML content is valid, and a string with error
+        /// messages if validation fails.</returns>
         public async Task<(bool isValid, string errors)> Validate(string conent)
         {
 
@@ -102,6 +111,16 @@ namespace PixelsorterApp.Services
                 : (false, string.Join(Environment.NewLine, errors));
         }
 
+        /// <summary>
+        /// Retrieves a child table with the specified name from the given root TOML table.
+        /// </summary>
+        /// <remarks>If the specified table name does not exist in the root table or is not a valid TOML
+        /// table, an error message is added to the errors list.</remarks>
+        /// <param name="root">The root TOML table from which to retrieve the child table. Cannot be null.</param>
+        /// <param name="tableName">The name of the child table to retrieve. This value is case-sensitive.</param>
+        /// <param name="errors">A list to which an error message is added if the specified table is missing or not a valid TOML table.
+        /// Cannot be null.</param>
+        /// <returns>The TOML table corresponding to the specified table name if found; otherwise, an empty TOML table.</returns>
         private static TomlTable GetTable(TomlTable root, string tableName, List<string> errors)
         {
             if (root.TryGetValue(tableName, out object? tableValue) && tableValue is TomlTable table)
@@ -113,6 +132,16 @@ namespace PixelsorterApp.Services
             return new TomlTable();
         }
 
+        /// <summary>
+        /// Retrieves the string value associated with the specified key from the provided TOML table.
+        /// </summary>
+        /// <remarks>If the key is missing or the value is not a string, an error message is added to the
+        /// errors list.</remarks>
+        /// <param name="table">The TOML table from which to retrieve the string value. This parameter must not be null.</param>
+        /// <param name="key">The key whose associated string value is to be retrieved. This parameter must not be null.</param>
+        /// <param name="errors">A list that will be populated with an error message if the key does not exist in the table or if the value
+        /// is not a valid string. This parameter must not be null.</param>
+        /// <returns>The string value associated with the specified key if found and valid; otherwise, an empty string.</returns>
         private static string GetString(TomlTable table, string key, List<string> errors)
         {
             if (table.TryGetValue(key, out object? value) && value is string s)
@@ -124,6 +153,15 @@ namespace PixelsorterApp.Services
             return string.Empty;
         }
 
+        /// <summary>
+        /// Retrieves a Boolean value associated with the specified key from the provided TOML table.
+        /// </summary>
+        /// <remarks>If the key is not found or the value is not a Boolean, an error message is added to
+        /// the errors list.</remarks>
+        /// <param name="table">The TOML table from which to retrieve the Boolean value.</param>
+        /// <param name="key">The key that identifies the Boolean value to retrieve.</param>
+        /// <param name="errors">A list to which an error message is added if the key is missing or the value is not a valid Boolean.</param>
+        /// <returns>true if the specified key exists in the table and its value is a Boolean; otherwise, false.</returns>
         private static bool GetBool(TomlTable table, string key, List<string> errors)
         {
             if (table.TryGetValue(key, out object? value) && value is bool b)
@@ -135,6 +173,16 @@ namespace PixelsorterApp.Services
             return false;
         }
 
+        /// <summary>
+        /// Retrieves the integer value associated with the specified key from the provided TomlTable.
+        /// </summary>
+        /// <remarks>If the key is not present in the table or the value is not of type long, an error
+        /// message is added to the errors list.</remarks>
+        /// <param name="table">The TomlTable instance from which to retrieve the integer value.</param>
+        /// <param name="key">The key that identifies the integer value to retrieve from the table.</param>
+        /// <param name="errors">A list that is populated with an error message if the key is missing or the value is not a valid integer.</param>
+        /// <returns>The integer value associated with the specified key, or 0 if the key does not exist or the value is not a
+        /// valid integer.</returns>
         private static int GetInt(TomlTable table, string key, List<string> errors)
         {
             if (table.TryGetValue(key, out object? value) && value is long l)
@@ -146,6 +194,20 @@ namespace PixelsorterApp.Services
             return 0;
         }
 
+       /// <summary>
+       /// Validates that the specified value exists as a key in the provided mapping and records an error if it does
+       /// not.
+       /// </summary>
+       /// <remarks>No validation is performed if the value is null or white space. This method is
+       /// typically used to validate user input or configuration values against a predefined set of allowed
+       /// options.</remarks>
+       /// <param name="value">The value to validate. This parameter is not validated if it is null or consists only of white-space
+       /// characters.</param>
+       /// <param name="map">A dictionary containing the set of valid values as keys. The method checks whether the specified value exists
+       /// in this dictionary.</param>
+       /// <param name="fieldName">The name of the field being validated. Used to identify the field in any generated error messages.</param>
+       /// <param name="errors">A list to which error messages are added if validation fails. The method appends an error message if the
+       /// value is not found in the mapping.</param>
         private static void ValidateMappedOption(string value, Dictionary<string, string> map, string fieldName, List<string> errors)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -178,6 +240,14 @@ namespace PixelsorterApp.Services
             }
         }
 
+       /// <summary>
+       /// Sanitizes the specified string by normalizing line endings and formatting mode declarations for consistency.
+       /// </summary>
+       /// <remarks>This method replaces all Windows-style line endings (\r\n) and carriage returns (\r)
+       /// with Unix-style line endings (\n). It also reformats lines declaring a mode so that they use the syntax 'mode
+       /// = "value"'.</remarks>
+       /// <param name="content">The input string to sanitize. May contain Windows-style line endings and unformatted mode declarations.</param>
+       /// <returns>A string with Unix-style line endings and consistently formatted mode declarations.</returns>
         public string Sanitize(string content)
         {
             content = content.Replace("\r\n", "\n").Replace('\r', '\n');
