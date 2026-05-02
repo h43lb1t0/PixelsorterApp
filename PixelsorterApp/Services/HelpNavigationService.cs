@@ -4,6 +4,14 @@ namespace PixelsorterApp.Services;
 
 public sealed class HelpNavigationService : IHelpNavigationService
 {
+
+    private readonly IPresetNavigationService presetNavigationService;
+
+
+    public HelpNavigationService(IPresetNavigationService presetNavigationService)
+    {
+        this.presetNavigationService = presetNavigationService;
+    }
     public async Task ShowHelpMenuAsync()
     {
         var currentPage = Shell.Current?.CurrentPage;
@@ -17,6 +25,7 @@ public sealed class HelpNavigationService : IHelpNavigationService
             "Cancel",
             null,
             "Help Page",
+            "Presets page",
             "Open Source Licenses",
             "Privacy Policy");
 
@@ -24,6 +33,9 @@ public sealed class HelpNavigationService : IHelpNavigationService
         {
             case "Help Page":
                 await currentPage.Navigation.PushAsync(new HelpPage());
+                break;
+            case "Presets page":
+                await presetNavigationService.ShowCreatePresetPageAsync();
                 break;
             case "Open Source Licenses":
                 await currentPage.Navigation.PushAsync(new LicensesPage());
