@@ -1,13 +1,13 @@
 ﻿[sort_settings]
 sort_by = "hue"
-direction = "LR"
+direction = "lr"
 
 [masking_options]
 use_canny = false
 use_subject = false
 
 [canny_options]
-threashold = 30
+threshold = 30
 
 [subject_settings]
 padding = 15

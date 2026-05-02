@@ -4,6 +4,7 @@ using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -30,7 +31,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
-    private readonly Dictionary<string, string> AvilablePresets = [];
+    private readonly Dictionary<string, string> AvailablePresets = [];
     private const string NewPresetOptionLabel = "new preset";
     private bool suppressPresetSelectionChangedHandling;
     private bool isNavigatingToPresetPage;
@@ -169,10 +170,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
         RefreshSortDirectionOptions();
         SelectedSortDirectionIndex = SortDirectionOptions.Count > 0 ? 0 : -1;
 
-        GetAvilablePresets();
+        GetAvailablePresets();
         SelectedPresetOption = FindDefaultPresetOption() ?? PresetOptions.FirstOrDefault();
         lastValidPresetOption = SelectedPresetOption;
-        this.tomlValidationService = tomlValidationService;
     }
 
     /// <summary>
@@ -399,32 +399,33 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// display options. It adds the base preset and any user-defined presets found in the specified directory. A
     /// special option for creating a new preset is also appended to the options list. Call this method to refresh the
     /// preset lists after changes to the preset files.</remarks>
-    public void GetAvilablePresets()
+    public void GetAvailablePresets()
     {
         try
         {
-            AvilablePresets.Clear();
+            AvailablePresets.Clear();
             PresetOptions.Clear();
 
-            AvilablePresets.Add("Base", BasePresetPath);
+            AvailablePresets.Add("Base", BasePresetPath);
             if (Directory.Exists(UserPresetsPath))
             {
                 var files = Directory.GetFiles(UserPresetsPath, "*.toml");
                 foreach (var file in files)
                 {
-                    AvilablePresets[Path.GetFileNameWithoutExtension(file)] = file;
+                    AvailablePresets[Path.GetFileNameWithoutExtension(file)] = file;
                 }
             }
 
-            foreach (var presetName in AvilablePresets.Keys)
+            foreach (var presetName in AvailablePresets.Keys)
             {
                 PresetOptions.Add(presetName);
             }
 
             PresetOptions.Add("new preset");
         }
-        catch
+        catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine($"Error loading presets: {ex}");
         }
     }
 
@@ -440,7 +441,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     {
         string normalizedDefaultPreset = Path.GetFileName(defaultPresetPreference);
 
-        foreach (var preset in AvilablePresets)
+        foreach (var preset in AvailablePresets)
         {
             if (string.Equals(preset.Key, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(preset.Value, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
@@ -795,7 +796,19 @@ public sealed partial class MainPageViewModel : BaseViewModel
             return;
         }
 
-        _ = HandleSelectedPresetOptionChangedAsync(value);
+        _ = HandleSelectedPresetOptionChangedSafelyAsync(value);
+    }
+
+    private async Task HandleSelectedPresetOptionChangedSafelyAsync(string? value)
+    {
+        try
+        {
+            await HandleSelectedPresetOptionChangedAsync(value);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Failed to handle preset selection change: {ex}");
+        }
     }
 
     /// <summary>
@@ -826,6 +839,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
             {
                 await presetNavigationService.ShowCreatePresetPageAsync();
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
             finally
             {
                 isNavigatingToPresetPage = false;
@@ -841,7 +858,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             return;
         }
 
-        if (!AvilablePresets.TryGetValue(value, out var presetPath))
+        if (!AvailablePresets.TryGetValue(value, out var presetPath))
         {
             return;
         }

@@ -23,15 +23,15 @@ namespace PixelsorterApp.Services
         /// <remarks>This method checks for the presence and validity of required settings, enforces value
         /// constraints, and ensures that dependencies are met before enabling certain features. If validation fails,
         /// the returned error string contains one or more messages describing the issues found.</remarks>
-        /// <param name="conent">The TOML content to validate. This parameter cannot be null or empty.</param>
+        /// <param name="content">The TOML content to validate. This parameter cannot be null or empty.</param>
         /// <returns>A tuple containing a boolean that indicates whether the TOML content is valid, and a string with error
         /// messages if validation fails.</returns>
-        public async Task<(bool isValid, string errors)> Validate(string conent)
+        public async Task<(bool isValid, string errors)> Validate(string content)
         {
 
             var errors = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(conent))
+            if (string.IsNullOrWhiteSpace(content))
             {
                 return (false, "TOML content is empty.");
             }
@@ -45,7 +45,7 @@ namespace PixelsorterApp.Services
             TomlTable? model;
             try
             {
-                model = TomlSerializer.Deserialize<TomlTable>(conent, new TomlSerializerOptions());
+                model = TomlSerializer.Deserialize<TomlTable>(content, new TomlSerializerOptions());
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace PixelsorterApp.Services
             string direction = GetString(sortSettings, "direction", errors);
             bool useSubject = GetBool(maskingOptions, "use_subject", errors);
             bool useCanny = GetBool(maskingOptions, "use_canny", errors);
-            int cannyThreashold = GetInt(cannyOptions, "threashold", errors);
+            int cannyThreashold = GetInt(cannyOptions, "threshold", errors);
             int subjectPadding = GetInt(subjectSettings, "padding", errors);
             string whatToSort = GetString(subjectSettings, "what_to_sort", errors);
             string mode = GetString(maskCombination, "mode", errors);
@@ -84,7 +84,7 @@ namespace PixelsorterApp.Services
 
             if (cannyThreashold is <= 0 or >= 100)
             {
-                errors.Add("canny_options.threashold must be in range (0, 100).");
+                errors.Add("canny_options.threshold must be in range (0, 100).");
             }
 
             if (subjectPadding is < 1 or > 100)

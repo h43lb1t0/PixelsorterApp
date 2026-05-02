@@ -120,7 +120,7 @@ namespace PixelsorterApp.ViewModels
             subtractMask = _mainViewModel.UseSubtractMasks;
 
             tomlMapPath = MainPageViewModel.TomlMapPath;
-            tomlMap = LoadTomlMap();
+            tomlMap = Task.Run(() => LoadTomlMap()).GetAwaiter().GetResult();
             TomlMapString = FormatTomlMap(tomlMap);
 
             PresetToml = CreateToml();
@@ -166,8 +166,11 @@ namespace PixelsorterApp.ViewModels
         private async Task SavePresetAsync()
         {
             string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count}" : PresetName;
-            string fileName = $"{presetName}.toml";
-            string filePath = Path.Combine(UserPresetsPath, fileName);
+            if (!TryGetPresetFilePath(presetName, out string fileName, out string filePath))
+            {
+                SavePresetValidationMessage = "Invalid preset name.";
+                return;
+            }
             try
             {
                 if (!Directory.Exists(UserPresetsPath))
@@ -180,13 +183,65 @@ namespace PixelsorterApp.ViewModels
                 {
                     Preferences.Set("defaultPreset", fileName);
                 }
-                _mainViewModel.GetAvilablePresets();
+                _mainViewModel.GetAvailablePresets();
                 RefreshAvailablePresets();
             }
             catch (Exception ex)
             {
                 SavePresetValidationMessage = $"Error saving preset: {ex.Message}";
             }
+        }
+
+        private bool TryGetPresetFilePath(string presetName, out string fileName, out string filePath)
+        {
+            fileName = string.Empty;
+            filePath = string.Empty;
+
+            if (!TryValidatePresetName(presetName, out string trimmedName))
+            {
+                return false;
+            }
+
+            fileName = $"{trimmedName}.toml";
+            string combinedPath = Path.Combine(UserPresetsPath, fileName);
+            string fullPath = Path.GetFullPath(combinedPath);
+            string basePath = Path.GetFullPath(UserPresetsPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                + Path.DirectorySeparatorChar;
+
+            if (!fullPath.StartsWith(basePath, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            filePath = fullPath;
+            return true;
+        }
+
+        private static bool TryValidatePresetName(string presetName, out string trimmedName)
+        {
+            trimmedName = string.Empty;
+            if (string.IsNullOrWhiteSpace(presetName))
+            {
+                return false;
+            }
+
+            trimmedName = presetName.Trim();
+            if (trimmedName.Length == 0)
+            {
+                return false;
+            }
+
+            if (trimmedName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                return false;
+            }
+
+            if (trimmedName.Contains(Path.DirectorySeparatorChar) || trimmedName.Contains(Path.AltDirectorySeparatorChar))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -232,7 +287,7 @@ namespace PixelsorterApp.ViewModels
             }
 
             await DeletePresetFileAsync(preset.Name);
-            _mainViewModel.GetAvilablePresets();
+            _mainViewModel.GetAvailablePresets();
             RefreshAvailablePresets();
             SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
         }
@@ -310,7 +365,7 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("");
 
             sb.AppendLine("[canny_options]");
-            sb.AppendLine($"threashold = {cannyThreashold}");
+            sb.AppendLine($"threshold = {cannyThreashold}");
             sb.AppendLine("");
 
             sb.AppendLine("[subject_settings]");
@@ -334,13 +389,13 @@ namespace PixelsorterApp.ViewModels
         /// successfully.
         /// </summary>
         /// <returns>The loaded TOML map, or null if loading failed.</returns>
-        private TomlMap? LoadTomlMap()
+        private async Task<TomlMap?> LoadTomlMap()
         {
             try
             {
-                using Stream stream = FileSystem.OpenAppPackageFileAsync(tomlMapPath).GetAwaiter().GetResult();
+                using Stream stream = await FileSystem.OpenAppPackageFileAsync(tomlMapPath);
                 using StreamReader reader = new(stream);
-                string content = reader.ReadToEnd();
+                string content = await reader.ReadToEndAsync();
 
                 return JsonSerializer.Deserialize<TomlMap>(content, new JsonSerializerOptions
                 {
