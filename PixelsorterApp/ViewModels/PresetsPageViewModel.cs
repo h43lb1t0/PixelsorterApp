@@ -185,6 +185,7 @@ namespace PixelsorterApp.ViewModels
                 }
                 _mainViewModel.GetAvailablePresets();
                 RefreshAvailablePresets();
+                _mainViewModel.SelectedPresetOption = presetName;
             }
             catch (Exception ex)
             {
