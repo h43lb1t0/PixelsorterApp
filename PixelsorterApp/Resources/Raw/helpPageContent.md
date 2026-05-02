@@ -156,6 +156,17 @@ You can choose:
 
 ---
 
+## Presets
+
+Presets allow you to save and load your favorite sorting and masking configurations.
+
+- **Load a preset:** On the main screen, use the preset selector to quickly apply a saved configuration.
+- **Create or edit presets:** Choose the **"new preset"** option or navigate to the Presets page. Here you can write custom presets using TOML syntax.
+- **Preset options:** You can view the TOML Map on the Presets page to guide you through the available configuration keys (such as `sort_settings`, `masking_options`, etc.).
+- **Default preset:** You can assign any preset as your default, so Pixelsorter always starts with your preferred settings.
+
+---
+
 ## Tips & troubleshooting
 
 - If **Sort** is disabled, make sure you loaded an image first.
