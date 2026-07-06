@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PixelsorterApp.Pages.ExampleGallery"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
+    Title="Example Gallery">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Label
+                FontAttributes="Bold"
+                FontSize="28"
+                SemanticProperties.HeadingLevel="Level1"
+                Text="Example Gallery" />
+
+            <Label
+                FontSize="14"
+                Opacity="0.8"
+                Text="Drag the slider to compare the original and processed image." />
+
+            <views:BeforeAfterView
+                x:Name="comparisonView"
+                HeightRequest="560"
+                HorizontalOptions="Fill"
+                SplitPosition="0.5" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

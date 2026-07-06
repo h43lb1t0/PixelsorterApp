@@ -25,6 +25,7 @@ public sealed class HelpNavigationService : IHelpNavigationService
             "Cancel",
             null,
             "Help Page",
+            "Example Gallery",
             "Presets page",
             "Open Source Licenses",
             "Privacy Policy");
@@ -33,6 +34,9 @@ public sealed class HelpNavigationService : IHelpNavigationService
         {
             case "Help Page":
                 await currentPage.Navigation.PushAsync(new HelpPage());
+                break;
+            case "Example Gallery":
+                await currentPage.Navigation.PushAsync(new ExampleGallery());
                 break;
             case "Presets page":
                 await presetNavigationService.ShowCreatePresetPageAsync();

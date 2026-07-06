@@ -60,3 +60,6 @@ Because this app relies on a separate class library for its core logic, you will
 # License
 With commit `81e05075` the license of this project changed from MIT to EUPL 1.2
 All changes, releases etc. before this commit stay under the MIT license.
+
+## Example Images
+The example images included with this app are covered by a separate notice in `LICENSE-EXAMPLE-IMAGES.txt`. They are not licensed under the EUPL 1.2 and require attribution to Tom Haelbich; non-commercial use only.
