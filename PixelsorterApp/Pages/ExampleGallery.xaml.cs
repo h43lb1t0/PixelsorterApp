@@ -16,7 +16,5 @@ public partial class ExampleGallery : ContentPage
 
 		comparisonView.BeforeImageSource = ImageSource.FromFile("ExampleImages/before_1.jpg");
 		comparisonView.AfterImageSource = ImageSource.FromFile("ExampleImages/after_1.png");
-		comparisonView.BeforeLabel = "BEFORE";
-		comparisonView.AfterLabel = "AFTER";
-	}
+	} 
 }

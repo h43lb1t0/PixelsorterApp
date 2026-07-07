@@ -1,106 +1,62 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView
     x:Class="PixelsorterApp.Views.BeforeAfterView"
-    x:Name="Root"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
 
     <Border
-        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-        Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
+        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                          Dark={StaticResource SurfaceDark}}"
+        Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                 Dark={StaticResource DividerDark}}"
         StrokeShape="RoundRectangle 28"
         StrokeThickness="1"
         StyleClass="Elevation3">
         <Border.Shadow>
             <Shadow
-                Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                Brush="{AppThemeBinding Light={StaticResource Black},
+                                        Dark={StaticResource White}}"
                 Opacity="0.12"
                 Radius="18"
                 Offset="0,6" />
         </Border.Shadow>
 
-        <Grid x:Name="ComparisonStage">
+        <Grid
+            x:Name="CompareGrid"
+            HeightRequest="300"
+            SizeChanged="CompareGrid_SizeChanged"
+            WidthRequest="400">
+
+            <!--  Bottom layer: "after" image, always fully visible  -->
             <Image
                 x:Name="AfterImage"
-                Aspect="AspectFill"
+                Aspect="AspectFit"
                 Source="{Binding AfterImageSource, Source={x:Reference Root}}" />
 
+            <!--  Top layer: "before" image, clipped to reveal only part of it  -->
             <Image
                 x:Name="BeforeImage"
-                Aspect="AspectFill"
+                Aspect="AspectFit"
                 Source="{Binding BeforeImageSource, Source={x:Reference Root}}" />
 
-            <AbsoluteLayout
-                x:Name="OverlayCanvas"
-                BackgroundColor="Transparent"
-                InputTransparent="False">
-                <AbsoluteLayout.GestureRecognizers>
-                    <PanGestureRecognizer PanUpdated="OverlayCanvas_PanUpdated" />
-                    <TapGestureRecognizer Tapped="OverlayCanvas_Tapped" />
-                </AbsoluteLayout.GestureRecognizers>
+            <!--  Divider line that follows the reveal edge  -->
+            <BoxView
+                x:Name="DividerLine"
+                HorizontalOptions="Start"
+                VerticalOptions="Fill"
+                WidthRequest="2"
+                Color="White" />
 
-                <BoxView
-                    x:Name="DividerLine"
-                    BackgroundColor="{AppThemeBinding Light=#F4EFE2, Dark=#F4EFE2}"
-                    WidthRequest="2" />
-
-                <Border
-                    x:Name="Handle"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                    HeightRequest="56"
-                    StrokeShape="RoundRectangle 28"
-                    WidthRequest="56">
-                    <Border.Shadow>
-                        <Shadow
-                            Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-                            Opacity="0.28"
-                            Radius="12"
-                            Offset="0,4" />
-                    </Border.Shadow>
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="26"
-                        HorizontalTextAlignment="Center"
-                        Text="↔"
-                        TextColor="White"
-                        VerticalTextAlignment="Center" />
-                </Border>
-            </AbsoluteLayout>
-
-            <Grid
-                Padding="16"
-                ColumnDefinitions="*,*"
-                InputTransparent="True"
-                RowDefinitions="Auto">
-                <Border
-                    Padding="12,8"
-                    BackgroundColor="{AppThemeBinding Light=#F4EFE2, Dark=#F4EFE2}"
-                    HorizontalOptions="Start"
-                    StrokeShape="RoundRectangle 18"
-                    StrokeThickness="0"
-                    VerticalOptions="Start">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        Text="{Binding BeforeLabel, Source={x:Reference Root}}"
-                        TextColor="{AppThemeBinding Light=#4A4335, Dark=#4A4335}" />
-                </Border>
-
-                <Border
-                    Grid.Column="1"
-                    Padding="12,8"
-                    BackgroundColor="{AppThemeBinding Light=#F4EFE2, Dark=#F4EFE2}"
-                    HorizontalOptions="End"
-                    StrokeShape="RoundRectangle 18"
-                    StrokeThickness="0"
-                    VerticalOptions="Start">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        Text="{Binding AfterLabel, Source={x:Reference Root}}"
-                        TextColor="{AppThemeBinding Light=#4A4335, Dark=#4A4335}" />
-                </Border>
-            </Grid>
+            <!--  Slider control to drag the reveal point  -->
+            <Slider
+                x:Name="CompareSlider"
+                Margin="10"
+                Maximum="1"
+                Minimum="0"
+                ValueChanged="OnSliderValueChanged"
+                VerticalOptions="End"
+                Value="0.5" />
         </Grid>
     </Border>
 </ContentView>

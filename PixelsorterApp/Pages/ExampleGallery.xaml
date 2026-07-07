@@ -19,11 +19,7 @@
                 Opacity="0.8"
                 Text="Drag the slider to compare the original and processed image." />
 
-            <views:BeforeAfterView
-                x:Name="comparisonView"
-                HeightRequest="560"
-                HorizontalOptions="Fill"
-                SplitPosition="0.5" />
+            <views:BeforeAfterView x:Name="comparisonView" HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
