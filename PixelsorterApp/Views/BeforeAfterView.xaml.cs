@@ -30,13 +30,13 @@ public partial class BeforeAfterView : ContentView
         BindableProperty.Create(nameof(SortDirection), typeof(string), typeof(BeforeAfterView), string.Empty);
 
     public static readonly BindableProperty CannyMaskingProperty =
-        BindableProperty.Create(nameof(CannyMasking), typeof(bool), typeof(BeforeAfterView), false);
+        BindableProperty.Create(nameof(CannyMasking), typeof(bool), typeof(BeforeAfterView), false, propertyChanged: OnMaskingChanged);
         
     public static readonly BindableProperty CannyThresholdProperty =
         BindableProperty.Create(nameof(CannyThreshold), typeof(string), typeof(BeforeAfterView), string.Empty);
 
     public static readonly BindableProperty SubjectMaskingProperty =
-        BindableProperty.Create(nameof(SubjectMasking), typeof(bool), typeof(BeforeAfterView), false);
+        BindableProperty.Create(nameof(SubjectMasking), typeof(bool), typeof(BeforeAfterView), false, propertyChanged: OnMaskingChanged);
         
     public static readonly BindableProperty SubjectPaddingProperty =
         BindableProperty.Create(nameof(SubjectPadding), typeof(string), typeof(BeforeAfterView), string.Empty);
@@ -94,6 +94,21 @@ public partial class BeforeAfterView : ContentView
         get => (string)GetValue(MaskCombineProperty);
         set => SetValue(MaskCombineProperty, value);
     }
+    
+    public bool HasAnyMask => SubjectMasking || CannyMasking;
+    public bool HasBothMasks => SubjectMasking && CannyMasking;
+    public bool HasOnlySubjectMask => SubjectMasking && !CannyMasking;
+
+    private static void OnMaskingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is BeforeAfterView view)
+        {
+            view.OnPropertyChanged(nameof(HasAnyMask));
+            view.OnPropertyChanged(nameof(HasBothMasks));
+            view.OnPropertyChanged(nameof(HasOnlySubjectMask));
+        }
+    }
+
     public BeforeAfterView()
     {
         InitializeComponent();

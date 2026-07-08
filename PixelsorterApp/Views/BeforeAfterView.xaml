@@ -136,7 +136,7 @@
                                 VerticalOptions="Center" />
                         </Grid>
                         <!-- Canny Threshold -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12">
+                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12" IsVisible="{Binding CannyMasking, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
@@ -175,7 +175,7 @@
                         </Grid>
                         
                         <!-- Subject Padding -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6">
+                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6" IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
@@ -192,7 +192,7 @@
                         </Grid>
 
                         <!-- What to sort -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6">
+                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6" IsVisible="{Binding HasOnlySubjectMask, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
@@ -209,7 +209,7 @@
                         </Grid>
                         
                         <!-- Combine masks -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12">
+                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12" IsVisible="{Binding HasBothMasks, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"

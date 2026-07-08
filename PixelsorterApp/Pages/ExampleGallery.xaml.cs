@@ -41,7 +41,7 @@ public partial class ExampleGallery : ContentPage
 							CannyMasking = config.Canny,
 							CannyThreshold = config.CannyThreshold.HasValue ? $"{config.CannyThreshold}%" : "N/A",
 							SubjectMasking = config.SubjectMask,
-							SubjectPadding = config.SubjectPadding.HasValue ? $"{config.SubjectPadding}%" : "N/A",
+							SubjectPadding = config.SubjectPadding.HasValue ? $"{config.SubjectPadding}px" : "N/A",
 							WhatToSort = config.WhatToSort ?? "None",
 							MaskCombine = config.MaskCombine ?? "None"
 						};
