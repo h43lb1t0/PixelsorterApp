@@ -28,6 +28,13 @@
                 Padding="14"
                 MaximumWidthRequest="400">
 
+                <ActivityIndicator 
+                    IsRunning="{Binding IsLoading, Source={x:Reference AfterImage}}"
+                    IsVisible="{Binding IsLoading, Source={x:Reference AfterImage}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Color="{StaticResource Primary}" />
+
                 <!--  Bottom layer: "after" image, always fully visible  -->
                 <Image
                     x:Name="AfterImage"

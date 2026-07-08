@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using PixelsorterApp.Views;
 
 namespace PixelsorterApp.Pages;
 
@@ -27,27 +26,7 @@ public partial class ExampleGallery : ContentPage
 			{
 				MainThread.BeginInvokeOnMainThread(() =>
 				{
-					foreach (var config in configRoot.Images)
-					{
-						var beforeAfterView = new BeforeAfterView
-						{
-							HorizontalOptions = LayoutOptions.Center,
-							VerticalOptions = LayoutOptions.Start,
-							Margin = new Thickness(0, 0, 0, 32),
-							BeforeImageSource = ImageSource.FromFile($"ExampleImages/before_{config.Id}.jpg"),
-							AfterImageSource = ImageSource.FromFile($"ExampleImages/after_{config.Id}.png"),
-							SortBy = config.SortBy ?? "None",
-							SortDirection = config.SortDirection ?? "None",
-							CannyMasking = config.Canny,
-							CannyThreshold = config.CannyThreshold.HasValue ? $"{config.CannyThreshold}%" : "N/A",
-							SubjectMasking = config.SubjectMask,
-							SubjectPadding = config.SubjectPadding.HasValue ? $"{config.SubjectPadding}px" : "N/A",
-							WhatToSort = config.WhatToSort ?? "None",
-							MaskCombine = config.MaskCombine ?? "None"
-						};
-
-						GalleryContainer.Children.Add(beforeAfterView);
-					}
+					GalleryContainer.ItemsSource = configRoot.Images;
 				});
 			}
 		}
@@ -60,19 +39,43 @@ public partial class ExampleGallery : ContentPage
 
 public class ExampleImageConfig
 {
-	public string Id { get; set; }
-	public string SortBy { get; set; }
-	public string SortDirection { get; set; }
+	public required string Id { get; set; }
+	public required string SortBy { get; set; }
+	public required string SortDirection { get; set; }
 	public bool Canny { get; set; }
 	public int? CannyThreshold { get; set; }
 	public bool SubjectMask { get; set; }
 	public int? SubjectPadding { get; set; }
-	public string WhatToSort { get; set; }
-	public string MaskCombine { get; set; }
+	public string WhatToSort { get; set; } = string.Empty;
+	public string MaskCombine { get; set; } = string.Empty;
+
+    [JsonIgnore]
+	public ImageSource BeforeImageSource => ImageSource.FromFile($"ExampleImages/before_{Id}.jpg");
+	
+	[JsonIgnore]
+	public ImageSource AfterImageSource => ImageSource.FromFile($"ExampleImages/after_{Id}.png");
+
+	[JsonIgnore]
+	public string SortBySafe => SortBy ?? "None";
+	
+	[JsonIgnore]
+	public string SortDirectionSafe => SortDirection ?? "None";
+	
+	[JsonIgnore]
+	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : "N/A";
+	
+	[JsonIgnore]
+	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : "N/A";
+	
+	[JsonIgnore]
+	public string WhatToSortSafe => WhatToSort ?? "None";
+	
+	[JsonIgnore]
+	public string MaskCombineSafe => MaskCombine ?? "None";
 }
 
 public class ExampleImageConfigsRoot
 {
 	[JsonPropertyName("images")]
-	public List<ExampleImageConfig> Images { get; set; }
+	public required List<ExampleImageConfig> Images { get; set; }
 }

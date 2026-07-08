@@ -3,24 +3,45 @@
     x:Class="PixelsorterApp.Pages.ExampleGallery"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp.Pages"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
     Title="Example Gallery">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="16">
-            <Label
-                FontAttributes="Bold"
-                FontSize="28"
-                SemanticProperties.HeadingLevel="Level1"
-                Text="Example Gallery" />
+    <Grid RowDefinitions="Auto,*">
+        <VerticalStackLayout
+            Grid.Row="0"
+            Padding="20"
+            Spacing="16">
 
             <Label
                 FontSize="14"
                 Opacity="0.8"
-                Text="Drag the slider to compare the original and processed image." />
-
-            <VerticalStackLayout x:Name="GalleryContainer" Spacing="32" />
-
+                Text="Drag the slider to compare the original and sorted image." />
         </VerticalStackLayout>
-    </ScrollView>
+
+        <CollectionView x:Name="GalleryContainer" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ExampleImageConfig">
+                    <Grid Padding="20,16,20,32">
+                        <views:BeforeAfterView
+                            AfterImageSource="{Binding AfterImageSource}"
+                            BeforeImageSource="{Binding BeforeImageSource}"
+                            CannyMasking="{Binding Canny}"
+                            CannyThreshold="{Binding CannyThresholdFormatted}"
+                            HorizontalOptions="Center"
+                            MaskCombine="{Binding MaskCombineSafe}"
+                            SortBy="{Binding SortBySafe}"
+                            SortDirection="{Binding SortDirectionSafe}"
+                            SubjectMasking="{Binding SubjectMask}"
+                            SubjectPadding="{Binding SubjectPaddingFormatted}"
+                            VerticalOptions="Start"
+                            WhatToSort="{Binding WhatToSortSafe}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>
