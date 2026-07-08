@@ -27,7 +27,7 @@ public partial class BeforeAfterView : ContentView
         InitializeComponent();
     }
 
-    void CompareGrid_SizeChanged(object sender, EventArgs e)
+    void BeforeImage_SizeChanged(object sender, EventArgs e)
     {
         // Width isn't known until layout happens, so set initial clip here
         UpdateClip(CompareSlider.Value);
@@ -40,10 +40,10 @@ public partial class BeforeAfterView : ContentView
 
     void UpdateClip(double value)
     {
-        if (CompareGrid.Width <= 0) return;
+        if (BeforeImage.Width <= 0) return;
 
-        double width = CompareGrid.Width * value;
-        double height = CompareGrid.Height;
+        double width = BeforeImage.Width * value;
+        double height = BeforeImage.Height;
 
         BeforeImage.Clip = new RectangleGeometry
         {
