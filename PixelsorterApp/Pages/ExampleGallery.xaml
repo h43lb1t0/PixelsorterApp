@@ -19,10 +19,7 @@
                 Opacity="0.8"
                 Text="Drag the slider to compare the original and processed image." />
 
-            <views:BeforeAfterView
-                x:Name="comparisonView"
-                HorizontalOptions="Center"
-                VerticalOptions="Start" />
+            <VerticalStackLayout x:Name="GalleryContainer" Spacing="32" />
 
         </VerticalStackLayout>
     </ScrollView>

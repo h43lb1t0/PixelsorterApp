@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -55,7 +55,8 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFB066" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiImage Include="Resources\Images\**" Exclude="Resources\Images\**\*.json" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="Resources\Images\**\*.json" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />

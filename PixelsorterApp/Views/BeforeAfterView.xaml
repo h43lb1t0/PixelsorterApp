@@ -85,7 +85,7 @@
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
                             <Label
                                 FontSize="14"
-                                Text="Hue"
+                                Text="{Binding SortBy, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
@@ -105,7 +105,7 @@
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
                             <Label
                                 FontSize="14"
-                                Text="Row Left To Right"
+                                Text="{Binding SortDirection, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
@@ -129,7 +129,7 @@
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                             <Switch
                                 Grid.Column="1"
-                                IsToggled="True"
+                                IsToggled="{Binding CannyMasking, Source={x:Reference Root}}"
                                 InputTransparent="True"
                                 OnColor="{StaticResource Secondary}"
                                 ThumbColor="{StaticResource Primary}"
@@ -147,7 +147,7 @@
                                 Grid.Column="1"
                                 FontSize="13"
                                 FontAttributes="Bold"
-                                Text="50%"
+                                Text="{Binding CannyThreshold, Source={x:Reference Root}}"
                                 VerticalOptions="Center"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </Grid>
@@ -167,7 +167,7 @@
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                             <Switch
                                 Grid.Column="1"
-                                IsToggled="True"
+                                IsToggled="{Binding SubjectMasking, Source={x:Reference Root}}"
                                 InputTransparent="True"
                                 OnColor="{StaticResource Secondary}"
                                 ThumbColor="{StaticResource Primary}"
@@ -186,7 +186,7 @@
                                 Grid.Column="1"
                                 FontSize="13"
                                 FontAttributes="Bold"
-                                Text="10%"
+                                Text="{Binding SubjectPadding, Source={x:Reference Root}}"
                                 VerticalOptions="Center"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </Grid>
@@ -203,7 +203,7 @@
                                 Grid.Column="1"
                                 FontSize="13"
                                 FontAttributes="Bold"
-                                Text="Background"
+                                Text="{Binding WhatToSort, Source={x:Reference Root}}"
                                 VerticalOptions="Center"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </Grid>
@@ -220,7 +220,7 @@
                                 Grid.Column="1"
                                 FontSize="13"
                                 FontAttributes="Bold"
-                                Text="Subtract"
+                                Text="{Binding MaskCombine, Source={x:Reference Root}}"
                                 VerticalOptions="Center"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
                         </Grid>

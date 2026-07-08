@@ -1,0 +1,15 @@
+{
+  "images": [
+    {
+      "id": "1",
+      "sortBy": "luminance",
+      "sortDirection": "ascending",
+      "canny": true,
+      "cannyThreshold": 100,
+      "SubjectMask": true,
+      "subjectPadding": 10,
+      "whatToSort": "background",
+      "maskCombine" :  "Add"
+    }
+  ]
+}
