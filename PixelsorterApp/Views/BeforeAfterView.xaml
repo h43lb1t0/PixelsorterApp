@@ -28,10 +28,10 @@
                 Padding="14"
                 MaximumWidthRequest="400">
 
-                <ActivityIndicator 
+                <ActivityIndicator
+                    HorizontalOptions="Center"
                     IsRunning="{Binding IsLoading, Source={x:Reference AfterImage}}"
                     IsVisible="{Binding IsLoading, Source={x:Reference AfterImage}}"
-                    HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Color="{StaticResource Primary}" />
 
@@ -59,7 +59,7 @@
                 <!--  Slider control to drag the reveal point  -->
                 <Slider
                     x:Name="CompareSlider"
-                    Margin="10"
+                    Margin="0"
                     Maximum="1"
                     Minimum="0"
                     ValueChanged="OnSliderValueChanged"
@@ -69,167 +69,198 @@
 
             <VerticalStackLayout Padding="14,10,14,14" Spacing="10">
                 <Label
+                    CharacterSpacing="1"
                     FontAttributes="Bold"
                     FontSize="11"
-                    CharacterSpacing="1"
                     Text="SETTINGS USED"
-                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                Dark={StaticResource TextSecondaryDark}}" />
 
-                <!-- Row 1: Sort By and Direction Buttons -->
+                <!--  Row 1: Sort By and Direction Buttons  -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <!-- Sort By Button -->
+                    <!--  Sort By Button  -->
                     <Border
                         Grid.Column="0"
-                        BackgroundColor="Transparent"
                         Padding="12,8"
+                        BackgroundColor="Transparent"
+                        Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                                 Dark={StaticResource DividerDark}}"
                         StrokeShape="RoundRectangle 12"
-                        StrokeThickness="1"
-                        Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}">
+                        StrokeThickness="1">
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
                                 Text="SORT BY"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}" />
                             <Label
                                 FontSize="14"
                                 Text="{Binding SortBy, Source={x:Reference Root}}"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
 
-                    <!-- Direction Button -->
+                    <!--  Direction Button  -->
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="Transparent"
                         Padding="12,8"
+                        BackgroundColor="Transparent"
+                        Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                                 Dark={StaticResource DividerDark}}"
                         StrokeShape="RoundRectangle 12"
-                        StrokeThickness="1"
-                        Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}">
+                        StrokeThickness="1">
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
                                 Text="DIRECTION"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}" />
                             <Label
                                 FontSize="14"
                                 Text="{Binding SortDirection, Source={x:Reference Root}}"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
                 </Grid>
 
-                <!-- Row 2: Toggle Settings -->
+                <!--  Row 2: Toggle Settings  -->
                 <Border
-                    BackgroundColor="Transparent"
                     Padding="0"
+                    BackgroundColor="Transparent"
+                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                             Dark={StaticResource DividerDark}}"
                     StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}">
+                    StrokeThickness="1">
                     <VerticalStackLayout>
-                        <!-- Canny Masking Toggle -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,10,12,4">
+                        <!--  Canny Masking Toggle  -->
+                        <Grid Padding="12,10,12,4" ColumnDefinitions="*,Auto">
                             <Label
                                 Grid.Column="0"
                                 FontSize="13"
                                 Text="Canny masking"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                             <Switch
                                 Grid.Column="1"
-                                IsToggled="{Binding CannyMasking, Source={x:Reference Root}}"
                                 InputTransparent="True"
+                                IsToggled="{Binding CannyMasking, Source={x:Reference Root}}"
                                 OnColor="{StaticResource Secondary}"
                                 ThumbColor="{StaticResource Primary}"
                                 VerticalOptions="Center" />
                         </Grid>
-                        <!-- Canny Threshold -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12" IsVisible="{Binding CannyMasking, Source={x:Reference Root}}">
+                        <!--  Canny Threshold  -->
+                        <Grid
+                            Padding="12,0,12,12"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding CannyMasking, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="Threshold"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                FontSize="13"
                                 FontAttributes="Bold"
+                                FontSize="13"
                                 Text="{Binding CannyThreshold, Source={x:Reference Root}}"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                         </Grid>
 
-                        <BoxView 
-                            HeightRequest="1" 
-                            Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" 
-                            Margin="12,0,12,0" />
+                        <BoxView
+                            Margin="12,0,12,0"
+                            HeightRequest="1"
+                            Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                    Dark={StaticResource DividerDark}}" />
 
-                        <!-- Subject Masking Toggle -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,10,12,4">
+                        <!--  Subject Masking Toggle  -->
+                        <Grid Padding="12,10,12,4" ColumnDefinitions="*,Auto">
                             <Label
                                 Grid.Column="0"
                                 FontSize="13"
                                 Text="Subject masking"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                             <Switch
                                 Grid.Column="1"
-                                IsToggled="{Binding SubjectMasking, Source={x:Reference Root}}"
                                 InputTransparent="True"
+                                IsToggled="{Binding SubjectMasking, Source={x:Reference Root}}"
                                 OnColor="{StaticResource Secondary}"
                                 ThumbColor="{StaticResource Primary}"
                                 VerticalOptions="Center" />
                         </Grid>
-                        
-                        <!-- Subject Padding -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6" IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}">
+
+                        <!--  Subject Padding  -->
+                        <Grid
+                            Padding="12,0,12,6"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="Padding"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                FontSize="13"
                                 FontAttributes="Bold"
+                                FontSize="13"
                                 Text="{Binding SubjectPadding, Source={x:Reference Root}}"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                         </Grid>
 
-                        <!-- What to sort -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,6" IsVisible="{Binding HasOnlySubjectMask, Source={x:Reference Root}}">
+                        <!--  What to sort  -->
+                        <Grid
+                            Padding="12,0,12,6"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding HasOnlySubjectMask, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="What to sort"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                FontSize="13"
                                 FontAttributes="Bold"
+                                FontSize="13"
                                 Text="{Binding WhatToSort, Source={x:Reference Root}}"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                         </Grid>
-                        
-                        <!-- Combine masks -->
-                        <Grid ColumnDefinitions="*,Auto" Padding="12,0,12,12" IsVisible="{Binding HasBothMasks, Source={x:Reference Root}}">
+
+                        <!--  Combine masks  -->
+                        <Grid
+                            Padding="12,0,12,12"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding HasBothMasks, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="Combine masks"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                FontSize="13"
                                 FontAttributes="Bold"
+                                FontSize="13"
                                 Text="{Binding MaskCombine, Source={x:Reference Root}}"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
                         </Grid>
                     </VerticalStackLayout>
                 </Border>
