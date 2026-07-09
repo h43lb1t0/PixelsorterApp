@@ -11,7 +11,10 @@ public partial class ExampleGallery : ContentPage
 		LoadExamplesAsync();
 	}
 
-	private async void LoadExamplesAsync()
+    /// <summary>
+    /// Loads the example image configurations from a JSON file and sets the ItemsSource of the GalleryContainer.
+    /// </summary>
+    private async void LoadExamplesAsync()
 	{
 		try
 		{
@@ -37,6 +40,9 @@ public partial class ExampleGallery : ContentPage
 	}
 }
 
+/// <summary>
+/// Represents the configuration for an example image, including properties for sorting, masking, and image sources.
+/// </summary>
 public class ExampleImageConfig
 {
 	public required string Id { get; set; }

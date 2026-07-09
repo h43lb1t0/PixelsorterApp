@@ -99,6 +99,12 @@ public partial class BeforeAfterView : ContentView
     public bool HasBothMasks => SubjectMasking && CannyMasking;
     public bool HasOnlySubjectMask => SubjectMasking && !CannyMasking;
 
+    /// <summary>
+    /// Called when either the CannyMasking or SubjectMasking properties change. This method updates the HasAnyMask, HasBothMasks, and HasOnlySubjectMask properties accordingly.
+    /// </summary>
+    /// <param name="bindable"></param>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
     private static void OnMaskingChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is BeforeAfterView view)
@@ -125,6 +131,10 @@ public partial class BeforeAfterView : ContentView
         UpdateClip(e.NewValue);
     }
 
+    /// <summary>
+    /// Updates the clip region of the BeforeImage based on the slider value.
+    /// </summary>
+    /// <param name="value"></param>
     void UpdateClip(double value)
     {
         if (BeforeImage.Width <= 0) return;
