@@ -56,10 +56,10 @@ public class ExampleImageConfig
 	public string MaskCombine { get; set; } = string.Empty;
 
     [JsonIgnore]
-	public ImageSource BeforeImageSource => ImageSource.FromFile($"ExampleImages/before_{Id}.jpg");
+	public ImageSource BeforeImageSource => ImageSource.FromFile($"ExampleImages/before_{Id}.webp");
 	
 	[JsonIgnore]
-	public ImageSource AfterImageSource => ImageSource.FromFile($"ExampleImages/after_{Id}.png");
+	public ImageSource AfterImageSource => ImageSource.FromFile($"ExampleImages/after_{Id}.webp");
 
 	[JsonIgnore]
 	public string SortBySafe => SortBy ?? "None";
