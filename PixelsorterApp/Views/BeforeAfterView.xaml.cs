@@ -147,6 +147,9 @@ public partial class BeforeAfterView : ContentView
             Rect = new Rect(0, 0, width, height)
         };
 
+        // Keep the rounded-corner clip geometry in sync with the actual container size
+        ImageClipGeometry.Rect = new Rect(0, 0, BeforeImage.Width, height);
+
         DividerLine.TranslationX = width - (DividerLine.WidthRequest / 2);
     }
 }

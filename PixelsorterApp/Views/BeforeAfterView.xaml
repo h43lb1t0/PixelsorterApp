@@ -36,17 +36,34 @@
                     Color="{StaticResource Primary}" />
 
                 <!--  Bottom layer: "after" image, always fully visible  -->
-                <Image
-                    x:Name="AfterImage"
-                    Aspect="AspectFit"
-                    Source="{Binding AfterImageSource, Source={x:Reference Root}}" />
+                <!--  Image comparison container with rounded corners via Clip  -->
+                <Border
+                    Grid.Column="0"
+                    Margin="5"
+                    Padding="0"
+                    Stroke="Transparent"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10">
+                    <Border.Clip>
+                        <RoundRectangleGeometry
+                            x:Name="ImageClipGeometry"
+                            CornerRadius="10" />
+                    </Border.Clip>
+                    <Grid>
+                        <!--  Bottom layer: "after" image, always fully visible  -->
+                        <Image
+                            x:Name="AfterImage"
+                            Aspect="AspectFit"
+                            Source="{Binding AfterImageSource, Source={x:Reference Root}}" />
 
-                <!--  Top layer: "before" image, clipped to reveal only part of it  -->
-                <Image
-                    x:Name="BeforeImage"
-                    Aspect="AspectFit"
-                    SizeChanged="BeforeImage_SizeChanged"
-                    Source="{Binding BeforeImageSource, Source={x:Reference Root}}" />
+                        <!--  Top layer: "before" image, clipped to reveal only part of it  -->
+                        <Image
+                            x:Name="BeforeImage"
+                            Aspect="AspectFit"
+                            SizeChanged="BeforeImage_SizeChanged"
+                            Source="{Binding BeforeImageSource, Source={x:Reference Root}}" />
+                    </Grid>
+                </Border>
 
                 <!--  Divider line that follows the reveal edge  -->
                 <BoxView
