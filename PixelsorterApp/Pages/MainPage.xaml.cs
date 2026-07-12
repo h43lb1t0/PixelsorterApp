@@ -162,6 +162,11 @@ namespace PixelsorterApp
             {
                 LoadImageFromPath(pendingImagePath);
             }
+
+            if (!Preferences.Default.Get("HasSeenGallerySuggest", false))
+            {
+                gallerySuggestionOverlay.IsVisible = true;
+            }
         }
 
         /// <summary>
@@ -508,6 +513,19 @@ namespace PixelsorterApp
             viewModel.IsInteractionEnabled = state;
             viewModel.IsSaveEnabled = state && currentDisplayedImageIndex > 0 && currentDisplayedImageIndex < imagePaths.Count;
 
+        }
+
+        private async void OnGoToGalleryClicked(object sender, EventArgs e)
+        {
+            Preferences.Default.Set("HasSeenGallerySuggest", true);
+            gallerySuggestionOverlay.IsVisible = false;
+            await Navigation.PushAsync(new Pages.ExampleGallery());
+        }
+
+        private void OnDismissGallerySuggestionClicked(object sender, EventArgs e)
+        {
+            Preferences.Default.Set("HasSeenGallerySuggest", true);
+            gallerySuggestionOverlay.IsVisible = false;
         }
     }
 }

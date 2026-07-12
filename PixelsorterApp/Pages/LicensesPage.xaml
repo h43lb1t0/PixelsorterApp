@@ -1,64 +1,139 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:PixelsorterApp"
-             x:Class="PixelsorterApp.LicensesPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}"
-             Title="Open Source Licenses"
-             SemanticProperties.Description="Open source licenses used by the app">
+<ContentPage
+    x:Class="PixelsorterApp.LicensesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp"
+    Title="Open Source Licenses"
+    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
+                                      Dark={StaticResource PageBackgroundDark}}"
+    SemanticProperties.Description="Open source licenses used by the app">
 
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label Text="Open Source Licenses" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" SemanticProperties.HeadingLevel="Level1" />
-            <Label Text="This application uses the following open source packages:" Opacity="0.8" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="24"
+                HorizontalOptions="Center"
+                SemanticProperties.HeadingLevel="Level1"
+                Text="Open Source Licenses" />
+            <Label Opacity="0.8" Text="This application uses the following open source packages:" />
 
             <Border
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                 Padding="0"
-                StrokeShape="RoundRectangle 12">
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1">
                 <VerticalStackLayout x:Name="LicensesContainer" Spacing="0">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="local:LicenseInfo">
                             <VerticalStackLayout Padding="16" Spacing="4">
-                                <Label Text="{Binding PackageName}" FontSize="16" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level2" />
-                                <Label Text="{Binding Authors}" FontSize="13" Opacity="0.8" />
-                                <Label Text="{Binding PackageVersion}" FontSize="13" Opacity="0.6" />
-                                <Label Text="{Binding LicenseType}" FontSize="13" Opacity="0.8" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    SemanticProperties.HeadingLevel="Level2"
+                                    Text="{Binding PackageName}" />
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.8"
+                                    Text="{Binding Authors}" />
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.6"
+                                    Text="{Binding PackageVersion}" />
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.8"
+                                    Text="{Binding LicenseType}" />
                                 <Button
-                                    Text="{Binding LicenseUrl}"
-                                    Style="{StaticResource LinkButtonStyle}"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
                                     CommandParameter="{Binding LicenseUrl}"
                                     SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
-                                    SemanticProperties.Hint="Press Enter to open this license in the browser" />
-                                <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
+                                    SemanticProperties.Hint="Press Enter to open this license in the browser"
+                                    Style="{StaticResource LinkButtonStyle}"
+                                    Text="{Binding LicenseUrl}" />
+                                <BoxView
+                                    Margin="0,8,0,0"
+                                    AutomationProperties.IsInAccessibleTree="False"
+                                    HeightRequest="1"
+                                    Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                            Dark={StaticResource DividerDark}}" />
                             </VerticalStackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </Border>
-            <Label Text="Additional Licenses" FontSize="20" FontAttributes="Bold" Margin="0,16,0,8" SemanticProperties.HeadingLevel="Level2" />
+            <Label
+                Margin="0,16,0,8"
+                FontAttributes="Bold"
+                FontSize="20"
+                SemanticProperties.HeadingLevel="Level2"
+                Text="Additional Licenses" />
             <Border
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
-                StrokeThickness="1"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
                 Padding="0"
-                StrokeShape="RoundRectangle 12">
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                         Dark={StaticResource DividerDark}}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1">
                 <VerticalStackLayout Padding="16" Spacing="4">
-                    <Label Text="RMBG-1.4" FontSize="16" FontAttributes="Bold" SemanticProperties.HeadingLevel="Level3" />
-                    <Label Text="Bria.ai" FontSize="13" Opacity="0.8" />
-                    <Label Text="CC-BY-NC" FontSize="13" Opacity="0.8" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        SemanticProperties.HeadingLevel="Level3"
+                        Text="RMBG-1.4" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="Bria.ai" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="CC-BY-NC" />
                     <Button
-                        Text="https://creativecommons.org/licenses/by-nc/4.0/"
-                        Style="{StaticResource LinkButtonStyle}"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
                         CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/"
                         SemanticProperties.Description="Open license URL: https://creativecommons.org/licenses/by-nc/4.0/"
-                        SemanticProperties.Hint="Press Enter to open this license in the browser" />
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" Margin="0,8,0,0" AutomationProperties.IsInAccessibleTree="False" />
+                        SemanticProperties.Hint="Press Enter to open this license in the browser"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Text="https://creativecommons.org/licenses/by-nc/4.0/" />
+                    <BoxView
+                        Margin="0,8,0,0"
+                        AutomationProperties.IsInAccessibleTree="False"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                Dark={StaticResource DividerDark}}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        SemanticProperties.HeadingLevel="Level3"
+                        Text="Example Images" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="Tom Haelbich" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="© Tom Haelbich" />
+                    <Button
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
+                        CommandParameter="https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt"
+                        SemanticProperties.Description="Open license URL: https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt"
+                        SemanticProperties.Hint="Press Enter to open this license in the browser"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Text="https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt" />
+                    <BoxView
+                        Margin="0,8,0,0"
+                        AutomationProperties.IsInAccessibleTree="False"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                Dark={StaticResource DividerDark}}" />
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

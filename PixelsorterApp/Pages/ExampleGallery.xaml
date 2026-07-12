@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PixelsorterApp.Pages.ExampleGallery"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp.Pages"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
+    Title="Example Gallery">
+
+    <Grid RowDefinitions="Auto,*">
+        <Label
+            Grid.Row="0"
+            Padding="20,12,20,4"
+            FontSize="13"
+            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                        Dark={StaticResource TextSecondaryDark}}"
+            Text="Drag the slider to compare the original and sorted image." />
+
+        <CollectionView x:Name="GalleryContainer" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ExampleImageConfig">
+                    <VerticalStackLayout Padding="20,16,20,0" Spacing="0">
+                        <views:BeforeAfterView
+                            AfterImageSource="{Binding AfterImageSource}"
+                            BeforeImageSource="{Binding BeforeImageSource}"
+                            CannyMasking="{Binding Canny}"
+                            CannyThreshold="{Binding CannyThresholdFormatted}"
+                            HorizontalOptions="Center"
+                            MaskCombine="{Binding MaskCombineSafe}"
+                            SortBy="{Binding SortBySafe}"
+                            SortDirection="{Binding SortDirectionSafe}"
+                            SubjectMasking="{Binding SubjectMask}"
+                            SubjectPadding="{Binding SubjectPaddingFormatted}"
+                            VerticalOptions="Start"
+                            WhatToSort="{Binding WhatToSortSafe}" />
+
+                        <!--  3 pulsing dots below each card, hidden once the next card is visible  -->
+                        <views:PulsingDotsView Margin="0,20,0,28" IsVisible="{Binding ShowDots}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

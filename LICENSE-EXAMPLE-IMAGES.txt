@@ -1,0 +1,9 @@
+Example Images License Notice
+
+The example images included with this application are explicitly excluded from the EUPL 1.2 license. All copyrights to these example images remain solely with Tom Haelbich.
+
+Permission is granted to view, copy, and distribute these example images exclusively within the context of this application, as well as within non-commercial derivative works (forks) of this application.
+
+Any use of these images within permitted non-commercial forks requires prominent attribution to Tom Haelbich.
+
+Commercial use of this application or its forks that includes these images, modification of the images themselves, or redistribution of these images as standalone assets is strictly prohibited without prior written permission from the rights holder.

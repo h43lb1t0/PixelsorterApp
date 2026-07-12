@@ -218,5 +218,30 @@
                 SemanticProperties.Description="Start pixel sorting"
                 Text="Sort" />
         </VerticalStackLayout>
+
+        <!-- Gallery Suggestion Overlay -->
+        <Grid x:Name="gallerySuggestionOverlay" Grid.RowSpan="2" BackgroundColor="#A0000000" IsVisible="False" InputTransparent="False" ZIndex="99">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer />
+                <SwipeGestureRecognizer Direction="Up,Down,Left,Right" />
+                <PanGestureRecognizer />
+            </Grid.GestureRecognizers>
+            <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="24"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Margin="32">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.2" Radius="15" Offset="0,5" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Welcome to Pixel Sorter!" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+                    <Label Text="Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                    <Button Text="Go to Gallery" Clicked="OnGoToGalleryClicked" StyleClass="Elevation3" />
+                    <Button Text="Dismiss" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" Clicked="OnDismissGallerySuggestionClicked" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
     </Grid>
 </ContentPage>
