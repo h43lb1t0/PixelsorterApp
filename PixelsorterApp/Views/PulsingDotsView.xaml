@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.PulsingDotsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <HorizontalStackLayout
+        x:Name="DotsContainer"
+        HorizontalOptions="Center"
+        Spacing="10">
+
+        <Ellipse
+            x:Name="Dot1"
+            Fill="{AppThemeBinding Light={StaticResource Primary},
+                                   Dark={StaticResource Primary}}"
+            HeightRequest="8"
+            Opacity="0.3"
+            WidthRequest="8" />
+
+        <Ellipse
+            x:Name="Dot2"
+            Fill="{AppThemeBinding Light={StaticResource Primary},
+                                   Dark={StaticResource Primary}}"
+            HeightRequest="8"
+            Opacity="0.3"
+            WidthRequest="8" />
+
+        <Ellipse
+            x:Name="Dot3"
+            Fill="{AppThemeBinding Light={StaticResource Primary},
+                                   Dark={StaticResource Primary}}"
+            HeightRequest="8"
+            Opacity="0.3"
+            WidthRequest="8" />
+
+    </HorizontalStackLayout>
+
+</ContentView>

@@ -28,12 +28,6 @@
                 Padding="14"
                 MaximumWidthRequest="400">
 
-                <ActivityIndicator
-                    HorizontalOptions="Center"
-                    IsRunning="{Binding IsLoading, Source={x:Reference AfterImage}}"
-                    IsVisible="{Binding IsLoading, Source={x:Reference AfterImage}}"
-                    VerticalOptions="Center"
-                    Color="{StaticResource Primary}" />
 
                 <!--  Bottom layer: "after" image, always fully visible  -->
                 <!--  Image comparison container with rounded corners via Clip  -->

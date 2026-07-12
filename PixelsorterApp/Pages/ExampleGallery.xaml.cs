@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -5,9 +6,12 @@ namespace PixelsorterApp.Pages;
 
 public partial class ExampleGallery : ContentPage
 {
+	private List<ExampleImageConfig>? _images;
+
 	public ExampleGallery()
 	{
 		InitializeComponent();
+		GalleryContainer.Scrolled += OnGalleryScrolled;
 		LoadExamplesAsync();
 	}
 
@@ -27,9 +31,14 @@ public partial class ExampleGallery : ContentPage
 
 			if (configRoot?.Images != null)
 			{
+				_images = configRoot.Images;
+
+				// Initially only the first card shows dots (the first visible card, before any scroll)
+				UpdateDotVisibility(lastVisibleIndex: 0);
+
 				MainThread.BeginInvokeOnMainThread(() =>
 				{
-					GalleryContainer.ItemsSource = configRoot.Images;
+					GalleryContainer.ItemsSource = _images;
 				});
 			}
 		}
@@ -38,12 +47,33 @@ public partial class ExampleGallery : ContentPage
 			System.Diagnostics.Debug.WriteLine($"Error loading examples: {ex.Message}");
 		}
 	}
+
+	private void OnGalleryScrolled(object? sender, ItemsViewScrolledEventArgs e)
+	{
+		UpdateDotVisibility(e.LastVisibleItemIndex);
+	}
+
+	/// <summary>
+	/// Shows dots only on the bottom-most visible card, provided it is not the last card.
+	/// The moment a new card scrolls into view, the previous card's dots disappear.
+	/// </summary>
+	private void UpdateDotVisibility(int lastVisibleIndex)
+	{
+		if (_images == null) return;
+		int lastCardIndex = _images.Count - 1;
+
+		for (int i = 0; i < _images.Count; i++)
+		{
+			// Dots visible only on the last currently-visible card, and never on the last card overall
+			_images[i].ShowDots = (i == lastVisibleIndex) && (i < lastCardIndex);
+		}
+	}
 }
 
 /// <summary>
 /// Represents the configuration for an example image, including properties for sorting, masking, and image sources.
 /// </summary>
-public class ExampleImageConfig
+public class ExampleImageConfig : INotifyPropertyChanged
 {
 	public required string Id { get; set; }
 	public required string SortBy { get; set; }
@@ -54,6 +84,26 @@ public class ExampleImageConfig
 	public int? SubjectPadding { get; set; }
 	public string WhatToSort { get; set; } = string.Empty;
 	public string MaskCombine { get; set; } = string.Empty;
+
+	private bool _showDots = false;
+
+	/// <summary>
+	/// True when this card is the bottom-most visible card and is not the last card.
+	/// Drives the pulsing dots indicator below the card.
+	/// </summary>
+	[JsonIgnore]
+	public bool ShowDots
+	{
+		get => _showDots;
+		set
+		{
+			if (_showDots == value) return;
+			_showDots = value;
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowDots)));
+		}
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged;
 
     [JsonIgnore]
 	public ImageSource BeforeImageSource => ImageSource.FromFile($"ExampleImages/before_{Id}.webp");

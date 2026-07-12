@@ -25,7 +25,7 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExampleImageConfig">
-                    <Grid Padding="20,16,20,32">
+                    <VerticalStackLayout Padding="20,16,20,0" Spacing="0">
                         <views:BeforeAfterView
                             AfterImageSource="{Binding AfterImageSource}"
                             BeforeImageSource="{Binding BeforeImageSource}"
@@ -39,7 +39,10 @@
                             SubjectPadding="{Binding SubjectPaddingFormatted}"
                             VerticalOptions="Start"
                             WhatToSort="{Binding WhatToSortSafe}" />
-                    </Grid>
+
+                        <!--  3 pulsing dots below each card, hidden once the next card is visible  -->
+                        <views:PulsingDotsView Margin="0,20,0,28" IsVisible="{Binding ShowDots}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
