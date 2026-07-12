@@ -39,15 +39,12 @@
                 <!--  Image comparison container with rounded corners via Clip  -->
                 <Border
                     Grid.Column="0"
-                    Margin="5"
                     Padding="0"
                     Stroke="Transparent"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 10">
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0">
                     <Border.Clip>
-                        <RoundRectangleGeometry
-                            x:Name="ImageClipGeometry"
-                            CornerRadius="10" />
+                        <RoundRectangleGeometry x:Name="ImageClipGeometry" CornerRadius="1.5" />
                     </Border.Clip>
                     <Grid>
                         <!--  Bottom layer: "after" image, always fully visible  -->
