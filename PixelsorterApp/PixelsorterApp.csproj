@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -55,8 +55,9 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFB066" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
-		
+		<MauiImage Include="Resources\Images\**" Exclude="Resources\Images\**\*.json" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="Resources\Images\**\*.json" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
@@ -65,14 +66,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.5.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
-		<PackageReference Include="Tomlyn" Version="2.3.0" />
-		<PackageReference Include="UraniumUI" Version="2.15.0" />
-		<PackageReference Include="UraniumUI.Material" Version="2.15.0" />
+		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.10.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
+		<PackageReference Include="Tomlyn" Version="2.10.1" />
+		<PackageReference Include="UraniumUI" Version="3.0.0" />
+		<PackageReference Include="UraniumUI.Material" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,6 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\ExampleGallery.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\HelpPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -90,6 +94,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\BeforeAfterView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CannyMaskOptionsView.xaml">

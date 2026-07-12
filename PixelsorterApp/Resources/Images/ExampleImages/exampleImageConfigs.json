@@ -1,0 +1,70 @@
+{
+  "images": [
+    {
+      "id": "1",
+      "sortBy": "Lightness",
+      "sortDirection": "Row Right To Left",
+      "canny": true,
+      "cannyThreshold": 15,
+      "SubjectMask": true,
+      "subjectPadding": 15,
+      "whatToSort": "",
+      "maskCombine": "Subtract"
+    },
+    {
+      "id": "2",
+      "sortBy": "Lightness",
+      "sortDirection": "Column Top To Bottom",
+      "canny": true,
+      "cannyThreshold": 40,
+      "SubjectMask": false,
+      "subjectPadding": 0,
+      "whatToSort": "",
+      "maskCombine": "Subtract"
+    },
+    {
+      "id": "3",
+      "sortBy": "Saturation",
+      "sortDirection": "Into Mask",
+      "canny": false,
+      "cannyThreshold": 0,
+      "SubjectMask": true,
+      "subjectPadding": 15,
+      "whatToSort": "Background",
+      "maskCombine": "Subtract"
+    },
+    {
+      "id": "4",
+      "sortBy": "Coolness",
+      "sortDirection": "Column Top To Bottom",
+      "canny": true,
+      "cannyThreshold": 23,
+      "SubjectMask": false,
+      "subjectPadding": 15,
+      "whatToSort": "",
+      "maskCombine": ""
+    },
+    {
+      "id": "5",
+      "sortBy": "Lightness",
+      "sortDirection": "Column Top To Bottom",
+      "canny": true,
+      "cannyThreshold": 50,
+      "SubjectMask": false,
+      "subjectPadding": 15,
+      "whatToSort": "",
+      "maskCombine": ""
+    },
+    {
+      "id": "6",
+      "sortBy": "Lightness",
+      "sortDirection": "Row Right To Left",
+      "canny": true,
+      "cannyThreshold": 19,
+      "SubjectMask": true,
+      "subjectPadding": 15,
+      "whatToSort": "",
+      "maskCombine": "Add"
+    }
+  ]
+}

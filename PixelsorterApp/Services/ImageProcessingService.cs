@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NumSharp;
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.ColorSpaces;
 using Image = PixelsorterClassLib.Core.Image;
 
@@ -154,8 +153,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
                 sortingDirection,
                 maskToUse);
 
-            using var imageData = Image.NdarrayToImgData(imgData);
-            imageData.SaveAsPng(sortedImagePath);
+            Image.SaveImage(imgData, sortedImagePath);
         });
 
         return sortedImagePath;
