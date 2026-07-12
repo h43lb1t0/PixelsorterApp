@@ -8,16 +8,13 @@
     Title="Example Gallery">
 
     <Grid RowDefinitions="Auto,*">
-        <VerticalStackLayout
+        <Label
             Grid.Row="0"
-            Padding="20"
-            Spacing="16">
-
-            <Label
-                FontSize="14"
-                Opacity="0.8"
-                Text="Drag the slider to compare the original and sorted image." />
-        </VerticalStackLayout>
+            Padding="20,12,20,4"
+            FontSize="13"
+            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                        Dark={StaticResource TextSecondaryDark}}"
+            Text="Drag the slider to compare the original and sorted image." />
 
         <CollectionView x:Name="GalleryContainer" Grid.Row="1">
             <CollectionView.ItemsLayout>
