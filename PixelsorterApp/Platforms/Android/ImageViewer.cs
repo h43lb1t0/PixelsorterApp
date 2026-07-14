@@ -39,7 +39,8 @@ public partial class ImageViewer
 
     public partial void ShowImage(string filePath)
     {
-        _images.Add(ImageSource.FromFile(filePath));
+        var newImage = ImageSource.FromFile(filePath);
+        _images.Add(newImage);
 
         SetHeightFromImage(filePath);
 
@@ -48,8 +49,7 @@ public partial class ImageViewer
             if (_carousel.ItemsSource is null)
                 _carousel.ItemsSource = _images;
 
-            var targetIndex = _images.Count - 1;
-            Dispatcher.Dispatch(() => _carousel.ScrollTo(targetIndex, animate: true)); //Scrolls to latest image
+            _carousel.CurrentItem = newImage;
         }
 
     }
