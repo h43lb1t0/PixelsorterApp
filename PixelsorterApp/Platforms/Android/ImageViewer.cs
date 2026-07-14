@@ -40,17 +40,20 @@ public partial class ImageViewer
     public partial void ShowImage(string filePath)
     {
         var newImage = ImageSource.FromFile(filePath);
-        _images.Add(newImage);
-
         SetHeightFromImage(filePath);
 
-        if (_carousel is not null)
+        Dispatcher.Dispatch(() =>
         {
-            if (_carousel.ItemsSource is null)
-                _carousel.ItemsSource = _images;
+            _images.Add(newImage);
 
-            _carousel.CurrentItem = newImage;
-        }
+            if (_carousel is not null)
+            {
+                if (_carousel.ItemsSource is null)
+                    _carousel.ItemsSource = _images;
+
+                _carousel.CurrentItem = newImage;
+            }
+        });
 
     }
 
