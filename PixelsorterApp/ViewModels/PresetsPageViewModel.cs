@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PixelsorterApp.Services;
 using System.Collections.ObjectModel;
@@ -119,7 +119,7 @@ namespace PixelsorterApp.ViewModels
 
             subtractMask = _mainViewModel.UseSubtractMasks;
 
-            tomlMapPath = MainPageViewModel.TomlMapPath;
+            tomlMapPath = "presets/tomlMap.json";
             tomlMap = Task.Run(() => LoadTomlMap()).GetAwaiter().GetResult();
             TomlMapString = FormatTomlMap(tomlMap);
 
@@ -183,7 +183,7 @@ namespace PixelsorterApp.ViewModels
                 {
                     Preferences.Set("defaultPreset", fileName);
                 }
-                _mainViewModel.GetAvailablePresets();
+                _mainViewModel.RefreshAvailablePresets();
                 RefreshAvailablePresets();
                 _mainViewModel.SelectedPresetOption = presetName;
             }
@@ -288,7 +288,7 @@ namespace PixelsorterApp.ViewModels
             }
 
             await DeletePresetFileAsync(preset.Name);
-            _mainViewModel.GetAvailablePresets();
+            _mainViewModel.RefreshAvailablePresets();
             RefreshAvailablePresets();
             SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
         }
