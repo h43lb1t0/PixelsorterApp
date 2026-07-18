@@ -26,8 +26,8 @@ namespace PixelsorterApp
             })
             .UseMauiCommunityToolkit()
             .UseUraniumUI()
-            .UseUraniumUIMaterial().
-            UseMarkdownView();
+            .UseUraniumUIMaterial()
+            .UseMarkdownView();
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();
@@ -39,6 +39,7 @@ namespace PixelsorterApp
             builder.Services.AddSingleton<IPresetService, PresetService>();
             builder.Services.AddSingleton<IHelpNavigationService, HelpNavigationService>();
             builder.Services.AddSingleton<IPresetNavigationService, PresetNavigationService>();
+            builder.Services.AddSingleton<IShareService, ShareService>();
 
 #if ANDROID
             builder.Services.AddSingleton<IGalleryService, Platforms.Android.GalleryService>();

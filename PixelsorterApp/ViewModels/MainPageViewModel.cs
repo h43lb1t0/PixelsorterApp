@@ -134,6 +134,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;
     private readonly IRelayCommand loadImageCommand;
+    private readonly IRelayCommand shareImageCommand;
+
+    public event Action? ShareRequested;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
@@ -147,6 +150,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
         loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
+        shareImageCommand = new RelayCommand(() => ShareRequested?.Invoke(), () => IsInteractionEnabled);
 
         foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
@@ -285,6 +289,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets the command that requests image loading.
     /// </summary>
     public IRelayCommand LoadImageCommand => loadImageCommand;
+
+    public IRelayCommand ShareImageCommand => shareImageCommand;
 
     [RelayCommand]
     private async Task OpenHelpAsync()

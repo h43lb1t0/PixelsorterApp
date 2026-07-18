@@ -16,6 +16,8 @@ namespace PixelsorterApp
         private readonly double DESKTOP_IMAGE_HEIGHT = 0.75;
         private readonly MainPageViewModel viewModel;
         private readonly IImageProcessingService imageProcessingService;
+        private readonly IShareService shareService;
+
 
         // image
         private string? imagePath;
@@ -31,10 +33,12 @@ namespace PixelsorterApp
         /// </summary>
         /// <param name="viewModel">The view model bound to this page.</param>
         /// <param name="imageProcessingService">Service used for image processing operations.</param>
-        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService)
+        /// <param name="shareService">Service used for sharing images.</param>
+        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService, IShareService shareService)
         {
             this.viewModel = viewModel;
             this.imageProcessingService = imageProcessingService;
+            this.shareService = shareService;
 
             InitializeComponent();
             BindingContext = this.viewModel;
@@ -51,6 +55,7 @@ namespace PixelsorterApp
             this.viewModel.LoadImageRequested += OnLoadImageRequested;
             this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
+            this.viewModel.ShareRequested += OnShareRequested;
         }
 
         /// <summary>
@@ -80,6 +85,11 @@ namespace PixelsorterApp
         private void OnSaveRequested()
         {
             _ = SaveAsync();
+        }
+
+        private void OnShareRequested()
+        {
+            _ = ShareAsync();
         }
 
         /// <summary>
@@ -395,6 +405,19 @@ namespace PixelsorterApp
                 await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
                 SemanticScreenReader.Announce("Failed to save image to gallery.");
             }
+        }
+
+        private async Task ShareAsync()
+        {
+            var focusedImagePath = GetFocusedImagePath();
+            if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
+            {
+                await DisplayAlertAsync("Error", "No image available to share.", "OK");
+                SemanticScreenReader.Announce("No image available to share.");
+                return;
+            }
+            // Call the share service with the current image path
+            await shareService.ShareImage(focusedImagePath);
         }
 
         /// <summary>
