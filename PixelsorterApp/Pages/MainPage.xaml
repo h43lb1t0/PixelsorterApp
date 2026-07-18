@@ -108,26 +108,31 @@
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
                         </Grid>
-                        <Label
-                            x:Name="whatIsThisLabel"
+                        <Grid
                             Grid.Row="1"
                             Margin="0,8,0,0"
-                            FontSize="12"
-                            HorizontalOptions="Center"
-                            SemanticProperties.Description="Current image caption"
-                            Text="{Binding CurrentCaption}"
-                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                        Dark={StaticResource TextSecondaryDark}}"
-                            VerticalOptions="Center" />
-                        <Button
-                            x:Name="shareButton"
-                            Grid.Row="1"
-                            Margin="0,8,0,0"
-                            Command="{Binding ShareImageCommand}"
-                            ImageSource="shareicon.png"
-                            IsEnabled="{Binding IsInteractionEnabled}"
-                            SemanticProperties.Description="Share the current image"
-                            StyleClass="Elevation3" />
+                            ColumnDefinitions="*,Auto">
+                            <Label
+                                x:Name="whatIsThisLabel"
+                                Grid.Column="0"
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                SemanticProperties.Description="Current image caption"
+                                Text="{Binding CurrentCaption}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
+                            <ImageButton
+                                x:Name="shareButton"
+                                Grid.Column="1"
+                                Command="{Binding ShareImageCommand}"
+                                HeightRequest="24"
+                                SemanticProperties.Description="Share the current image"
+                                Source="shareicon.png"
+                                StyleClass="Elevation3"
+                                VerticalOptions="Center"
+                                WidthRequest="24" />
+                        </Grid>
                     </Grid>
                 </Border>
 
