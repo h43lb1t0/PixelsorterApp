@@ -30,7 +30,7 @@ namespace PixelsorterApp.ViewModels
         private readonly TomlMap? tomlMap;
 
         [ObservableProperty]
-        public partial string PresetToml {  get; set; }
+        public partial string PresetToml { get; set; }
 
         [ObservableProperty]
         public partial string TomlMapString { get; set; }

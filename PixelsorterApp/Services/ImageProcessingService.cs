@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using NumSharp;
 using PixelsorterClassLib.Core;
 using PixelsorterClassLib.Masks;

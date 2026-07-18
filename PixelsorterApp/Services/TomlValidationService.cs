@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.RegularExpressions;
 using Tomlyn;
 using Tomlyn.Model;
@@ -194,20 +192,20 @@ namespace PixelsorterApp.Services
             return 0;
         }
 
-       /// <summary>
-       /// Validates that the specified value exists as a key in the provided mapping and records an error if it does
-       /// not.
-       /// </summary>
-       /// <remarks>No validation is performed if the value is null or white space. This method is
-       /// typically used to validate user input or configuration values against a predefined set of allowed
-       /// options.</remarks>
-       /// <param name="value">The value to validate. This parameter is not validated if it is null or consists only of white-space
-       /// characters.</param>
-       /// <param name="map">A dictionary containing the set of valid values as keys. The method checks whether the specified value exists
-       /// in this dictionary.</param>
-       /// <param name="fieldName">The name of the field being validated. Used to identify the field in any generated error messages.</param>
-       /// <param name="errors">A list to which error messages are added if validation fails. The method appends an error message if the
-       /// value is not found in the mapping.</param>
+        /// <summary>
+        /// Validates that the specified value exists as a key in the provided mapping and records an error if it does
+        /// not.
+        /// </summary>
+        /// <remarks>No validation is performed if the value is null or white space. This method is
+        /// typically used to validate user input or configuration values against a predefined set of allowed
+        /// options.</remarks>
+        /// <param name="value">The value to validate. This parameter is not validated if it is null or consists only of white-space
+        /// characters.</param>
+        /// <param name="map">A dictionary containing the set of valid values as keys. The method checks whether the specified value exists
+        /// in this dictionary.</param>
+        /// <param name="fieldName">The name of the field being validated. Used to identify the field in any generated error messages.</param>
+        /// <param name="errors">A list to which error messages are added if validation fails. The method appends an error message if the
+        /// value is not found in the mapping.</param>
         private static void ValidateMappedOption(string value, Dictionary<string, string> map, string fieldName, List<string> errors)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -240,14 +238,14 @@ namespace PixelsorterApp.Services
             }
         }
 
-       /// <summary>
-       /// Sanitizes the specified string by normalizing line endings and formatting mode declarations for consistency.
-       /// </summary>
-       /// <remarks>This method replaces all Windows-style line endings (\r\n) and carriage returns (\r)
-       /// with Unix-style line endings (\n). It also reformats lines declaring a mode so that they use the syntax 'mode
-       /// = "value"'.</remarks>
-       /// <param name="content">The input string to sanitize. May contain Windows-style line endings and unformatted mode declarations.</param>
-       /// <returns>A string with Unix-style line endings and consistently formatted mode declarations.</returns>
+        /// <summary>
+        /// Sanitizes the specified string by normalizing line endings and formatting mode declarations for consistency.
+        /// </summary>
+        /// <remarks>This method replaces all Windows-style line endings (\r\n) and carriage returns (\r)
+        /// with Unix-style line endings (\n). It also reformats lines declaring a mode so that they use the syntax 'mode
+        /// = "value"'.</remarks>
+        /// <param name="content">The input string to sanitize. May contain Windows-style line endings and unformatted mode declarations.</param>
+        /// <returns>A string with Unix-style line endings and consistently formatted mode declarations.</returns>
         public string Sanitize(string content)
         {
             content = content.Replace("\r\n", "\n").Replace('\r', '\n');

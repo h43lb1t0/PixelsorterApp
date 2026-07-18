@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-
-namespace PixelsorterApp.Extensions;
+﻿namespace PixelsorterApp.Extensions;
 
 public static class BorderAnimationExtensions
 {

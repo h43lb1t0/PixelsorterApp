@@ -5,11 +5,7 @@ using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Tomlyn;
-using Tomlyn.Serialization;
 
 namespace PixelsorterApp.ViewModels;
 

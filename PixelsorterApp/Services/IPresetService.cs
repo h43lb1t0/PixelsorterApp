@@ -1,6 +1,4 @@
 using PixelsorterApp.Models.Presets;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PixelsorterApp.Services;
 
