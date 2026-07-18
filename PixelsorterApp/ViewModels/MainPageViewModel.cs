@@ -543,7 +543,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         if (!string.IsNullOrEmpty(state.DirectionName))
         {
-            var directionIndex = SortDirectionOptions.IndexOf(state.DirectionName);
+            var displayName = Regex.Replace(state.DirectionName, "([A-Z])", " $1").Trim();
+            var directionIndex = SortDirectionOptions.IndexOf(displayName);
             if (directionIndex >= 0) SelectedSortDirectionIndex = directionIndex;
         }
     }
