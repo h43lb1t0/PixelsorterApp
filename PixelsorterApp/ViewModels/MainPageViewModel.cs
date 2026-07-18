@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PixelsorterApp.Services;
+using PixelsorterApp.Models.Presets;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
@@ -15,9 +16,6 @@ namespace PixelsorterApp.ViewModels;
 public sealed partial class MainPageViewModel : BaseViewModel
 {
     private readonly IPresetService presetService;
-
-
-
     private readonly IHelpNavigationService helpNavigationService;
     private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
@@ -25,6 +23,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private IReadOnlyDictionary<string, string> AvailablePresets = new Dictionary<string, string>();
     private const string NewPresetOptionLabel = "new preset";
     private bool suppressPresetSelectionChangedHandling;
+    private bool suppressSortDirectionRefresh;
     private bool isNavigatingToPresetPage;
     private string? lastValidPresetOption;
 
@@ -360,6 +359,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     private void RefreshSortDirectionOptions()
     {
+        if (suppressSortDirectionRefresh)
+        {
+            return;
+        }
+
         string? previousSelection =
             SelectedSortDirectionIndex >= 0 && SelectedSortDirectionIndex < SortDirectionOptions.Count
                 ? SortDirectionOptions[SelectedSortDirectionIndex]
@@ -520,14 +524,23 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    private void ApplyPresetState(PixelsorterApp.Models.Presets.PresetState state)
+    private void ApplyPresetState(PresetState state)
     {
-        if (state.UseCanny.HasValue) UseCanny = state.UseCanny.Value;
-        if (state.UseSubjectMask.HasValue) UseSubjectMask = state.UseSubjectMask.Value;
-        if (state.CannyThresholdPercent.HasValue) CannyThresholdPercent = state.CannyThresholdPercent.Value;
-        if (state.SubjectMaskPadding.HasValue) SubjectMaskPadding = state.SubjectMaskPadding.Value;
-        if (state.UseInvertedSubjectMask.HasValue) UseInvertedSubjectMask = state.UseInvertedSubjectMask.Value;
-        if (state.UseSubtractMasks.HasValue) UseSubtractMasks = state.UseSubtractMasks.Value;
+        suppressSortDirectionRefresh = true;
+        try
+        {
+            if (state.UseCanny.HasValue) UseCanny = state.UseCanny.Value;
+            if (state.UseSubjectMask.HasValue) UseSubjectMask = state.UseSubjectMask.Value;
+            if (state.CannyThresholdPercent.HasValue) CannyThresholdPercent = state.CannyThresholdPercent.Value;
+            if (state.SubjectMaskPadding.HasValue) SubjectMaskPadding = state.SubjectMaskPadding.Value;
+            if (state.UseInvertedSubjectMask.HasValue) UseInvertedSubjectMask = state.UseInvertedSubjectMask.Value;
+            if (state.UseSubtractMasks.HasValue) UseSubtractMasks = state.UseSubtractMasks.Value;
+        }
+        finally
+        {
+            suppressSortDirectionRefresh = false;
+            RefreshSortDirectionOptions();
+        }
 
         if (!string.IsNullOrEmpty(state.SortByName))
         {

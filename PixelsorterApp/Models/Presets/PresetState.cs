@@ -5,12 +5,12 @@ namespace PixelsorterApp.Models.Presets;
 /// </summary>
 public sealed class PresetState
 {
-    public bool? UseCanny { get; set; }
-    public bool? UseSubjectMask { get; set; }
-    public int? CannyThresholdPercent { get; set; }
-    public int? SubjectMaskPadding { get; set; }
-    public bool? UseInvertedSubjectMask { get; set; }
-    public string? SortByName { get; set; }
-    public bool? UseSubtractMasks { get; set; }
-    public string? DirectionName { get; set; }
+    public bool? UseCanny { get; init; }
+    public bool? UseSubjectMask { get; init; }
+    public int? CannyThresholdPercent { get; init; }
+    public int? SubjectMaskPadding { get; init; }
+    public bool? UseInvertedSubjectMask { get; init; }
+    public string? SortByName { get; init; }
+    public bool? UseSubtractMasks { get; init; }
+    public string? DirectionName { get; init; }
 }

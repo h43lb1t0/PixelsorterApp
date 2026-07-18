@@ -23,4 +23,10 @@ public interface IPresetService
     /// <param name="presetPath">The path to the preset file to load.</param>
     /// <returns>The parsed state, or null if loading/parsing fails.</returns>
     Task<PresetState?> LoadPresetAsync(string presetPath);
+
+    /// <summary>
+    /// Asynchronously gets the cached TOML map.
+    /// </summary>
+    /// <returns>The parsed TomlMap, or null if loading fails.</returns>
+    Task<TomlMap?> GetTomlMapAsync();
 }

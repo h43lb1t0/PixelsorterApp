@@ -1,5 +1,6 @@
 using PixelsorterApp.Models.Presets;
 using System.Text.Json;
+using PixelsorterApp.ViewModels;
 
 namespace PixelsorterApp.Services;
 
@@ -7,10 +8,10 @@ public class PresetService : IPresetService
 {
     private readonly ITomlValidationService _tomlValidationService;
 
-    private readonly string _defaultPresetPreference = Preferences.Get("defaultPreset", "base.toml");
     private readonly string _basePresetPath = "presets/base.toml";
     private readonly string _userPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
     private const string TomlMapPath = "presets/tomlMap.json";
+    private TomlMap? _cachedMap;
 
     public PresetService(ITomlValidationService tomlValidationService)
     {
@@ -44,12 +45,13 @@ public class PresetService : IPresetService
 
     public string? FindDefaultPresetOption(IReadOnlyDictionary<string, string> availablePresets)
     {
-        string normalizedDefaultPreset = Path.GetFileName(_defaultPresetPreference);
+        string defaultPresetPreference = Preferences.Get("defaultPreset", "base.toml");
+        string normalizedDefaultPreset = Path.GetFileName(defaultPresetPreference);
 
         foreach (var preset in availablePresets)
         {
-            if (string.Equals(preset.Key, _defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(preset.Value, _defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+            if (string.Equals(preset.Key, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(preset.Value, defaultPresetPreference, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(Path.GetFileName(preset.Value), normalizedDefaultPreset, StringComparison.OrdinalIgnoreCase))
             {
                 return preset.Key;
@@ -65,14 +67,9 @@ public class PresetService : IPresetService
         {
             var tomlContent = Path.IsPathRooted(presetPath)
                 ? await File.ReadAllTextAsync(presetPath)
-                : await ReadAppPackageTextAsync(presetPath);
+                : await BaseViewModel.ReadAppPackageTextAsync(presetPath);
 
-            var mapContent = await ReadAppPackageTextAsync(TomlMapPath);
-
-            var map = JsonSerializer.Deserialize<TomlMap>(mapContent, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            });
+            var map = await GetTomlMapAsync();
 
             if (map is null)
             {
@@ -97,68 +94,61 @@ public class PresetService : IPresetService
             return null;
         }
 
-        var state = new PresetState();
-
-        if (preset.MaskingOptions is not null)
-        {
-            state.UseCanny = preset.MaskingOptions.UseCanny;
-            state.UseSubjectMask = preset.MaskingOptions.UseSubject;
-        }
-
-        if (preset.CannyOptions is not null)
-        {
-            var threshold = preset.CannyOptions.Threshold;
-            if (threshold is > 0)
-            {
-                state.CannyThresholdPercent = threshold.Value;
-            }
-        }
+        bool? useInvertedSubjectMask = null;
+        int? subjectMaskPadding = null;
 
         if (preset.SubjectSettings is not null)
         {
             if (preset.SubjectSettings.Padding is > 0)
             {
-                state.SubjectMaskPadding = preset.SubjectSettings.Padding.Value;
+                subjectMaskPadding = preset.SubjectSettings.Padding.Value;
             }
 
             if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
             {
                 if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
                 {
-                    state.UseInvertedSubjectMask = string.Equals(
-                        whatToSortMapped,
-                        "SortForegroundSelected",
-                        StringComparison.Ordinal);
+                    useInvertedSubjectMask = string.Equals(whatToSortMapped, "SortForegroundSelected", StringComparison.Ordinal);
                 }
                 else
                 {
-                    state.UseInvertedSubjectMask = string.Equals(preset.SubjectSettings.WhatToSort, "foreground", StringComparison.OrdinalIgnoreCase);
+                    useInvertedSubjectMask = string.Equals(preset.SubjectSettings.WhatToSort, "foreground", StringComparison.OrdinalIgnoreCase);
                 }
             }
         }
 
+        string? sortByName = null;
         if (!string.IsNullOrWhiteSpace(preset.SortSettings?.SortBy)
             && TryGetMappedValue(map.SortBy, preset.SortSettings.SortBy, out var sortByMapped))
         {
-            state.SortByName = sortByMapped.Split('.').Last();
+            sortByName = sortByMapped.Split('.').Last();
         }
 
+        bool? useSubtractMasks = null;
         if (!string.IsNullOrWhiteSpace(preset.MaskCombination?.Mode)
             && TryGetMappedValue(map.MaskCombination, preset.MaskCombination.Mode, out var maskCombinationMapped))
         {
-            state.UseSubtractMasks = string.Equals(
-                maskCombinationMapped,
-                "UseSubtractMasksSelected",
-                StringComparison.Ordinal);
+            useSubtractMasks = string.Equals(maskCombinationMapped, "UseSubtractMasksSelected", StringComparison.Ordinal);
         }
 
+        string? directionName = null;
         if (!string.IsNullOrWhiteSpace(preset.SortSettings?.Direction)
             && TryGetMappedValue(map.Direction, preset.SortSettings.Direction, out var directionMapped))
         {
-            state.DirectionName = directionMapped.Split('.').Last();
+            directionName = directionMapped.Split('.').Last();
         }
 
-        return state;
+        return new PresetState
+        {
+            UseCanny = preset.MaskingOptions?.UseCanny,
+            UseSubjectMask = preset.MaskingOptions?.UseSubject,
+            CannyThresholdPercent = preset.CannyOptions?.Threshold is > 0 ? preset.CannyOptions.Threshold.Value : null,
+            SubjectMaskPadding = subjectMaskPadding,
+            UseInvertedSubjectMask = useInvertedSubjectMask,
+            SortByName = sortByName,
+            UseSubtractMasks = useSubtractMasks,
+            DirectionName = directionName
+        };
     }
 
     private static bool TryGetMappedValue(IReadOnlyDictionary<string, string>? map, string key, out string value)
@@ -182,10 +172,18 @@ public class PresetService : IPresetService
         return false;
     }
 
-    private static async Task<string> ReadAppPackageTextAsync(string path)
+    public async Task<TomlMap?> GetTomlMapAsync()
     {
-        using var stream = await FileSystem.OpenAppPackageFileAsync(path);
-        using var reader = new StreamReader(stream);
-        return await reader.ReadToEndAsync();
+        if (_cachedMap is not null)
+        {
+            return _cachedMap;
+        }
+
+        var mapContent = await BaseViewModel.ReadAppPackageTextAsync(TomlMapPath);
+        _cachedMap = JsonSerializer.Deserialize<TomlMap>(mapContent, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        });
+        return _cachedMap;
     }
 }
