@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
 using Indiko.Maui.Controls.Markdown;
 using Microsoft.Extensions.Logging;
 using PixelsorterApp.Services;
@@ -36,6 +36,7 @@ namespace PixelsorterApp
             builder.Services.AddTransient<PresetsPageViewModel>();
             builder.Services.AddSingleton<IImageProcessingService, ImageProcessingService>();
             builder.Services.AddSingleton<ITomlValidationService, TomlValidationService>();
+            builder.Services.AddSingleton<IPresetService, PresetService>();
             builder.Services.AddSingleton<IHelpNavigationService, HelpNavigationService>();
             builder.Services.AddSingleton<IPresetNavigationService, PresetNavigationService>();
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace PixelsorterApp
+﻿namespace PixelsorterApp
 {
     /// <summary>
     /// Application root that composes shell and initial navigation window.

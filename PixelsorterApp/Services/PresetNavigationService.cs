@@ -1,11 +1,10 @@
-using Microsoft.Extensions.DependencyInjection;
 using PixelsorterApp.Pages;
 
 namespace PixelsorterApp.Services;
 
 public sealed class PresetNavigationService : IPresetNavigationService
 {
-   private readonly IServiceProvider serviceProvider;
+    private readonly IServiceProvider serviceProvider;
 
     public PresetNavigationService(IServiceProvider serviceProvider)
     {
@@ -20,6 +19,6 @@ public sealed class PresetNavigationService : IPresetNavigationService
             return;
         }
 
-      await currentPage.Navigation.PushAsync(serviceProvider.GetRequiredService<PresetsPage>());
+        await currentPage.Navigation.PushAsync(serviceProvider.GetRequiredService<PresetsPage>());
     }
 }

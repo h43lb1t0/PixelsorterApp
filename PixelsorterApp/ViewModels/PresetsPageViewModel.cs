@@ -1,6 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PixelsorterApp.Services;
+using PixelsorterApp.Models.Presets;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
@@ -25,12 +26,10 @@ namespace PixelsorterApp.ViewModels
 
         private readonly bool subtractMask;
 
-        private readonly string tomlMapPath;
-
         private readonly TomlMap? tomlMap;
 
         [ObservableProperty]
-        public partial string PresetToml {  get; set; }
+        public partial string PresetToml { get; set; }
 
         [ObservableProperty]
         public partial string TomlMapString { get; set; }
@@ -99,10 +98,10 @@ namespace PixelsorterApp.ViewModels
             SavePresetValidationMessage = "Base preset set as default.";
         }
 
-        public ObservableCollection<PresetListItem> AvilablePresets { get; set; }
+        public ObservableCollection<PresetListItem> AvailablePresets { get; set; }
 
 
-        public PresetsPageViewModel(MainPageViewModel mainViewModel, ITomlValidationService tomlValidationService)
+        public PresetsPageViewModel(MainPageViewModel mainViewModel, ITomlValidationService tomlValidationService, IPresetService presetService)
         {
             _mainViewModel = mainViewModel;
             this.tomlValidationService = tomlValidationService;
@@ -119,8 +118,7 @@ namespace PixelsorterApp.ViewModels
 
             subtractMask = _mainViewModel.UseSubtractMasks;
 
-            tomlMapPath = MainPageViewModel.TomlMapPath;
-            tomlMap = Task.Run(() => LoadTomlMap()).GetAwaiter().GetResult();
+            tomlMap = Task.Run(() => presetService.GetTomlMapAsync()).GetAwaiter().GetResult();
             TomlMapString = FormatTomlMap(tomlMap);
 
             PresetToml = CreateToml();
@@ -128,7 +126,7 @@ namespace PixelsorterApp.ViewModels
 
             PresetName = $"Preset {_mainViewModel.PresetOptions.Count}";
 
-            AvilablePresets = new ObservableCollection<PresetListItem>();
+            AvailablePresets = new ObservableCollection<PresetListItem>();
             RefreshAvailablePresets();
 
         }
@@ -143,7 +141,7 @@ namespace PixelsorterApp.ViewModels
         private async Task<bool> ValidatePresetAsync()
         {
             PresetToml = tomlValidationService.Sanitize(PresetToml);
-            (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml);
+            (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml, tomlMap);
 
             SavePresetValidationMessage = isValid
                 ? "TOML is valid."
@@ -183,7 +181,7 @@ namespace PixelsorterApp.ViewModels
                 {
                     Preferences.Set("defaultPreset", fileName);
                 }
-                _mainViewModel.GetAvailablePresets();
+                _mainViewModel.RefreshAvailablePresets();
                 RefreshAvailablePresets();
                 _mainViewModel.SelectedPresetOption = presetName;
             }
@@ -288,7 +286,7 @@ namespace PixelsorterApp.ViewModels
             }
 
             await DeletePresetFileAsync(preset.Name);
-            _mainViewModel.GetAvailablePresets();
+            _mainViewModel.RefreshAvailablePresets();
             RefreshAvailablePresets();
             SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
         }
@@ -383,33 +381,6 @@ namespace PixelsorterApp.ViewModels
         }
 
         /// <summary>
-        /// Loads the TOML map from a JSON file located at the path specified by 'tomlMapPath'. 
-        /// The method attempts to read the file, deserialize its content into a TomlMap object, and return it. 
-        /// If any error occurs during this process (e.g., file not found, invalid JSON), 
-        /// the method catches the exception and returns null, indicating that the TOML map could not be loaded 
-        /// successfully.
-        /// </summary>
-        /// <returns>The loaded TOML map, or null if loading failed.</returns>
-        private async Task<TomlMap?> LoadTomlMap()
-        {
-            try
-            {
-                using Stream stream = await FileSystem.OpenAppPackageFileAsync(tomlMapPath);
-                using StreamReader reader = new(stream);
-                string content = await reader.ReadToEndAsync();
-
-                return JsonSerializer.Deserialize<TomlMap>(content, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Retrieves the key from the specified map whose mapped value matches the provided selected value after
         /// normalization. Returns a fallback value if no matching key is found or if the map is null.
         /// </summary>
@@ -500,7 +471,7 @@ namespace PixelsorterApp.ViewModels
 
         private void RefreshAvailablePresets()
         {
-            AvilablePresets.Clear();
+            AvailablePresets.Clear();
             foreach (string preset in _mainViewModel.PresetOptions)
             {
                 if (string.Equals(preset, "new preset", StringComparison.OrdinalIgnoreCase)
@@ -509,35 +480,13 @@ namespace PixelsorterApp.ViewModels
                     continue;
                 }
 
-                AvilablePresets.Add(new PresetListItem { Name = preset });
+                AvailablePresets.Add(new PresetListItem { Name = preset });
             }
         }
 
         public sealed class PresetListItem
         {
             public required string Name { get; init; }
-        }
-
-        /// <summary>
-        /// Represents a collection of sorting and filtering criteria for TOML data.
-        /// </summary>
-        /// <remarks>The TomlMap class encapsulates parameters that define how TOML data should be sorted
-        /// and filtered. Each property is a dictionary that allows specifying flexible key-value pairs for sorting
-        /// fields, directions, mask combinations, and target elements. This class is typically used for deserializing
-        /// TOML configuration data that controls sorting and filtering behavior in an application.</remarks>
-        private sealed class TomlMap
-        {
-            [JsonPropertyName("sortBy")]
-            public Dictionary<string, string>? SortBy { get; set; }
-
-            [JsonPropertyName("direction")]
-            public Dictionary<string, string>? Direction { get; set; }
-
-            [JsonPropertyName("maskCombination")]
-            public Dictionary<string, string>? MaskCombination { get; set; }
-
-            [JsonPropertyName("whatToSort")]
-            public Dictionary<string, string>? WhatToSort { get; set; }
         }
 
         private async Task LoadPresetTomlFromFileAsync(string presetName)

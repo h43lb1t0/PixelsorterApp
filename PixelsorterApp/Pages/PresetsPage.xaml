@@ -135,7 +135,7 @@
                             Text="Delete" />
                     </Grid>
 
-                    <CollectionView ItemsSource="{Binding AvilablePresets}">
+                    <CollectionView ItemsSource="{Binding AvailablePresets}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewModels:PresetsPageViewModel+PresetListItem">
                                 <Grid

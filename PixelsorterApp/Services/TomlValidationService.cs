@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
+using PixelsorterApp.Models.Presets;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Tomlyn;
@@ -9,7 +8,6 @@ namespace PixelsorterApp.Services
 {
     public sealed class TomlValidationService : ITomlValidationService
     {
-        private const string TomlMapPath = "presets/tomlMap.json";
         private readonly IImageProcessingService imageProcessingService;
 
         public TomlValidationService(IImageProcessingService imageProcessingService)
@@ -26,7 +24,7 @@ namespace PixelsorterApp.Services
         /// <param name="content">The TOML content to validate. This parameter cannot be null or empty.</param>
         /// <returns>A tuple containing a boolean that indicates whether the TOML content is valid, and a string with error
         /// messages if validation fails.</returns>
-        public async Task<(bool isValid, string errors)> Validate(string content)
+        public async Task<(bool isValid, string errors)> Validate(string content, TomlMap? map)
         {
 
             var errors = new List<string>();
@@ -36,8 +34,7 @@ namespace PixelsorterApp.Services
                 return (false, "TOML content is empty.");
             }
 
-            TomlMap? tomlMap = await LoadTomlMapAsync();
-            if (tomlMap is null)
+            if (map is null)
             {
                 return (false, "Failed to load toml map.");
             }
@@ -72,10 +69,10 @@ namespace PixelsorterApp.Services
             string whatToSort = GetString(subjectSettings, "what_to_sort", errors);
             string mode = GetString(maskCombination, "mode", errors);
 
-            ValidateMappedOption(sortBy, tomlMap.SortBy, "sort_settings.sort_by", errors);
-            ValidateMappedOption(direction, tomlMap.Direction, "sort_settings.direction", errors);
-            ValidateMappedOption(whatToSort, tomlMap.WhatToSort, "subject_settings.what_to_sort", errors);
-            ValidateMappedOption(mode, tomlMap.MaskCombination, "mask_combination.mode", errors);
+            ValidateMappedOption(sortBy, map.SortBy, "sort_settings.sort_by", errors);
+            ValidateMappedOption(direction, map.Direction, "sort_settings.direction", errors);
+            ValidateMappedOption(whatToSort, map.WhatToSort, "subject_settings.what_to_sort", errors);
+            ValidateMappedOption(mode, map.MaskCombination, "mask_combination.mode", errors);
 
             if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny)
             {
@@ -194,60 +191,33 @@ namespace PixelsorterApp.Services
             return 0;
         }
 
-       /// <summary>
-       /// Validates that the specified value exists as a key in the provided mapping and records an error if it does
-       /// not.
-       /// </summary>
-       /// <remarks>No validation is performed if the value is null or white space. This method is
-       /// typically used to validate user input or configuration values against a predefined set of allowed
-       /// options.</remarks>
-       /// <param name="value">The value to validate. This parameter is not validated if it is null or consists only of white-space
-       /// characters.</param>
-       /// <param name="map">A dictionary containing the set of valid values as keys. The method checks whether the specified value exists
-       /// in this dictionary.</param>
-       /// <param name="fieldName">The name of the field being validated. Used to identify the field in any generated error messages.</param>
-       /// <param name="errors">A list to which error messages are added if validation fails. The method appends an error message if the
-       /// value is not found in the mapping.</param>
-        private static void ValidateMappedOption(string value, Dictionary<string, string> map, string fieldName, List<string> errors)
+        /// <summary>
+        /// Validates that the specified value exists as a key in the provided mapping and records an error if it does
+        /// not.
+        /// </summary>
+        /// <remarks>No validation is performed if the value is null or white space. This method is
+        /// typically used to validate user input or configuration values against a predefined set of allowed
+        /// options.</remarks>
+        /// <param name="value">The value to validate. This parameter is not validated if it is null or consists only of white-space
+        /// characters.</param>
+        /// <param name="map">A dictionary containing the set of valid values as keys. The method checks whether the specified value exists
+        /// in this dictionary.</param>
+        /// <param name="fieldName">The name of the field being validated. Used to identify the field in any generated error messages.</param>
+        /// <param name="errors">A list to which error messages are added if validation fails. The method appends an error message if the
+        /// value is not found in the mapping.</param>
+        private static void ValidateMappedOption(string value, Dictionary<string, string>? map, string fieldName, List<string> errors)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
                 return;
             }
 
-            if (!map.ContainsKey(value))
+            if (map is null || !map.ContainsKey(value))
             {
                 errors.Add($"Invalid value for {fieldName}: '{value}'.");
             }
         }
 
-        private static async Task<TomlMap?> LoadTomlMapAsync()
-        {
-            try
-            {
-                using var stream = await FileSystem.OpenAppPackageFileAsync(TomlMapPath);
-                using var reader = new StreamReader(stream);
-                string content = await reader.ReadToEndAsync();
-
-                return JsonSerializer.Deserialize<TomlMap>(content, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-       /// <summary>
-       /// Sanitizes the specified string by normalizing line endings and formatting mode declarations for consistency.
-       /// </summary>
-       /// <remarks>This method replaces all Windows-style line endings (\r\n) and carriage returns (\r)
-       /// with Unix-style line endings (\n). It also reformats lines declaring a mode so that they use the syntax 'mode
-       /// = "value"'.</remarks>
-       /// <param name="content">The input string to sanitize. May contain Windows-style line endings and unformatted mode declarations.</param>
-       /// <returns>A string with Unix-style line endings and consistently formatted mode declarations.</returns>
         public string Sanitize(string content)
         {
             content = content.Replace("\r\n", "\n").Replace('\r', '\n');
@@ -258,12 +228,6 @@ namespace PixelsorterApp.Services
             "mode = \"${value}\"");
         }
 
-        private sealed class TomlMap
-        {
-            public Dictionary<string, string> SortBy { get; set; } = [];
-            public Dictionary<string, string> Direction { get; set; } = [];
-            public Dictionary<string, string> MaskCombination { get; set; } = [];
-            public Dictionary<string, string> WhatToSort { get; set; } = [];
-        }
+
     }
 }
