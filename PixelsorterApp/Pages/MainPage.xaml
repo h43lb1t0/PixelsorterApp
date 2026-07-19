@@ -108,32 +108,33 @@
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
                         </Grid>
-                        <Grid
+                        <!--  Share FAB overlaid on image  -->
+                        <Border
+                            Grid.Row="0"
+                            Margin="0,0,8,8"
+                            IsVisible="{Binding IsSaveVisible}"
+                            Style="{StaticResource ShareFabStyle}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShareImageCommand}" />
+                            </Border.GestureRecognizers>
+                            <Image
+                                HeightRequest="20"
+                                Source="shareicon.png"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                                WidthRequest="20" />
+                        </Border>
+                        <Label
+                            x:Name="whatIsThisLabel"
                             Grid.Row="1"
                             Margin="0,8,0,0"
-                            ColumnDefinitions="*,Auto">
-                            <Label
-                                x:Name="whatIsThisLabel"
-                                Grid.Column="0"
-                                FontSize="12"
-                                HorizontalOptions="Center"
-                                SemanticProperties.Description="Current image caption"
-                                Text="{Binding CurrentCaption}"
-                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                            Dark={StaticResource TextSecondaryDark}}"
-                                VerticalOptions="Center" />
-                            <ImageButton
-                                x:Name="shareButton"
-                                Grid.Column="1"
-                                Command="{Binding ShareImageCommand}"
-                                HeightRequest="24"
-                                IsEnabled="{Binding IsSaveEnabled}"
-                                SemanticProperties.Description="Share the current image"
-                                Source="shareicon.png"
-                                StyleClass="Elevation3"
-                                VerticalOptions="Center"
-                                WidthRequest="24" />
-                        </Grid>
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            SemanticProperties.Description="Current image caption"
+                            Text="{Binding CurrentCaption}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                        Dark={StaticResource TextSecondaryDark}}"
+                            VerticalOptions="Center" />
                     </Grid>
                 </Border>
 

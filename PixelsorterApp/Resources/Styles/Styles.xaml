@@ -78,6 +78,27 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ShareFabStyle" TargetType="Border">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#BFFDF8F2, Dark=#BF201E1C}" />
+        <Setter Property="HeightRequest" Value="36" />
+        <Setter Property="WidthRequest" Value="36" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 22" />
+        <Setter Property="StrokeThickness" Value="0.5" />
+        <Setter Property="Shadow">
+            <Shadow
+                Brush="{AppThemeBinding Light={StaticResource Black},
+                                        Dark={StaticResource Black}}"
+                Opacity="{AppThemeBinding Light=0.2,
+                                          Dark=0.4}"
+                Radius="10"
+                Offset="0,4" />
+        </Setter>
+    </Style>
+
     <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
