@@ -134,6 +134,32 @@
                         HeightRequest="1"
                         Color="{AppThemeBinding Light={StaticResource DividerLight},
                                                 Dark={StaticResource DividerDark}}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        SemanticProperties.HeadingLevel="Level3"
+                        Text="Material Symbols &amp; Icons" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="By Google" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.8"
+                        Text="Apache-2.0" />
+                    <Button
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
+                        CommandParameter="https://github.com/google/material-design-icons/blob/master/LICENSE"
+                        SemanticProperties.Description="Open license URL: https://github.com/google/material-design-icons/blob/master/LICENSE"
+                        SemanticProperties.Hint="Press Enter to open this license in the browser"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Text="https://github.com/google/material-design-icons/blob/master/LICENSE" />
+                    <BoxView
+                        Margin="0,8,0,0"
+                        AutomationProperties.IsInAccessibleTree="False"
+                        HeightRequest="1"
+                        Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                Dark={StaticResource DividerDark}}" />
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>
