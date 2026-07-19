@@ -150,7 +150,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
         loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
-        shareImageCommand = new RelayCommand(() => ShareRequested?.Invoke(), () => IsInteractionEnabled);
+        shareImageCommand = new RelayCommand(() => ShareRequested?.Invoke(), () => IsSaveEnabled);
 
         foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
@@ -423,6 +423,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnIsSaveEnabledChanged(bool value)
     {
         saveCommand.NotifyCanExecuteChanged();
+        shareImageCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnIsInteractionEnabledChanged(bool value)

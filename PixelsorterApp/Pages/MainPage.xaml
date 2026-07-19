@@ -127,6 +127,7 @@
                                 Grid.Column="1"
                                 Command="{Binding ShareImageCommand}"
                                 HeightRequest="24"
+                                IsEnabled="{Binding IsSaveEnabled}"
                                 SemanticProperties.Description="Share the current image"
                                 Source="shareicon.png"
                                 StyleClass="Elevation3"
