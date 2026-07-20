@@ -112,16 +112,16 @@
                         <Border
                             Grid.Row="0"
                             Margin="0,0,8,8"
-                            IsVisible="{Binding IsSaveVisible}"
+                            IsVisible="{Binding IsSaveEnabled}"
                             Style="{StaticResource ShareFabStyle}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShareImageCommand}" />
                             </Border.GestureRecognizers>
                             <Image
                                 HeightRequest="20"
+                                HorizontalOptions="Center"
                                 Source="shareicon.png"
                                 VerticalOptions="Center"
-                                HorizontalOptions="Center"
                                 WidthRequest="20" />
                         </Border>
                         <Label
