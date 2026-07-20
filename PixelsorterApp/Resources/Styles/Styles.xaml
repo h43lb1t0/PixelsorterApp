@@ -87,7 +87,7 @@
         <Setter Property="VerticalOptions" Value="End" />
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 22" />
-        <Setter Property="StrokeThickness" Value="0.5" />
+        <Setter Property="StrokeThickness" Value="0.8" />
         <Setter Property="Shadow">
             <Shadow
                 Brush="{AppThemeBinding Light={StaticResource Black},
