@@ -409,15 +409,22 @@ namespace PixelsorterApp
 
         private async Task ShareAsync()
         {
-            var focusedImagePath = GetFocusedImagePath();
-            if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
+            try
             {
-                await DisplayAlertAsync("Error", "No image available to share.", "OK");
-                SemanticScreenReader.Announce("No image available to share.");
-                return;
+                var focusedImagePath = GetFocusedImagePath();
+                if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
+                {
+                    await DisplayAlertAsync("Error", "No image available to share.", "OK");
+                    SemanticScreenReader.Announce("No image available to share.");
+                    return;
+                }
+                // Call the share service with the current image path
+                await shareService.ShareImage(focusedImagePath);
             }
-            // Call the share service with the current image path
-            await shareService.ShareImage(focusedImagePath);
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", $"Share failed: {ex.Message}", "OK");
+            }
         }
 
         /// <summary>
