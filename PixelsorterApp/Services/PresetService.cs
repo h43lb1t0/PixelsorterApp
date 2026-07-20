@@ -1,6 +1,6 @@
 using PixelsorterApp.Models.Presets;
-using System.Text.Json;
 using PixelsorterApp.ViewModels;
+using System.Text.Json;
 
 namespace PixelsorterApp.Services;
 

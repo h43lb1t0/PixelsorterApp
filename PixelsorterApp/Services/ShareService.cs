@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
-using static Android.Icu.Text.CaseMap;
-
-
 #if ANDROID
 using Android.Content;
 using AndroidX.Core.Content;
@@ -24,7 +17,7 @@ namespace PixelsorterApp.Services
 #if ANDROID
             try
             {
-                var context = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity 
+                var context = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity
                     ?? Android.App.Application.Context;
 
                 var file = new AFile(filePath);

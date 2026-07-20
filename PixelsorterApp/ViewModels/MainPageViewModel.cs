@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PixelsorterApp.Services;
 using PixelsorterApp.Models.Presets;
+using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
