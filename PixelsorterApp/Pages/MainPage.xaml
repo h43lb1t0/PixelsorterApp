@@ -123,9 +123,16 @@
                             <Image
                                 HeightRequest="20"
                                 HorizontalOptions="Center"
-                                Source="shareicon.png"
                                 VerticalOptions="Center"
-                                WidthRequest="20" />
+                                WidthRequest="20">
+                                <Image.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android" Value="shareicon_android.png" />
+                                        <On Platform="iOS, MacCatalyst" Value="shareicon_ios.png" />
+                                        <On Platform="WinUI" Value="shareicon_windows.png" />
+                                    </OnPlatform>
+                                </Image.Source>
+                            </Image>
                         </Border>
                         <Label
                             x:Name="whatIsThisLabel"
