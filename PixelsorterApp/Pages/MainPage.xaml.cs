@@ -69,6 +69,52 @@ namespace PixelsorterApp
             {
                 await HandleSubjectMaskEnabledAsync();
             }
+            else if (e.PropertyName == nameof(MainPageViewModel.IsSaveEnabled))
+            {
+                await AnimateShareFabAsync(viewModel.IsSaveEnabled);
+            }
+        }
+
+        /// <summary>
+        /// Animates the Share FAB appearing or disappearing with smooth fade and scale transitions.
+        /// </summary>
+        /// <param name="show">True to animate in; false to animate out.</param>
+        private async Task AnimateShareFabAsync(bool show)
+        {
+            if (shareFab == null)
+            {
+                return;
+            }
+
+            shareFab.CancelAnimations();
+
+            if (show)
+            {
+                if (!shareFab.IsVisible)
+                {
+                    shareFab.Opacity = 0;
+                    shareFab.Scale = 0.75;
+                    shareFab.IsVisible = true;
+                }
+
+                await Task.WhenAll(
+                    shareFab.FadeToAsync(1, 250, Easing.CubicOut),
+                    shareFab.ScaleToAsync(1, 250, Easing.SpringOut)
+                );
+            }
+            else
+            {
+                if (!shareFab.IsVisible)
+                {
+                    return;
+                }
+
+                await Task.WhenAll(
+                    shareFab.FadeToAsync(0, 200, Easing.CubicIn),
+                    shareFab.ScaleToAsync(0.5, 200, Easing.CubicIn)
+                );
+                shareFab.IsVisible = false;
+            }
         }
 
         /// <summary>

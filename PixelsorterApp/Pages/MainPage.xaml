@@ -110,9 +110,12 @@
                         </Grid>
                         <!--  Share FAB overlaid on image  -->
                         <Border
+                            x:Name="shareFab"
                             Grid.Row="0"
                             Margin="0,0,8,8"
-                            IsVisible="{Binding IsSaveEnabled}"
+                            IsVisible="False"
+                            Opacity="0"
+                            Scale="0.5"
                             Style="{StaticResource ShareFabStyle}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShareImageCommand}" />
