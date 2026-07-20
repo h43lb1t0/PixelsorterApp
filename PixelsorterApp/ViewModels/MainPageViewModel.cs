@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PixelsorterApp.Services;
 using PixelsorterApp.Models.Presets;
+using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
@@ -134,6 +134,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;
     private readonly IRelayCommand loadImageCommand;
+    private readonly IRelayCommand shareImageCommand;
+
+    public event Action? ShareRequested;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
@@ -147,6 +150,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
         loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
+        shareImageCommand = new RelayCommand(() => ShareRequested?.Invoke(), () => IsSaveEnabled);
 
         foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
@@ -286,6 +290,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     public IRelayCommand LoadImageCommand => loadImageCommand;
 
+    public IRelayCommand ShareImageCommand => shareImageCommand;
+
     [RelayCommand]
     private async Task OpenHelpAsync()
     {
@@ -417,6 +423,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnIsSaveEnabledChanged(bool value)
     {
         saveCommand.NotifyCanExecuteChanged();
+        shareImageCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnIsInteractionEnabledChanged(bool value)

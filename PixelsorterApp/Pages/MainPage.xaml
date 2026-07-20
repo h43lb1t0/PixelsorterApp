@@ -108,6 +108,32 @@
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
                         </Grid>
+                        <!--  Share FAB overlaid on image  -->
+                        <Border
+                            x:Name="shareFab"
+                            Grid.Row="0"
+                            Margin="0,0,8,8"
+                            IsVisible="False"
+                            Opacity="0"
+                            Scale="0.5"
+                            Style="{StaticResource ShareFabStyle}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShareImageCommand}" />
+                            </Border.GestureRecognizers>
+                            <Image
+                                HeightRequest="20"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="20">
+                                <Image.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android" Value="shareicon_android.png" />
+                                        <On Platform="iOS, MacCatalyst" Value="shareicon_ios.png" />
+                                        <On Platform="WinUI" Value="shareicon_windows.png" />
+                                    </OnPlatform>
+                                </Image.Source>
+                            </Image>
+                        </Border>
                         <Label
                             x:Name="whatIsThisLabel"
                             Grid.Row="1"
@@ -219,27 +245,58 @@
                 Text="Sort" />
         </VerticalStackLayout>
 
-        <!-- Gallery Suggestion Overlay -->
-        <Grid x:Name="gallerySuggestionOverlay" Grid.RowSpan="2" BackgroundColor="#A0000000" IsVisible="False" InputTransparent="False" ZIndex="99">
+        <!--  Gallery Suggestion Overlay  -->
+        <Grid
+            x:Name="gallerySuggestionOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#A0000000"
+            InputTransparent="False"
+            IsVisible="False"
+            ZIndex="99">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer />
                 <SwipeGestureRecognizer Direction="Up,Down,Left,Right" />
                 <PanGestureRecognizer />
             </Grid.GestureRecognizers>
-            <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-                    StrokeShape="RoundRectangle 16"
-                    Padding="24"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Margin="32">
+            <Border
+                Margin="32"
+                Padding="24"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                  Dark={StaticResource SurfaceDark}}"
+                HorizontalOptions="Center"
+                StrokeShape="RoundRectangle 16"
+                VerticalOptions="Center">
                 <Border.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.2" Radius="15" Offset="0,5" />
+                    <Shadow
+                        Brush="{AppThemeBinding Light={StaticResource Black},
+                                                Dark={StaticResource White}}"
+                        Opacity="0.2"
+                        Radius="15"
+                        Offset="0,5" />
                 </Border.Shadow>
                 <VerticalStackLayout Spacing="16">
-                    <Label Text="Welcome to Pixel Sorter!" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
-                    <Label Text="Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
-                    <Button Text="Go to Gallery" Clicked="OnGoToGalleryClicked" StyleClass="Elevation3" />
-                    <Button Text="Dismiss" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" Clicked="OnDismissGallerySuggestionClicked" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Welcome to Pixel Sorter!"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                    Dark={StaticResource TextPrimaryDark}}" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu"
+                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                    Dark={StaticResource TextSecondaryDark}}" />
+                    <Button
+                        Clicked="OnGoToGalleryClicked"
+                        StyleClass="Elevation3"
+                        Text="Go to Gallery" />
+                    <Button
+                        BackgroundColor="Transparent"
+                        Clicked="OnDismissGallerySuggestionClicked"
+                        Text="Dismiss"
+                        TextColor="{AppThemeBinding Light={StaticResource Primary},
+                                                    Dark={StaticResource PrimaryDark}}" />
                 </VerticalStackLayout>
             </Border>
         </Grid>

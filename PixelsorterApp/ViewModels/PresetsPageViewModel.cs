@@ -1,12 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PixelsorterApp.Services;
 using PixelsorterApp.Models.Presets;
+using PixelsorterApp.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace PixelsorterApp.ViewModels
