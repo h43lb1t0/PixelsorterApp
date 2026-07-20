@@ -31,7 +31,7 @@ namespace PixelsorterApp.Services
                 var uri = AndroidX.Core.Content.FileProvider.GetUriForFile(context, authority, file);
 
                 var intent = new Intent(Intent.ActionSend);
-                intent.SetType("image/*");
+                intent.SetType("image/png");
                 intent.PutExtra(Intent.ExtraStream, uri);
 
                 if (!string.IsNullOrEmpty(message))
