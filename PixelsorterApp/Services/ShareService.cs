@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
+using static Android.Icu.Text.CaseMap;
+
 
 #if ANDROID
 using Android.Content;
@@ -16,6 +18,7 @@ namespace PixelsorterApp.Services
         public async Task ShareImage(string filePath, string? text = null)
         {
             // Use platform-specific default message if no custom text is provided
+            string title = "Share Sorted Image";
             string message = text ?? GetPlatformDefaultMessage();
 
 #if ANDROID
@@ -40,10 +43,10 @@ namespace PixelsorterApp.Services
                 }
 
                 // Grant read permission to recipient app
-                intent.ClipData = ClipData.NewRawUri("Shared Image", uri);
+                intent.ClipData = ClipData.NewRawUri(title, uri);
                 intent.AddFlags(ActivityFlags.GrantReadUriPermission);
 
-                var chooser = Intent.CreateChooser(intent, "Share Image");
+                var chooser = Intent.CreateChooser(intent, title);
                 if (chooser != null)
                 {
                     chooser.AddFlags(ActivityFlags.GrantReadUriPermission);
@@ -63,7 +66,7 @@ namespace PixelsorterApp.Services
                 // Fallback to MAUI default share if custom intent fails
                 await Share.Default.RequestAsync(new ShareFileRequest
                 {
-                    Title = message,
+                    Title = title,
                     File = new ShareFile(filePath)
                 });
             }
@@ -71,7 +74,7 @@ namespace PixelsorterApp.Services
 #else
             await Share.Default.RequestAsync(new ShareFileRequest
             {
-                Title = message,
+                Title = title,
                 File = new ShareFile(filePath)
             });
 #endif
