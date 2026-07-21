@@ -36,8 +36,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                FontAttributes="Bold"
-                FontSize="16"
+                FontSize="14"
                 Text="Threshold"
                 VerticalOptions="Center" />
 
