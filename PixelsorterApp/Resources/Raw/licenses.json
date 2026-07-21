@@ -61,5 +61,25 @@
     "License": "EUPL 1.2",
     "LicenseUrl": "https://github.com/h43lb1t0/PixelsorterClassLib/blob/master/LICENSE.txt",
     "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "JetBrains Mono",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/JetBrains/JetBrainsMono",
+    "Authors": "JetBrains and contributors",
+    "Description": "JetBrains Mono is a free and open-source font for developers.",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "Space Grotesk 2.0",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/floriankarsten/space-grotesk",
+    "Authors": "Florian Karsten ",
+    "Description": "",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://github.com/floriankarsten/space-grotesk/blob/master/OFL.txt",
+    "LicenseInformationOrigin": 5
   }
 ]
