@@ -28,12 +28,14 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontAttributes="Bold"
+                        FontFamily="SpaceGroteskRegular"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
                         Text="Pixel Sorter" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
+                        FontFamily="SpaceGroteskRegular"
                         FontSize="14"
                         Opacity="0.8"
                         Text="Load an image, choose options, and sort." />
@@ -151,6 +153,7 @@
                 <Label
                     Margin="4,10,4,4"
                     FontAttributes="Bold"
+                    FontFamily="SpaceGroteskRegular"
                     FontSize="13"
                     SemanticProperties.HeadingLevel="Level2"
                     Text="SORT SETTINGS"
@@ -207,6 +210,7 @@
                 <Label
                     Margin="4,10,4,4"
                     FontAttributes="Bold"
+                    FontFamily="SpaceGroteskRegular"
                     FontSize="13"
                     SemanticProperties.HeadingLevel="Level2"
                     Text="MASKING OPTIONS"
@@ -277,6 +281,7 @@
                 <VerticalStackLayout Spacing="16">
                     <Label
                         FontAttributes="Bold"
+                        FontFamily="SpaceGroteskRegular"
                         FontSize="20"
                         HorizontalOptions="Center"
                         Text="Welcome to Pixel Sorter!"

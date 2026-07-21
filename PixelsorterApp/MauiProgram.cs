@@ -21,6 +21,9 @@ namespace PixelsorterApp
             var builder = MauiApp.CreateBuilder();
             builder.UseMauiApp<App>().ConfigureFonts(fonts =>
             {
+                fonts.AddFont("SpaceGrotesk-Regular.ttf", "SpaceGroteskRegular");
+                fonts.AddFont("SpaceGrotesk-Bold.ttf", "SpaceGroteskBold");
+                fonts.AddFont("JetBrainsMono-Regular.ttf", "JetBrainsMonoRegular");
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })

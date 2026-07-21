@@ -79,6 +79,7 @@
                 <Label
                     CharacterSpacing="1"
                     FontAttributes="Bold"
+                    FontFamily="SpaceGroteskRegular"
                     FontSize="11"
                     Text="SETTINGS USED"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},

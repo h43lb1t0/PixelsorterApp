@@ -50,7 +50,7 @@
                                                  Dark={StaticResource DividerDark}}"
                         StrokeShape="RoundRectangle 8"
                         StrokeThickness="1">
-                        <Label Text="{Binding TomlMapString}" />
+                        <Label FontFamily="JetBrainsMonoRegular" Text="{Binding TomlMapString}" />
                     </Border>
                     <Label
                         FontAttributes="Bold"
@@ -66,6 +66,7 @@
                         StrokeThickness="1">
                         <Editor
                             AutoSize="TextChanges"
+                            FontFamily="JetBrainsMonoRegular"
                             Text="{Binding PresetToml}"
                             VerticalOptions="Start" />
                     </Border>
