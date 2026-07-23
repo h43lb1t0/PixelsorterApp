@@ -80,7 +80,7 @@
                         <local:ImageViewer
                             x:Name="imageViewer"
                             Grid.Row="0"
-                            HeightRequest="130"
+                            HeightRequest="190"
                             ImageTapped="LoadImage_Clicked"
                             IsEnabled="{Binding IsInteractionEnabled}"
                             SemanticProperties.Description="Image viewer"
