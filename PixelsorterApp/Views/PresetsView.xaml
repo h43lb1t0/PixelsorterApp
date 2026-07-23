@@ -42,6 +42,7 @@
                     AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                   Dark={StaticResource PrimaryDark}}"
                     AllowClear="False"
+                    FontFamily="DMSansRegular"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     ItemsSource="{Binding PresetOptions}"
                     SelectedItem="{Binding SelectedPresetOption, Mode=TwoWay}"

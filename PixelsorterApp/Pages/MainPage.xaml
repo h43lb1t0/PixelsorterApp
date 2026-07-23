@@ -185,6 +185,7 @@
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
+                                FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
                                 SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
@@ -197,6 +198,7 @@
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
                                                               Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
+                                FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
                                 SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
