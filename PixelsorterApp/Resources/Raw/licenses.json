@@ -76,10 +76,20 @@
     "PackageId": "Space Grotesk 2.0",
     "PackageVersion": "",
     "PackageProjectUrl": "https://github.com/floriankarsten/space-grotesk",
-    "Authors": "Florian Karsten ",
+    "Authors": "Florian Karsten",
     "Description": "",
     "License": "OFL 1.1",
     "LicenseUrl": "https://github.com/floriankarsten/space-grotesk/blob/master/OFL.txt",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "DM Sans",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/googlefonts/dm-fonts",
+    "Authors": "Colophon Foundry",
+    "Description": "",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://fonts.google.com/specimen/DM+Sans/license?preview.script=Latn",
     "LicenseInformationOrigin": 5
   }
 ]
