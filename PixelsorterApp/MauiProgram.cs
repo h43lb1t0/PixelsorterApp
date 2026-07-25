@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using UraniumUI;
+using UXDivers.Popups.Maui;
 
 namespace PixelsorterApp
 {
@@ -26,11 +27,13 @@ namespace PixelsorterApp
                 fonts.AddFont("JetBrainsMono-Regular.ttf", "JetBrainsMonoRegular");
                 fonts.AddFont("DMSans-Regular.ttf", "DMSansRegular");
                 fonts.AddFont("DMSans-SemiBold.ttf", "DMSansSemiBold");
+                fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialSymbolsFont");
             })
             .UseMauiCommunityToolkit()
             .UseUraniumUI()
             .UseUraniumUIMaterial()
-            .UseMarkdownView();
+            .UseMarkdownView()
+            .UseUXDiversPopups();
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();

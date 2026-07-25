@@ -3,6 +3,8 @@ using PixelsorterApp.Extensions;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
+using UXDivers.Popups.Maui.Controls;
+using UXDivers.Popups.Services;
 using Color = Microsoft.Maui.Graphics.Color;
 
 namespace PixelsorterApp
@@ -443,13 +445,31 @@ namespace PixelsorterApp
 
             if (result)
             {
-                await DisplayAlertAsync("Success", "Image saved to gallery", "OK");
+                var popup = new Toast()
+                {
+                    Title = "Image saved",
+                    IconText = MaterialSymbolsFont.Check_circle,
+                    IconColor = Colors.Green
+                };
+
+                await IPopupService.Current.PushAsync(popup, waitUntilClosed: false);
                 SemanticScreenReader.Announce("Image saved to gallery.");
+                await Task.Delay(1500);
+                await IPopupService.Current.PopAsync(popup);
             }
             else
             {
-                await DisplayAlertAsync("Error", "Failed to save image to gallery", "OK");
-                SemanticScreenReader.Announce("Failed to save image to gallery.");
+                var popup = new Toast()
+                {
+                    Title = "Failed to save image",
+                    IconText = MaterialSymbolsFont.Error,
+                    IconColor = Colors.Red
+                };
+
+                await IPopupService.Current.PushAsync(popup, waitUntilClosed: false);
+                SemanticScreenReader.Announce("Failed to save image");
+                await Task.Delay(1500);
+                await IPopupService.Current.PopAsync(popup);
             }
         }
 

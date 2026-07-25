@@ -74,6 +74,7 @@
 		<PackageReference Include="Tomlyn" Version="2.10.1" />
 		<PackageReference Include="UraniumUI" Version="3.0.0" />
 		<PackageReference Include="UraniumUI.Material" Version="3.0.0" />
+		<PackageReference Include="UXDivers.Popups.Maui" Version="0.9.4" />
 	</ItemGroup>
 
 	<ItemGroup>
