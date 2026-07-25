@@ -517,15 +517,26 @@ namespace PixelsorterApp
 
             if (!Preferences.Get("MaskingLicenseAccepted", false))
             {
-                var response = await DisplayAlertAsync(
-                    "Masking Feature License",
-                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
-                    "Accept",
-                    "Don't accept"
-                    );
-                Preferences.Set("MaskingLicenseAccepted", response);
-
-                if (!response)
+                var popup = new SimpleActionPopup
+                {
+                    Title = "Masking Feature License",
+                    Text = "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
+                    ActionButtonText = "Accept",
+                    SecondaryActionButtonText = "Don't accept",
+                    ActionButtonCommand = new Command(async () => 
+                    {
+                        Preferences.Set("MaskingLicenseAccepted", true);
+                        await IPopupService.Current.PopAsync();
+                    }),
+                    SecondaryActionButtonCommand = new Command(async () => 
+                    {
+                        Preferences.Set("MaskingLicenseAccepted", false);
+                        await IPopupService.Current.PopAsync();
+                        return;
+                        })
+                };
+                await IPopupService.Current.PushAsync(popup);
+                if (!Preferences.Get("MaskingLicenseAccepted", false))
                 {
                     DisableSubjectMaskWithoutReentry();
                     return;
