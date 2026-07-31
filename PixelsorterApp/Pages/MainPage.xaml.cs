@@ -350,12 +350,7 @@ namespace PixelsorterApp
         private async Task LoadImageAsync()
         {
             var results = await MediaPicker.PickPhotosAsync();
-
-            foreach (var file in results)
-            {
-                LoadImageFromPath(file.FullPath);
-                break;
-            }
+            LoadImageFromPath(results[0].FullPath);       
         }
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
