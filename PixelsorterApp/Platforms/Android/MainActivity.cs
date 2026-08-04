@@ -51,6 +51,14 @@ namespace PixelsorterApp
             {
                 if (intent.Type.StartsWith("image/"))
                 {
+                    if (intent.Type == "image/x-adobe-dng")
+                    {
+                        // Use the global Application Context to show the Android Toast
+                        Android.Widget.Toast.MakeText(Android.App.Application.Context, "RAW Images (DNG) are not supported.", Android.Widget.ToastLength.Short)?.Show();
+
+                        // Make sure to return so you don't continue trying to process the unsupported file
+                        return;
+                    }
                     // Get the URI of the shared image
                     if (intent.GetParcelableExtra(Android.Content.Intent.ExtraStream, Java.Lang.Class.FromType(typeof(Android.Net.Uri))) is Android.Net.Uri imageUri)
                     {
