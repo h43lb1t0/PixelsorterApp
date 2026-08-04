@@ -20,6 +20,8 @@ namespace PixelsorterApp
         private readonly IImageProcessingService imageProcessingService;
         private readonly IShareService shareService;
 
+        private readonly int PopupAutoDismissTime = 1500;
+
 
         // image
         private string? imagePath;
@@ -360,7 +362,17 @@ namespace PixelsorterApp
             var success = LoadImageFromPath(results[0].FullPath);
             if (!success.Result)
             {
-                await DisplayAlertAsync("Unsupported File Type", "The app doens't support raw images.", "OK");
+                var popup = new Toast()
+                {
+                    Title = "Can't load RAW Images (dng files)",
+                    IconText = MaterialSymbolsFont.Error,
+                    IconColor = Colors.Red,
+                };
+
+                await IPopupService.Current.PushAsync(popup, waitUntilClosed: false);
+                SemanticScreenReader.Announce("Can't load RAW Images (dng files)");
+                await Task.Delay(PopupAutoDismissTime);
+                await IPopupService.Current.PopAsync(popup);
                 await LoadImageAsync();
             }
         }
@@ -459,7 +471,7 @@ namespace PixelsorterApp
 
                 await IPopupService.Current.PushAsync(popup, waitUntilClosed: false);
                 SemanticScreenReader.Announce("Image saved to gallery.");
-                await Task.Delay(1500);
+                await Task.Delay(PopupAutoDismissTime);
                 await IPopupService.Current.PopAsync(popup);
             }
             else
@@ -473,7 +485,7 @@ namespace PixelsorterApp
 
                 await IPopupService.Current.PushAsync(popup, waitUntilClosed: false);
                 SemanticScreenReader.Announce("Failed to save image");
-                await Task.Delay(1500);
+                await Task.Delay(PopupAutoDismissTime);
                 await IPopupService.Current.PopAsync(popup);
             }
         }
