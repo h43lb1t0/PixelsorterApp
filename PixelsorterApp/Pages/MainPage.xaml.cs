@@ -252,9 +252,13 @@ namespace PixelsorterApp
         /// paths, and updates the user interface to reflect the newly loaded image. It also sets the appropriate UI
         /// elements to indicate that a new image is ready for further actions such as sorting.</remarks>
         /// <param name="path">The file path of the image to load. This must be a valid path to an image file.</param>
-        private void LoadImageFromPath(string path)
+        private Task<Boolean> LoadImageFromPath(string path)
         {
             this.imagePath = path;
+            if (Path.GetExtension(path) is ".dng" or ".nef" or ".cr2" or ".arw" or ".rw2" or ".orf")
+            {
+                return Task.FromResult(false);
+            }
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
@@ -277,6 +281,7 @@ namespace PixelsorterApp
                 viewModel.IsSaveEnabled = false;
                 SemanticScreenReader.Announce("Image loaded. Ready to sort.");
             });
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -352,11 +357,11 @@ namespace PixelsorterApp
         private async Task LoadImageAsync()
         {
             var results = await MediaPicker.PickPhotosAsync();
-
-            foreach (var file in results)
+            var success = LoadImageFromPath(results[0].FullPath);
+            if (!success.Result)
             {
-                LoadImageFromPath(file.FullPath);
-                break;
+                await DisplayAlertAsync("Unsupported File Type", "The app doens't support raw images.", "OK");
+                await LoadImageAsync();
             }
         }
 
