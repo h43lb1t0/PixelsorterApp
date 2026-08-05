@@ -359,6 +359,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task LoadImageAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             var results = await MediaPicker.PickPhotosAsync();
             var success = LoadImageFromPath(results[0].FullPath);
             if (!success.Result)
@@ -385,6 +386,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task SortAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
@@ -450,6 +452,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task SaveAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             var focusedImagePath = GetFocusedImagePath();
 
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
