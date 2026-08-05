@@ -162,6 +162,7 @@ namespace PixelsorterApp
         /// available images.</param>
         private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
 
             if (index >= 0 && index < imageCaptions.Count)
@@ -432,6 +433,7 @@ namespace PixelsorterApp
                         SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
                         viewModel.IsSaveVisible = true;
                         viewModel.IsSaveEnabled = true;
+                        HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
                         SemanticScreenReader.Announce("Sorting complete. Preview updated.");
                     });
                 }
