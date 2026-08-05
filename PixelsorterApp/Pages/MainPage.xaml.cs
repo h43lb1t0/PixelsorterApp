@@ -69,9 +69,17 @@ namespace PixelsorterApp
         /// <param name="e">Property change event arguments.</param>
         private async void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
+            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask))
             {
-                await HandleSubjectMaskEnabledAsync();
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+                if (viewModel.UseSubjectMask)
+                {
+                    await HandleSubjectMaskEnabledAsync();
+                }
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.UseCanny))
+            {
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
             else if (e.PropertyName == nameof(MainPageViewModel.IsSaveEnabled))
             {
@@ -162,6 +170,7 @@ namespace PixelsorterApp
         /// available images.</param>
         private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
 
             if (index >= 0 && index < imageCaptions.Count)
@@ -358,6 +367,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task LoadImageAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             var results = await MediaPicker.PickPhotosAsync();
             var success = LoadImageFromPath(results[0].FullPath);
             if (!success.Result)
@@ -384,6 +394,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task SortAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
@@ -432,6 +443,7 @@ namespace PixelsorterApp
                         SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
                         viewModel.IsSaveVisible = true;
                         viewModel.IsSaveEnabled = true;
+                        HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
                         SemanticScreenReader.Announce("Sorting complete. Preview updated.");
                     });
                 }
@@ -448,6 +460,7 @@ namespace PixelsorterApp
         /// </summary>
         private async Task SaveAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             var focusedImagePath = GetFocusedImagePath();
 
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
