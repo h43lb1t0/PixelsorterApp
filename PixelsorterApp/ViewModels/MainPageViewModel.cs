@@ -407,13 +407,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     partial void OnUseSubjectMaskChanged(bool value)
     {
-        HapticFeedback.Default.Perform(HapticFeedbackType.Click);
         RefreshSortDirectionOptions();
     }
 
     partial void OnUseCannyChanged(bool value)
     {
-        HapticFeedback.Default.Perform(HapticFeedbackType.Click);
         RefreshSortDirectionOptions();
     }
 

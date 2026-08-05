@@ -69,9 +69,17 @@ namespace PixelsorterApp
         /// <param name="e">Property change event arguments.</param>
         private async void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask) && viewModel.UseSubjectMask)
+            if (e.PropertyName == nameof(MainPageViewModel.UseSubjectMask))
             {
-                await HandleSubjectMaskEnabledAsync();
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+                if (viewModel.UseSubjectMask)
+                {
+                    await HandleSubjectMaskEnabledAsync();
+                }
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.UseCanny))
+            {
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
             else if (e.PropertyName == nameof(MainPageViewModel.IsSaveEnabled))
             {
