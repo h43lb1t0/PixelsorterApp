@@ -179,7 +179,7 @@
                     </Border.Shadow>
                     <VerticalStackLayout Spacing="0">
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
-                            <material:PickerField
+                            <material:SelectField
                                 x:Name="sortBy"
                                 Title="Sort by"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
@@ -188,7 +188,7 @@
                                 FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
-                                SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedSortBy, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
@@ -201,7 +201,7 @@
                                 FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
-                                SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedSortDirection, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
