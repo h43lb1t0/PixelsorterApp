@@ -35,7 +35,7 @@
             </Border.Shadow>
 
             <Grid Padding="16,10" ColumnDefinitions="*,Auto">
-                <material:PickerField
+                <material:SelectField
                     x:Name="presetPicker"
                     Title="Presets"
                     Grid.Row="0"
