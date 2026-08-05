@@ -192,7 +192,7 @@
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
-                            <material:PickerField
+                            <material:SelectField
                                 x:Name="sortDirection"
                                 Title="Direction"
                                 AccentColor="{AppThemeBinding Light={StaticResource Primary},
