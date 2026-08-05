@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace PixelsorterApp;
 
@@ -9,7 +9,7 @@ public partial class ImageViewer
 
     partial void InitializePlatformView()
     {
-        _images.Add(ImageSource.FromFile("uploadplaceholder.png"));
+        _images.Add(ImageSource.FromFile(PlaceholderImage));
 
         _carousel = new CarouselView
         {
