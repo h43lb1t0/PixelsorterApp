@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Extensions;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.Popups;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
@@ -547,12 +548,16 @@ namespace PixelsorterApp
 
             if (!Preferences.Get("MaskingLicenseAccepted", false))
             {
-                var response = await DisplayAlertAsync(
-                    "Masking Feature License",
-                    "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.",
-                    "Accept",
-                    "Don't accept"
-                    );
+                var popup = new ConfirmationPopup();
+                var parameters = new Dictionary<string, object?>
+                {
+                    {"Title", "Masking Feature License" },
+                    { "message", "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page." },
+                    { "ConfirmButton", "Accept" },
+                    { "CancelButton", "Don't accept" }
+                };
+
+                bool response = await IPopupService.Current.PushAsync(popup, parameters);
                 Preferences.Set("MaskingLicenseAccepted", response);
 
                 if (!response)
