@@ -97,6 +97,9 @@
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Popups\ConfirmationPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\BeforeAfterView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
