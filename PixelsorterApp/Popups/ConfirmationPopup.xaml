@@ -6,6 +6,8 @@
     xmlns:uxd="clr-namespace:UXDivers.Popups.Maui;assembly=UXDivers.Popups.Maui"
     x:Class="PixelsorterApp.Popups.ConfirmationPopup"
     BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#B3000000}"
+    AppearingAnimation="{uxd:FadeInPopupAnimation Duration=300, Easing=CubicOut}"
+     DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=200, Easing=Linear}"
     CloseWhenBackgroundIsClicked="False">
 
     <Border
@@ -14,7 +16,7 @@
         BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
         Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
         Padding="24"
-        WidthRequest="300">
+        WidthRequest="{OnIdiom Phone=300, Default=380}">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="16" />
         </Border.StrokeShape>
@@ -40,13 +42,13 @@
                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                 HorizontalTextAlignment="Center" />
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Grid x:Name="ButtonLayoutGrid" ColumnSpacing="12" RowSpacing="12">
                 <Button
                     x:Name="CancelButton"
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Clicked="OnCancelClicked" />
+                
                 <Button
-                    Grid.Column="1"
                     x:Name="ConfirmButton"
                     Clicked="OnConfirmClicked" />
             </Grid>
