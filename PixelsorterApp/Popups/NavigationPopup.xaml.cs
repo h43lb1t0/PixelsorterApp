@@ -10,13 +10,20 @@ public partial class NavigationPopup : PopupResultPage<String>
 {
     private ICommand SetResultCommand;
 
+    public event EventHandler<string>? OptionSelected;
+
     public NavigationPopup()
     {
         InitializeComponent();
         SetResultCommand = new Command(async result =>
         {
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
-            SetResult(result?.ToString());
+            var selection = result?.ToString();
+            SetResult(selection);
+            if (!string.IsNullOrEmpty(selection))
+            {
+                OptionSelected?.Invoke(this, selection);
+            }
             await IPopupService.Current.PopAsync(this);
         });
     }

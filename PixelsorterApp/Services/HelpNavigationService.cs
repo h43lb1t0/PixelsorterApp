@@ -24,6 +24,11 @@ public sealed class HelpNavigationService : IHelpNavigationService
         }
 
         var popup = new NavigationPopup();
+        popup.OptionSelected += (sender, selection) =>
+        {
+            _ = NavigateToSelectionAsync(currentPage, selection);
+        };
+
         var parameters = new Dictionary<string, object?>
         {
             { "Title", "Help & Info" },
@@ -36,10 +41,11 @@ public sealed class HelpNavigationService : IHelpNavigationService
             } }
         };
 
-        var selection = await IPopupService.Current.PushAsync(popup, parameters);
+        await IPopupService.Current.PushAsync(popup, parameters);
+    }
 
-        Debug.WriteLine("Nav choise: " + selection);
-
+    private async Task NavigateToSelectionAsync(Page currentPage, string selection)
+    {
         switch (selection)
         {
             case "Help Page":
