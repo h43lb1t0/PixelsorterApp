@@ -45,13 +45,15 @@
                         Grid.Column="1"
                         Padding="0"
                         BackgroundColor="Transparent"
+                        Clicked="OnOpenHelpClicked"
                         Command="{Binding OpenHelpCommand}"
                         CornerRadius="18"
+                        FontFamily="MaterialSymbolsFont"
                         FontSize="22"
                         HeightRequest="36"
                         SemanticProperties.Description="Open additional app options"
                         SemanticProperties.Hint="Opens help options including licenses and privacy policy"
-                        Text="⋮"
+                        Text="{x:Static local:MaterialSymbolsFont.VertMenuDots}"
                         TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                     Dark={StaticResource TextSecondaryDark}}"
                         WidthRequest="36" />
