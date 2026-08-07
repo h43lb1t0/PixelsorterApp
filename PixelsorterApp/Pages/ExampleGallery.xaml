@@ -6,8 +6,15 @@
     xmlns:local="clr-namespace:PixelsorterApp.Pages"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                  Dark={StaticResource PageBackgroundDark}}"
-    Title="Example Gallery">
+                                  Dark={StaticResource PageBackgroundDark}}">
+    <Shell.TitleView>
+        <Label Text="Example Gallery"
+               FontFamily="SpaceGroteskBold" 
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Primary}"
+               VerticalOptions="Center" />
+    </Shell.TitleView>
 
     <Grid RowDefinitions="Auto,*">
         <Label

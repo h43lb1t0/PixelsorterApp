@@ -5,8 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                  Dark={StaticResource PageBackgroundDark}}"
-    Title="How to use the Pixelsorter">
+                                  Dark={StaticResource PageBackgroundDark}}">
+    <Shell.TitleView>
+        <Label Text="How to use the Pixelsorter"
+           FontFamily="SpaceGroteskBold" 
+           FontSize="22"
+           FontAttributes="Bold"
+           TextColor="{StaticResource Primary}"
+           VerticalOptions="Center" />
+    </Shell.TitleView>
     <Grid
         Padding="15"
         RowDefinitions="Auto,*"

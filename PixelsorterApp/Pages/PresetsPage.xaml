@@ -7,8 +7,15 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:PresetsPageViewModel"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}"
-    Title="Presets">
+                                      Dark={StaticResource PageBackgroundDark}}">
+    <Shell.TitleView>
+        <Label Text="Presets"
+           FontFamily="SpaceGroteskBold" 
+           FontSize="24"
+           FontAttributes="Bold"
+           TextColor="{StaticResource Primary}"
+           VerticalOptions="Center" />
+    </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
             <Label

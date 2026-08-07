@@ -28,7 +28,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontAttributes="Bold"
-                        FontFamily="SpaceGroteskRegular"
+                        FontFamily="SpaceGroteskBold"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
                         Text="Pixel Sorter" />
