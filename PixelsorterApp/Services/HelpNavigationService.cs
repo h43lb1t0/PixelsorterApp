@@ -1,4 +1,7 @@
 using PixelsorterApp.Pages;
+using PixelsorterApp.Popups;
+using System.Diagnostics;
+using UXDivers.Popups.Services;
 
 namespace PixelsorterApp.Services;
 
@@ -20,15 +23,23 @@ public sealed class HelpNavigationService : IHelpNavigationService
             return;
         }
 
-        var selection = await currentPage.DisplayActionSheetAsync(
-            "Help & Info",
-            "Cancel",
-            null,
-            "Help Page",
-            "Example Gallery",
-            "Presets page",
-            "Open Source Licenses",
-            "Privacy Policy");
+        var popup = new NavigationPopup();
+        var parameters = new Dictionary<string, object?>
+        {
+            { "Message", "Help & Info" },
+            { "Options", new List<string> { 
+                "Help Page", 
+                "Example Gallery", 
+                "Presets page", 
+                "Open Source Licenses", 
+                "Privacy Policy", 
+                "Cancel" 
+            } }
+        };
+
+        var selection = await IPopupService.Current.PushAsync(popup, parameters);
+
+        Debug.WriteLine("Nav choise: " + selection);
 
         switch (selection)
         {

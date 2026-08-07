@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<uxd:PopupResultPage
+    x:TypeArguments="x:String"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uxd="clr-namespace:UXDivers.Popups.Maui;assembly=UXDivers.Popups.Maui"
+    x:Class="PixelsorterApp.Popups.NavigationPopup"
+    BackgroundColor="{DynamicResource PopupBackdropColor}"
+    CloseWhenBackgroundIsClicked="True">
+
+    <Border
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        BackgroundColor="{DynamicResource BackgroundSecondaryColor}"
+        Padding="24"
+        WidthRequest="300">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="16" />
+        </Border.StrokeShape>
+
+        <VerticalStackLayout Spacing="16">
+            <Label
+                Text="Confirm Action"
+                Style="{DynamicResource TitleStyle}"
+                HorizontalTextAlignment="Center" />
+
+            <Label
+                x:Name="MessageLabel"
+                Style="{DynamicResource SubTitleStyle}"
+                HorizontalTextAlignment="Center" />
+
+            <FlexLayout x:Name="navButtonsGrid" Wrap="Wrap" JustifyContent="Center" Direction="Row"/>
+        </VerticalStackLayout>
+    </Border>
+</uxd:PopupResultPage>
