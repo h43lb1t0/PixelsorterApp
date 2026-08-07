@@ -12,12 +12,6 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label
-                FontAttributes="Bold"
-                FontSize="24"
-                HorizontalOptions="Center"
-                SemanticProperties.HeadingLevel="Level1"
-                Text="Open Source Licenses" />
             <Label Opacity="0.8" Text="This application uses the following open source packages:" />
 
             <Border

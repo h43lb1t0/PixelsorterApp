@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp.Pages"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
+    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
+                                  Dark={StaticResource PageBackgroundDark}}"
     Title="Example Gallery">
 
     <Grid RowDefinitions="Auto,*">
