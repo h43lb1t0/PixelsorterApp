@@ -7,8 +7,8 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     x:Class="PixelsorterApp.Popups.NavigationPopup"
     BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#B3000000}"
-    AppearingAnimation="{uxd:FadeInPopupAnimation Duration=350, Easing=SpringIn}"
-    DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=250, Easing=Linear}"
+    AppearingAnimation="{uxd:FadeInPopupAnimation Duration=200, Easing=CubicOut}"
+    DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=150, Easing=CubicIn}"
     CloseWhenBackgroundIsClicked="True">
 
     <Border

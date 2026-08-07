@@ -45,6 +45,7 @@
                         Grid.Column="1"
                         Padding="0"
                         BackgroundColor="Transparent"
+                        Clicked="OnOpenHelpClicked"
                         Command="{Binding OpenHelpCommand}"
                         CornerRadius="18"
                         FontFamily="MaterialSymbolsFont"

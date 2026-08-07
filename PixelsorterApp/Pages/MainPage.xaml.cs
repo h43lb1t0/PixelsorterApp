@@ -88,6 +88,11 @@ namespace PixelsorterApp
             }
         }
 
+        private void OnOpenHelpClicked(object sender, EventArgs e)
+        {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+        }
+
         /// <summary>
         /// Animates the Share FAB appearing or disappearing with smooth fade and scale transitions.
         /// </summary>

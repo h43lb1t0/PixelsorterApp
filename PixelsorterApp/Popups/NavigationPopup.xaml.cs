@@ -15,6 +15,7 @@ public partial class NavigationPopup : PopupResultPage<String>
         InitializeComponent();
         SetResultCommand = new Command(async result =>
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             SetResult(result?.ToString());
             await IPopupService.Current.PopAsync(this);
         });
