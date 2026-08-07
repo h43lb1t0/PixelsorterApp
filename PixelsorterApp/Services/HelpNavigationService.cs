@@ -26,14 +26,13 @@ public sealed class HelpNavigationService : IHelpNavigationService
         var popup = new NavigationPopup();
         var parameters = new Dictionary<string, object?>
         {
-            { "Message", "Help & Info" },
-            { "Options", new List<string> { 
-                "Help Page", 
-                "Example Gallery", 
-                "Presets page", 
-                "Open Source Licenses", 
-                "Privacy Policy", 
-                "Cancel" 
+            { "Title", "Help & Info" },
+            { "Options", new List<(string Label, string Icon)> { 
+                ("Help Page", MaterialSymbolsFont.Help), 
+                ("Example Gallery", MaterialSymbolsFont.Collections), 
+                ("Presets page", MaterialSymbolsFont.Tune), 
+                ("Open Source Licenses", MaterialSymbolsFont.Gavel), 
+                ("Privacy Policy", MaterialSymbolsFont.PrivacyTip), 
             } }
         };
 
