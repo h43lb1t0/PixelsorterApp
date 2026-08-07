@@ -13,6 +13,7 @@ namespace PixelsorterApp
         public const string Error = "\ue000";
 
         // Navigation icons
+        public const string VertMenuDots = "\ue5d4";
         public const string Help = "\ue887";
         public const string Collections = "\ue3b6";
         public const string Tune = "\ue429";
