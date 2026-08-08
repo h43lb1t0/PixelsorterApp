@@ -511,6 +511,7 @@ namespace PixelsorterApp
 
         private async Task ShareAsync()
         {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             try
             {
                 var focusedImagePath = GetFocusedImagePath();
