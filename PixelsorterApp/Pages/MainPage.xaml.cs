@@ -245,7 +245,7 @@ namespace PixelsorterApp
 
             if (!Preferences.Default.Get("HasSeenGallerySuggest", false))
             {
-                var popup = new ConfirmationPopup();
+                var popup = new ConfirmationPopup(true);
                 var parameters = new Dictionary<string, object?>
                 {
                     { "Title", "Welcome to Pixel Sorter!" },

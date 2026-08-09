@@ -6,10 +6,14 @@ namespace PixelsorterApp.Popups;
 
 public partial class ConfirmationPopup : PopupResultPage<bool>
 {
-    public ConfirmationPopup()
+
+    public ConfirmationPopup(bool closeOnBackgroundTap = false)
     {
         InitializeComponent();
-        
+
+        CloseWhenBackgroundIsClicked = closeOnBackgroundTap;
+
+
         if (Microsoft.Maui.Devices.DeviceInfo.Idiom == Microsoft.Maui.Devices.DeviceIdiom.Phone)
         {
             ButtonLayoutGrid.ColumnDefinitions = new ColumnDefinitionCollection { new ColumnDefinition(GridLength.Star) };

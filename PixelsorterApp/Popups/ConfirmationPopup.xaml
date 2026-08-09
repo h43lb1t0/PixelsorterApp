@@ -7,8 +7,7 @@
     x:Class="PixelsorterApp.Popups.ConfirmationPopup"
     BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#B3000000}"
     AppearingAnimation="{uxd:FadeInPopupAnimation Duration=300, Easing=CubicOut}"
-     DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=200, Easing=Linear}"
-    CloseWhenBackgroundIsClicked="False">
+    DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=200, Easing=Linear}">
 
     <Border
         VerticalOptions="Center"
