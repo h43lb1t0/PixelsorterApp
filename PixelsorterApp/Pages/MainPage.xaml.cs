@@ -233,14 +233,34 @@ namespace PixelsorterApp
             base.OnAppearing();
             SharedImageBridge.SharedImageReceived += OnSharedImageReceived;
 
+            _ = InitializeAppearingAsync();
+        }
+
+        private async Task InitializeAppearingAsync()
+        {
             if (SharedImageBridge.TryConsumePendingImagePath(out var pendingImagePath) && pendingImagePath is not null)
             {
-                LoadImageFromPath(pendingImagePath);
+                await LoadImageFromPath(pendingImagePath);
             }
 
             if (!Preferences.Default.Get("HasSeenGallerySuggest", false))
             {
-                gallerySuggestionOverlay.IsVisible = true;
+                var popup = new ConfirmationPopup();
+                var parameters = new Dictionary<string, object?>
+                {
+                    { "Title", "Welcome to Pixel Sorter!" },
+                    { "message", "Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu" },
+                    { "ConfirmButton", "Go to Gallery" },
+                    { "CancelButton", "Dismiss" }
+                };
+
+                var response = await IPopupService.Current.PushAsync(popup, parameters);
+                Preferences.Default.Set("HasSeenGallerySuggest", true);
+
+                if (response)
+                {
+                    await Navigation.PushAsync(new Pages.ExampleGallery());
+                }
             }
         }
 
@@ -652,17 +672,5 @@ namespace PixelsorterApp
 
         }
 
-        private async void OnGoToGalleryClicked(object sender, EventArgs e)
-        {
-            Preferences.Default.Set("HasSeenGallerySuggest", true);
-            gallerySuggestionOverlay.IsVisible = false;
-            await Navigation.PushAsync(new Pages.ExampleGallery());
+            }
         }
-
-        private void OnDismissGallerySuggestionClicked(object sender, EventArgs e)
-        {
-            Preferences.Default.Set("HasSeenGallerySuggest", true);
-            gallerySuggestionOverlay.IsVisible = false;
-        }
-    }
-}
