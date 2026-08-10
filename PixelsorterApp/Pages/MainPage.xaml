@@ -16,7 +16,8 @@
     Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="*,Auto">
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+            
             <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
                 <!--  Headder  -->
