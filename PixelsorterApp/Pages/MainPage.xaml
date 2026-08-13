@@ -97,18 +97,15 @@
                             SemanticProperties.Description="Busy">
                             <VerticalStackLayout
                                 HorizontalOptions="Center"
-                                Spacing="10"
+                                Spacing="14"
                                 VerticalOptions="Center">
-                                <ActivityIndicator
-                                    x:Name="loadingIndicator"
-                                    HeightRequest="40"
-                                    IsRunning="False"
-                                    WidthRequest="40"
-                                    Color="{StaticResource White}" />
+                                <views:PulsingDotsView x:Name="pulsingDots" />
                                 <Label
                                     x:Name="loadingOverlayLabel"
-                                    FontAttributes="Bold"
+                                    FontFamily="SpaceGroteskBold"
+                                    FontSize="13"
                                     HorizontalTextAlignment="Center"
+                                    Opacity="0"
                                     Text=""
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>

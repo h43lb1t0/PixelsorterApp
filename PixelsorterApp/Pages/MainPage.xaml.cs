@@ -352,10 +352,21 @@ namespace PixelsorterApp
         /// <param name="text">The message to display on the loading overlay, providing context to the user about the ongoing operation.</param>
         private async Task UseLoadingOverlayAsync(String text)
         {
-            loadingOverlayLabel.Text = text;
-            loadingIndicator.IsRunning = true;
             loadingOverlay.IsVisible = true;
+            loadingOverlayLabel.Text = text;
+            loadingOverlayLabel.Opacity = 0;
+
+            pulsingDots.IsAnimating = true;
             SemanticScreenReader.Announce(text);
+
+            // Fade the status label in with a short delay so the dots appear first.
+            _ = DelayedLabelFadeInAsync();
+
+            async Task DelayedLabelFadeInAsync()
+            {
+                await Task.Delay(150);
+                await loadingOverlayLabel.FadeToAsync(1.0, 200, Easing.CubicOut);
+            }
             (Color, Color) colors = ((Color)Application.Current!.Resources["SurfaceLight"], (Color)Application.Current!.Resources["SurfaceDark"]);
 
             if (Application.Current!.RequestedTheme == AppTheme.Light)
@@ -373,6 +384,18 @@ namespace PixelsorterApp
                 new SolidColorBrush((Color)Application.Current!.Resources["SurfaceLight"]), // Light
                 new SolidColorBrush((Color)Application.Current!.Resources["SurfaceDark"])  // Dark
             );
+        }
+
+        /// <summary>
+        /// Updates the loading overlay label text with a brief fade transition.
+        /// Call this to show phased status messages during a long operation.
+        /// </summary>
+        private async Task UpdateLoadingStatusAsync(string text)
+        {
+            await loadingOverlayLabel.FadeToAsync(0, 120, Easing.CubicIn);
+            loadingOverlayLabel.Text = text;
+            await loadingOverlayLabel.FadeToAsync(1.0, 180, Easing.CubicOut);
+            SemanticScreenReader.Announce(text);
         }
 
         /// <summary>
@@ -432,7 +455,8 @@ namespace PixelsorterApp
                 },
                 onComplete: () =>
                 {
-                    loadingIndicator.IsRunning = false;
+                    pulsingDots.IsAnimating = false;
+                    loadingOverlayLabel.Opacity = 0;
                     loadingOverlay.IsVisible = false;
                     ToggleUiForSorting(true);
 
@@ -603,7 +627,8 @@ namespace PixelsorterApp
                 },
                 onComplete: () =>
                 {
-                    loadingIndicator.IsRunning = false;
+                    pulsingDots.IsAnimating = false;
+                    loadingOverlayLabel.Opacity = 0;
                     loadingOverlay.IsVisible = false;
                     ToggleUiForSorting(true);
 
@@ -624,7 +649,8 @@ namespace PixelsorterApp
                     }
                     finally
                     {
-                        loadingIndicator.IsRunning = false;
+                        pulsingDots.IsAnimating = false;
+                        loadingOverlayLabel.Opacity = 0;
                         loadingOverlay.IsVisible = false;
                         viewModel.IsSortEnabled = true;
                     }
