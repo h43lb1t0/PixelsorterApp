@@ -17,7 +17,7 @@
 
     <Grid RowDefinitions="*,Auto">
         <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
-            
+
             <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
                 <!--  Headder  -->
@@ -224,35 +224,57 @@
 
                 <views:MaskingOptionsView />
 
-                <Button
-                    x:Name="saveBtn"
-                    Margin="0,16,0,0"
-                    Command="{Binding SaveCommand}"
-                    HorizontalOptions="Fill"
-                    IsEnabled="{Binding IsSaveEnabled}"
-                    IsVisible="{Binding IsSaveVisible}"
-                    SemanticProperties.Description="Save the current image to your photo gallery"
-                    Style="{StaticResource SaveButtonStyle}"
-                    Text="Save" />
-
                 <views:PresetsView />
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout
+        <!--  Sticky bottom action bar: Sort always visible, Save appears after first sort  -->
+        <Grid
             Grid.Row="1"
-            Padding="20,8,20,16"
+            Padding="20,0,20,0"
             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                              Dark={StaticResource PageBackgroundDark}}">
+                                              Dark={StaticResource PageBackgroundDark}}"
+            ColumnSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <!--  Hairline separator so the sticky bar reads as elevated over scroll content  -->
+            <BoxView
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                        Dark={StaticResource DividerDark}}" />
             <Button
                 x:Name="sortBtn"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,8,0,16"
                 Command="{Binding SortCommand}"
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
-                SemanticProperties.Description="Start pixel sorting"
+                SemanticProperties.Description="Sort the loaded image using the current settings"
                 Text="Sort" />
-        </VerticalStackLayout>
+            <Button
+                x:Name="saveBtn"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,8,0,16"
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="Fill"
+                IsEnabled="{Binding IsSaveEnabled}"
+                IsVisible="{Binding IsSaveVisible}"
+                MinimumWidthRequest="140"
+                SemanticProperties.Description="Save the sorted image to your photo gallery"
+                Style="{StaticResource SaveButtonStyle}"
+                Text="Save" />
+        </Grid>
+    </Grid>
 
-            </Grid>
-        </ContentPage>
+</ContentPage>
