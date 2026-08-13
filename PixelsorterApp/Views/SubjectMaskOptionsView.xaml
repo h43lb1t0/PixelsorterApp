@@ -11,10 +11,22 @@
             Padding="16,0"
             ColumnDefinitions="*,Auto"
             HeightRequest="56">
-            <Label
-                FontSize="16"
-                Text="Use subject masking"
-                VerticalOptions="Center" />
+            <VerticalStackLayout
+                Grid.Column="0"
+                Spacing="2"
+                VerticalOptions="Center">
+                <Label
+                    FontSize="16"
+                    Text="Subject mask"
+                    VerticalOptions="Center" />
+                <Label
+                    FontSize="12"
+                    Opacity="0.65"
+                    Text="Detect people or objects, sort around them"
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                Dark={StaticResource TextSecondaryDark}}"
+                    VerticalOptions="Center" />
+            </VerticalStackLayout>
             <Switch
                 Grid.Column="1"
                 IsEnabled="{Binding IsInteractionEnabled}"
