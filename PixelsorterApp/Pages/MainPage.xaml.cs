@@ -23,6 +23,8 @@ namespace PixelsorterApp
 
         private readonly int PopupAutoDismissTime = 1500;
 
+        private CancellationTokenSource? _sortMessageCts;
+
 
         // image
         private string? imagePath;
@@ -399,6 +401,52 @@ namespace PixelsorterApp
         }
 
         /// <summary>
+        /// Cycles through product-specific status messages during the sorting operation,
+        /// making the wait feel purposeful rather than static.
+        /// </summary>
+        private async Task CycleSortingMessagesAsync(CancellationToken token)
+        {
+            try
+            {
+                // Show the mask message once if masking is active
+                if (viewModel.UseSubjectMask || viewModel.UseCanny)
+                {
+                    await Task.Delay(2200, token);
+                    if (token.IsCancellationRequested) return;
+
+                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny) switch
+                    {
+                        (true, true) => "Combining masks...",
+                        (true, false) => "Applying subject mask...",
+                        _ => "Detecting edges..."
+                    };
+
+                    await UpdateLoadingStatusAsync(maskMessage);
+                }
+
+                // Cycle only between sort criterion and direction
+                var cycleMessages = new[]
+                {
+                    $"Sorting by {viewModel.SelectedSortByName}...",
+                    $"Arranging pixels {viewModel.SelectedSortDirectionName}..."
+                };
+                var index = 0;
+
+                while (!token.IsCancellationRequested)
+                {
+                    await Task.Delay(2200, token);
+                    if (token.IsCancellationRequested) break;
+
+                    await UpdateLoadingStatusAsync(cycleMessages[index]);
+                    index = (index + 1) % cycleMessages.Length;
+                }
+            }
+            catch (TaskCanceledException) { }
+        }
+
+
+
+        /// <summary>
         /// Handles taps on the image viewer and routes them to the load-image command.
         /// </summary>
         /// <param name="sender">The event source.</param>
@@ -447,14 +495,25 @@ namespace PixelsorterApp
             if (this.imagePath is null) // Check if we have a file path
                 return;
 
+            // Sort button press micro-interaction — physical feel on tap
+            await sortBtn.ScaleToAsync(0.95, 80, Easing.CubicOut);
+            _ = sortBtn.ScaleToAsync(1.0, 100, Easing.SpringOut);
+
+            _sortMessageCts?.Cancel();
+            _sortMessageCts = new CancellationTokenSource();
+            var messageCts = _sortMessageCts;
+            bool sortSucceeded = false;
+
             using (new BusyScope(
                 onStart: () =>
                 {
                     ToggleUiForSorting(false);
-                    _ = UseLoadingOverlayAsync("Sorting...");
+                    _ = UseLoadingOverlayAsync("Reading pixel data...");
+                    _ = CycleSortingMessagesAsync(messageCts.Token);
                 },
                 onComplete: () =>
                 {
+                    messageCts.Cancel();
                     pulsingDots.IsAnimating = false;
                     loadingOverlayLabel.Opacity = 0;
                     loadingOverlay.IsVisible = false;
@@ -480,6 +539,11 @@ namespace PixelsorterApp
                         viewModel.SortingDirection,
                         maskToUse);
 
+                    sortSucceeded = true;
+
+                    // Final status — shown once before revealing the result
+                    messageCts.Cancel();
+
                     // Back on the UI thread — safe to update UI elements.
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
@@ -494,7 +558,10 @@ namespace PixelsorterApp
                         viewModel.IsSaveVisible = true;
                         viewModel.IsSaveEnabled = true;
                         HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
-                        SemanticScreenReader.Announce("Sorting complete. Preview updated.");
+
+                        var sortByName = viewModel.SelectedSortByName;
+                        var directionName = viewModel.SelectedSortDirectionName;
+                        SemanticScreenReader.Announce($"Sorted by {sortByName}, {directionName}. Swipe to compare with original.");
                     });
                 }
                 catch (Exception ex)
@@ -503,6 +570,14 @@ namespace PixelsorterApp
                     await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
                     SemanticScreenReader.Announce($"Error: {ex.Message}");
                 }
+
+            // Completion reveal — after the overlay is dismissed
+            if (sortSucceeded)
+            {
+                // Brief pause to let the overlay dismiss settle
+                await Task.Delay(50);
+                _ = imagePreviewBorder.PlaySuccessPulseAsync();
+            }
         }
 
         /// <summary>
