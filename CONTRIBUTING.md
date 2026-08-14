@@ -23,6 +23,9 @@ If your pull request contains changes that affect Apple platforms:
 - Please provide screenshots, screen recordings, or a detailed breakdown of your testing process for these platforms in your PR description.
 - Ensure that your changes do not break other platforms (Windows, Android).
 
+### Using AI
+Using an LLM as coding assistant is allowed. However no agentic generated code will be accepted. You have to understand the code you are submitting and be able to explain it in a PR. 
+
 ## Submitting a Pull Request
 
 1. Push your branch to your fork.
