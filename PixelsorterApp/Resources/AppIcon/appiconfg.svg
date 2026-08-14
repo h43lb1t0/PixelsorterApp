@@ -5,8 +5,8 @@
    height="1024"
    version="1.1"
    id="svg108"
-   sodipodi:docname="AppIcon.svg"
-   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="appiconfg.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -22,8 +22,8 @@
 	   inkscape:pagecheckerboard="0"
 	   inkscape:deskcolor="#d1d1d1"
 	   inkscape:zoom="0.66992188"
-	   inkscape:cx="455.27697"
-	   inkscape:cy="531.40525"
+	   inkscape:cx="392.58309"
+	   inkscape:cy="537.37609"
 	   inkscape:window-width="1500"
 	   inkscape:window-height="930"
 	   inkscape:window-x="-6"
@@ -33,17 +33,52 @@
 	<defs
 	   id="defs43">
 		<linearGradient
-		   id="linearGradient2"
+		   id="linearGradient48"
 		   inkscape:collect="always">
 			<stop
-			   style="stop-color:#800080;stop-opacity:1"
+			   style="stop-color:#e53935;stop-opacity:1;"
 			   offset="0"
-			   id="stop2" />
+			   id="stop48" />
 			<stop
-			   style="stop-color:#677821;stop-opacity:1"
+			   style="stop-color:#d32f2f;stop-opacity:1;"
 			   offset="1"
-			   id="stop3" />
+			   id="stop49" />
 		</linearGradient>
+		<rect
+		   x="138.82216"
+		   y="461.24781"
+		   width="407.5102"
+		   height="219.42857"
+		   id="rect4" />
+		<pattern
+		   inkscape:collect="always"
+		   xlink:href="#pattern6-7"
+		   preserveAspectRatio="xMidYMid"
+		   id="pattern2"
+		   patternTransform="translate(190,350)" />
+		<pattern
+		   patternUnits="userSpaceOnUse"
+		   width="28.28"
+		   height="23.44"
+		   patternTransform="translate(190,350)"
+		   preserveAspectRatio="xMidYMid"
+		   style="fill:#000000"
+		   id="pattern6-7"
+		   inkscape:label=""
+		   inkscape:collect="always"
+		   inkscape:isstock="true">
+			<path
+			   style="paint-order:stroke markers fill;stop-color:#000000"
+			   d="M 0,0        A 20,20 0,0,1 14.14,5.86        A 20,20 0,0,0 28.28,11.72        L 28.28, 23.44        A 20,20 0,0,1 14.14,17.58        A 20,20 0,0,0 0,11.72        L 0,0 "
+			   id="path4-2"
+			   sodipodi:nodetypes="cc" />
+		</pattern>
+		<rect
+		   x="164.19825"
+		   y="434.37901"
+		   width="701.57434"
+		   height="343.32361"
+		   id="rect3" />
 		<rect
 		   x="287.09772"
 		   y="466.5338"
@@ -133,16 +168,16 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#060610"
+			   stop-color="#130B0B"
 			   id="stop6" />
 			<stop
 			   offset="100%"
-			   stop-color="#0a0818"
+			   stop-color="#1a0a0a"
 			   id="stop7" />
 		</linearGradient>
 		<!-- Sorted column gradients (top=unsorted chaos → bottom=sorted order) -->
-		<!-- Each column picks a hue band and sorts from bright→dim or by hue -->
-		<!-- Column sorted gradients - hue sorted vertical bands -->
+		<!-- Each column picks a red/warm hue band matching the app color scheme -->
+		<!-- Column sorted gradients - red-themed vertical bands -->
 		<linearGradient
 		   id="col0"
 		   x1="0"
@@ -153,20 +188,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#3a0060"
+			   stop-color="#1a0000"
 			   stop-opacity="0.5"
 			   id="stop8" />
 			<stop
 			   offset="35%"
-			   stop-color="#8800ff"
+			   stop-color="#5c0000"
 			   id="stop9" />
 			<stop
 			   offset="70%"
-			   stop-color="#cc44ff"
+			   stop-color="#B71C1C"
 			   id="stop10" />
 			<stop
 			   offset="100%"
-			   stop-color="#f0aaff"
+			   stop-color="#EF9A9A"
 			   id="stop11" />
 		</linearGradient>
 		<linearGradient
@@ -179,20 +214,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#001430"
+			   stop-color="#200505"
 			   stop-opacity="0.5"
 			   id="stop12" />
 			<stop
 			   offset="30%"
-			   stop-color="#0033aa"
+			   stop-color="#8B0000"
 			   id="stop13" />
 			<stop
 			   offset="65%"
-			   stop-color="#0088ff"
+			   stop-color="#D32F2F"
 			   id="stop14" />
 			<stop
 			   offset="100%"
-			   stop-color="#88ddff"
+			   stop-color="#FF8A80"
 			   id="stop15" />
 		</linearGradient>
 		<linearGradient
@@ -205,20 +240,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#002020"
+			   stop-color="#1c0800"
 			   stop-opacity="0.5"
 			   id="stop16" />
 			<stop
 			   offset="40%"
-			   stop-color="#006666"
+			   stop-color="#7f1d00"
 			   id="stop17" />
 			<stop
 			   offset="72%"
-			   stop-color="#00e5cc"
+			   stop-color="#E53935"
 			   id="stop18" />
 			<stop
 			   offset="100%"
-			   stop-color="#aaffee"
+			   stop-color="#FFCDD2"
 			   id="stop19" />
 		</linearGradient>
 		<linearGradient
@@ -231,20 +266,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#002800"
+			   stop-color="#1a0a00"
 			   stop-opacity="0.5"
 			   id="stop20" />
 			<stop
 			   offset="38%"
-			   stop-color="#008800"
+			   stop-color="#A33D00"
 			   id="stop21" />
 			<stop
 			   offset="68%"
-			   stop-color="#44dd00"
+			   stop-color="#FF6D00"
 			   id="stop22" />
 			<stop
 			   offset="100%"
-			   stop-color="#bbff66"
+			   stop-color="#FFB066"
 			   id="stop23" />
 		</linearGradient>
 		<linearGradient
@@ -257,20 +292,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#282800"
+			   stop-color="#1f0500"
 			   stop-opacity="0.5"
 			   id="stop24" />
 			<stop
 			   offset="35%"
-			   stop-color="#888800"
+			   stop-color="#C62828"
 			   id="stop25" />
 			<stop
 			   offset="65%"
-			   stop-color="#ffdd00"
+			   stop-color="#FF5252"
 			   id="stop26" />
 			<stop
 			   offset="100%"
-			   stop-color="#fff099"
+			   stop-color="#FF8A80"
 			   id="stop27" />
 		</linearGradient>
 		<linearGradient
@@ -292,11 +327,11 @@
 			   id="stop29" />
 			<stop
 			   offset="62%"
-			   stop-color="#ff5500"
+			   stop-color="#FF8C00"
 			   id="stop30" />
 			<stop
 			   offset="100%"
-			   stop-color="#ffaa77"
+			   stop-color="#FFCC80"
 			   id="stop31" />
 		</linearGradient>
 		<linearGradient
@@ -309,20 +344,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#280020"
+			   stop-color="#200008"
 			   stop-opacity="0.5"
 			   id="stop32" />
 			<stop
 			   offset="30%"
-			   stop-color="#cc0066"
+			   stop-color="#880022"
 			   id="stop33" />
 			<stop
 			   offset="60%"
-			   stop-color="#ff2288"
+			   stop-color="#D32F2F"
 			   id="stop34" />
 			<stop
 			   offset="100%"
-			   stop-color="#ff99cc"
+			   stop-color="#EF9A9A"
 			   id="stop35" />
 		</linearGradient>
 		<linearGradient
@@ -335,20 +370,20 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#200020"
+			   stop-color="#1a0000"
 			   stop-opacity="0.5"
 			   id="stop36" />
 			<stop
 			   offset="35%"
-			   stop-color="#880088"
+			   stop-color="#6D0000"
 			   id="stop37" />
 			<stop
 			   offset="68%"
-			   stop-color="#dd44dd"
+			   stop-color="#B71C1C"
 			   id="stop38" />
 			<stop
 			   offset="100%"
-			   stop-color="#ffaaff"
+			   stop-color="#FFCDD2"
 			   id="stop39" />
 		</linearGradient>
 		<!-- Chaos noise gradient for top portion overlay -->
@@ -361,17 +396,17 @@
 		   gradientUnits="userSpaceOnUse">
 			<stop
 			   offset="0%"
-			   stop-color="#060610"
+			   stop-color="#130B0B"
 			   stop-opacity="0.85"
 			   id="stop40" />
 			<stop
 			   offset="38%"
-			   stop-color="#060610"
+			   stop-color="#130B0B"
 			   stop-opacity="0.6"
 			   id="stop41" />
 			<stop
 			   offset="60%"
-			   stop-color="#060610"
+			   stop-color="#130B0B"
 			   stop-opacity="0"
 			   id="stop42" />
 		</linearGradient>
@@ -403,15 +438,22 @@
 		   width="649.54473"
 		   height="206.68527"
 		   id="rect2-0" />
+		<rect
+		   x="164.19826"
+		   y="434.379"
+		   width="701.57434"
+		   height="343.32361"
+		   id="rect3-8" />
 		<linearGradient
 		   inkscape:collect="always"
-		   xlink:href="#linearGradient2"
-		   id="linearGradient3"
-		   x1="135.64951"
-		   y1="667.242"
-		   x2="987.98767"
-		   y2="382.13412"
-		   gradientUnits="userSpaceOnUse" />
+		   xlink:href="#linearGradient48"
+		   id="linearGradient49"
+		   x1="485.36151"
+		   y1="535.85535"
+		   x2="584.66534"
+		   y2="535.85535"
+		   gradientUnits="userSpaceOnUse"
+		   gradientTransform="translate(-124.38926,227.04207)" />
 	</defs>
 	<!-- Everything clipped to rounded icon shape -->
 	<g
@@ -527,98 +569,74 @@
 		<!-- ====================== -->
 		<!-- Glitch slice group: clipped to upper chaos region -->
 		<g
-		   opacity="0.7"
+		   opacity="0.85"
 		   id="g64"
 		   style="display:inline">
 			<!-- Shifted horizontal bands mimicking unsorted pixel rows -->
 			<rect
 			   x="-60"
-			   y="80"
+			   y="70"
 			   width="900"
-			   height="14"
-			   fill="#ff2288"
-			   opacity="0.35"
+			   height="36"
+			   fill="#E53935"
+			   opacity="0.55"
 			   id="rect54" />
 			<rect
 			   x="180"
-			   y="110"
+			   y="115"
 			   width="700"
-			   height="7"
-			   fill="#00e5cc"
-			   opacity="0.5"
+			   height="22"
+			   fill="#FF8C00"
+			   opacity="0.65"
 			   id="rect55" />
 			<rect
 			   x="-30"
-			   y="140"
+			   y="148"
 			   width="600"
-			   height="11"
-			   fill="#8800ff"
-			   opacity="0.3"
+			   height="28"
+			   fill="#B71C1C"
+			   opacity="0.5"
 			   id="rect56" />
 			<rect
 			   x="90"
-			   y="165"
+			   y="186"
 			   width="850"
-			   height="9"
-			   fill="#ffdd00"
-			   opacity="0.25"
+			   height="24"
+			   fill="#FF5252"
+			   opacity="0.45"
 			   id="rect57" />
 			<rect
 			   x="-80"
-			   y="192"
+			   y="220"
 			   width="500"
-			   height="16"
-			   fill="#0088ff"
-			   opacity="0.4"
+			   height="38"
+			   fill="#D32F2F"
+			   opacity="0.6"
 			   id="rect58" />
 			<rect
 			   x="200"
-			   y="218"
+			   y="265"
 			   width="750"
-			   height="8"
-			   fill="#ff5500"
-			   opacity="0.3"
+			   height="22"
+			   fill="#FF6D00"
+			   opacity="0.5"
 			   id="rect59" />
 			<rect
 			   x="40"
-			   y="244"
+			   y="295"
 			   width="680"
-			   height="12"
-			   fill="#44dd00"
-			   opacity="0.28"
+			   height="30"
+			   fill="#EF9A9A"
+			   opacity="0.45"
 			   id="rect60" />
 			<rect
 			   x="-20"
-			   y="268"
+			   y="330"
 			   width="400"
-			   height="10"
-			   fill="#cc44ff"
-			   opacity="0.45"
+			   height="26"
+			   fill="#C62828"
+			   opacity="0.6"
 			   id="rect61" />
-			<rect
-			   x="320"
-			   y="290"
-			   width="600"
-			   height="7"
-			   fill="#0088ff"
-			   opacity="0.35"
-			   id="rect62" />
-			<rect
-			   x="-10"
-			   y="310"
-			   width="820"
-			   height="13"
-			   fill="#ff2288"
-			   opacity="0.3"
-			   id="rect63" />
-			<rect
-			   x="60"
-			   y="332"
-			   width="550"
-			   height="9"
-			   fill="#00e5cc"
-			   opacity="0.4"
-			   id="rect64" />
 		</g>
 		<!-- ====================== -->
 		<!-- BRIGHT GLITCH ACCENT LINES — neon horizontal streaks -->
@@ -627,13 +645,13 @@
 		   filter="url(#glow-cyan)"
 		   id="g66"
 		   style="display:inline">
-			<!-- Long cyan streak -->
+			<!-- Long red streak -->
 			<rect
 			   x="-40"
 			   y="350"
 			   width="1100"
 			   height="3"
-			   fill="#00eeff"
+			   fill="#E53935"
 			   opacity="0.9"
 			   id="rect65" />
 			<!-- Short offset above -->
@@ -642,7 +660,7 @@
 			   y="344"
 			   width="350"
 			   height="2"
-			   fill="#00eeff"
+			   fill="#FF8C00"
 			   opacity="0.6"
 			   id="rect66" />
 		</g>
@@ -650,13 +668,13 @@
 		   filter="url(#glow-magenta)"
 		   id="g67"
 		   style="display:inline">
-			<!-- Long magenta streak at sort boundary -->
+			<!-- Long deep red streak at sort boundary -->
 			<rect
 			   x="-20"
 			   y="356"
 			   width="900"
 			   height="2"
-			   fill="#ff00cc"
+			   fill="#D32F2F"
 			   opacity="0.8"
 			   id="rect67" />
 		</g>
@@ -1028,48 +1046,13 @@
 			   stop-opacity="0.55"
 			   id="stop107" />
 		</radialGradient>
-		<rect
-		   width="1024"
-		   height="1024"
-		   fill="url(#vignette)"
-		   id="rect107"
-		   x="0"
-		   y="0"
-		   style="display:inline;fill:url(#vignette)" />
 		<!-- Subtle icon border/inner glow -->
-		<rect
-		   width="1024"
-		   height="1024"
-		   rx="224"
-		   ry="224"
-		   fill="none"
-		   stroke="#ffffff"
-		   stroke-width="3"
-		   stroke-opacity="0.1"
-		   id="rect108"
-		   x="0"
-		   y="0"
-		   style="display:inline" />
-	</g>
-	<g
-	   id="g2"
-	   transform="translate(-49.072241,1.4927114)"
-	   style="fill-opacity:1;fill:url(#linearGradient3)">
-		<text
-		   xml:space="preserve"
-		   id="text1"
-		   style="font-size:192px;line-height:0.1;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2);fill:url(#linearGradient3);fill-opacity:1"
-		   transform="translate(-176.13994,-5.9708455)"><tspan
-         x="287.09766"
-         y="531.30062"
-         id="tspan4">Pixel</tspan></text>
-		<text
-		   xml:space="preserve"
-		   id="text1-8"
-		   style="font-size:192px;line-height:0.1;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2-0);fill:url(#linearGradient3);fill-opacity:1"
-		   transform="translate(102.90161,142.15163)"><tspan
-         x="287.09766"
-         y="531.30062"
-         id="tspan5">Sorter</tspan></text>
+		<g filter="url(#glow-soft)">
+			<path
+			   d="m 388.40026,830.09747 v -420 h 172.8 q 39.6,0 69.6,16.2 30.6,15.6 47.4,44.4 17.4,28.8 17.4,68.4 v 8.4 q 0,39 -18,68.4 -17.4,28.8 -48,45 -30,15.6 -68.4,15.6 h -93.6 v 153.6 z m 79.2,-225.6 h 85.8 q 28.2,0 45.6,-15.6 17.4,-15.6 17.4,-42.6 v -6 q 0,-27 -17.4,-42.6 -17.4,-15.6 -45.6,-15.6 h -85.8 z"
+			   id="text46"
+			   style="font-weight:bold;font-size:600px;line-height:0.1;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Bold';fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:4"
+			   aria-label="P" />
+		</g>
 	</g>
 </svg>
