@@ -293,11 +293,11 @@ namespace PixelsorterApp
         /// <param name="path">The file path of the image to load. This must be a valid path to an image file.</param>
         private Task<Boolean> LoadImageFromPath(string path)
         {
-            this.imagePath = path;
             if (Path.GetExtension(path) is ".dng" or ".nef" or ".cr2" or ".arw" or ".rw2" or ".orf")
             {
                 return Task.FromResult(false);
             }
+            this.imagePath = path;
             imageCaptions.Clear();
             imagePaths.Clear();
             imageCaptions.Add("Original image");
