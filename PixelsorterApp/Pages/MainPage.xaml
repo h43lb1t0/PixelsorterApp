@@ -175,27 +175,23 @@
                             <material:SelectField
                                 x:Name="sortBy"
                                 Title="Sort by"
-                                AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                              Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
-                                FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
                                 SelectedItem="{Binding SelectedSortBy, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
+                                Style="{StaticResource MySelectFieldStyle}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
                             <material:SelectField
                                 x:Name="sortDirection"
                                 Title="Direction"
-                                AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                              Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
-                                FontFamily="DMSansRegular"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
                                 SelectedItem="{Binding SelectedSortDirection, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
+                                Style="{StaticResource MySelectFieldStyle}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>

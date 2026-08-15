@@ -35,14 +35,12 @@
                     x:Name="presetPicker"
                     Title="Presets"
                     Grid.Row="0"
-                    AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                  Dark={StaticResource PrimaryDark}}"
                     AllowClear="False"
-                    FontFamily="DMSansRegular"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     ItemsSource="{Binding PresetOptions}"
                     SelectedItem="{Binding SelectedPresetOption, Mode=TwoWay}"
                     SemanticProperties.Description="A dropdown menu to select a preset"
+                    Style="{StaticResource MySelectFieldStyle}"
                     TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                 Dark={StaticResource TextPrimaryDark}}" />
             </Grid>
