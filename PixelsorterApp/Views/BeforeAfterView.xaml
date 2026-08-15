@@ -5,13 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Name="Root">
 
-    <Border
-        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                          Dark={StaticResource SurfaceDark}}"
-        Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                 Dark={StaticResource DividerDark}}"
-        StrokeShape="RoundRectangle 28"
-        StrokeThickness="1">
+    <Border StrokeShape="RoundRectangle 28">
         <Border.Shadow>
             <Shadow
                 Brush="{AppThemeBinding Light={StaticResource BlackBrush},
@@ -79,6 +73,7 @@
                 <Label
                     CharacterSpacing="1"
                     FontAttributes="Bold"
+                    FontFamily="SpaceGroteskRegular"
                     FontSize="11"
                     Text="SETTINGS USED"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},

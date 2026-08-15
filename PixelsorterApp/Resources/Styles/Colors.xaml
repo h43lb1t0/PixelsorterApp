@@ -32,7 +32,7 @@
     <Color x:Key="TextPrimaryDark">#F5F5F5</Color>
     <Color x:Key="TextSecondaryLight">#757575</Color>
     <Color x:Key="TextSecondaryDark">#9E9E9E</Color>
-    <Color x:Key="DisabledTextLight">#FFEBEE</Color>
+    <Color x:Key="DisabledTextLight">#757575</Color>
     <Color x:Key="DisabledTextDark">#FFCDD2</Color>
 
     <!--  Links  -->

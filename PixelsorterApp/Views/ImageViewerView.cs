@@ -5,6 +5,8 @@ public partial class ImageViewer : ContentView
     public event EventHandler? ImageTapped;
     public event EventHandler<int>? DisplayedImageIndexChanged;
 
+    public const string PlaceholderImage = "uploadplaceholder.png";
+
     public ImageViewer()
     {
         InitializePlatformView();

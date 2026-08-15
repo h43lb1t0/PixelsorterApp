@@ -77,16 +77,16 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial bool IsInteractionEnabled { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the selected sort criterion index.
+    /// Gets or sets the selected sort criterion.
     /// </summary>
     [ObservableProperty]
-    public partial int SelectedSortByIndex { get; set; }
+    public partial string? SelectedSortBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the selected sort direction index.
+    /// Gets or sets the selected sort direction.
     /// </summary>
     [ObservableProperty]
-    public partial int SelectedSortDirectionIndex { get; set; }
+    public partial string? SelectedSortDirection { get; set; }
 
     /// <summary>
     /// Gets or sets the selected preset option.
@@ -159,10 +159,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
 
         SortByOptions = [.. sortByOptions.Keys];
-        SelectedSortByIndex = SortByOptions.Count > 0 ? 0 : -1;
+        SelectedSortBy = SortByOptions.Count > 0 ? SortByOptions[0] : null;
 
         RefreshSortDirectionOptions();
-        SelectedSortDirectionIndex = SortDirectionOptions.Count > 0 ? 0 : -1;
+        SelectedSortDirection = SortDirectionOptions.Count > 0 ? SortDirectionOptions[0] : null;
 
         RefreshAvailablePresets();
         SelectedPresetOption = this.presetService.FindDefaultPresetOption(AvailablePresets) ?? PresetOptions.FirstOrDefault();
@@ -332,33 +332,27 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets the currently selected sorting criterion delegate.
     /// </summary>
     public Func<Hsl, float>? SortingCriterion =>
-        SelectedSortByIndex >= 0 && SelectedSortByIndex < SortByOptions.Count
-            ? sortByOptions[SortByOptions[SelectedSortByIndex]]
+        !string.IsNullOrEmpty(SelectedSortBy) && sortByOptions.TryGetValue(SelectedSortBy, out var criterion)
+            ? criterion
             : null;
 
     /// <summary>
     /// Gets the currently selected sorting direction.
     /// </summary>
     public SortDirections SortingDirection =>
-        SelectedSortDirectionIndex >= 0 && SelectedSortDirectionIndex < SortDirectionOptions.Count
-            ? sortDirectionOptions[SortDirectionOptions[SelectedSortDirectionIndex]]
+        !string.IsNullOrEmpty(SelectedSortDirection) && sortDirectionOptions.TryGetValue(SelectedSortDirection, out var direction)
+            ? direction
             : SortDirections.RowRightToLeft;
 
     /// <summary>
     /// Gets the selected sort criterion display name.
     /// </summary>
-    public string SelectedSortByName =>
-        SelectedSortByIndex >= 0 && SelectedSortByIndex < SortByOptions.Count
-            ? SortByOptions[SelectedSortByIndex]
-            : "Unknown";
+    public string SelectedSortByName => SelectedSortBy ?? "Unknown";
 
     /// <summary>
     /// Gets the selected sort direction display name.
     /// </summary>
-    public string SelectedSortDirectionName =>
-        SelectedSortDirectionIndex >= 0 && SelectedSortDirectionIndex < SortDirectionOptions.Count
-            ? SortDirectionOptions[SelectedSortDirectionIndex]
-            : "Unknown";
+    public string SelectedSortDirectionName => SelectedSortDirection ?? "Unknown";
 
     /// <summary>
     /// Refreshes sort direction options based on current mask settings and preserves selection when possible.
@@ -370,10 +364,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             return;
         }
 
-        string? previousSelection =
-            SelectedSortDirectionIndex >= 0 && SelectedSortDirectionIndex < SortDirectionOptions.Count
-                ? SortDirectionOptions[SelectedSortDirectionIndex]
-                : null;
+        string? previousSelection = SelectedSortDirection;
 
         var filtered = sortDirectionOptions.Keys
             .Where(name => UseSubjectMask || UseCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
@@ -387,21 +378,17 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
         if (SortDirectionOptions.Count == 0)
         {
-            SelectedSortDirectionIndex = -1;
+            SelectedSortDirection = null;
             return;
         }
 
-        if (!string.IsNullOrEmpty(previousSelection))
+        if (!string.IsNullOrEmpty(previousSelection) && SortDirectionOptions.Contains(previousSelection))
         {
-            int previousIndex = SortDirectionOptions.IndexOf(previousSelection);
-            SelectedSortDirectionIndex = previousIndex >= 0 ? previousIndex : 0;
+            SelectedSortDirection = previousSelection;
             return;
         }
 
-        if (SelectedSortDirectionIndex < 0 || SelectedSortDirectionIndex >= SortDirectionOptions.Count)
-        {
-            SelectedSortDirectionIndex = 0;
-        }
+        SelectedSortDirection = SortDirectionOptions[0];
     }
 
 
@@ -549,23 +536,15 @@ public sealed partial class MainPageViewModel : BaseViewModel
             RefreshSortDirectionOptions();
         }
 
-        if (!string.IsNullOrEmpty(state.SortByName))
+        if (!string.IsNullOrEmpty(state.SortByName) && SortByOptions.Contains(state.SortByName))
         {
-            for (int i = 0; i < SortByOptions.Count; i++)
-            {
-                if (string.Equals(SortByOptions[i], state.SortByName, StringComparison.Ordinal))
-                {
-                    SelectedSortByIndex = i;
-                    break;
-                }
-            }
+            SelectedSortBy = state.SortByName;
         }
 
         if (!string.IsNullOrEmpty(state.DirectionName))
         {
             var displayName = Regex.Replace(state.DirectionName, "([A-Z])", " $1").Trim();
-            var directionIndex = SortDirectionOptions.IndexOf(displayName);
-            if (directionIndex >= 0) SelectedSortDirectionIndex = directionIndex;
+            if (SortDirectionOptions.Contains(displayName)) SelectedSortDirection = displayName;
         }
     }
 }

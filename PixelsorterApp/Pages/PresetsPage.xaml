@@ -5,29 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
-    x:DataType="viewModels:PresetsPageViewModel"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}"
-    Title="Presets">
+    x:DataType="viewModels:PresetsPageViewModel">
+    <Shell.TitleView>
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Presets" />
+    </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
-            <Label
-                FontAttributes="Bold"
-                FontSize="13"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="PRESET DETAILS"
-                TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                            Dark={StaticResource PrimaryDark}}" />
+            <Label Style="{StaticResource CardHeaderLabel}" Text="PRESET DETAILS" />
 
-            <Border
-                Padding="16"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1"
-                StyleClass="Elevation3">
+            <Border Padding="16" StyleClass="Elevation3">
                 <Border.Shadow>
                     <Shadow
                         Brush="{AppThemeBinding Light={StaticResource Black},
@@ -44,13 +30,13 @@
                         Style="{StaticResource SecondaryActionButtonStyle}"
                         Text="{Binding TomlMapToggleText}" />
                     <Border
-                        IsVisible="{Binding IsTomlMapVisible}"
                         Padding="10"
+                        IsVisible="{Binding IsTomlMapVisible}"
                         Stroke="{AppThemeBinding Light={StaticResource DividerLight},
                                                  Dark={StaticResource DividerDark}}"
                         StrokeShape="RoundRectangle 8"
                         StrokeThickness="1">
-                        <Label Text="{Binding TomlMapString}" />
+                        <Label FontFamily="JetBrainsMonoRegular" Text="{Binding TomlMapString}" />
                     </Border>
                     <Label
                         FontAttributes="Bold"
@@ -66,6 +52,7 @@
                         StrokeThickness="1">
                         <Editor
                             AutoSize="TextChanges"
+                            FontFamily="JetBrainsMonoRegular"
                             Text="{Binding PresetToml}"
                             VerticalOptions="Start" />
                     </Border>
@@ -93,22 +80,9 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Label
-                FontAttributes="Bold"
-                FontSize="13"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="AVAILABLE PRESETS"
-                TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                            Dark={StaticResource PrimaryDark}}" />
+            <Label Style="{StaticResource CardHeaderLabel}" Text="AVAILABLE PRESETS" />
 
-            <Border
-                Padding="16"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
+            <Border Padding="16">
                 <Border.Shadow>
                     <Shadow
                         Brush="{AppThemeBinding Light={StaticResource Black},
@@ -138,13 +112,11 @@
                     <CollectionView ItemsSource="{Binding AvailablePresets}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewModels:PresetsPageViewModel+PresetListItem">
-                                <Grid
-                                    Padding="0,6"
-                                    ColumnDefinitions="*,Auto,Auto">
+                                <Grid Padding="0,6" ColumnDefinitions="*,Auto,Auto">
                                     <Label
                                         Grid.Column="0"
-                                        VerticalOptions="Center"
-                                        Text="{Binding Name}" />
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
                                     <Button
                                         Grid.Column="1"
                                         Margin="12,0,0,0"

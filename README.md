@@ -56,6 +56,8 @@ Because this app relies on a separate class library for its core logic, you will
 
 - **[PixelsorterClassLib](https://github.com/h43lb1t0/PixelsorterClassLib):** The underlying library containing the pixel sorting algorithms used by this app.
 
+## AI Usage
+LLMs are used as a coding assistant. No agentic tools are used to automatically generate code without human intervention. All architectural decisions are made by the author of this software. See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
 # License
 With commit `81e05075` the license of this project changed from MIT to EUPL 1.2

@@ -10,13 +10,12 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
     x:DataType="viewModels:MainPageViewModel"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
     Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="*,Auto">
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+
             <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
                 <!--  Headder  -->
@@ -28,12 +27,14 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontAttributes="Bold"
+                        FontFamily="SpaceGroteskBold"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
                         Text="Pixel Sorter" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
+                        FontFamily="SpaceGroteskRegular"
                         FontSize="14"
                         Opacity="0.8"
                         Text="Load an image, choose options, and sort." />
@@ -43,13 +44,15 @@
                         Grid.Column="1"
                         Padding="0"
                         BackgroundColor="Transparent"
+                        Clicked="OnOpenHelpClicked"
                         Command="{Binding OpenHelpCommand}"
                         CornerRadius="18"
+                        FontFamily="MaterialSymbolsFont"
                         FontSize="22"
                         HeightRequest="36"
                         SemanticProperties.Description="Open additional app options"
                         SemanticProperties.Hint="Opens help options including licenses and privacy policy"
-                        Text="⋮"
+                        Text="{x:Static local:MaterialSymbolsFont.VertMenuDots}"
                         TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                     Dark={StaticResource TextSecondaryDark}}"
                         WidthRequest="36" />
@@ -59,12 +62,7 @@
                 <Border
                     x:Name="imagePreviewBorder"
                     Padding="12"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                      Dark={StaticResource SurfaceDark}}"
-                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                             Dark={StaticResource DividerDark}}"
                     StrokeShape="RoundRectangle 16"
-                    StrokeThickness="1"
                     StyleClass="Elevation3">
                     <Border.Shadow>
                         <Shadow
@@ -78,7 +76,7 @@
                         <local:ImageViewer
                             x:Name="imageViewer"
                             Grid.Row="0"
-                            HeightRequest="130"
+                            HeightRequest="190"
                             ImageTapped="LoadImage_Clicked"
                             IsEnabled="{Binding IsInteractionEnabled}"
                             SemanticProperties.Description="Image viewer"
@@ -92,18 +90,15 @@
                             SemanticProperties.Description="Busy">
                             <VerticalStackLayout
                                 HorizontalOptions="Center"
-                                Spacing="10"
+                                Spacing="14"
                                 VerticalOptions="Center">
-                                <ActivityIndicator
-                                    x:Name="loadingIndicator"
-                                    HeightRequest="40"
-                                    IsRunning="False"
-                                    WidthRequest="40"
-                                    Color="{StaticResource White}" />
+                                <views:PulsingDotsView x:Name="pulsingDots" />
                                 <Label
                                     x:Name="loadingOverlayLabel"
-                                    FontAttributes="Bold"
+                                    FontFamily="SpaceGroteskBold"
+                                    FontSize="13"
                                     HorizontalTextAlignment="Center"
+                                    Opacity="0"
                                     Text=""
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
@@ -149,23 +144,11 @@
                 </Border>
 
                 <Label
-                    Margin="4,10,4,4"
-                    FontAttributes="Bold"
-                    FontSize="13"
                     SemanticProperties.HeadingLevel="Level2"
-                    Text="SORT SETTINGS"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                Dark={StaticResource PrimaryDark}}" />
+                    Style="{StaticResource CardHeaderLabel}"
+                    Text="SORT SETTINGS" />
 
-                <Border
-                    Padding="0"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                      Dark={StaticResource SurfaceDark}}"
-                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                             Dark={StaticResource DividerDark}}"
-                    StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1"
-                    StyleClass="Elevation3">
+                <Border StyleClass="Elevation3">
                     <Border.Shadow>
                         <Shadow
                             Brush="{AppThemeBinding Light={StaticResource Black},
@@ -176,129 +159,87 @@
                     </Border.Shadow>
                     <VerticalStackLayout Spacing="0">
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
-                            <material:PickerField
+                            <material:SelectField
                                 x:Name="sortBy"
                                 Title="Sort by"
-                                AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                              Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
-                                SelectedIndex="{Binding SelectedSortByIndex, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedSortBy, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
+                                Style="{StaticResource MySelectFieldStyle}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
-                            <material:PickerField
+                            <material:SelectField
                                 x:Name="sortDirection"
                                 Title="Direction"
-                                AccentColor="{AppThemeBinding Light={StaticResource Primary},
-                                                              Dark={StaticResource PrimaryDark}}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
-                                SelectedIndex="{Binding SelectedSortDirectionIndex, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedSortDirection, Mode=TwoWay}"
                                 SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
+                                Style="{StaticResource MySelectFieldStyle}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
 
-                <Label
-                    Margin="4,10,4,4"
-                    FontAttributes="Bold"
-                    FontSize="13"
-                    SemanticProperties.HeadingLevel="Level2"
-                    Text="MASKING OPTIONS"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                Dark={StaticResource PrimaryDark}}" />
+                <Label Style="{StaticResource CardHeaderLabel}" Text="MASKING OPTIONS" />
 
                 <views:MaskingOptionsView />
-
-                <Button
-                    x:Name="saveBtn"
-                    Margin="0,16,0,0"
-                    Command="{Binding SaveCommand}"
-                    HorizontalOptions="Fill"
-                    IsEnabled="{Binding IsSaveEnabled}"
-                    IsVisible="{Binding IsSaveVisible}"
-                    SemanticProperties.Description="Save the current image to your photo gallery"
-                    Style="{StaticResource SaveButtonStyle}"
-                    Text="Save" />
 
                 <views:PresetsView />
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout
+        <!--  Sticky bottom action bar: Sort always visible, Save appears after first sort  -->
+        <Grid
             Grid.Row="1"
-            Padding="20,8,20,16"
+            Padding="20,0,20,0"
             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                              Dark={StaticResource PageBackgroundDark}}">
+                                              Dark={StaticResource PageBackgroundDark}}"
+            ColumnSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <!--  Hairline separator so the sticky bar reads as elevated over scroll content  -->
+            <BoxView
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                        Dark={StaticResource DividerDark}}" />
             <Button
                 x:Name="sortBtn"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,8,0,16"
                 Command="{Binding SortCommand}"
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
-                SemanticProperties.Description="Start pixel sorting"
+                SemanticProperties.Description="Sort the loaded image using the current settings"
                 Text="Sort" />
-        </VerticalStackLayout>
-
-        <!--  Gallery Suggestion Overlay  -->
-        <Grid
-            x:Name="gallerySuggestionOverlay"
-            Grid.RowSpan="2"
-            BackgroundColor="#A0000000"
-            InputTransparent="False"
-            IsVisible="False"
-            ZIndex="99">
-            <Grid.GestureRecognizers>
-                <TapGestureRecognizer />
-                <SwipeGestureRecognizer Direction="Up,Down,Left,Right" />
-                <PanGestureRecognizer />
-            </Grid.GestureRecognizers>
-            <Border
-                Margin="32"
-                Padding="24"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                HorizontalOptions="Center"
-                StrokeShape="RoundRectangle 16"
-                VerticalOptions="Center">
-                <Border.Shadow>
-                    <Shadow
-                        Brush="{AppThemeBinding Light={StaticResource Black},
-                                                Dark={StaticResource White}}"
-                        Opacity="0.2"
-                        Radius="15"
-                        Offset="0,5" />
-                </Border.Shadow>
-                <VerticalStackLayout Spacing="16">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="Welcome to Pixel Sorter!"
-                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                    Dark={StaticResource TextPrimaryDark}}" />
-                    <Label
-                        HorizontalTextAlignment="Center"
-                        Text="Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu"
-                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                    Dark={StaticResource TextSecondaryDark}}" />
-                    <Button
-                        Clicked="OnGoToGalleryClicked"
-                        StyleClass="Elevation3"
-                        Text="Go to Gallery" />
-                    <Button
-                        BackgroundColor="Transparent"
-                        Clicked="OnDismissGallerySuggestionClicked"
-                        Text="Dismiss"
-                        TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                    Dark={StaticResource PrimaryDark}}" />
-                </VerticalStackLayout>
-            </Border>
+            <Button
+                x:Name="saveBtn"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,8,0,16"
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="Fill"
+                IsEnabled="{Binding IsSaveEnabled}"
+                IsVisible="{Binding IsSaveVisible}"
+                MinimumWidthRequest="140"
+                SemanticProperties.Description="Save the sorted image to your photo gallery"
+                Style="{StaticResource SaveButtonStyle}"
+                Text="Save" />
         </Grid>
     </Grid>
+
 </ContentPage>

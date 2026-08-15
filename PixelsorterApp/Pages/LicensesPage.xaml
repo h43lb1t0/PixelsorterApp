@@ -4,30 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp"
-    Title="Open Source Licenses"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}"
     SemanticProperties.Description="Open source licenses used by the app">
+    <Shell.TitleView>
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Open Source Licenses" />
+    </Shell.TitleView>
 
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label
-                FontAttributes="Bold"
-                FontSize="24"
-                HorizontalOptions="Center"
-                SemanticProperties.HeadingLevel="Level1"
-                Text="Open Source Licenses" />
             <Label Opacity="0.8" Text="This application uses the following open source packages:" />
 
-            <Border
-                Padding="0"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
+            <Border>
                 <VerticalStackLayout x:Name="LicensesContainer" Spacing="0">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="local:LicenseInfo">
@@ -73,14 +60,7 @@
                 FontSize="20"
                 SemanticProperties.HeadingLevel="Level2"
                 Text="Additional Licenses" />
-            <Border
-                Padding="0"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
+            <Border>
                 <VerticalStackLayout Padding="16" Spacing="4">
                     <Label
                         FontAttributes="Bold"

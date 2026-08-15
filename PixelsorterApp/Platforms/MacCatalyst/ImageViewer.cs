@@ -8,7 +8,7 @@ public partial class ImageViewer
     {
         _image = new ImageButton
         {
-            Source = "uploadplaceholder.png",
+            Source = PlaceholderImage,
             Aspect = Aspect.AspectFit,
             BackgroundColor = Colors.Transparent,
             Padding = 0
@@ -26,7 +26,7 @@ public partial class ImageViewer
 
     public partial void ClearImages()
     {
-        _image.Source = "uploadplaceholder.png";
+        _image.Source = PlaceholderImage;
     }
 
     public partial void PrepareForImage()
