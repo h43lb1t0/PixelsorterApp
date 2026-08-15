@@ -62,12 +62,7 @@
                 <Border
                     x:Name="imagePreviewBorder"
                     Padding="12"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                      Dark={StaticResource SurfaceDark}}"
-                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                             Dark={StaticResource DividerDark}}"
                     StrokeShape="RoundRectangle 16"
-                    StrokeThickness="1"
                     StyleClass="Elevation3">
                     <Border.Shadow>
                         <Shadow
@@ -153,15 +148,7 @@
                     Style="{StaticResource CardHeaderLabel}"
                     Text="SORT SETTINGS" />
 
-                <Border
-                    Padding="0"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                      Dark={StaticResource SurfaceDark}}"
-                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                             Dark={StaticResource DividerDark}}"
-                    StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1"
-                    StyleClass="Elevation3">
+                <Border StyleClass="Elevation3">
                     <Border.Shadow>
                         <Shadow
                             Brush="{AppThemeBinding Light={StaticResource Black},

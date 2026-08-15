@@ -13,15 +13,7 @@
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
             <Label Style="{StaticResource CardHeaderLabel}" Text="PRESET DETAILS" />
 
-            <Border
-                Padding="16"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1"
-                StyleClass="Elevation3">
+            <Border Padding="16" StyleClass="Elevation3">
                 <Border.Shadow>
                     <Shadow
                         Brush="{AppThemeBinding Light={StaticResource Black},
@@ -90,14 +82,7 @@
 
             <Label Style="{StaticResource CardHeaderLabel}" Text="AVAILABLE PRESETS" />
 
-            <Border
-                Padding="16"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                                  Dark={StaticResource SurfaceDark}}"
-                Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                         Dark={StaticResource DividerDark}}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
+            <Border Padding="16">
                 <Border.Shadow>
                     <Shadow
                         Brush="{AppThemeBinding Light={StaticResource Black},

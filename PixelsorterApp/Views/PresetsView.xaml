@@ -12,15 +12,8 @@
             SemanticProperties.HeadingLevel="Level2"
             Style="{StaticResource CardHeaderLabel}"
             Text="PRESETS" />
-        <Border
-            Padding="0"
-            BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
-                                              Dark={StaticResource SurfaceDark}}"
-            Stroke="{AppThemeBinding Light={StaticResource DividerLight},
-                                     Dark={StaticResource DividerDark}}"
-            StrokeShape="RoundRectangle 12"
-            StrokeThickness="1"
-            StyleClass="Elevation3">
+
+        <Border StyleClass="Elevation3">
             <Border.Shadow>
                 <Shadow
                     Brush="{AppThemeBinding Light={StaticResource Black},

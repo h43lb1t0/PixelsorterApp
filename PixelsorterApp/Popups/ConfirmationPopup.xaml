@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <uxd:PopupResultPage
-    x:TypeArguments="x:Boolean"
+    x:Class="PixelsorterApp.Popups.ConfirmationPopup"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uxd="clr-namespace:UXDivers.Popups.Maui;assembly=UXDivers.Popups.Maui"
-    x:Class="PixelsorterApp.Popups.ConfirmationPopup"
-    BackgroundColor="{AppThemeBinding Light=#80000000, Dark=#B3000000}"
-    AppearingAnimation="{uxd:FadeInPopupAnimation Duration=300, Easing=CubicOut}"
-    DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=200, Easing=Linear}">
+    x:TypeArguments="x:Boolean"
+    AppearingAnimation="{uxd:FadeInPopupAnimation Duration=300,
+                                                  Easing=CubicOut}"
+    BackgroundColor="{AppThemeBinding Light=#80000000,
+                                      Dark=#B3000000}"
+    DisappearingAnimation="{uxd:FadeOutPopupAnimation Duration=200,
+                                                      Easing=Linear}">
 
     <Border
-        VerticalOptions="Center"
-        HorizontalOptions="Center"
-        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
-        Stroke="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}"
         Padding="24"
-        WidthRequest="{OnIdiom Phone=300, Default=380}">
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        WidthRequest="{OnIdiom Phone=300,
+                               Default=380}">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="16" />
         </Border.StrokeShape>
         <Border.Shadow>
-            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" 
-                    Opacity="{AppThemeBinding Light=0.2, Dark=0.4}" 
-                    Radius="10" 
-                    Offset="0,4" />
+            <Shadow
+                Brush="{AppThemeBinding Light={StaticResource Black},
+                                        Dark={StaticResource Black}}"
+                Opacity="{AppThemeBinding Light=0.2,
+                                          Dark=0.4}"
+                Radius="10"
+                Offset="0,4" />
         </Border.Shadow>
 
         <VerticalStackLayout Spacing="16">
             <Label
                 x:Name="TitleLabel"
-                Text="Confirm Action"
                 FontAttributes="Bold"
                 FontSize="18"
-                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
-                HorizontalTextAlignment="Center" />
+                HorizontalTextAlignment="Center"
+                Text="Confirm Action"
+                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                            Dark={StaticResource TextPrimaryDark}}" />
 
             <Label
                 x:Name="MessageLabel"
                 FontSize="14"
-                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
-                HorizontalTextAlignment="Center" />
+                HorizontalTextAlignment="Center"
+                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                            Dark={StaticResource TextSecondaryDark}}" />
 
-            <Grid x:Name="ButtonLayoutGrid" ColumnSpacing="12" RowSpacing="12">
+            <Grid
+                x:Name="ButtonLayoutGrid"
+                ColumnSpacing="12"
+                RowSpacing="12">
                 <Button
                     x:Name="CancelButton"
-                    Style="{StaticResource SecondaryActionButtonStyle}"
-                    Clicked="OnCancelClicked" />
-                
-                <Button
-                    x:Name="ConfirmButton"
-                    Clicked="OnConfirmClicked" />
+                    Clicked="OnCancelClicked"
+                    Style="{StaticResource SecondaryActionButtonStyle}" />
+
+                <Button x:Name="ConfirmButton" Clicked="OnConfirmClicked" />
             </Grid>
         </VerticalStackLayout>
     </Border>
