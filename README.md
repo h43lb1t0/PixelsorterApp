@@ -23,9 +23,11 @@ Download it either from the [Google Playstore](https://play.google.com/store/app
 
 
 ### Android Screenshots
+<img height="800" alt="signal-2026-08-15-22-12-00-932_006" src="https://github.com/user-attachments/assets/4265aac2-a6ac-4398-aa52-6f3c605b2846" />
+<img height="800" alt="signal-2026-08-15-22-12-00-932" src="https://github.com/user-attachments/assets/e64594f4-0491-44c3-9757-df1fa62d63af" />
+<img height="800" alt="signal-2026-08-15-22-12-00-932_003" src="https://github.com/user-attachments/assets/1ff4030d-91b0-48d0-a5b9-706e183ff376" />
 
 
-<img height="800" alt="signal-2026-03-22-222606_003" src="https://github.com/user-attachments/assets/c5df1e88-b19a-4be1-b9ea-3373110f2c04" /> <img height="800" alt="signal-2026-03-22-222606_002" src="https://github.com/user-attachments/assets/7eb90474-9487-4f34-87f1-6d3ed9053f7b" />
 
 
 ## Prerequisites
