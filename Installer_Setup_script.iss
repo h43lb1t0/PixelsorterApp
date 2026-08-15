@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "Pixelsorter"
-#define MyAppVersion "0.0.3"
+#define MyAppVersion "26.08.15"
 #define MyAppPublisher "h43lb1t0"
 #define MyAppURL "https://pixelsorter.haelbich.org"
 #define MyAppExeName "PixelsorterApp.exe"
