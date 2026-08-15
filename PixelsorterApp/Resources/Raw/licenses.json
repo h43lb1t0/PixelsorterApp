@@ -21,7 +21,7 @@
   },
   {
     "PackageId": "Microsoft.ML.OnnxRuntime",
-    "PackageVersion": "1.27.1",
+    "PackageVersion": "1.29.0",
     "PackageProjectUrl": "https://github.com/Microsoft/onnxruntime",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
