@@ -242,7 +242,7 @@ namespace PixelsorterApp
         {
             if (SharedImageBridge.TryConsumePendingImagePath(out var pendingImagePath) && pendingImagePath is not null)
             {
-                await LoadImageFromPath(pendingImagePath);
+                LoadImageFromPath(pendingImagePath);
             }
 
             if (!Preferences.Default.Get("HasSeenGallerySuggest", false))
@@ -291,11 +291,11 @@ namespace PixelsorterApp
         /// paths, and updates the user interface to reflect the newly loaded image. It also sets the appropriate UI
         /// elements to indicate that a new image is ready for further actions such as sorting.</remarks>
         /// <param name="path">The file path of the image to load. This must be a valid path to an image file.</param>
-        private Task<Boolean> LoadImageFromPath(string path)
+        private Boolean LoadImageFromPath(string path)
         {
             if (Path.GetExtension(path) is ".dng" or ".nef" or ".cr2" or ".arw" or ".rw2" or ".orf")
             {
-                return Task.FromResult(false);
+                return false;
             }
             this.imagePath = path;
             imageCaptions.Clear();
@@ -320,7 +320,7 @@ namespace PixelsorterApp
                 viewModel.IsSaveEnabled = false;
                 SemanticScreenReader.Announce("Image loaded. Ready to sort.");
             });
-            return Task.FromResult(true);
+            return true;
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace PixelsorterApp
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             var results = await MediaPicker.PickPhotosAsync();
             var success = LoadImageFromPath(results[0].FullPath);
-            if (!success.Result)
+            if (!success)
             {
                 var popup = new Toast()
                 {
