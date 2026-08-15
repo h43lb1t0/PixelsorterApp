@@ -4,16 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp.Pages"
-    xmlns:views="clr-namespace:PixelsorterApp.Views"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                  Dark={StaticResource PageBackgroundDark}}">
+    xmlns:views="clr-namespace:PixelsorterApp.Views">
     <Shell.TitleView>
-        <Label Text="Example Gallery"
-               FontFamily="SpaceGroteskBold" 
-               FontSize="24"
-               FontAttributes="Bold"
-               TextColor="{StaticResource Primary}"
-               VerticalOptions="Center" />
+        <Label
+            FontAttributes="Bold"
+            FontFamily="SpaceGroteskBold"
+            FontSize="24"
+            Text="Example Gallery"
+            TextColor="{StaticResource Primary}"
+            VerticalOptions="Center" />
     </Shell.TitleView>
 
     <Grid RowDefinitions="Auto,*">
@@ -22,9 +21,9 @@
             Padding="20,12,20,4"
             FontFamily="SpaceGroteskRegular"
             FontSize="13"
+            Text="Drag the slider to compare the original and sorted image."
             TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                        Dark={StaticResource TextSecondaryDark}}"
-            Text="Drag the slider to compare the original and sorted image." />
+                                        Dark={StaticResource TextSecondaryDark}}" />
 
         <CollectionView x:Name="GalleryContainer" Grid.Row="1">
             <CollectionView.ItemsLayout>

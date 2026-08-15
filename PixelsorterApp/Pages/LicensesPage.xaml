@@ -4,16 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}"
     SemanticProperties.Description="Open source licenses used by the app">
     <Shell.TitleView>
-        <Label Text="Open Source Licenses"
-           FontFamily="SpaceGroteskBold" 
-           FontSize="24"
-           FontAttributes="Bold"
-           TextColor="{StaticResource Primary}"
-           VerticalOptions="Center" />
+        <Label
+            FontAttributes="Bold"
+            FontFamily="SpaceGroteskBold"
+            FontSize="24"
+            Text="Open Source Licenses"
+            TextColor="{StaticResource Primary}"
+            VerticalOptions="Center" />
     </Shell.TitleView>
 
 

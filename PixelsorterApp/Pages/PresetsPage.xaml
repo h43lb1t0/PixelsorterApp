@@ -5,16 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
-    x:DataType="viewModels:PresetsPageViewModel"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                      Dark={StaticResource PageBackgroundDark}}">
+    x:DataType="viewModels:PresetsPageViewModel">
     <Shell.TitleView>
-        <Label Text="Presets"
-           FontFamily="SpaceGroteskBold" 
-           FontSize="24"
-           FontAttributes="Bold"
-           TextColor="{StaticResource Primary}"
-           VerticalOptions="Center" />
+        <Label
+            FontAttributes="Bold"
+            FontFamily="SpaceGroteskBold"
+            FontSize="24"
+            Text="Presets"
+            TextColor="{StaticResource Primary}"
+            VerticalOptions="Center" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
@@ -51,8 +50,8 @@
                         Style="{StaticResource SecondaryActionButtonStyle}"
                         Text="{Binding TomlMapToggleText}" />
                     <Border
-                        IsVisible="{Binding IsTomlMapVisible}"
                         Padding="10"
+                        IsVisible="{Binding IsTomlMapVisible}"
                         Stroke="{AppThemeBinding Light={StaticResource DividerLight},
                                                  Dark={StaticResource DividerDark}}"
                         StrokeShape="RoundRectangle 8"
@@ -146,13 +145,11 @@
                     <CollectionView ItemsSource="{Binding AvailablePresets}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewModels:PresetsPageViewModel+PresetListItem">
-                                <Grid
-                                    Padding="0,6"
-                                    ColumnDefinitions="*,Auto,Auto">
+                                <Grid Padding="0,6" ColumnDefinitions="*,Auto,Auto">
                                     <Label
                                         Grid.Column="0"
-                                        VerticalOptions="Center"
-                                        Text="{Binding Name}" />
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
                                     <Button
                                         Grid.Column="1"
                                         Margin="12,0,0,0"

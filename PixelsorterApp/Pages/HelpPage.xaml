@@ -3,16 +3,15 @@
     x:Class="PixelsorterApp.Pages.HelpPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
-    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight},
-                                  Dark={StaticResource PageBackgroundDark}}">
+    xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown">
     <Shell.TitleView>
-        <Label Text="How to use the Pixelsorter"
-           FontFamily="SpaceGroteskBold" 
-           FontSize="22"
-           FontAttributes="Bold"
-           TextColor="{StaticResource Primary}"
-           VerticalOptions="Center" />
+        <Label
+            FontAttributes="Bold"
+            FontFamily="SpaceGroteskBold"
+            FontSize="22"
+            Text="How to use the Pixelsorter"
+            TextColor="{StaticResource Primary}"
+            VerticalOptions="Center" />
     </Shell.TitleView>
     <Grid
         Padding="15"
