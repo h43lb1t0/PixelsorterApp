@@ -8,7 +8,7 @@ namespace PixelsorterApp.Popups;
 
 public partial class NavigationPopup : PopupResultPage<String>
 {
-    private ICommand SetResultCommand;
+    private readonly ICommand SetResultCommand;
 
     public event EventHandler<string>? OptionSelected;
 
