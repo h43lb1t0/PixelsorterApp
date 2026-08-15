@@ -53,6 +53,8 @@ public partial class NavigationPopup : PopupResultPage<String>
 
     private View CreateNavItem(string label, string icon, bool isLast)
     {
+        if (Application.Current == null) return new VerticalStackLayout();
+
         var container = new VerticalStackLayout { Spacing = 0 };
 
         // The tappable row
@@ -78,8 +80,8 @@ public partial class NavigationPopup : PopupResultPage<String>
             HorizontalOptions = LayoutOptions.Center,
         };
         iconLabel.SetAppThemeColor(Label.TextColorProperty,
-            (Color)Application.Current!.Resources["Primary"],
-            (Color)Application.Current!.Resources["PrimaryDark"]);
+            (Color)Application.Current.Resources["Primary"],
+            (Color)Application.Current.Resources["PrimaryDark"]);
         Grid.SetColumn(iconLabel, 0);
 
         // Text label
@@ -91,8 +93,8 @@ public partial class NavigationPopup : PopupResultPage<String>
             VerticalOptions = LayoutOptions.Center,
         };
         textLabel.SetAppThemeColor(Label.TextColorProperty,
-            (Color)Application.Current!.Resources["TextPrimaryLight"],
-            (Color)Application.Current!.Resources["TextPrimaryDark"]);
+            (Color)Application.Current.Resources["TextPrimaryLight"],
+            (Color)Application.Current.Resources["TextPrimaryDark"]);
         Grid.SetColumn(textLabel, 1);
 
         // Trailing chevron
@@ -105,8 +107,8 @@ public partial class NavigationPopup : PopupResultPage<String>
             HorizontalOptions = LayoutOptions.Center,
         };
         chevron.SetAppThemeColor(Label.TextColorProperty,
-            (Color)Application.Current!.Resources["TextSecondaryLight"],
-            (Color)Application.Current!.Resources["TextSecondaryDark"]);
+            (Color)Application.Current.Resources["TextSecondaryLight"],
+            (Color)Application.Current.Resources["TextSecondaryDark"]);
         Grid.SetColumn(chevron, 2);
 
         row.Add(iconLabel);
@@ -125,7 +127,7 @@ public partial class NavigationPopup : PopupResultPage<String>
         var pointerGesture = new PointerGestureRecognizer();
         pointerGesture.PointerEntered += (s, e) =>
         {
-            if (Application.Current!.RequestedTheme == AppTheme.Dark)
+            if (Application.Current.RequestedTheme == AppTheme.Dark)
                 row.BackgroundColor = Color.FromArgb("#15FFFFFF");
             else
                 row.BackgroundColor = Color.FromArgb("#0A000000");
@@ -147,8 +149,8 @@ public partial class NavigationPopup : PopupResultPage<String>
                 Margin = new Thickness(60, 0, 20, 0), // Indent to align with text, not icon
             };
             separator.SetAppThemeColor(BoxView.ColorProperty,
-                (Color)Application.Current!.Resources["DividerLight"],
-                (Color)Application.Current!.Resources["DividerDark"]);
+                (Color)Application.Current.Resources["DividerLight"],
+                (Color)Application.Current.Resources["DividerDark"]);
             separator.Opacity = 0.6;
 
             container.Add(separator);
