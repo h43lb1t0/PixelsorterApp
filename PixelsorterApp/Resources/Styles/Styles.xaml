@@ -502,5 +502,13 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
+    <Style x:Key="CardHeaderLabel" TargetType="Label">
+        <Setter Property="Margin" Value="4,10,4,4" />
+        <Setter Property="FontFamily" Value="SpaceGroteskRegular" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    </Style>
+
 
 </ResourceDictionary>

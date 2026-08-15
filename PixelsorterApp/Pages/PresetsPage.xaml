@@ -11,13 +11,7 @@
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
-            <Label
-                FontAttributes="Bold"
-                FontSize="13"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="PRESET DETAILS"
-                TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                            Dark={StaticResource PrimaryDark}}" />
+            <Label Style="{StaticResource CardHeaderLabel}" Text="PRESET DETAILS" />
 
             <Border
                 Padding="16"
@@ -94,13 +88,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Label
-                FontAttributes="Bold"
-                FontSize="13"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="AVAILABLE PRESETS"
-                TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                            Dark={StaticResource PrimaryDark}}" />
+            <Label Style="{StaticResource CardHeaderLabel}" Text="AVAILABLE PRESETS" />
 
             <Border
                 Padding="16"

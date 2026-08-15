@@ -149,14 +149,9 @@
                 </Border>
 
                 <Label
-                    Margin="4,10,4,4"
-                    FontAttributes="Bold"
-                    FontFamily="SpaceGroteskRegular"
-                    FontSize="13"
                     SemanticProperties.HeadingLevel="Level2"
-                    Text="SORT SETTINGS"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                Dark={StaticResource PrimaryDark}}" />
+                    Style="{StaticResource CardHeaderLabel}"
+                    Text="SORT SETTINGS" />
 
                 <Border
                     Padding="0"
@@ -207,15 +202,7 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Label
-                    Margin="4,10,4,4"
-                    FontAttributes="Bold"
-                    FontFamily="SpaceGroteskRegular"
-                    FontSize="13"
-                    SemanticProperties.HeadingLevel="Level2"
-                    Text="MASKING OPTIONS"
-                    TextColor="{AppThemeBinding Light={StaticResource Primary},
-                                                Dark={StaticResource PrimaryDark}}" />
+                <Label Style="{StaticResource CardHeaderLabel}" Text="MASKING OPTIONS" />
 
                 <views:MaskingOptionsView />
 
