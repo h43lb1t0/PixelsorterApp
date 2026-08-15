@@ -293,7 +293,8 @@ namespace PixelsorterApp
         /// <param name="path">The file path of the image to load. This must be a valid path to an image file.</param>
         private Boolean LoadImageFromPath(string path)
         {
-            if (Path.GetExtension(path) is ".dng" or ".nef" or ".cr2" or ".arw" or ".rw2" or ".orf")
+            var ext = Path.GetExtension(path).ToLower();
+            if (ext is ".dng" or ".nef" or ".cr2" or ".arw" or ".rw2" or ".orf")
             {
                 return false;
             }
