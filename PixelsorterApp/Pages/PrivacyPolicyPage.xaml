@@ -5,13 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     SemanticProperties.Description="Privacy policy in German and English">
     <Shell.TitleView>
-        <Label
-            FontAttributes="Bold"
-            FontFamily="SpaceGroteskBold"
-            FontSize="24"
-            Text="Privacy Policy"
-            TextColor="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Privacy Policy" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="14">

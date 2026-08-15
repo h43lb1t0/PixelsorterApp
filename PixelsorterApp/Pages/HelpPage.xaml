@@ -6,12 +6,9 @@
     xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown">
     <Shell.TitleView>
         <Label
-            FontAttributes="Bold"
-            FontFamily="SpaceGroteskBold"
             FontSize="22"
-            Text="How to use the Pixelsorter"
-            TextColor="{StaticResource Primary}"
-            VerticalOptions="Center" />
+            Style="{StaticResource TitleViewLabelStyle}"
+            Text="How to use the Pixelsorter" />
     </Shell.TitleView>
     <Grid
         Padding="15"

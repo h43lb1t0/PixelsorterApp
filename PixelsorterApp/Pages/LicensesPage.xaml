@@ -6,13 +6,7 @@
     xmlns:local="clr-namespace:PixelsorterApp"
     SemanticProperties.Description="Open source licenses used by the app">
     <Shell.TitleView>
-        <Label
-            FontAttributes="Bold"
-            FontFamily="SpaceGroteskBold"
-            FontSize="24"
-            Text="Open Source Licenses"
-            TextColor="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Open Source Licenses" />
     </Shell.TitleView>
 
 
