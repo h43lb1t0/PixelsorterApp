@@ -19,7 +19,7 @@
                 <Label
                     FontSize="12"
                     Opacity="0.65"
-                    Text="Keeps egdes unsorted"
+                    Text="Keeps edges unsorted"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}"
                     VerticalOptions="Center" />
