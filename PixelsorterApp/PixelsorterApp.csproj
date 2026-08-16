@@ -142,6 +142,18 @@
 	  <Compile Update="Pages\PresetsPage.xaml.cs">
 	    <DependentUpon>PresetsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\CommonStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>CommonStrings.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Languages\CommonStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

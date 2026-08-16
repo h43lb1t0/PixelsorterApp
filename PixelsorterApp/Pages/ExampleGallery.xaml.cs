@@ -112,22 +112,22 @@ public class ExampleImageConfig : INotifyPropertyChanged
 	public ImageSource AfterImageSource => ImageSource.FromFile($"ExampleImages/after_{Id}.webp");
 
 	[JsonIgnore]
-	public string SortBySafe => SortBy ?? "None";
+	public string SortBySafe => SortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.None;
 	
 	[JsonIgnore]
-	public string SortDirectionSafe => SortDirection ?? "None";
+	public string SortDirectionSafe => SortDirection ?? PixelsorterApp.Resources.Languages.CommonStrings.None;
 	
 	[JsonIgnore]
-	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : "N/A";
+	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.CommonStrings.NA;
 	
 	[JsonIgnore]
-	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : "N/A";
+	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.CommonStrings.NA;
 	
 	[JsonIgnore]
-	public string WhatToSortSafe => WhatToSort ?? "None";
+	public string WhatToSortSafe => WhatToSort ?? PixelsorterApp.Resources.Languages.CommonStrings.None;
 	
 	[JsonIgnore]
-	public string MaskCombineSafe => MaskCombine ?? "None";
+	public string MaskCombineSafe => MaskCombine ?? PixelsorterApp.Resources.Languages.CommonStrings.None;
 }
 
 public class ExampleImageConfigsRoot

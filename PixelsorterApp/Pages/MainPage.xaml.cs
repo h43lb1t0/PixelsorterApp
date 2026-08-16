@@ -253,7 +253,7 @@ namespace PixelsorterApp
                     { "Title", "Welcome to Pixel Sorter!" },
                     { "message", "Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu" },
                     { "ConfirmButton", "Go to Gallery" },
-                    { "CancelButton", "Dismiss" }
+                    { "CancelButton", PixelsorterApp.Resources.Languages.CommonStrings.Dismiss }
                 };
 
                 var response = await IPopupService.Current.PushAsync(popup, parameters);
@@ -568,7 +568,7 @@ namespace PixelsorterApp
                 catch (Exception ex)
                 {
                     // Handle exceptions (e.g., show an alert)
-                    await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, $"An error occurred: {ex.Message}", PixelsorterApp.Resources.Languages.CommonStrings.OK);
                     SemanticScreenReader.Announce($"Error: {ex.Message}");
                 }
 
@@ -591,7 +591,7 @@ namespace PixelsorterApp
 
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
-                await DisplayAlertAsync("Error", "No image available to save.", "OK");
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, "No image available to save.", PixelsorterApp.Resources.Languages.CommonStrings.OK);
                 SemanticScreenReader.Announce("No image available to save.");
                 return;
             }
@@ -637,7 +637,7 @@ namespace PixelsorterApp
                 var focusedImagePath = GetFocusedImagePath();
                 if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
                 {
-                    await DisplayAlertAsync("Error", "No image available to share.", "OK");
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, "No image available to share.", PixelsorterApp.Resources.Languages.CommonStrings.OK);
                     SemanticScreenReader.Announce("No image available to share.");
                     return;
                 }
@@ -646,7 +646,7 @@ namespace PixelsorterApp
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", $"Share failed: {ex.Message}", "OK");
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, $"Share failed: {ex.Message}", PixelsorterApp.Resources.Languages.CommonStrings.OK);
             }
         }
 
@@ -719,7 +719,7 @@ namespace PixelsorterApp
                         await DisplayAlertAsync(
                             "Download failed",
                             "The masking model could not be downloaded. Please check your internet connection and try again.",
-                            "OK");
+                            PixelsorterApp.Resources.Languages.CommonStrings.OK);
                         DisableSubjectMaskWithoutReentry();
                         return;
                     }
@@ -746,7 +746,7 @@ namespace PixelsorterApp
 
             if (accessType != NetworkAccess.Internet)
             {
-                await DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                await DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", PixelsorterApp.Resources.Languages.CommonStrings.OK);
                 return false;
             }
             return true;
