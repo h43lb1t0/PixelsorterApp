@@ -21,7 +21,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
     private IReadOnlyDictionary<string, string> AvailablePresets = new Dictionary<string, string>();
-    private const string NewPresetOptionLabel = "new preset";
+    private readonly string NewPresetOptionLabel = PixelsorterApp.Resources.Languages.PresetStrings.NewPresetAction;
     private bool suppressPresetSelectionChangedHandling;
     private bool suppressSortDirectionRefresh;
     private bool isNavigatingToPresetPage;

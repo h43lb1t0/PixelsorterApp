@@ -152,6 +152,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>MainPageStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\PresetStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>PresetStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -162,6 +167,10 @@
 	  <EmbeddedResource Update="Resources\Languages\MainPageStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>MainPageStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\PresetStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>PresetStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 
