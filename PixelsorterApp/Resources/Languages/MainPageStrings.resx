@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PixelSorterHeader" xml:space="preserve">
+    <value>Pixel Sorter</value>
+    <comment>Heading of the app</comment>
+  </data>
+  <data name="AppSlogan" xml:space="preserve">
+    <value>Load an image, choose options, and sort.</value>
+    <comment>The slogan for the app</comment>
+  </data>
+  <data name="HeaderSortSettings" xml:space="preserve">
+    <value>SORT SETTINGS</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort by</value>
+    <comment>Title of the Dropdown for choosing the sorting criteria</comment>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+    <comment>Title for the Dropdown choosing the sorting direction</comment>
+  </data>
+  <data name="HeaderMaskingOptions" xml:space="preserve">
+    <value>MASKING OPTIONS</value>
+  </data>
+  <data name="Sort" xml:space="preserve">
+    <value>Sort</value>
+    <comment>For the button that starts sorting</comment>
+  </data>
+  <data name="SortCaption" xml:space="preserve">
+    <value>Sort by: {0} • Direction: {1}</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to Pixel Sorter!</value>
+    <comment>Title of the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu</value>
+    <comment>Messageof the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="WelcomeAction" xml:space="preserve">
+    <value>Go to Gallery</value>
+    <comment>Action text of the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="OriginalImage" xml:space="preserve">
+    <value>Original image</value>
+  </data>
+  <data name="CycleSortingMessagesCombiningMasks" xml:space="preserve">
+    <value>Combining masks...</value>
+  </data>
+  <data name="CycleSortingMessagesApplyingSubjectMask" xml:space="preserve">
+    <value>Applying subject mask...</value>
+  </data>
+  <data name="CycleSortingMessagesDetectingEdges" xml:space="preserve">
+    <value>Detecting edges...</value>
+  </data>
+  <data name="CycleSortingMessagesSortingBy" xml:space="preserve">
+    <value>Sorting by {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesArrangingPixels" xml:space="preserve">
+    <value>Arranging pixels {0}...</value>
+  </data>
+  <data name="dngErrorMessage" xml:space="preserve">
+    <value>Can't load RAW Images (dng files)</value>
+  </data>
+  <data name="CycleSortingMessagesReadingPixelData" xml:space="preserve">
+    <value>Reading pixel data...</value>
+  </data>
+  <data name="SortAsync_AnErrorOccurredExMessage" xml:space="preserve">
+    <value>An error occurred: {0}</value>
+  </data>
+  <data name="SaveAsync_NoImageAvailableToSave" xml:space="preserve">
+    <value>No image available to save.</value>
+  </data>
+  <data name="SaveAsync_ImageSaved" xml:space="preserve">
+    <value>Image saved</value>
+  </data>
+  <data name="SaveAsync_FailedToSaveImage" xml:space="preserve">
+    <value>Failed to save image</value>
+  </data>
+  <data name="ShareAsync_NoImageAvailableToShare" xml:space="preserve">
+    <value>No image available to share.</value>
+  </data>
+  <data name="ShareAsync_ShareFailed" xml:space="preserve">
+    <value>Share failed: {0}</value>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Masking Feature License</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading...</value>
+    <comment>Downloading the background remove model</comment>
+  </data>
+  <data name="DownloadFailed_Title" xml:space="preserve">
+    <value>Download failed</value>
+  </data>
+  <data name="DownloadFailed_Message" xml:space="preserve">
+    <value>The masking model could not be downloaded. Please check your internet connection and try again.</value>
+  </data>
+  <data name="NoInternetConnection_Title" xml:space="preserve">
+    <value>No Internet Connection</value>
+  </data>
+  <data name="NoInternetConnection_Message" xml:space="preserve">
+    <value>An internet connection is required to use the masking feature. Please connect to the internet and try again.</value>
+  </data>
+  <data name="TapToLoadAnImage" xml:space="preserve">
+    <value>Tap to load an image</value>
+  </data>
+  <data name="CannyView_Title" xml:space="preserve">
+    <value>Canny Edge mask</value>
+  </data>
+  <data name="CannyView_details" xml:space="preserve">
+    <value>Keeps edges unsorted</value>
+  </data>
+  <data name="CannyView_Threshold" xml:space="preserve">
+    <value>Sensitivity threshold</value>
+  </data>
+  <data name="PresetsView_Header" xml:space="preserve">
+    <value>PRESETS</value>
+  </data>
+  <data name="PresetsView_Presets" xml:space="preserve">
+    <value>Presets</value>
+    <comment>Title for the Presets dropdown</comment>
+  </data>
+  <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
+    <value>Subject mask</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
+    <value>Detect people or objects, sort around them</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
+    <value>What to sort</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
+    <value>Foreground</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Title" xml:space="preserve">
+    <value>How to combine masks</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
+    <value>Subtract</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
+    <value>Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask</value>
+  </data>
+</root>

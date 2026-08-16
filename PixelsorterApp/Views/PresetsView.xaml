@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
     x:DataType="viewModels:MainPageViewModel">
@@ -11,7 +12,7 @@
         <Label
             SemanticProperties.HeadingLevel="Level2"
             Style="{StaticResource CardHeaderLabel}"
-            Text="PRESETS" />
+            Text="{x:Static properties:MainPageStrings.PresetsView_Header}" />
 
         <Border StyleClass="Elevation3">
             <Border.Shadow>
@@ -26,7 +27,7 @@
             <Grid Padding="16,10" ColumnDefinitions="*,Auto">
                 <material:SelectField
                     x:Name="presetPicker"
-                    Title="Presets"
+                    Title="{x:Static properties:MainPageStrings.PresetsView_Presets}"
                     Grid.Row="0"
                     AllowClear="False"
                     IsEnabled="{Binding IsInteractionEnabled}"

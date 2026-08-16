@@ -129,7 +129,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets or sets the caption shown for the currently displayed image.
     /// </summary>
     [ObservableProperty]
-    public partial string CurrentCaption { get; set; } = "Tap to load an image";
+    public partial string CurrentCaption { get; set; } = PixelsorterApp.Resources.Languages.MainPageStrings.TapToLoadAnImage;
 
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;

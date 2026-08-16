@@ -134,4 +134,10 @@
     <value>Unknown</value>
     <comment>Used when an Value that should be known is not</comment>
   </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="DontAccept" xml:space="preserve">
+    <value>Don't accept</value>
+  </data>
 </root>

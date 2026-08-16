@@ -31,14 +31,14 @@
                         FontFamily="SpaceGroteskBold"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
-                        Text="Pixel Sorter" />
+                        Text="{x:Static properties:MainPageStrings.PixelSorterHeader}" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         FontFamily="SpaceGroteskRegular"
                         FontSize="14"
                         Opacity="0.8"
-                        Text="Load an image, choose options, and sort." />
+                        Text="{x:Static properties:MainPageStrings.AppSlogan}" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
@@ -147,7 +147,7 @@
                 <Label
                     SemanticProperties.HeadingLevel="Level2"
                     Style="{StaticResource CardHeaderLabel}"
-                    Text="SORT SETTINGS" />
+                    Text="{x:Static properties:MainPageStrings.HeaderSortSettings}" />
 
                 <Border StyleClass="Elevation3">
                     <Border.Shadow>
@@ -162,7 +162,7 @@
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
                             <material:SelectField
                                 x:Name="sortBy"
-                                Title="Sort by"
+                                Title="{x:Static properties:MainPageStrings.SortBy}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
@@ -173,7 +173,7 @@
                                                             Dark={StaticResource TextPrimaryDark}}" />
                             <material:SelectField
                                 x:Name="sortDirection"
-                                Title="Direction"
+                                Title="{x:Static properties:MainPageStrings.Direction}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
@@ -186,7 +186,7 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Label Style="{StaticResource CardHeaderLabel}" Text="MASKING OPTIONS" />
+                <Label Style="{StaticResource CardHeaderLabel}" Text="{x:Static properties:MainPageStrings.HeaderMaskingOptions}" />
 
                 <views:MaskingOptionsView />
 
@@ -226,7 +226,7 @@
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
                 SemanticProperties.Description="Sort the loaded image using the current settings"
-                Text="Sort" />
+                Text="{x:Static properties:MainPageStrings.Sort}" />
             <Button
                 x:Name="saveBtn"
                 Grid.Row="1"

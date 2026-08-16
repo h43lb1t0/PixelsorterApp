@@ -61,6 +61,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        internal static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -84,6 +93,15 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string Dismiss {
             get {
                 return ResourceManager.GetString("Dismiss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t accept.
+        /// </summary>
+        internal static string DontAccept {
+            get {
+                return ResourceManager.GetString("DontAccept", resourceCulture);
             }
         }
         
