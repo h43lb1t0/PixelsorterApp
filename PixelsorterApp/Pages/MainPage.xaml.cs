@@ -472,7 +472,7 @@ namespace PixelsorterApp
             {
                 var popup = new Toast()
                 {
-                    Title = PixelsorterApp.Resources.Languages.MainPageStrings.dngErrorMessage,
+                    Title = PixelsorterApp.Resources.Languages.CommonStrings.dngErrorMessage,
                     IconText = MaterialSymbolsFont.Error,
                     IconColor = Colors.Red,
                 };

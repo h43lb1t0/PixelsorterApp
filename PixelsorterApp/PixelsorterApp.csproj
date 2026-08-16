@@ -147,6 +147,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>CommonStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\ExampleGalleryStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ExampleGalleryStrings.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Languages\MainPageStrings.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -156,6 +161,11 @@
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>NavigationStrings.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Languages\OtherStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>OtherStrings.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\Languages\PresetStrings.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -169,6 +179,10 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\ExampleGalleryStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ExampleGalleryStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Languages\MainPageStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>MainPageStrings.Designer.cs</LastGenOutput>
@@ -176,6 +190,10 @@
 	  <EmbeddedResource Update="Resources\Languages\NavigationStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>NavigationStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\OtherStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>OtherStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Languages\PresetStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>

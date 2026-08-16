@@ -97,6 +97,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t load RAW Images (dng files).
+        /// </summary>
+        internal static string dngErrorMessage {
+            get {
+                return ResourceManager.GetString("dngErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Don&apos;t accept.
         /// </summary>
         internal static string DontAccept {

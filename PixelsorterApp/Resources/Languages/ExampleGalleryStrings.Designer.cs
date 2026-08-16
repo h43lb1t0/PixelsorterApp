@@ -22,14 +22,14 @@ namespace PixelsorterApp.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class NavigationStrings {
+    internal class ExampleGalleryStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal NavigationStrings() {
+        internal ExampleGalleryStrings() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PixelsorterApp.Resources.Languages {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PixelsorterApp.Resources.Languages.NavigationStrings", typeof(NavigationStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PixelsorterApp.Resources.Languages.ExampleGalleryStrings", typeof(ExampleGalleryStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,29 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How to use the Pixelsorter.
+        ///   Looks up a localized string similar to DIRECTION.
         /// </summary>
-        internal static string HelpPage_DisplayPageName_HowToUseThePixelsorter {
+        internal static string BeforeAfterView_DIRECTION {
             get {
-                return ResourceManager.GetString("HelpPage_DisplayPageName_HowToUseThePixelsorter", resourceCulture);
+                return ResourceManager.GetString("BeforeAfterView_DIRECTION", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Navigation.
+        ///   Looks up a localized string similar to SETTINGS USED.
         /// </summary>
-        internal static string Navigation {
+        internal static string BeforeAfterView_SETTINGSUSED {
             get {
-                return ResourceManager.GetString("Navigation", resourceCulture);
+                return ResourceManager.GetString("BeforeAfterView_SETTINGSUSED", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help &amp; Info.
+        ///   Looks up a localized string similar to SORT BY.
         /// </summary>
-        internal static string Navigation_Title {
+        internal static string BeforeAfterView_SORTBY {
             get {
-                return ResourceManager.GetString("Navigation_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Example Gallery.
-        /// </summary>
-        internal static string PageName_ExampleGallery {
-            get {
-                return ResourceManager.GetString("PageName_ExampleGallery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help Page.
-        /// </summary>
-        internal static string PageName_HelpPage {
-            get {
-                return ResourceManager.GetString("PageName_HelpPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Source Licenses.
-        /// </summary>
-        internal static string PageName_OpenSourceLicenses {
-            get {
-                return ResourceManager.GetString("PageName_OpenSourceLicenses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Presets page.
-        /// </summary>
-        internal static string PageName_PresetsPage {
-            get {
-                return ResourceManager.GetString("PageName_PresetsPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Privacy Policy.
-        /// </summary>
-        internal static string PageName_PrivacyPolicy {
-            get {
-                return ResourceManager.GetString("PageName_PrivacyPolicy", resourceCulture);
+                return ResourceManager.GetString("BeforeAfterView_SORTBY", resourceCulture);
             }
         }
     }

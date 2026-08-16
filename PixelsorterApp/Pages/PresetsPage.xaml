@@ -8,7 +8,7 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:PresetsPageViewModel">
     <Shell.TitleView>
-        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Presets" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{x:Static properties:NavigationStrings.PageName_PresetsPage}" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">

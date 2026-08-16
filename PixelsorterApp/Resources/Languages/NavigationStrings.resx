@@ -118,4 +118,7 @@
   <data name="PageName_PrivacyPolicy" xml:space="preserve">
     <value>Privacy Policy</value>
   </data>
+  <data name="HelpPage_DisplayPageName_HowToUseThePixelsorter" xml:space="preserve">
+    <value>How to use the Pixelsorter</value>
+  </data>
 </root>

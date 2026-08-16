@@ -136,7 +136,6 @@
   </data>
   <data name="WelcomeAction" xml:space="preserve">
     <value>Go to Gallery</value>
-    <comment>Action text of the Welcome Popup on first start of the app</comment>
   </data>
   <data name="OriginalImage" xml:space="preserve">
     <value>Original image</value>
@@ -155,9 +154,6 @@
   </data>
   <data name="CycleSortingMessagesArrangingPixels" xml:space="preserve">
     <value>Arranging pixels {0}...</value>
-  </data>
-  <data name="dngErrorMessage" xml:space="preserve">
-    <value>Can't load RAW Images (dng files)</value>
   </data>
   <data name="CycleSortingMessagesReadingPixelData" xml:space="preserve">
     <value>Reading pixel data...</value>
@@ -228,7 +224,8 @@
     <value>Detect people or objects, sort around them</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
-    <value>What to sort</value>
+    <value>What to sort
+</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
     <value>Background</value>
@@ -247,5 +244,8 @@
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
     <value>Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
+    <value>Padding</value>
   </data>
 </root>

@@ -3,9 +3,10 @@
     x:Class="PixelsorterApp.PrivacyPolicyPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
     SemanticProperties.Description="Privacy policy in German and English">
     <Shell.TitleView>
-        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Privacy Policy" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{x:Static properties:NavigationStrings.PageName_PrivacyPolicy}" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="14">

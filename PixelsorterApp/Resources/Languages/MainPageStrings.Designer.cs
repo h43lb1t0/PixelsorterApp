@@ -160,15 +160,6 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t load RAW Images (dng files).
-        /// </summary>
-        internal static string dngErrorMessage {
-            get {
-                return ResourceManager.GetString("dngErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The masking model could not be downloaded. Please check your internet connection and try again..
         /// </summary>
         internal static string DownloadFailed_Message {
@@ -412,6 +403,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Padding.
+        /// </summary>
+        internal static string SubjectMaskOptionsView_Padding {
+            get {
+                return ResourceManager.GetString("SubjectMaskOptionsView_Padding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subject mask.
         /// </summary>
         internal static string SubjectMaskOptionsView_Title {
@@ -439,7 +439,8 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What to sort.
+        ///   Looks up a localized string similar to What to sort
+        ///.
         /// </summary>
         internal static string SubjectMaskOptionsView_WhatToSort_Title {
             get {

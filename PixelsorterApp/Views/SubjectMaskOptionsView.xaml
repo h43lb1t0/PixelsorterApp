@@ -53,7 +53,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 FontSize="14"
-                Text="Padding"
+                Text="{x:Static properties:MainPageStrings.SubjectMaskOptionsView_Padding}"
                 VerticalOptions="Center" />
             <Slider
                 Grid.Row="1"
