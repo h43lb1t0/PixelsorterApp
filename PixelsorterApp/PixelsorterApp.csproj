@@ -152,6 +152,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>MainPageStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\NavigationStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>NavigationStrings.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Languages\PresetStrings.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -167,6 +172,10 @@
 	  <EmbeddedResource Update="Resources\Languages\MainPageStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>MainPageStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\NavigationStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>NavigationStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Languages\PresetStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>

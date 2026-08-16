@@ -37,7 +37,7 @@ public partial class NavigationPopup : PopupResultPage<String>
 
         if (parameters.TryGetValue("Title", out var title))
         {
-            TitleLabel.Text = title?.ToString() ?? "Navigation";
+            TitleLabel.Text = title?.ToString() ?? PixelsorterApp.Resources.Languages.NavigationStrings.Navigation;
         }
 
         if (parameters.TryGetValue("Options", out var options) && options is IEnumerable<(string Label, string Icon)> navOptions)

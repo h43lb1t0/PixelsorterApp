@@ -31,13 +31,13 @@ public sealed class HelpNavigationService : IHelpNavigationService
 
         var parameters = new Dictionary<string, object?>
         {
-            { "Title", "Help & Info" },
+            { "Title", PixelsorterApp.Resources.Languages.NavigationStrings.Navigation_Title },
             { "Options", new List<(string Label, string Icon)> { 
-                ("Help Page", MaterialSymbolsFont.Help), 
-                ("Example Gallery", MaterialSymbolsFont.Collections), 
-                ("Presets page", MaterialSymbolsFont.Tune), 
-                ("Open Source Licenses", MaterialSymbolsFont.Gavel), 
-                ("Privacy Policy", MaterialSymbolsFont.PrivacyTip), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_HelpPage, MaterialSymbolsFont.Help), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_ExampleGallery, MaterialSymbolsFont.Collections), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip), 
             } }
         };
 
@@ -46,23 +46,25 @@ public sealed class HelpNavigationService : IHelpNavigationService
 
     private async Task NavigateToSelectionAsync(Page currentPage, string selection)
     {
-        switch (selection)
+        if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_HelpPage)
         {
-            case "Help Page":
-                await currentPage.Navigation.PushAsync(new HelpPage());
-                break;
-            case "Example Gallery":
-                await currentPage.Navigation.PushAsync(new ExampleGallery());
-                break;
-            case "Presets page":
-                await presetNavigationService.ShowCreatePresetPageAsync();
-                break;
-            case "Open Source Licenses":
-                await currentPage.Navigation.PushAsync(new LicensesPage());
-                break;
-            case "Privacy Policy":
-                await currentPage.Navigation.PushAsync(new PrivacyPolicyPage());
-                break;
+            await currentPage.Navigation.PushAsync(new HelpPage());
+        }
+        else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_ExampleGallery)
+        {
+            await currentPage.Navigation.PushAsync(new ExampleGallery());
+        }
+        else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PresetsPage)
+        {
+            await presetNavigationService.ShowCreatePresetPageAsync();
+        }
+        else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_OpenSourceLicenses)
+        {
+            await currentPage.Navigation.PushAsync(new LicensesPage());
+        }
+        else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PrivacyPolicy)
+        {
+            await currentPage.Navigation.PushAsync(new PrivacyPolicyPage());
         }
     }
 }
