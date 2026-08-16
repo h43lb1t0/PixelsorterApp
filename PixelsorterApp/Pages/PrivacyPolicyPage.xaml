@@ -21,59 +21,6 @@
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="Grundsätzlich offline" />
-            <Label Text="Die PixelsorterApp arbeitet grundsätzlich vollständig offline. Sämtliche Bildverarbeitung (Pixel-Sorting, Maskierung etc.) findet ausschließlich lokal auf Ihrem Endgerät statt. Es werden dabei keine Bilder, Nutzungsdaten oder sonstige personenbezogene Daten an uns oder an Dritte übertragen." />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
-                Text="Einmaliger Modell-Download von Hugging Face" />
-            <Label Text="Für die Funktion der automatischen Subjekterkennung (Subject Masking) wird ein Machine-Learning-Modell benötigt. Dieses Modell wird einmalig und erst nach expliziter Benutzerinteraktion von der Plattform Hugging Face heruntergeladen." />
-            <Label Text="Beim Download des Modells wird eine Netzwerkverbindung zu den Servern von Hugging Face hergestellt. Dabei können die folgenden Daten an Hugging Face übermittelt werden:" />
-            <Label Text="• Ihre IP-Adresse&#10;• Systeminformationen (User-Agent des aufrufenden Clients)&#10;• Zeitpunkt des Downloads" />
-            <Label Text="Die Datenverarbeitung erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), da der Download erst nach Ihrer aktiven Interaktion ausgelöst wird. Sie können diese Einwilligung für die Zukunft jederzeit widerrufen, indem Sie das heruntergeladene Modell über die Einstellungen der App löschen oder die App vollständig von Ihrem Gerät deinstallieren. Weitere Informationen finden Sie in der Datenschutzerklärung von Hugging Face." />
-            <Label Text="Nach dem einmaligen Download wird das Modell lokal im Dateisystem Ihres Geräts gespeichert. Es finden danach keine weiteren Netzwerkverbindungen zu Hugging Face oder anderen Diensten statt." />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
-                Text="Bezug über App Stores" />
-            <Label Text="Wenn Sie die App über Plattformen von Drittanbietern (z. B. Apple App Store, Google Play Store, Microsoft Store) herunterladen, erheben diese Anbieter eigenständig Daten (z. B. Download-Statistiken oder Absturzberichte). Auf diese Datenverarbeitung haben wir keinen Einfluss. Es gelten die Datenschutzbestimmungen des jeweiligen Store-Betreibers." />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
-                Text="Keine Analyse oder Tracking" />
-            <Label Text="Die App enthält keine Analyse-Tools, kein Tracking und keine Werbung. Es werden keinerlei Nutzungsdaten erhoben oder an Dritte weitergegeben." />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
-                Text="Ihre Rechte" />
-            <Label Text="Sie haben jederzeit das Recht auf:" />
-            <Label Text="• Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten (Art. 15 DSGVO)&#10;• Berichtigung unrichtiger Daten (Art. 16 DSGVO)&#10;• Löschung Ihrer bei uns gespeicherten Daten (Art. 17 DSGVO)&#10;• Einschränkung der Datenverarbeitung (Art. 18 DSGVO)&#10;• Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)&#10;• Datenübertragbarkeit (Art. 20 DSGVO)&#10;• Beschwerderecht: Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO)." />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
-                Text="Aktualität und Änderung dieser Datenschutzerklärung" />
-            <Label Text="Diese Datenschutzerklärung ist aktuell gültig und hat den Stand März 2026. Durch die Weiterentwicklung der App oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung anzupassen." />
-
-            <BoxView
-                Margin="0,8"
-                HeightRequest="1"
-                Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                        Dark={StaticResource DividerDark}}" />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="20"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="English" />
-
-            <Label
-                FontAttributes="Bold"
-                FontSize="17"
                 Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_1_GenerallyOffline}" />
             <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage__Part_1_1}" />
 

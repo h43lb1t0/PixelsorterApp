@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PrivacyPolicyPage_Header" xml:space="preserve">
+    <value>Datenschutzerklärung</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_1_GenerallyOffline" xml:space="preserve">
+    <value>Grundsätzlich offline</value>
+  </data>
+  <data name="PrivacyPolicyPage__Part_1_1" xml:space="preserve">
+    <value>Die PixelsorterApp arbeitet grundsätzlich vollständig offline. Sämtliche Bildverarbeitung (Pixel-Sorting, Maskierung etc.) findet ausschließlich lokal auf Ihrem Endgerät statt. Es werden dabei keine Bilder, Nutzungsdaten oder sonstige personenbezogene Daten an uns oder an Dritte übertragen.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_HuggingFace" xml:space="preserve">
+    <value>Einmaliger Modell-Download von Hugging Face</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_1" xml:space="preserve">
+    <value>Für die Funktion der automatischen Subjekterkennung (Subject Masking) wird ein Machine-Learning-Modell benötigt. Dieses Modell wird einmalig und erst nach expliziter Benutzerinteraktion von der Plattform Hugging Face heruntergeladen.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_2" xml:space="preserve">
+    <value>Beim Download des Modells wird eine Netzwerkverbindung zu den Servern von Hugging Face hergestellt. Dabei können die folgenden Daten an Hugging Face übermittelt werden:</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_3" xml:space="preserve">
+    <value>• Ihre IP-Adresse&amp;#10;• Systeminformationen (User-Agent des aufrufenden Clients)&amp;#10;• Zeitpunkt des Downloads</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_4" xml:space="preserve">
+    <value>Die Datenverarbeitung erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), da der Download erst nach Ihrer aktiven Interaktion ausgelöst wird. Sie können diese Einwilligung für die Zukunft jederzeit widerrufen, indem Sie das heruntergeladene Modell über die Einstellungen der App löschen oder die App vollständig von Ihrem Gerät deinstallieren. Weitere Informationen finden Sie in der Datenschutzerklärung von Hugging Face.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_5" xml:space="preserve">
+    <value>Nach dem einmaligen Download wird das Modell lokal im Dateisystem Ihres Geräts gespeichert. Es finden danach keine weiteren Netzwerkverbindungen zu Hugging Face oder anderen Diensten statt.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_3_DistributionViaAppStores" xml:space="preserve">
+    <value>Bezug über App Stores</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_3_1" xml:space="preserve">
+    <value>Wenn Sie die App über Plattformen von Drittanbietern (z. B. Apple App Store, Google Play Store, Microsoft Store) herunterladen, erheben diese Anbieter eigenständig Daten (z. B. Download-Statistiken oder Absturzberichte). Auf diese Datenverarbeitung haben wir keinen Einfluss. Es gelten die Datenschutzbestimmungen des jeweiligen Store-Betreibers.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_4_NoAnalyticsOrTracking" xml:space="preserve">
+    <value>Keine Analyse oder Tracking</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_4_1" xml:space="preserve">
+    <value>Die App enthält keine Analyse-Tools, kein Tracking und keine Werbung. Es werden keinerlei Nutzungsdaten erhoben oder an Dritte weitergegeben.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_YourRights" xml:space="preserve">
+    <value>Ihre Rechte</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_1" xml:space="preserve">
+    <value>Sie haben jederzeit das Recht auf:</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_2" xml:space="preserve">
+    <value>• Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten (Art. 15 DSGVO)&amp;#10;• Berichtigung unrichtiger Daten (Art. 16 DSGVO)&amp;#10;• Löschung Ihrer bei uns gespeicherten Daten (Art. 17 DSGVO)&amp;#10;• Einschränkung der Datenverarbeitung (Art. 18 DSGVO)&amp;#10;• Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)&amp;#10;• Datenübertragbarkeit (Art. 20 DSGVO)&amp;#10;• Beschwerderecht: Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO).</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_6_CurrentValidityAndChangesToThisPrivacyPolicy" xml:space="preserve">
+    <value>Aktualität und Änderung dieser Datenschutzerklärung</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_6_1" xml:space="preserve">
+    <value>Diese Datenschutzerklärung ist aktuell gültig und hat den Stand März 2026. Durch die Weiterentwicklung der App oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung anzupassen.</value>
+  </data>
+</root>
