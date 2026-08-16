@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PrivacyPolicyPage_Header" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_1_GenerallyOffline" xml:space="preserve">
+    <value>Generally Offline</value>
+  </data>
+  <data name="PrivacyPolicyPage__Part_1_1" xml:space="preserve">
+    <value>The PixelsorterApp generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_HuggingFace" xml:space="preserve">
+    <value>One-Time Model Download from Hugging Face</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_1" xml:space="preserve">
+    <value>A machine learning model is required for the automatic subject detection feature (subject masking). This model is downloaded once and only after explicit user interaction from the Hugging Face platform.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_2" xml:space="preserve">
+    <value>When downloading the model, a network connection to Hugging Face servers is established. During this process, the following data may be transmitted to Hugging Face:</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_3" xml:space="preserve">
+    <value>• Your IP address&amp;#10;• System information (user agent of the requesting client)&amp;#10;• Time of the download</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_4" xml:space="preserve">
+    <value>Data processing is carried out on the basis of your consent (Art. 6(1)(a) GDPR), because the download is only triggered after your active interaction. You can revoke this consent for the future at any time by deleting the downloaded model in the app settings or by fully uninstalling the app from your device. Further information can be found in Hugging Face's privacy policy.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_2_5" xml:space="preserve">
+    <value>After the one-time download, the model is stored locally in your device's file system. No further network connections to Hugging Face or other services are made afterwards.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_3_DistributionViaAppStores" xml:space="preserve">
+    <value>Distribution via App Stores</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_3_1" xml:space="preserve">
+    <value>If you download the app through third-party platforms (e.g., Apple App Store, Google Play Store, Microsoft Store), these providers independently collect data (e.g., download statistics or crash reports). We have no influence over this data processing. The privacy policies of the respective store operators apply.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_4_NoAnalyticsOrTracking" xml:space="preserve">
+    <value>No Analytics or Tracking</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_4_1" xml:space="preserve">
+    <value>The app contains no analytics tools, no tracking, and no advertising. No usage data is collected or shared with third parties.</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_YourRights" xml:space="preserve">
+    <value>Your Rights</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_1" xml:space="preserve">
+    <value>You have the right at any time to:</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_5_2" xml:space="preserve">
+    <value>• Access your personal data stored by us (Art. 15 GDPR)&amp;#10;• Rectification of inaccurate data (Art. 16 GDPR)&amp;#10;• Erasure of your data stored by us (Art. 17 GDPR)&amp;#10;• Restriction of processing (Art. 18 GDPR)&amp;#10;• Objection to processing (Art. 21 GDPR)&amp;#10;• Data portability (Art. 20 GDPR)&amp;#10;• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR).</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_6_CurrentValidityAndChangesToThisPrivacyPolicy" xml:space="preserve">
+    <value>Current Validity and Changes to This Privacy Policy</value>
+  </data>
+  <data name="PrivacyPolicyPage_Part_6_1" xml:space="preserve">
+    <value>This privacy policy is currently valid and reflects the status as of March 2026. As the app evolves or due to changes in legal or regulatory requirements, it may become necessary to update this privacy policy.</value>
+  </data>
+</root>

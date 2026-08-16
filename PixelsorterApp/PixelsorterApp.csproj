@@ -172,6 +172,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>PresetStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\PrivacyPolicyStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>PrivacyPolicyStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -198,6 +203,10 @@
 	  <EmbeddedResource Update="Resources\Languages\PresetStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>PresetStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\PrivacyPolicyStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>PrivacyPolicyStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 
