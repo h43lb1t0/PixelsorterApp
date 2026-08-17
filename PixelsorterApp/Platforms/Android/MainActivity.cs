@@ -54,7 +54,7 @@ namespace PixelsorterApp
                     if (intent.Type == "image/x-adobe-dng")
                     {
                         // Use the global Application Context to show the Android Toast
-                        Android.Widget.Toast.MakeText(Android.App.Application.Context, PixelsorterApp.Resources.Languages.CommonStrings.dngErrorMessage, Android.Widget.ToastLength.Long)?.Show();
+                        Android.Widget.Toast.MakeText(Android.App.Application.Context, PixelsorterApp.Resources.Languages.CommonStrings.common_dngErrorMessage, Android.Widget.ToastLength.Long)?.Show();
 
                         // Make sure to return so you don't continue trying to process the unsupported file
                         return;

@@ -63,117 +63,117 @@ namespace PixelsorterApp.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Accept.
         /// </summary>
-        internal static string Accept {
+        internal static string common_Accept {
             get {
-                return ResourceManager.GetString("Accept", resourceCulture);
+                return ResourceManager.GetString("common_Accept", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string Cancel {
+        internal static string common_Cancel {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("common_Cancel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string Delete {
+        internal static string common_Delete {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("common_Delete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Dismiss.
         /// </summary>
-        internal static string Dismiss {
+        internal static string common_Dismiss {
             get {
-                return ResourceManager.GetString("Dismiss", resourceCulture);
+                return ResourceManager.GetString("common_Dismiss", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t load RAW Images (dng files).
         /// </summary>
-        internal static string dngErrorMessage {
+        internal static string common_dngErrorMessage {
             get {
-                return ResourceManager.GetString("dngErrorMessage", resourceCulture);
+                return ResourceManager.GetString("common_dngErrorMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
-        internal static string DontAccept {
+        internal static string common_DontAccept {
             get {
-                return ResourceManager.GetString("DontAccept", resourceCulture);
+                return ResourceManager.GetString("common_DontAccept", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
-        internal static string Edit {
+        internal static string common_Edit {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("common_Edit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string Error {
+        internal static string common_Error {
             get {
-                return ResourceManager.GetString("Error", resourceCulture);
+                return ResourceManager.GetString("common_Error", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to N/A.
         /// </summary>
-        internal static string NA {
+        internal static string common_NA {
             get {
-                return ResourceManager.GetString("NA", resourceCulture);
+                return ResourceManager.GetString("common_NA", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
-        internal static string None {
+        internal static string common_None {
             get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("common_None", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
-        internal static string OK {
+        internal static string common_OK {
             get {
-                return ResourceManager.GetString("OK", resourceCulture);
+                return ResourceManager.GetString("common_OK", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string Save {
+        internal static string common_Save {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("common_Save", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
-        internal static string Unknown {
+        internal static string common_Unknown {
             get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
+                return ResourceManager.GetString("common_Unknown", resourceCulture);
             }
         }
     }

@@ -48,11 +48,11 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
         }
         if (parameters.TryGetValue("CancelButton", out var cancelText))
         {
-            CancelButton.Text = cancelText?.ToString() ?? PixelsorterApp.Resources.Languages.CommonStrings.Cancel;
+            CancelButton.Text = cancelText?.ToString() ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Cancel;
         }
         if (parameters.TryGetValue("ConfirmButton", out var confirmText))
         {
-            ConfirmButton.Text = confirmText?.ToString() ?? PixelsorterApp.Resources.Languages.CommonStrings.OK;
+            ConfirmButton.Text = confirmText?.ToString() ?? PixelsorterApp.Resources.Languages.CommonStrings.common_OK;
         }
     }
 

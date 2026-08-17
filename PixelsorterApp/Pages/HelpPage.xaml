@@ -4,12 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
-    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages">
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui">
     <Shell.TitleView>
         <Label
             FontSize="22"
             Style="{StaticResource TitleViewLabelStyle}"
-            Text="{x:Static properties:NavigationStrings.HelpPage_DisplayPageName_HowToUseThePixelsorter}" />
+            Text="{localization:Translate HelpPage_DisplayPageName_HowToUseThePixelsorter}" />
     </Shell.TitleView>
     <Grid
         Padding="15"

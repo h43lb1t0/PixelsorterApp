@@ -347,12 +347,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets the selected sort criterion display name.
     /// </summary>
-    public string SelectedSortByName => SelectedSortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.Unknown;
+    public string SelectedSortByName => SelectedSortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
 
     /// <summary>
     /// Gets the selected sort direction display name.
     /// </summary>
-    public string SelectedSortDirectionName => SelectedSortDirection ?? PixelsorterApp.Resources.Languages.CommonStrings.Unknown;
+    public string SelectedSortDirectionName => SelectedSortDirection ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
 
     /// <summary>
     /// Refreshes sort direction options based on current mask settings and preserves selection when possible.

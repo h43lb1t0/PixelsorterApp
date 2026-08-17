@@ -97,52 +97,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="common_Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="LanguageSettingsView_LanguageSettings" xml:space="preserve">
+    <value>Language settings</value>
   </data>
-  <data name="common_Dismiss" xml:space="preserve">
-    <value>Dismiss</value>
+  <data name="LanguageSettingsView_ChooseLanguage" xml:space="preserve">
+    <value>Choose language</value>
   </data>
-  <data name="common_Error" xml:space="preserve">
-    <value>Error</value>
-    <comment>Used as Title for Error popups</comment>
-  </data>
-  <data name="common_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="common_None" xml:space="preserve">
-    <value>None</value>
-    <comment>Displayed when a String value is missing that should be displayed</comment>
-  </data>
-  <data name="common_NA" xml:space="preserve">
-    <value>N/A</value>
-    <comment>Indicates a value is not used/set for something</comment>
-  </data>
-  <data name="common_Edit" xml:space="preserve">
-    <value>Edit</value>
-    <comment>Edit an item</comment>
-  </data>
-  <data name="common_Delete" xml:space="preserve">
-    <value>Delete</value>
-    <comment>Delete an item</comment>
-  </data>
-  <data name="common_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-    <comment>Cancle and action</comment>
-  </data>
-  <data name="common_Unknown" xml:space="preserve">
-    <value>Unknown</value>
-    <comment>Used when an Value that should be known is not</comment>
-  </data>
-  <data name="common_Accept" xml:space="preserve">
-    <value>Accept</value>
-  </data>
-  <data name="common_DontAccept" xml:space="preserve">
-    <value>Decline</value>
-  </data>
-  <data name="common_dngErrorMessage" xml:space="preserve">
-    <value>Can't load RAW Images (dng files)</value>
-    <comment>raw
-</comment>
+  <data name="LanguageSettingsView_Restart" xml:space="preserve">
+    <value>Please restart the app after changing the language for the best experience.</value>
   </data>
 </root>

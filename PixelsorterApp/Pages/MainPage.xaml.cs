@@ -253,7 +253,7 @@ namespace PixelsorterApp
                     { "Title", PixelsorterApp.Resources.Languages.MainPageStrings.WelcomeTitle },
                     { "message", PixelsorterApp.Resources.Languages.MainPageStrings.WelcomeMessage },
                     { "ConfirmButton", PixelsorterApp.Resources.Languages.MainPageStrings.WelcomeAction },
-                    { "CancelButton", PixelsorterApp.Resources.Languages.CommonStrings.Dismiss }
+                    { "CancelButton", PixelsorterApp.Resources.Languages.CommonStrings.common_Dismiss }
                 };
 
                 var response = await IPopupService.Current.PushAsync(popup, parameters);
@@ -472,7 +472,7 @@ namespace PixelsorterApp
             {
                 var popup = new Toast()
                 {
-                    Title = PixelsorterApp.Resources.Languages.CommonStrings.dngErrorMessage,
+                    Title = PixelsorterApp.Resources.Languages.CommonStrings.common_dngErrorMessage,
                     IconText = MaterialSymbolsFont.Error,
                     IconColor = Colors.Red,
                 };
@@ -568,7 +568,7 @@ namespace PixelsorterApp
                 catch (Exception ex)
                 {
                     // Handle exceptions (e.g., show an alert)
-                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, String.Format(PixelsorterApp.Resources.Languages.MainPageStrings.SortAsync_AnErrorOccurredExMessage, ex.Message), PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.common_Error, String.Format(PixelsorterApp.Resources.Languages.MainPageStrings.SortAsync_AnErrorOccurredExMessage, ex.Message), PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
                     SemanticScreenReader.Announce($"Error: {ex.Message}");
                 }
 
@@ -591,7 +591,7 @@ namespace PixelsorterApp
 
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
-                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, PixelsorterApp.Resources.Languages.MainPageStrings.SaveAsync_NoImageAvailableToSave, PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.common_Error, PixelsorterApp.Resources.Languages.MainPageStrings.SaveAsync_NoImageAvailableToSave, PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
                 SemanticScreenReader.Announce(PixelsorterApp.Resources.Languages.MainPageStrings.SaveAsync_NoImageAvailableToSave);
                 return;
             }
@@ -637,7 +637,7 @@ namespace PixelsorterApp
                 var focusedImagePath = GetFocusedImagePath();
                 if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
                 {
-                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, PixelsorterApp.Resources.Languages.MainPageStrings.ShareAsync_NoImageAvailableToShare, PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.common_Error, PixelsorterApp.Resources.Languages.MainPageStrings.ShareAsync_NoImageAvailableToShare, PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
                     SemanticScreenReader.Announce("No image available to share.");
                     return;
                 }
@@ -646,7 +646,7 @@ namespace PixelsorterApp
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.Error, String.Format(PixelsorterApp.Resources.Languages.MainPageStrings.ShareAsync_ShareFailed, ex.Message), PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.CommonStrings.common_Error, String.Format(PixelsorterApp.Resources.Languages.MainPageStrings.ShareAsync_ShareFailed, ex.Message), PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
             }
         }
 
@@ -679,8 +679,8 @@ namespace PixelsorterApp
                 {
                     {"Title", PixelsorterApp.Resources.Languages.MainPageStrings.MaskingFeatureLicense_Title },
                     { "message", PixelsorterApp.Resources.Languages.MainPageStrings.MaskingFeatureLicense_Message },
-                    { "ConfirmButton", PixelsorterApp.Resources.Languages.CommonStrings.Accept },
-                    { "CancelButton", PixelsorterApp.Resources.Languages.CommonStrings.DontAccept }
+                    { "ConfirmButton", PixelsorterApp.Resources.Languages.CommonStrings.common_Accept },
+                    { "CancelButton", PixelsorterApp.Resources.Languages.CommonStrings.common_DontAccept }
                 };
 
                 bool response = await IPopupService.Current.PushAsync(popup, parameters);
@@ -719,7 +719,7 @@ namespace PixelsorterApp
                         await DisplayAlertAsync(
                             PixelsorterApp.Resources.Languages.MainPageStrings.DownloadFailed_Title,
                             PixelsorterApp.Resources.Languages.MainPageStrings.DownloadFailed_Message,
-                            PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                            PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
                         DisableSubjectMaskWithoutReentry();
                         return;
                     }
@@ -746,7 +746,7 @@ namespace PixelsorterApp
 
             if (accessType != NetworkAccess.Internet)
             {
-                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.MainPageStrings.NoInternetConnection_Title, PixelsorterApp.Resources.Languages.MainPageStrings.NoInternetConnection_Message, PixelsorterApp.Resources.Languages.CommonStrings.OK);
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.MainPageStrings.NoInternetConnection_Title, PixelsorterApp.Resources.Languages.MainPageStrings.NoInternetConnection_Message, PixelsorterApp.Resources.Languages.CommonStrings.common_OK);
                 return false;
             }
             return true;

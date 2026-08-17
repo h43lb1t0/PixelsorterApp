@@ -4,8 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
@@ -31,14 +31,14 @@
                         FontFamily="SpaceGroteskBold"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
-                        Text="{x:Static properties:MainPageStrings.PixelSorterHeader}" />
+                        Text="{localization:Translate PixelSorterHeader}" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         FontFamily="SpaceGroteskRegular"
                         FontSize="14"
                         Opacity="0.8"
-                        Text="{x:Static properties:MainPageStrings.AppSlogan}" />
+                        Text="{localization:Translate AppSlogan}" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
@@ -147,7 +147,7 @@
                 <Label
                     SemanticProperties.HeadingLevel="Level2"
                     Style="{StaticResource CardHeaderLabel}"
-                    Text="{x:Static properties:MainPageStrings.HeaderSortSettings}" />
+                    Text="{localization:Translate HeaderSortSettings}" />
 
                 <Border StyleClass="Elevation3">
                     <Border.Shadow>
@@ -162,7 +162,7 @@
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
                             <material:SelectField
                                 x:Name="sortBy"
-                                Title="{x:Static properties:MainPageStrings.SortBy}"
+                                Title="{localization:Translate SortBy}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortByOptions}"
@@ -173,7 +173,7 @@
                                                             Dark={StaticResource TextPrimaryDark}}" />
                             <material:SelectField
                                 x:Name="sortDirection"
-                                Title="{x:Static properties:MainPageStrings.Direction}"
+                                Title="{localization:Translate Direction}"
                                 AllowClear="False"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 ItemsSource="{Binding SortDirectionOptions}"
@@ -186,7 +186,7 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Label Style="{StaticResource CardHeaderLabel}" Text="{x:Static properties:MainPageStrings.HeaderMaskingOptions}" />
+                <Label Style="{StaticResource CardHeaderLabel}" Text="{localization:Translate HeaderMaskingOptions}" />
 
                 <views:MaskingOptionsView />
 
@@ -226,7 +226,7 @@
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
                 SemanticProperties.Description="Sort the loaded image using the current settings"
-                Text="{x:Static properties:MainPageStrings.Sort}" />
+                Text="{localization:Translate Sort}" />
             <Button
                 x:Name="saveBtn"
                 Grid.Row="1"
@@ -239,7 +239,7 @@
                 MinimumWidthRequest="140"
                 SemanticProperties.Description="Save the sorted image to your photo gallery"
                 Style="{StaticResource SaveButtonStyle}"
-                Text="{x:Static properties:CommonStrings.Save}" />
+                Text="{localization:Translate common_Save}" />
         </Grid>
     </Grid>
 

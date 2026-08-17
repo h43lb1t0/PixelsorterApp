@@ -184,6 +184,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>PrivacyPolicyStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\SettingsStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>SettingsStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -214,6 +219,10 @@
 	  <EmbeddedResource Update="Resources\Languages\PrivacyPolicyStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>PrivacyPolicyStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\SettingsStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 

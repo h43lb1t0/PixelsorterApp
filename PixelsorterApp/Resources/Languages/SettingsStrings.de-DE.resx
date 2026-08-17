@@ -117,43 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="common_Save" xml:space="preserve">
-    <value>Speichern</value>
+  <data name="LanguageSettingsView_LanguageSettings" xml:space="preserve">
+    <value>Spracheinstellungen</value>
   </data>
-  <data name="common_Dismiss" xml:space="preserve">
-    <value>Schließen</value>
+  <data name="LanguageSettingsView_ChooseLanguage" xml:space="preserve">
+    <value>Wähle eine Sprache</value>
   </data>
-  <data name="common_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="common_None" xml:space="preserve">
-    <value>Text fehlt</value>
-  </data>
-  <data name="common_NA" xml:space="preserve">
-    <value>k. A.</value>
-  </data>
-  <data name="common_Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
-  </data>
-  <data name="common_Delete" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
-  <data name="common_Cancel" xml:space="preserve">
-    <value>Abrechen</value>
-  </data>
-  <data name="common_Unknown" xml:space="preserve">
-    <value>Unbekannt</value>
-  </data>
-  <data name="common_Accept" xml:space="preserve">
-    <value>Akzeptieren</value>
-  </data>
-  <data name="common_DontAccept" xml:space="preserve">
-    <value>Ablehnen</value>
-  </data>
-  <data name="common_dngErrorMessage" xml:space="preserve">
-    <value>RAW Bilder (dng) können nicht geladen werden </value>
-  </data>
-  <data name="common_Error" xml:space="preserve">
-    <value>Fehler</value>
+  <data name="LanguageSettingsView_Restart" xml:space="preserve">
+    <value>Bitte starte die App neu nachdem du die Sprache gewechselt hast für die beste Erfahrung.</value>
   </data>
 </root>

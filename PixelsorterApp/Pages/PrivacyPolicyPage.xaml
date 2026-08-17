@@ -3,10 +3,10 @@
     x:Class="PixelsorterApp.PrivacyPolicyPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     SemanticProperties.Description="Privacy policy in German and English">
     <Shell.TitleView>
-        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{x:Static properties:NavigationStrings.PageName_PrivacyPolicy}" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{localization:Translate PageName_PrivacyPolicy}" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="14">
@@ -16,48 +16,48 @@
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
                 SemanticProperties.HeadingLevel="Level1"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Header}" />
+                Text="{localization:Translate PrivacyPolicyPage_Header}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_1_GenerallyOffline}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage__Part_1_1}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_1_GenerallyOffline}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage__Part_1_1}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_HuggingFace}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_1}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_2}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_3}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_4}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_2_5}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_2_HuggingFace}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_2_1}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_2_2}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_2_3}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_2_4}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_2_5}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_3_DistributionViaAppStores}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_3_1}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_3_DistributionViaAppStores}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_3_1}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_4_NoAnalyticsOrTracking}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_4_1}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_4_NoAnalyticsOrTracking}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_4_1}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_5_YourRights}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_5_1}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_5_2}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_5_YourRights}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_5_1}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_5_2}" />
 
             <Label
                 FontAttributes="Bold"
                 FontSize="17"
-                Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_6_CurrentValidityAndChangesToThisPrivacyPolicy}" />
-            <Label Text="{x:Static properties:PrivacyPolicyStrings.PrivacyPolicyPage_Part_6_1}" />
+                Text="{localization:Translate PrivacyPolicyPage_Part_6_CurrentValidityAndChangesToThisPrivacyPolicy}" />
+            <Label Text="{localization:Translate PrivacyPolicyPage_Part_6_1}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
