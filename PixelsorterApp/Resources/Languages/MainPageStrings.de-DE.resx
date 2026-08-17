@@ -232,7 +232,7 @@
     <value>Motivmaske</value>
   </data>
   <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
-    <value>Erkennt Personen oder Objekte und sortiert um sie herum</value>
+    <value>Erkennt Personen/Objekte und sortiert um sie herum</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
     <value>Hintergrund</value>

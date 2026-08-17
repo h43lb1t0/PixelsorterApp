@@ -131,5 +131,14 @@ namespace PixelsorterApp.Resources.Languages {
                 return ResourceManager.GetString("PageName_PrivacyPolicy", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string PageName_Settings {
+            get {
+                return ResourceManager.GetString("PageName_Settings", resourceCulture);
+            }
+        }
     }
 }

@@ -38,6 +38,7 @@ public sealed class HelpNavigationService : IHelpNavigationService
                 (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune), 
                 (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel), 
                 (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip), 
+                (PixelsorterApp.Resources.Languages.NavigationStrings.PageName_Settings, MaterialSymbolsFont.SettingsGear),
             } }
         };
 
@@ -65,6 +66,10 @@ public sealed class HelpNavigationService : IHelpNavigationService
         else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_PrivacyPolicy)
         {
             await currentPage.Navigation.PushAsync(new PrivacyPolicyPage());
+        }
+        else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_Settings)
+        {
+            await currentPage.Navigation.PushAsync(new SettingsPage());
         }
     }
 }

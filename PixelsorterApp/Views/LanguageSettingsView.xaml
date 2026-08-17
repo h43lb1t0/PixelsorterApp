@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.LanguageSettingsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:DataType="viewModels:SettingsViewModel">
+    <VerticalStackLayout Spacing="16">
+        <Label
+            SemanticProperties.HeadingLevel="Level2"
+            Style="{StaticResource CardHeaderLabel}"
+            Text="Language settings" />
+
+        <Border StyleClass="Elevation3">
+            <Border.Shadow>
+                <Shadow
+                    Brush="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                    Opacity="0.10"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <material:SelectField
+                Title="Choose language"
+                AllowClear="False"
+                ItemsSource="{Binding AvilableLanguagesNames}"
+                SelectedItem="{Binding CurrentLanguage}" />
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

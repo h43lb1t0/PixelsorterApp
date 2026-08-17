@@ -46,6 +46,7 @@ namespace PixelsorterApp
             builder.Services.AddSingleton<IHelpNavigationService, HelpNavigationService>();
             builder.Services.AddSingleton<IPresetNavigationService, PresetNavigationService>();
             builder.Services.AddSingleton<IShareService, ShareService>();
+            builder.Services.AddSingleton <ILanguageServices, LanguageServices>();
 
 #if ANDROID
             builder.Services.AddSingleton<IGalleryService, Platforms.Android.GalleryService>();

@@ -121,4 +121,8 @@
   <data name="HelpPage_DisplayPageName_HowToUseThePixelsorter" xml:space="preserve">
     <value>How to use the Pixelsorter</value>
   </data>
+  <data name="PageName_Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Settings page name</comment>
+  </data>
 </root>
