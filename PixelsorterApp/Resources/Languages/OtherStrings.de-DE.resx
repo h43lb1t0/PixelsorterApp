@@ -126,4 +126,10 @@
   <data name="LicensesPage_Explenation" xml:space="preserve">
     <value>Die App verwendet folgende Open Source Pakete:</value>
   </data>
+  <data name="LicensePage_ByItemAuthors" xml:space="preserve">
+    <value>Von {0}</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>Lizenzinformationen nicht verfügbar</value>
+  </data>
 </root>

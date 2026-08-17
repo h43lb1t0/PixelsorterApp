@@ -95,9 +95,9 @@ namespace PixelsorterApp
                     .Select(item => new LicenseInfo
                     {
                         PackageName = item.PackageId ?? string.Empty,
-                        Authors = $"by {item.Authors ?? string.Empty}",
+                        Authors = String.Format(PixelsorterApp.Resources.Languages.OtherStrings.LicensePage_ByItemAuthors, item.Authors ?? string.Empty),
                         PackageVersion = item.PackageVersion ?? string.Empty,
-                        LicenseType = item.License ?? "License information unavailable",
+                        LicenseType = item.License ?? PixelsorterApp.Resources.Languages.OtherStrings.LicensePage_LicenseInformationUnavailable,
                         LicenseUrl = item.LicenseUrl ?? string.Empty
                     })];
             }

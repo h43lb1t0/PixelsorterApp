@@ -86,5 +86,14 @@ namespace PixelsorterApp.Resources.Languages {
                 return ResourceManager.GetString("BeforeAfterView_SORTBY", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag the slider to compare the original and sorted image..
+        /// </summary>
+        internal static string ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage {
+            get {
+                return ResourceManager.GetString("ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage", resourceCulture);
+            }
+        }
     }
 }

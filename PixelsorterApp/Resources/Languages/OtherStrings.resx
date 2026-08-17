@@ -106,4 +106,10 @@
   <data name="LicensesPage_Explenation" xml:space="preserve">
     <value>This application uses the following open source packages:</value>
   </data>
+  <data name="LicensePage_ByItemAuthors" xml:space="preserve">
+    <value>by {0}</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>License information unavailable</value>
+  </data>
 </root>

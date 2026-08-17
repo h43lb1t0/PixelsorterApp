@@ -106,4 +106,7 @@
   <data name="BeforeAfterView_DIRECTION" xml:space="preserve">
     <value>DIRECTION</value>
   </data>
+  <data name="ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage" xml:space="preserve">
+    <value>Drag the slider to compare the original and sorted image.</value>
+  </data>
 </root>

@@ -22,7 +22,7 @@
             Padding="20,12,20,4"
             FontFamily="SpaceGroteskRegular"
             FontSize="13"
-            Text="Drag the slider to compare the original and sorted image."
+            Text="{x:Static properties:ExampleGalleryStrings.ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage}"
             TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                         Dark={StaticResource TextSecondaryDark}}" />
 
