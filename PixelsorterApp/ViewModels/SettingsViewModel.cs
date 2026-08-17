@@ -1,29 +1,32 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-using PixelsorterApp.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using LocalizationResourceManager.Maui;
+using System.Globalization;
 
 namespace PixelsorterApp.ViewModels
 {
     public sealed partial class SettingsViewModel : BaseViewModel
     {
-        private readonly ILanguageServices languageServices;
+
+        private readonly ILocalizationResourceManager localizationResourceManager;
+
+        public IReadOnlyList<CultureInfo> AvailableLanguages => LocalizationConfig.SupportedCultures;
 
         [ObservableProperty]
-        public partial string CurrentLanguage { get; set; }
+        private CultureInfo selectedLanguage;
 
-        private readonly Dictionary<string, string> AvilableLanguages;
-
-        public ObservableCollection<String> AvilableLanguagesNames { get; set; }
-        public SettingsViewModel(ILanguageServices languageServices) 
+        partial void OnSelectedLanguageChanged(CultureInfo value)
         {
-            this.languageServices = languageServices;
-            AvilableLanguages = this.languageServices.GetAvilableLanguages();
-            CurrentLanguage = this.languageServices.GetCurrentLanguage();
-            AvilableLanguagesNames = [.. AvilableLanguages.Keys];
+            if (value != null)
+            {
+                localizationResourceManager.CurrentCulture = value;
+            }
+        }
+
+
+        public SettingsViewModel(ILocalizationResourceManager localizationResourceManager) 
+        {
+            this.localizationResourceManager = localizationResourceManager;
+            this.selectedLanguage = localizationResourceManager.CurrentCulture;
         }
     }
 }

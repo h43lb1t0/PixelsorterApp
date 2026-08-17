@@ -26,8 +26,9 @@
             <material:SelectField
                 Title="Choose language"
                 AllowClear="False"
-                ItemsSource="{Binding AvilableLanguagesNames}"
-                SelectedItem="{Binding CurrentLanguage}" />
+                ItemDisplayBinding="{Binding NativeName}"
+                ItemsSource="{Binding AvailableLanguages}"
+                SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}" />
         </Border>
     </VerticalStackLayout>
 </ContentView>

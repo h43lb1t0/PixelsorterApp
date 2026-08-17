@@ -2,6 +2,7 @@ using PixelsorterApp.Pages;
 using PixelsorterApp.Popups;
 using System.Diagnostics;
 using UXDivers.Popups.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PixelsorterApp.Services;
 
@@ -9,11 +10,13 @@ public sealed class HelpNavigationService : IHelpNavigationService
 {
 
     private readonly IPresetNavigationService presetNavigationService;
+    private readonly IServiceProvider serviceProvider;
 
 
-    public HelpNavigationService(IPresetNavigationService presetNavigationService)
+    public HelpNavigationService(IPresetNavigationService presetNavigationService, IServiceProvider serviceProvider)
     {
         this.presetNavigationService = presetNavigationService;
+        this.serviceProvider = serviceProvider;
     }
     public async Task ShowHelpMenuAsync()
     {
@@ -69,7 +72,7 @@ public sealed class HelpNavigationService : IHelpNavigationService
         }
         else if (selection == PixelsorterApp.Resources.Languages.NavigationStrings.PageName_Settings)
         {
-            await currentPage.Navigation.PushAsync(new SettingsPage());
+            await currentPage.Navigation.PushAsync(serviceProvider.GetRequiredService<SettingsPage>());
         }
     }
 }

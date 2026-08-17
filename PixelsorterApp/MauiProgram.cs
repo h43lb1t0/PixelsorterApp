@@ -5,6 +5,7 @@ using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using UraniumUI;
 using UXDivers.Popups.Maui;
+using LocalizationResourceManager.Maui;
 
 namespace PixelsorterApp
 {
@@ -33,11 +34,24 @@ namespace PixelsorterApp
             .UseUraniumUI()
             .UseUraniumUIMaterial()
             .UseMarkdownView()
-            .UseUXDiversPopups();
+            .UseUXDiversPopups()
+            .UseLocalizationResourceManager(settings =>
+             {
+                 settings.AddResource(PixelsorterApp.Resources.Languages.CommonStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.ExampleGalleryStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.MainPageStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.NavigationStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.OtherStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.PresetStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.PrivacyPolicyStrings.ResourceManager);
+                 settings.RestoreLatestCulture(true);
+             });
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Pages.PresetsPage>();
+            builder.Services.AddTransient<Pages.SettingsPage>();
+            builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddTransient<PresetsPageViewModel>();
             builder.Services.AddSingleton<IImageProcessingService, ImageProcessingService>();
@@ -46,7 +60,6 @@ namespace PixelsorterApp
             builder.Services.AddSingleton<IHelpNavigationService, HelpNavigationService>();
             builder.Services.AddSingleton<IPresetNavigationService, PresetNavigationService>();
             builder.Services.AddSingleton<IShareService, ShareService>();
-            builder.Services.AddSingleton <ILanguageServices, LanguageServices>();
 
 #if ANDROID
             builder.Services.AddSingleton<IGalleryService, Platforms.Android.GalleryService>();
