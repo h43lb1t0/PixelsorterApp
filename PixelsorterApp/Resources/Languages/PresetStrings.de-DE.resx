@@ -124,7 +124,7 @@
     <value>Erstelle ein Preset, indem du die folgenden Optionen konfigurierst. Das aktuell angezeigte Preset basiert auf deinen Einstellungen. Verwende die TOML-Map, um zu erfahren, wie die einzelnen Optionen konfiguriert werden.</value>
   </data>
   <data name="PresetsPage_PresetEditor_Heading" xml:space="preserve">
-    <value>Vorlangen TOML</value>
+    <value>Vorlagen TOML</value>
   </data>
   <data name="PresetsPage_NewPresetName_Title" xml:space="preserve">
     <value>Vorlagenname</value>
@@ -166,7 +166,7 @@
     <value>Ungültiger Vorlagenname.</value>
   </data>
   <data name="PresetSavedSuccessfully" xml:space="preserve">
-    <value>Vorlagen gespeichert.</value>
+    <value>Vorlage gespeichert.</value>
   </data>
   <data name="ErrorSavingPreset" xml:space="preserve">
     <value>Fehler beim Speicher der Vorlage: {0}</value>
@@ -187,7 +187,7 @@
     <value>TOML-Inhalt ist leer.</value>
   </data>
   <data name="TomlValidation_FailedToLoadTomlMap" xml:space="preserve">
-    <value>Fehler beim laden der TOML-Map.</value>
+    <value>Fehler beim Laden der TOML-Map.</value>
   </data>
   <data name="TomlValidation_InvalidSyntaxError" xml:space="preserve">
     <value>Ungültige TOML-Syntax: {0}</value>
@@ -205,7 +205,7 @@
     <value>subject_settings.padding muss im Intervall [1, 100] liegen.</value>
   </data>
   <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
-    <value>Motivmaske kann nicht aktiviert werden bevor die Lizenz nicht akzeptiert wurde.</value>
+    <value>Motivmaske kann nicht aktiviert werden, bevor die Lizenz nicht akzeptiert wurde.</value>
   </data>
   <data name="TomlValidation_BackgroundModelIsNotDownloaded" xml:space="preserve">
     <value>Motivmaske kann nicht aktiviert werden, da das Modell noch nicht heruntergeladen ist.</value>

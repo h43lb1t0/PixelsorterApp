@@ -121,10 +121,10 @@
     <value>Pixel Sorter</value>
   </data>
   <data name="AppSlogan" xml:space="preserve">
-    <value>Bild laden, Optionen wählen, sortieren.</value>
+    <value>Bild laden, Optionen wählen und sortieren.</value>
   </data>
   <data name="HeaderSortSettings" xml:space="preserve">
-    <value>SORSORTIER-EINSTELLUNGEN</value>
+    <value>SORTIER-EINSTELLUNGEN</value>
   </data>
   <data name="SortBy" xml:space="preserve">
     <value>Sortiere nach</value>
@@ -190,7 +190,7 @@
     <value>Fehler beim Teilen: {0}</value>
   </data>
   <data name="MaskingFeatureLicense_Title" xml:space="preserve">
-    <value>Motivmasken Modell Lizenz</value>
+    <value>Motivmasken-Modelllizenz</value>
   </data>
   <data name="MaskingFeatureLicense_Message" xml:space="preserve">
     <value>Die Maskierungsfunktion nutzt ein vorgefertigtes Machine-Learning-Modell eines Drittanbieters. Wenn du diese Funktion aktivierst, stimmst du zu, mit diesem Tool erstellte oder bearbeitete Bilder nicht für kommerzielle Zwecke zu nutzen. Weitere Informationen findest du auf der Lizenzseite.</value>
@@ -211,7 +211,7 @@
     <value>Das Motivmasken-Modell benötigt eine Internetverbindung bei der erstmaligen Benutzung. Bitte überprüfe deine Internetverbindung und probiere es erneut.</value>
   </data>
   <data name="TapToLoadAnImage" xml:space="preserve">
-    <value>Klick um ein Bild zu laden</value>
+    <value>Klicke, um ein Bild zu laden</value>
   </data>
   <data name="CannyView_Title" xml:space="preserve">
     <value>Canny Kantenmaske</value>
@@ -254,5 +254,8 @@
   </data>
   <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
     <value>Abstand</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
+    <value>Wähle</value>
   </data>
 </root>

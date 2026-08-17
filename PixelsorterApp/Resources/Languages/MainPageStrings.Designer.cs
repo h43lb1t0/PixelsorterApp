@@ -439,8 +439,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What to sort
-        ///.
+        ///   Looks up a localized string similar to Choose.
         /// </summary>
         internal static string SubjectMaskOptionsView_WhatToSort_Title {
             get {
@@ -458,7 +457,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go to Gallery.
+        ///   Looks up a localized string similar to Go to gallery.
         /// </summary>
         internal static string WelcomeAction {
             get {

@@ -135,7 +135,7 @@
     <comment>Messageof the Welcome Popup on first start of the app</comment>
   </data>
   <data name="WelcomeAction" xml:space="preserve">
-    <value>Go to Gallery</value>
+    <value>Go to gallery</value>
   </data>
   <data name="OriginalImage" xml:space="preserve">
     <value>Original image</value>
@@ -224,8 +224,7 @@
     <value>Detect people or objects, sort around them</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
-    <value>What to sort
-</value>
+    <value>Choose</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
     <value>Background</value>
