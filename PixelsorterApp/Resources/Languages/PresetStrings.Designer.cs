@@ -160,7 +160,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preset Name.
+        ///   Looks up a localized string similar to Preset name.
         /// </summary>
         internal static string PresetsPage_NewPresetName_Title {
             get {
@@ -187,7 +187,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save Preset.
+        ///   Looks up a localized string similar to Save preset.
         /// </summary>
         internal static string PresetsPage_SavePreset {
             get {

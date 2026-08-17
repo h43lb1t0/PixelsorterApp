@@ -88,7 +88,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Example Gallery.
+        ///   Looks up a localized string similar to Example gallery.
         /// </summary>
         internal static string PageName_ExampleGallery {
             get {
@@ -97,7 +97,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help Page.
+        ///   Looks up a localized string similar to Help.
         /// </summary>
         internal static string PageName_HelpPage {
             get {

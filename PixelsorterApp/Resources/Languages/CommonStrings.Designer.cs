@@ -106,7 +106,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Don&apos;t accept.
+        ///   Looks up a localized string similar to Decline.
         /// </summary>
         internal static string DontAccept {
             get {

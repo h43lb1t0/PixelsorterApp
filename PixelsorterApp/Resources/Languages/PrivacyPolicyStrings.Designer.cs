@@ -61,7 +61,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The PixelsorterApp generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties..
+        ///   Looks up a localized string similar to The Pixelsorter App generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties..
         /// </summary>
         internal static string PrivacyPolicyPage__Part_1_1 {
             get {
@@ -79,7 +79,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generally Offline.
+        ///   Looks up a localized string similar to Generally offline.
         /// </summary>
         internal static string PrivacyPolicyPage_Part_1_GenerallyOffline {
             get {
@@ -133,7 +133,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One-Time Model Download from Hugging Face.
+        ///   Looks up a localized string similar to One-Time Model download from Hugging Face.
         /// </summary>
         internal static string PrivacyPolicyPage_Part_2_HuggingFace {
             get {
@@ -196,7 +196,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your Rights.
+        ///   Looks up a localized string similar to Your rights.
         /// </summary>
         internal static string PrivacyPolicyPage_Part_5_YourRights {
             get {

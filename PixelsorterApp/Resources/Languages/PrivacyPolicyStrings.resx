@@ -101,13 +101,13 @@
     <value>Privacy Policy</value>
   </data>
   <data name="PrivacyPolicyPage_Part_1_GenerallyOffline" xml:space="preserve">
-    <value>Generally Offline</value>
+    <value>Generally offline</value>
   </data>
   <data name="PrivacyPolicyPage__Part_1_1" xml:space="preserve">
-    <value>The PixelsorterApp generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties.</value>
+    <value>The Pixelsorter App generally runs fully offline. All image processing (pixel sorting, masking, etc.) takes place exclusively on your local device. No images, usage data, or other personal data are transmitted to us or to third parties.</value>
   </data>
   <data name="PrivacyPolicyPage_Part_2_HuggingFace" xml:space="preserve">
-    <value>One-Time Model Download from Hugging Face</value>
+    <value>One-Time Model download from Hugging Face</value>
   </data>
   <data name="PrivacyPolicyPage_Part_2_1" xml:space="preserve">
     <value>A machine learning model is required for the automatic subject detection feature (subject masking). This model is downloaded once and only after explicit user interaction from the Hugging Face platform.</value>
@@ -137,7 +137,7 @@
     <value>The app contains no analytics tools, no tracking, and no advertising. No usage data is collected or shared with third parties.</value>
   </data>
   <data name="PrivacyPolicyPage_Part_5_YourRights" xml:space="preserve">
-    <value>Your Rights</value>
+    <value>Your rights</value>
   </data>
   <data name="PrivacyPolicyPage_Part_5_1" xml:space="preserve">
     <value>You have the right at any time to:</value>

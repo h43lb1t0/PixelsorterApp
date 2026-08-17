@@ -97,7 +97,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Share Sorted Image.
+        ///   Looks up a localized string similar to Share sorted image.
         /// </summary>
         internal static string ShareFeature_ShareDialog_Title {
             get {

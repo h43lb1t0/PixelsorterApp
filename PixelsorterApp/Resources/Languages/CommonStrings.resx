@@ -138,7 +138,7 @@
     <value>Accept</value>
   </data>
   <data name="DontAccept" xml:space="preserve">
-    <value>Don't accept</value>
+    <value>Decline</value>
   </data>
   <data name="dngErrorMessage" xml:space="preserve">
     <value>Can't load RAW Images (dng files)</value>

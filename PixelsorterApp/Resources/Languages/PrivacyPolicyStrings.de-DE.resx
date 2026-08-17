@@ -124,7 +124,7 @@
     <value>Grundsätzlich offline</value>
   </data>
   <data name="PrivacyPolicyPage__Part_1_1" xml:space="preserve">
-    <value>Die PixelsorterApp arbeitet grundsätzlich vollständig offline. Sämtliche Bildverarbeitung (Pixel-Sorting, Maskierung etc.) findet ausschließlich lokal auf Ihrem Endgerät statt. Es werden dabei keine Bilder, Nutzungsdaten oder sonstige personenbezogene Daten an uns oder an Dritte übertragen.</value>
+    <value>Die Pixelsorter App arbeitet grundsätzlich vollständig offline. Sämtliche Bildverarbeitung (Pixel-Sorting, Maskierung etc.) findet ausschließlich lokal auf Ihrem Endgerät statt. Es werden dabei keine Bilder, Nutzungsdaten oder sonstige personenbezogene Daten an uns oder an Dritte übertragen.</value>
   </data>
   <data name="PrivacyPolicyPage_Part_2_HuggingFace" xml:space="preserve">
     <value>Einmaliger Modell-Download von Hugging Face</value>

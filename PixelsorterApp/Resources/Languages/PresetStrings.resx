@@ -107,7 +107,7 @@
     <value>Preset TOML</value>
   </data>
   <data name="PresetsPage_NewPresetName_Title" xml:space="preserve">
-    <value>Preset Name</value>
+    <value>Preset name</value>
   </data>
   <data name="PresetsPage_SetAsDefaultPreset" xml:space="preserve">
     <value>Set as default preset</value>
@@ -116,7 +116,7 @@
     <value>Set base preset as default</value>
   </data>
   <data name="PresetsPage_SavePreset" xml:space="preserve">
-    <value>Save Preset</value>
+    <value>Save preset</value>
   </data>
   <data name="PresetsPage_AvilablePresets_Header" xml:space="preserve">
     <value>AVAILABLE PRESETS</value>

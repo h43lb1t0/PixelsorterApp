@@ -88,7 +88,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Canny Edge mask.
+        ///   Looks up a localized string similar to Canny edge mask.
         /// </summary>
         internal static string CannyView_Title {
             get {
@@ -214,7 +214,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Masking Feature License.
+        ///   Looks up a localized string similar to Masking feature license.
         /// </summary>
         internal static string MaskingFeatureLicense_Title {
             get {
@@ -232,7 +232,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Internet Connection.
+        ///   Looks up a localized string similar to No internet connection.
         /// </summary>
         internal static string NoInternetConnection_Title {
             get {
@@ -376,7 +376,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask.
+        ///   Looks up a localized string similar to Canny and subject masks are combined when both masking options are enabled. The Canny mask is used as the second summand or as the subtrahend for the subject mask.
         /// </summary>
         internal static string SubjectMaskOptionsView_HowToCombineMasks_explenation {
             get {
