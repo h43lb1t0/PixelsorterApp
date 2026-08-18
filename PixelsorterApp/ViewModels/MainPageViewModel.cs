@@ -156,6 +156,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
             // PresetOptions still contains the old localized label as its last item before refresh.
             var wasNewPresetSelected = oldSelection != null && oldSelection == PresetOptions.LastOrDefault();
 
+            if (!IsSortEnabled)
+            {
+                CurrentCaption = PixelsorterApp.Resources.Languages.MainPageStrings.TapToLoadAnImage;
+            }
+
             suppressPresetSelectionChangedHandling = true;
 
             RefreshAvailablePresets();

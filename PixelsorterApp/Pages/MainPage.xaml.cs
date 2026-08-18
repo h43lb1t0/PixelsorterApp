@@ -30,7 +30,24 @@ namespace PixelsorterApp
         private string? imagePath;
 
         // image viewer
-        private readonly List<string> imageCaptions = [];
+        private class ImageCaptionInfo
+        {
+            public bool IsOriginal { get; set; }
+            public string? SortBy { get; set; }
+            public string? Direction { get; set; }
+
+            public string GetLocalizedText()
+            {
+                if (IsOriginal)
+                    return PixelsorterApp.Resources.Languages.MainPageStrings.OriginalImage;
+                
+                return string.Format(PixelsorterApp.Resources.Languages.MainPageStrings.SortCaption,
+                    SortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown,
+                    Direction ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown);
+            }
+        }
+
+        private readonly List<ImageCaptionInfo> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
@@ -41,7 +58,7 @@ namespace PixelsorterApp
         /// <param name="viewModel">The view model bound to this page.</param>
         /// <param name="imageProcessingService">Service used for image processing operations.</param>
         /// <param name="shareService">Service used for sharing images.</param>
-        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService, IShareService shareService)
+        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService, IShareService shareService, LocalizationResourceManager.Maui.ILocalizationResourceManager localizationResourceManager)
         {
             this.viewModel = viewModel;
             this.imageProcessingService = imageProcessingService;
@@ -63,6 +80,17 @@ namespace PixelsorterApp
             this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
             this.viewModel.ShareRequested += OnShareRequested;
+
+            ((System.ComponentModel.INotifyPropertyChanged)localizationResourceManager).PropertyChanged += (s, e) =>
+            {
+                if (currentDisplayedImageIndex >= 0 && currentDisplayedImageIndex < imageCaptions.Count)
+                {
+                    var captionText = imageCaptions[currentDisplayedImageIndex].GetLocalizedText();
+                    viewModel.CurrentCaption = captionText;
+                    SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                    SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
+                }
+            };
         }
 
         /// <summary>
@@ -183,9 +211,10 @@ namespace PixelsorterApp
 
             if (index >= 0 && index < imageCaptions.Count)
             {
-                viewModel.CurrentCaption = imageCaptions[index];
-                SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {imageCaptions[index]}");
-                SemanticProperties.SetDescription(imageViewer, $"Image preview. {imageCaptions[index]}");
+                var captionText = imageCaptions[index].GetLocalizedText();
+                viewModel.CurrentCaption = captionText;
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
             }
 
             viewModel.IsSaveEnabled = index > 0 && index < imagePaths.Count;
@@ -219,12 +248,14 @@ namespace PixelsorterApp
         /// will be displayed for that part of the caption.</remarks>
         /// <returns>A string representing the sorting criteria and direction, formatted as 'Sort by: {sortByText} • Direction:
         /// {directionText}'.</returns>
-        private string BuildSortCaption()
+        private ImageCaptionInfo BuildSortCaption()
         {
-            var sortByText = viewModel.SelectedSortByName;
-            var directionText = viewModel.SelectedSortDirectionName;
-
-            return String.Format(PixelsorterApp.Resources.Languages.MainPageStrings.SortCaption, sortByText, directionText);
+            return new ImageCaptionInfo
+            {
+                IsOriginal = false,
+                SortBy = viewModel.SelectedSortByName,
+                Direction = viewModel.SelectedSortDirectionName
+            };
         }
 
         /// <summary>
@@ -301,7 +332,7 @@ namespace PixelsorterApp
             this.imagePath = path;
             imageCaptions.Clear();
             imagePaths.Clear();
-            imageCaptions.Add(PixelsorterApp.Resources.Languages.MainPageStrings.OriginalImage);
+            imageCaptions.Add(new ImageCaptionInfo { IsOriginal = true });
             imagePaths.Add(path);
             currentDisplayedImageIndex = 0;
 
@@ -311,8 +342,10 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                viewModel.CurrentCaption = imageCaptions[0];
-                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
+                
+                var originalText = imageCaptions[0].GetLocalizedText();
+                viewModel.CurrentCaption = originalText;
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {originalText}");
                 SemanticProperties.SetDescription(imageViewer, "Image preview. Original image. Double tap to load another image.");
 
                 whatIsThisLabel.IsVisible = true;
@@ -549,13 +582,15 @@ namespace PixelsorterApp
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         imageViewer.ShowImage(sortedImagePath);
-                        var caption = BuildSortCaption();
-                        imageCaptions.Add(caption);
+                        var captionInfo = BuildSortCaption();
+                        imageCaptions.Add(captionInfo);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        viewModel.CurrentCaption = caption;
-                        SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
-                        SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
+                        
+                        var captionText = captionInfo.GetLocalizedText();
+                        viewModel.CurrentCaption = captionText;
+                        SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                        SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
                         viewModel.IsSaveVisible = true;
                         viewModel.IsSaveEnabled = true;
                         HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
