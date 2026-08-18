@@ -104,8 +104,8 @@ namespace PixelsorterApp.ViewModels
             _mainViewModel = mainViewModel;
             this.tomlValidationService = tomlValidationService;
 
-            sortBy = _mainViewModel.SelectedSortByName;
-            sortDirection = _mainViewModel.SelectedSortDirectionName;
+            sortBy = _mainViewModel.SelectedSortBy?.Key ?? string.Empty;
+            sortDirection = _mainViewModel.SelectedSortDirection?.Key ?? string.Empty;
 
             cannyMasking = _mainViewModel.UseCanny;
             cannyThreashold = _mainViewModel.CannyThresholdPercent;

@@ -170,7 +170,8 @@
                                 SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                 Style="{StaticResource MySelectFieldStyle}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
+                                                            Dark={StaticResource TextPrimaryDark}}">
+                            </material:SelectField>
                             <material:SelectField
                                 x:Name="sortDirection"
                                 Title="{localization:Translate Direction}"

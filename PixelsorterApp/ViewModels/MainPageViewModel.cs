@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LocalizationResourceManager.Maui;
+using PixelsorterApp.Models;
 using PixelsorterApp.Models.Presets;
 using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
@@ -21,7 +22,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     private readonly IHelpNavigationService helpNavigationService;
     private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
-    private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
+    private readonly Dictionary<string, SortDirections> sortDirectionOptions;
+    private readonly List<LocalizedOption> allDirectionOptions;
     private IReadOnlyDictionary<string, string> AvailablePresets = new Dictionary<string, string>();
     private string NewPresetOptionLabel => localizationResourceManager["NewPresetAction"]?.ToString() ?? string.Empty;
     private bool suppressPresetSelectionChangedHandling;
@@ -82,13 +84,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets or sets the selected sort criterion.
     /// </summary>
     [ObservableProperty]
-    public partial string? SelectedSortBy { get; set; }
+    public partial LocalizedOption? SelectedSortBy { get; set; }
 
     /// <summary>
     /// Gets or sets the selected sort direction.
     /// </summary>
     [ObservableProperty]
-    public partial string? SelectedSortDirection { get; set; }
+    public partial LocalizedOption? SelectedSortDirection { get; set; }
 
     /// <summary>
     /// Gets or sets the selected preset option.
@@ -141,6 +143,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public event Action? ShareRequested;
 
     /// <summary>
+    /// Occurs when the UI language has changed and localized captions should be refreshed.
+    /// </summary>
+    public event Action? LanguageChanged;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
     public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService, IPresetService presetService, ILocalizationResourceManager resourceManager)
@@ -179,6 +186,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
             }
 
             suppressPresetSelectionChangedHandling = false;
+
+            RefreshLocalizedSortOptions();
         };
 
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
@@ -186,13 +195,18 @@ public sealed partial class MainPageViewModel : BaseViewModel
         loadImageCommand = new RelayCommand(() => LoadImageRequested?.Invoke(), () => IsInteractionEnabled);
         shareImageCommand = new RelayCommand(() => ShareRequested?.Invoke(), () => IsSaveEnabled);
 
+        sortDirectionOptions = new Dictionary<string, SortDirections>(StringComparer.Ordinal);
+        allDirectionOptions = [];
         foreach (SortDirections direction in Enum.GetValues<SortDirections>())
         {
-            string name = Regex.Replace(direction.ToString(), "([A-Z])", " $1").Trim();
-            sortDirectionOptions[name] = direction;
+            string enumName = direction.ToString();
+            sortDirectionOptions[enumName] = direction;
+            allDirectionOptions.Add(new LocalizedOption(enumName, SortStringLocalizer.LocalizeDirection(enumName)));
         }
 
-        SortByOptions = [.. sortByOptions.Keys];
+        SortByOptions = sortByOptions.Keys
+            .Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))
+            .ToList();
         SelectedSortBy = SortByOptions.Count > 0 ? SortByOptions[0] : null;
 
         RefreshSortDirectionOptions();
@@ -348,14 +362,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public event Action? LoadImageRequested;
 
     /// <summary>
-    /// Gets the available sort criteria names.
+    /// Gets the available sort criteria as localized options.
     /// </summary>
-    public IReadOnlyList<string> SortByOptions { get; }
+    public IReadOnlyList<LocalizedOption> SortByOptions { get; private set; }
 
     /// <summary>
-    /// Gets the available sort direction names for the current masking configuration.
+    /// Gets the available sort direction options for the current masking configuration.
     /// </summary>
-    public ObservableCollection<string> SortDirectionOptions { get; } = [];
+    public ObservableCollection<LocalizedOption> SortDirectionOptions { get; } = [];
 
     /// <summary>
     /// Gets the available preset names.
@@ -366,7 +380,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets the currently selected sorting criterion delegate.
     /// </summary>
     public Func<Hsl, float>? SortingCriterion =>
-        !string.IsNullOrEmpty(SelectedSortBy) && sortByOptions.TryGetValue(SelectedSortBy, out var criterion)
+        SelectedSortBy != null && sortByOptions.TryGetValue(SelectedSortBy.Key, out var criterion)
             ? criterion
             : null;
 
@@ -374,19 +388,19 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets the currently selected sorting direction.
     /// </summary>
     public SortDirections SortingDirection =>
-        !string.IsNullOrEmpty(SelectedSortDirection) && sortDirectionOptions.TryGetValue(SelectedSortDirection, out var direction)
+        SelectedSortDirection != null && sortDirectionOptions.TryGetValue(SelectedSortDirection.Key, out var direction)
             ? direction
             : SortDirections.RowRightToLeft;
 
     /// <summary>
     /// Gets the selected sort criterion display name.
     /// </summary>
-    public string SelectedSortByName => SelectedSortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+    public string SelectedSortByName => SelectedSortBy?.DisplayName ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
 
     /// <summary>
     /// Gets the selected sort direction display name.
     /// </summary>
-    public string SelectedSortDirectionName => SelectedSortDirection ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+    public string SelectedSortDirectionName => SelectedSortDirection?.DisplayName ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
 
     /// <summary>
     /// Refreshes sort direction options based on current mask settings and preserves selection when possible.
@@ -398,10 +412,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
             return;
         }
 
-        string? previousSelection = SelectedSortDirection;
+        var previousKey = SelectedSortDirection?.Key;
 
-        var filtered = sortDirectionOptions.Keys
-            .Where(name => UseSubjectMask || UseCanny || !name.Contains("mask", StringComparison.OrdinalIgnoreCase))
+        var filtered = allDirectionOptions
+            .Where(opt => UseSubjectMask || UseCanny || !opt.Key.Contains("mask", StringComparison.OrdinalIgnoreCase))
             .ToArray();
 
         SortDirectionOptions.Clear();
@@ -416,10 +430,14 @@ public sealed partial class MainPageViewModel : BaseViewModel
             return;
         }
 
-        if (!string.IsNullOrEmpty(previousSelection) && SortDirectionOptions.Contains(previousSelection))
+        if (previousKey != null)
         {
-            SelectedSortDirection = previousSelection;
-            return;
+            var match = SortDirectionOptions.FirstOrDefault(o => o.Key == previousKey);
+            if (match != null)
+            {
+                SelectedSortDirection = match;
+                return;
+            }
         }
 
         SelectedSortDirection = SortDirectionOptions[0];
@@ -429,6 +447,41 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnUseSubjectMaskChanged(bool value)
     {
         RefreshSortDirectionOptions();
+    }
+
+    /// <summary>
+    /// Rebuilds the SortBy and Direction option lists with fresh localized display names.
+    /// Preserves the current selection by matching on the internal key.
+    /// </summary>
+    private void RefreshLocalizedSortOptions()
+    {
+        // Rebuild SortBy options
+        var previousSortByKey = SelectedSortBy?.Key;
+        SortByOptions = sortByOptions.Keys
+            .Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))
+            .ToList();
+        OnPropertyChanged(nameof(SortByOptions));
+
+        if (previousSortByKey != null)
+        {
+            SelectedSortBy = SortByOptions.FirstOrDefault(o => o.Key == previousSortByKey) ?? SortByOptions.FirstOrDefault();
+        }
+
+        // Rebuild Direction options
+        var previousDirectionKey = SelectedSortDirection?.Key;
+        allDirectionOptions.Clear();
+        foreach (var enumName in sortDirectionOptions.Keys)
+        {
+            allDirectionOptions.Add(new LocalizedOption(enumName, SortStringLocalizer.LocalizeDirection(enumName)));
+        }
+        RefreshSortDirectionOptions();
+
+        if (previousDirectionKey != null)
+        {
+            SelectedSortDirection = SortDirectionOptions.FirstOrDefault(o => o.Key == previousDirectionKey) ?? SortDirectionOptions.FirstOrDefault();
+        }
+
+        LanguageChanged?.Invoke();
     }
 
     partial void OnUseCannyChanged(bool value)
@@ -570,15 +623,16 @@ public sealed partial class MainPageViewModel : BaseViewModel
             RefreshSortDirectionOptions();
         }
 
-        if (!string.IsNullOrEmpty(state.SortByName) && SortByOptions.Contains(state.SortByName))
+        if (!string.IsNullOrEmpty(state.SortByName))
         {
-            SelectedSortBy = state.SortByName;
+            var match = SortByOptions.FirstOrDefault(o => o.Key == state.SortByName);
+            if (match != null) SelectedSortBy = match;
         }
 
         if (!string.IsNullOrEmpty(state.DirectionName))
         {
-            var displayName = Regex.Replace(state.DirectionName, "([A-Z])", " $1").Trim();
-            if (SortDirectionOptions.Contains(displayName)) SelectedSortDirection = displayName;
+            var match = SortDirectionOptions.FirstOrDefault(o => o.Key == state.DirectionName);
+            if (match != null) SelectedSortDirection = match;
         }
     }
 }

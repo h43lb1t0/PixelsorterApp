@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using PixelsorterApp.Models;
 
 namespace PixelsorterApp.Pages;
 
@@ -112,10 +113,14 @@ public class ExampleImageConfig : INotifyPropertyChanged
 	public ImageSource AfterImageSource => ImageSource.FromFile($"ExampleImages/after_{Id}.webp");
 
 	[JsonIgnore]
-	public string SortBySafe => SortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+	public string SortBySafe => SortBy != null
+		? SortStringLocalizer.LocalizeSortBy(SortBy)
+		: PixelsorterApp.Resources.Languages.CommonStrings.common_None;
 	
 	[JsonIgnore]
-	public string SortDirectionSafe => SortDirection ?? PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+	public string SortDirectionSafe => SortDirection != null
+		? SortStringLocalizer.LocalizeDirection(SortDirection.Replace(" ", string.Empty))
+		: PixelsorterApp.Resources.Languages.CommonStrings.common_None;
 	
 	[JsonIgnore]
 	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.CommonStrings.common_NA;

@@ -189,6 +189,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>SettingsStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\SortStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>SortStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -223,6 +228,10 @@
 	  <EmbeddedResource Update="Resources\Languages\SettingsStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\SortStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>SortStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 

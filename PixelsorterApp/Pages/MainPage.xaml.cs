@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Extensions;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.Models;
 using PixelsorterApp.Popups;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
@@ -33,17 +34,23 @@ namespace PixelsorterApp
         private class ImageCaptionInfo
         {
             public bool IsOriginal { get; set; }
-            public string? SortBy { get; set; }
-            public string? Direction { get; set; }
+            public string? SortByKey { get; set; }
+            public string? DirectionKey { get; set; }
 
             public string GetLocalizedText()
             {
                 if (IsOriginal)
                     return PixelsorterApp.Resources.Languages.MainPageStrings.OriginalImage;
-                
+
+                var sortByDisplay = SortByKey != null
+                    ? SortStringLocalizer.LocalizeSortBy(SortByKey)
+                    : PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+                var directionDisplay = DirectionKey != null
+                    ? SortStringLocalizer.LocalizeDirection(DirectionKey)
+                    : PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+
                 return string.Format(PixelsorterApp.Resources.Languages.MainPageStrings.SortCaption,
-                    SortBy ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown,
-                    Direction ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown);
+                    sortByDisplay, directionDisplay);
             }
         }
 
@@ -253,8 +260,8 @@ namespace PixelsorterApp
             return new ImageCaptionInfo
             {
                 IsOriginal = false,
-                SortBy = viewModel.SelectedSortByName,
-                Direction = viewModel.SelectedSortDirectionName
+                SortByKey = viewModel.SelectedSortBy?.Key,
+                DirectionKey = viewModel.SelectedSortDirection?.Key
             };
         }
 
