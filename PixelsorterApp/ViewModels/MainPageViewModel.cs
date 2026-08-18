@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LocalizationResourceManager.Maui;
 using PixelsorterApp.Models.Presets;
 using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
@@ -15,13 +16,14 @@ namespace PixelsorterApp.ViewModels;
 /// </summary>
 public sealed partial class MainPageViewModel : BaseViewModel
 {
+    private readonly ILocalizationResourceManager localizationResourceManager;
     private readonly IPresetService presetService;
     private readonly IHelpNavigationService helpNavigationService;
     private readonly IPresetNavigationService presetNavigationService;
     private readonly Dictionary<string, Func<Hsl, float>> sortByOptions = SortBy.GetAllSortingCriteria();
     private readonly Dictionary<string, SortDirections> sortDirectionOptions = [];
     private IReadOnlyDictionary<string, string> AvailablePresets = new Dictionary<string, string>();
-    private readonly string NewPresetOptionLabel = PixelsorterApp.Resources.Languages.PresetStrings.NewPresetAction;
+    private string NewPresetOptionLabel => localizationResourceManager["NewPresetAction"]?.ToString() ?? string.Empty;
     private bool suppressPresetSelectionChangedHandling;
     private bool suppressSortDirectionRefresh;
     private bool isNavigatingToPresetPage;
@@ -141,11 +143,38 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
     /// </summary>
-    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService, IPresetService presetService)
+    public MainPageViewModel(IHelpNavigationService helpNavigationService, IPresetNavigationService presetNavigationService, IPresetService presetService, ILocalizationResourceManager resourceManager)
     {
+        this.localizationResourceManager = resourceManager;
         this.helpNavigationService = helpNavigationService;
         this.presetNavigationService = presetNavigationService;
         this.presetService = presetService;
+
+        ((System.ComponentModel.INotifyPropertyChanged)this.localizationResourceManager).PropertyChanged += (s, e) =>
+        {
+            var oldSelection = SelectedPresetOption;
+            // PresetOptions still contains the old localized label as its last item before refresh.
+            var wasNewPresetSelected = oldSelection != null && oldSelection == PresetOptions.LastOrDefault();
+
+            suppressPresetSelectionChangedHandling = true;
+
+            RefreshAvailablePresets();
+
+            if (wasNewPresetSelected)
+            {
+                SelectedPresetOption = NewPresetOptionLabel;
+            }
+            else if (oldSelection != null && PresetOptions.Contains(oldSelection))
+            {
+                SelectedPresetOption = oldSelection;
+            }
+            else
+            {
+                SelectedPresetOption = PresetOptions.FirstOrDefault();
+            }
+
+            suppressPresetSelectionChangedHandling = false;
+        };
 
         sortCommand = new RelayCommand(() => SortRequested?.Invoke(), () => IsSortEnabled);
         saveCommand = new RelayCommand(() => SaveRequested?.Invoke(), () => IsSaveEnabled);
