@@ -127,6 +127,6 @@
     <value>RICHTUNG</value>
   </data>
   <data name="ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage" xml:space="preserve">
-    <value>Ziehe den Schieberegler, um das Originalbild mit dem sortierten Bild zu vergleichen</value>
+    <value>Ziehe den Schieberegler, um das Originalbild mit dem sortierten Bild zu vergleichen.</value>
   </data>
 </root>

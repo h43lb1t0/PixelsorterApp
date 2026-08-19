@@ -223,10 +223,10 @@
     <value>Schwellenwert</value>
   </data>
   <data name="PresetsView_Header" xml:space="preserve">
-    <value>VORLAGEN</value>
+    <value>VOREINSTELLUNG</value>
   </data>
   <data name="PresetsView_Presets" xml:space="preserve">
-    <value>Vorlagen</value>
+    <value>Voreinstellung</value>
   </data>
   <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
     <value>Motivmaske</value>
@@ -253,7 +253,7 @@
     <value>Canny- und Subjektmaske werden kombiniert, wenn beide Maskierungsoptionen aktiviert sind. Die Canny-Maske wird dabei als zweiter Summand addiert oder als Subtrahend von der Motivmaske abgezogen</value>
   </data>
   <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
-    <value>Abstand</value>
+    <value>Padding (Abstand)</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
     <value>Wähle</value>

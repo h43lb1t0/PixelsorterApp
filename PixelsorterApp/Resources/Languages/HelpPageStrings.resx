@@ -272,8 +272,7 @@ Presets allow you to save and load your favorite sorting and masking configurati
 - If **Sort** is disabled, make sure you loaded an image first.
 - If **Save** is disabled, you are probably viewing the **original image**. Swipe to a generated result.
 - If enabling **subject masking** does nothing the first time, check your internet connection (model download is required once).
-- For faster experimentation, start without masks and with **Row Left To Right + Lightness**, then add masks when you know the direction/criterion you like.
-</value>
+- For faster experimentation, start without masks and with **Row Left To Right + Lightness**, then add masks when you know the direction/criterion you like.</value>
     <comment>Names of the SortBy and directions are set via variables to make sure they match the rest of the App. For all other names it's important to manually update them here too.</comment>
   </data>
 </root>

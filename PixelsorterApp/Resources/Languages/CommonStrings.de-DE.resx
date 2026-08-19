@@ -151,7 +151,7 @@
     <value>Ablehnen</value>
   </data>
   <data name="common_dngErrorMessage" xml:space="preserve">
-    <value>RAW Bilder (dng) können nicht geladen werden </value>
+    <value>RAW Bilder (dng Dateien) können nicht geladen werden</value>
   </data>
   <data name="common_Error" xml:space="preserve">
     <value>Fehler</value>
