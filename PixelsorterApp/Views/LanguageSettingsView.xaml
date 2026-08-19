@@ -24,14 +24,21 @@
             </Border.Shadow>
 
             <VerticalStackLayout Padding="16" Spacing="16">
-                <material:SelectField
-                    Title="{localization:Translate LanguageSettingsView_ChooseLanguage}"
-                    AllowClear="False"
-                    ItemDisplayBinding="{Binding NativeName}"
-                    ItemsSource="{Binding AvailableLanguages}"
-                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
-                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                Dark={StaticResource TextPrimaryDark}}" />
+                <!-- Workaround for UraniumUI bug #715 -->
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        FontSize="12"
+                        Text="{localization:Translate LanguageSettingsView_ChooseLanguage}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                    Dark={StaticResource TextPrimaryDark}}" />
+                    <material:SelectField
+                        AllowClear="False"
+                        ItemDisplayBinding="{Binding NativeName}"
+                        ItemsSource="{Binding AvailableLanguages}"
+                        SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                    Dark={StaticResource TextPrimaryDark}}" />
+                </VerticalStackLayout>
                 <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
 
             </VerticalStackLayout>
