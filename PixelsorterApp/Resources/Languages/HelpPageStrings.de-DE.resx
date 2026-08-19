@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HelpPage_Content" xml:space="preserve">
+    <value>Pixelsorter lädt ein Bild, sortiert dessen Pixel in einer gewählten Richtung anhand eines gewählten Farbkriteriums und ermöglicht es dir, die Ergebnisse in der Vorschau anzuzeigen und zu speichern.
+
+Der Hauptbildschirm ist wie folgt aufgebaut:
+
+- **Bildvorschau** (tippen, um ein Bild zu laden)
+- **Sortiereinstellungen** (Sortierkriterium + Sortierrichtung)
+- **Maskierungsoptionen** (optional: einschränken, welche Pixel sich bewegen dürfen)
+- **Sortieren**-Schaltfläche (erstellt ein neues sortiertes Ergebnis)
+- **Speichern**-Schaltfläche (speichert das aktuell angezeigte Ergebnis)
+
+---
+
+## Ein Bild laden
+
+### Laden durch Tippen auf die Vorschau
+
+1. Tippe auf dem Hauptbildschirm auf die **Bildvorschau**.
+2. Wähle ein Bild aus.
+3. Nach dem Laden zeigt die Beschriftung unter der Vorschau **„Originalbild"** an, und die App meldet, dass sie bereit zum Sortieren ist.
+
+Hinweise:
+
+- Sobald ein Bild geladen ist, wird die Schaltfläche **Sortieren** aktiviert.
+- Der Vorschaubereich kann mehrere Bilder anzeigen (Original + Ergebnisse). Siehe „Ergebnisse in der Vorschau ansehen (Wischen)".
+
+### Android: Teilen / „Senden an" Pixelsorter
+
+Unter Android kann Pixelsorter Bilder von anderen Apps empfangen:
+
+1. Verwende in deiner Galerie, deinem Dateimanager oder einer anderen App die Funktion **Teilen**.
+2. Wähle **Pixelsorter** aus.
+
+Pixelsorter öffnet sich und lädt das geteilte Bild automatisch.
+
+---
+
+## Ergebnisse in der Vorschau ansehen (Wischen)
+
+Jedes Mal, wenn du **Sortieren** drückst, erstellt Pixelsorter ein neues bearbeitetes Bild und fügt es der Vorschau hinzu.
+
+**Nur unter Android!**
+Du kannst in der Vorschau **nach links/rechts wischen**, um zu wechseln zwischen:
+
+- dem **Originalbild** und
+- einem oder mehreren **sortierten Ergebnissen**.
+
+Der Text unter der Vorschau beschreibt, was du gerade siehst (zum Beispiel „Originalbild" oder die verwendeten Optionen).
+
+---
+
+## Speichern
+
+Die Schaltfläche **Speichern** speichert das **aktuell angezeigte Bild**.
+
+Wichtiges Verhalten:
+
+- **Speichern ist beim Originalbild deaktiviert.** Sie wird erst aktiviert, wenn du zu einem erstellten Ergebnis wischst.
+- Falls du mehrere Ergebnisse hast, wische zu dem gewünschten und tippe anschließend auf **Speichern**.
+
+---
+
+## Sortieroptionen
+
+Die Pixelsortierung funktioniert wie folgt:
+
+- Pixel werden in **Läufen** entlang der gewählten Richtung (Zeilen oder Spalten) verarbeitet.
+- Innerhalb jedes Laufs werden die Pixel anhand eines **Sortieren nach**-Kriteriums neu angeordnet.
+- Wenn eine **Maske** aktiviert ist, gelten nur Pixel innerhalb der Maske als sortierbar; Pixel außerhalb behalten ihre ursprüngliche Position.
+
+### Sortieren nach
+
+**Sortieren nach** legt fest, welcher Wert zum Vergleich der Pixel verwendet wird. Die App nutzt den HSL-Farbraum (Hue/Saturation/Lightness, also Farbton/Sättigung/Helligkeit) und bietet folgende Kriterien:
+
+- **{0}** — sortiert nach Farbtonwinkel (0–360). Erzeugt starke Farbstreifen / regenbogenartige Übergänge.
+- **{1}** — sortiert nach Sättigung (wie „farbig" ein Pixel ist).
+- **{2}** — sortiert nach Helligkeit.
+- **{3}** — bevorzugt Farbtöne im Bereich warmer Farben (nahe Orange/Rot) und hebt gesättigte Pixel mittlerer Helligkeit hervor.
+- **{4}** — bevorzugt Farbtöne im Bereich kühler Farben (nahe Blau) und hebt gesättigte Pixel mittlerer Helligkeit hervor.
+- **{5}** — misst die Leuchtkraft (hohe Sättigung + nicht zu nah an reinem Schwarz/Weiß).
+- **{6}** — ähnlich wie Chroma, aber nach Farbton gewichtet, um der menschlichen Wahrnehmung besser zu entsprechen.
+
+Für einen schnellen Einstieg:
+
+- probiere **{7}** für klassische „glitchige" Streifen,
+- probiere **{8}** für kräftige Farbtrennung,
+
+### Richtung
+
+**Richtung** legt fest, in welcher Reihenfolge die Pixel sortiert werden:
+
+- **{9}** — sortiert innerhalb jeder Zeile.
+- **{10}** — dasselbe, aber die Ergebnisse werden in umgekehrter Reihenfolge geschrieben.
+- **{11}** — sortiert innerhalb jeder Spalte.
+- **{12}** — dasselbe, aber die Ergebnisse werden in umgekehrter Reihenfolge geschrieben.
+- **{13}** — spezieller Modus, der Pixel *radial in die Maske hinein* sortiert (erfordert eine Maske).
+
+Details zur Maske:
+
+- Wenn **keine Masken** aktiviert sind, sind nur die grundlegenden Zeilen-/Spaltenrichtungen relevant.
+- Wenn eine Maske aktiviert ist, erfolgt die Sortierung in zusammenhängenden maskierten Abschnitten:
+  - bei Zeilensortierung: maskierte Abschnitte werden in jeder Zeile unabhängig voneinander sortiert
+  - bei Spaltensortierung: maskierte Abschnitte werden in jeder Spalte unabhängig voneinander sortiert
+- **{14}** ist nur verfügbar wenn du eine Maske verwendest, da die Sortierung dabei anhand der Maskenform gesteuert wird.
+
+---
+
+## Masken (was sie sind)
+
+Eine **Maske** ist ein Schwarz-Weiß-Bild (intern eine per Schwellenwert erzeugte Graustufenmaske).
+
+- **Weiß (innerhalb der Maske):** Pixel dürfen sich bewegen/sortiert werden.
+- **Schwarz (außerhalb der Maske):** Pixel bleiben an ihrem Platz.
+
+Masken sind nützlich, wenn du den Pixelsortier-Effekt nur in bestimmten Bereichen anwenden möchtest (Vordergrund/Hintergrund, Kanten usw.).
+
+### Motivmaske
+
+**Motivmaskierung verwenden** versucht, das Hauptmotiv mithilfe eines Machine-Learning-Modells vom Hintergrund zu trennen.
+
+- Beim **ersten Mal**, wenn du sie aktivierst, muss das Modell möglicherweise heruntergeladen werden (Internetverbindung erforderlich).
+- Danach läuft sie lokal mit dem zwischengespeicherten Modell.
+
+Optionen:
+
+- **Padding (Abstand)** — erweitert den Motivbereich um die angegebene Anzahl an Pixeln. Nutze dies, wenn der Ausschnitt zu eng ist.
+- **Was sortiert werden soll** (nur sichtbar, wenn *Motivmaske aktiviert* und *Canny deaktiviert* ist):
+  - **Hintergrund** — sortiert den Hintergrund und hält das Motiv weitgehend stabil.
+  - **Vordergrund** — sortiert das Motiv und hält den Hintergrund weitgehend stabil.
+
+### Canny-Maske (Kantenmaske)
+
+**Canny-Maskierung verwenden** erstellt eine zusätzliche Maske aus den Bildkanten (Kantenerkennung).
+
+- Dies wird direkt auf dem Gerät verarbeitet.
+
+Option:
+
+- **Schwellenwert** — steuert, wie stark die Kantenerkennung ausfällt.
+  - niedrigere Werte → mehr Kanten werden einbezogen
+  - höhere Werte → weniger Kanten
+
+Diese Maske ist praktisch, wenn die Sortierung sich an Umrissen und Strukturen „orientieren" soll.
+
+### Wenn beide Masken aktiviert sind: Kombinieren
+
+Wenn sowohl **Motivmaskierung** als auch **Canny-Maskierung** aktiviert sind, kombiniert Pixelsorter beide.
+
+Du kannst wählen zwischen:
+
+- **Subtrahieren** — zieht die Canny-Maske von der Motivmaske ab.
+  - praktischer Effekt: verringert die Sortierung um bzw. an erkannten Kanten (hält Ränder sauberer)
+- **Addieren** — addiert die Canny-Maske und die Motivmaske.
+  - praktischer Effekt: erweitert den sortierbaren Bereich, sodass sowohl der Motivbereich als auch starke Kanten einbezogen werden
+
+---
+
+## Voreinstellungen (Presets)
+
+Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigurationen speichern und laden.
+
+- **Eine Voreinstellung laden:** Verwende auf dem Hauptbildschirm die Voreinstellungsauswahl, um eine gespeicherte Konfiguration schnell anzuwenden.
+- **Voreinstellungen erstellen oder bearbeiten:** Wähle die Option „Neue Voreinstellung" oder navigiere zur Seite „Voreinstellungen". Dort kannst du eigene Voreinstellungen mit TOML-Syntax schreiben.
+- **Voreinstellungsoptionen:** Auf der Seite „Voreinstellungen" kannst du die TOML-Map einsehen, die dich durch die verfügbaren Konfigurationsschlüssel führt (wie z. B. `sort_settings`, `masking_options` usw.).
+- **Standard-Voreinstellung:** Du kannst jede beliebige Voreinstellung als Standard festlegen, sodass Pixelsorter immer mit deinen bevorzugten Einstellungen startet.
+
+---
+
+## Tipps &amp; Fehlerbehebung
+
+- Wenn **Sortieren** deaktiviert ist, stelle sicher, dass du zuerst ein Bild geladen hast.
+- Wenn **Speichern** deaktiviert ist, betrachtest du wahrscheinlich das **Originalbild**. Wische zu einem erstellten Ergebnis.
+- Wenn das Aktivieren der **Motivmaskierung** beim ersten Mal nichts bewirkt, überprüfe deine Internetverbindung (der Modell-Download ist einmalig erforderlich).
+- Für schnelleres Experimentieren starte ohne Masken und mit **Zeile von links nach rechts + Helligkeit**, und füge Masken hinzu, sobald du weißt, welche Richtung/welches Kriterium dir gefällt.</value>
+  </data>
+</root>

@@ -24,21 +24,28 @@ public partial class HelpPage : ContentPage
         MarkdownDisplay.UseAppTheme = true;
     }
 
-    public async Task<string> LoadMarkdownAsync()
-    {
-        using var stream = await FileSystem.OpenAppPackageFileAsync("helpPageContent.md");
-        using var reader = new StreamReader(stream);
-        return await reader.ReadToEndAsync();
-    }
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        // Load the file from Resources/Raw
-        var content = await LoadMarkdownAsync();
-
         // Assign to the control
-        MarkdownDisplay.MarkdownText = content;
+        MarkdownDisplay.MarkdownText = String.Format(PixelsorterApp.Resources.Languages.HelpPageStrings.HelpPage_Content,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_hue,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_sat,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_light,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_warm,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_cool,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_chroma,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_perVib,
+
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_light,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_by_hue,
+
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_rlr,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_rrl,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_ctb,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_cbt,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_im,
+            PixelsorterApp.Resources.Languages.SortStrings.SortStrings_direction_im);
     }
 }

@@ -121,7 +121,7 @@
     <value>In die Maske</value>
   </data>
   <data name="SortStrings_direction_cbt" xml:space="preserve">
-    <value>Spalte Unten nach Oben</value>
+    <value>Spalte unten nach oben</value>
   </data>
   <data name="SortStrings_by_hue" xml:space="preserve">
     <value>Farbton</value>
@@ -145,12 +145,12 @@
     <value>Wahrgenommene Lebendigkeit</value>
   </data>
   <data name="SortStrings_direction_rlr" xml:space="preserve">
-    <value>Reihe Links nach Rechts</value>
+    <value>Reihe links nach rechts</value>
   </data>
   <data name="SortStrings_direction_rrl" xml:space="preserve">
-    <value>Reihe Rechts nach Links</value>
+    <value>Reihe rechts nach links</value>
   </data>
   <data name="SortStrings_direction_ctb" xml:space="preserve">
-    <value>Spalte Oben nach Unten</value>
+    <value>Spalte oben nach unten</value>
   </data>
 </root>

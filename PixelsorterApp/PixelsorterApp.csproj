@@ -159,6 +159,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>ExampleGalleryStrings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\HelpPageStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>HelpPageStrings.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Languages\MainPageStrings.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -204,6 +209,10 @@
 	  <EmbeddedResource Update="Resources\Languages\ExampleGalleryStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>ExampleGalleryStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\HelpPageStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>HelpPageStrings.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Languages\MainPageStrings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>

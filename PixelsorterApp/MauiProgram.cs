@@ -46,6 +46,7 @@ namespace PixelsorterApp
                  settings.AddResource(PixelsorterApp.Resources.Languages.PrivacyPolicyStrings.ResourceManager);
                  settings.AddResource(PixelsorterApp.Resources.Languages.SettingsStrings.ResourceManager);
                  settings.AddResource(PixelsorterApp.Resources.Languages.SortStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.HelpPageStrings.ResourceManager);
                  settings.RestoreLatestCulture(true);
              });
 
