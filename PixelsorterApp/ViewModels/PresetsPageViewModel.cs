@@ -122,7 +122,7 @@ namespace PixelsorterApp.ViewModels
             PresetToml = CreateToml();
             SavePresetValidationMessage = string.Empty;
 
-            PresetName = $"Preset {_mainViewModel.PresetOptions.Count}";
+            PresetName = String.Format(PixelsorterApp.Resources.Languages.PresetStrings.PresetsPageViewModel_PresetsPageViewModel_NewPresetName, _mainViewModel.PresetOptions.Count);
 
             AvailablePresets = new ObservableCollection<PresetListItem>();
             RefreshAvailablePresets();

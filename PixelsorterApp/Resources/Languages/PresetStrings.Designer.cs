@@ -214,6 +214,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset {0}.
+        /// </summary>
+        internal static string PresetsPageViewModel_PresetsPageViewModel_NewPresetName {
+            get {
+                return ResourceManager.GetString("PresetsPageViewModel_PresetsPageViewModel_NewPresetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide TOML map.
         /// </summary>
         internal static string ToggleTomlMap_Hide {

@@ -225,4 +225,7 @@
   <data name="TomlValidation_InvalidValueForFieldNameValue" xml:space="preserve">
     <value>Ungültiger Wert für {0}: '{1}'.</value>
   </data>
+  <data name="PresetsPageViewModel_PresetsPageViewModel_NewPresetName" xml:space="preserve">
+    <value>Voreinstellung {0}</value>
+  </data>
 </root>

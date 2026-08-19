@@ -8,7 +8,9 @@
     <Shell.TitleView>
         <Label Style="{StaticResource TitleViewLabelStyle}" Text="{x:Static properties:NavigationStrings.PageName_Settings}" />
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <views:LanguageSettingsView />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
+            <views:LanguageSettingsView />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

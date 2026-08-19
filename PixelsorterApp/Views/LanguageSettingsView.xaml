@@ -23,13 +23,15 @@
                     Offset="0,3" />
             </Border.Shadow>
 
-            <VerticalStackLayout>
+            <VerticalStackLayout Padding="16" Spacing="16">
                 <material:SelectField
                     Title="{localization:Translate LanguageSettingsView_ChooseLanguage}"
                     AllowClear="False"
                     ItemDisplayBinding="{Binding NativeName}"
                     ItemsSource="{Binding AvailableLanguages}"
-                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}" />
+                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                Dark={StaticResource TextPrimaryDark}}" />
                 <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
 
             </VerticalStackLayout>
