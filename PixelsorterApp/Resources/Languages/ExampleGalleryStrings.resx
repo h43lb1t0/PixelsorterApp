@@ -99,6 +99,7 @@
   </resheader>
   <data name="BeforeAfterView_SETTINGSUSED" xml:space="preserve">
     <value>SETTINGS USED</value>
+    <comment>Used in the before and after view. In past tense.</comment>
   </data>
   <data name="BeforeAfterView_SORTBY" xml:space="preserve">
     <value>SORT BY</value>

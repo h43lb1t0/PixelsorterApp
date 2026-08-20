@@ -99,9 +99,11 @@
   </resheader>
   <data name="common_Save" xml:space="preserve">
     <value>Save</value>
+    <comment>For Buttons that save something</comment>
   </data>
   <data name="common_Dismiss" xml:space="preserve">
     <value>Dismiss</value>
+    <comment>For Buttons that dismiss a popup with a only informative message</comment>
   </data>
   <data name="common_Error" xml:space="preserve">
     <value>Error</value>
@@ -109,6 +111,7 @@
   </data>
   <data name="common_OK" xml:space="preserve">
     <value>OK</value>
+    <comment>For buttons</comment>
   </data>
   <data name="common_None" xml:space="preserve">
     <value>None</value>
@@ -136,13 +139,14 @@
   </data>
   <data name="common_Accept" xml:space="preserve">
     <value>Accept</value>
+    <comment>For buttons that accept something</comment>
   </data>
   <data name="common_DontAccept" xml:space="preserve">
     <value>Decline</value>
+    <comment>For buttons that decline something</comment>
   </data>
   <data name="common_dngErrorMessage" xml:space="preserve">
     <value>Can't load RAW Images (dng files)</value>
-    <comment>raw
-</comment>
+    <comment>Message that the App can't handle images in any RAW format</comment>
   </data>
 </root>
