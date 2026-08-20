@@ -70,7 +70,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to License information unavailable.
+        ///   Looks up a localized string similar to Licence information unavailable.
         /// </summary>
         internal static string LicensePage_LicenseInformationUnavailable {
             get {
@@ -88,7 +88,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check out this pixel sorted image I have created with {0}.
+        ///   Looks up a localized string similar to Have a look at this pixel-sorted image I created with {0}.
         /// </summary>
         internal static string ShareFeature_AdTextWithPlatformLink {
             get {

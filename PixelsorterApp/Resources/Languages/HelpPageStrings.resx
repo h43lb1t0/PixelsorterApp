@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -98,9 +98,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="HelpPage_Content" xml:space="preserve">
-    <value>Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen color criterion, and lets you preview and save results.
+    <value>Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen colour criterion, and lets you preview and save results.
 
-The main screen is organized like this:
+The main screen is organised like this:
 
 - **Image preview** (tap to load an image)
 - **Sort settings** (what to sort by + sorting direction)
@@ -116,7 +116,7 @@ The main screen is organized like this:
 ### Load by tapping the preview
 
 1. On the main screen, **tap the image preview**.
-2. Pick an image.
+2. Select an image.
 3. After loading, the caption below the preview will show **“Original image”**, and the app will announce that it’s ready to sort.
 
 Notes:
@@ -153,7 +153,7 @@ The text under the preview describes what you’re currently seeing (for example
 
 The **Save** button saves the **currently displayed image**.
 
-Important behavior:
+Important behaviour:
 
 - **Save is disabled for the original image**. It becomes enabled only when you swipe to a generated result.
 - If you have multiple results, swipe to the one you want and then tap **Save**.
@@ -170,20 +170,20 @@ Pixel sorting works like this:
 
 ### Sort by
 
-**Sort by** controls the value used to compare pixels. The app uses HSL color space (Hue/Saturation/Lightness) and offers these criteria:
+**Sort by** controls the value used to compare pixels. The app uses HSL colour space (Hue/Saturation/Lightness) and offers these criteria:
 
-- **{0}** — sorts by hue angle (0–360). Produces strong color banding / rainbow-like transitions.
-- **{1}** — sorts by saturation (how “colorful” a pixel is).
+- **{0}** — sorts by hue angle (0–360). Produces strong colour banding / rainbow-like transitions.
+- **{1}** — sorts by saturation (how “colourful” a pixel is).
 - **{2}** — sorts by brightness.
-- **{3}** — favors hues around warm colors (near orange/red) and boosts saturated, mid-lightness pixels.
-- **{4}** — favors hues around cool colors (near blue) and boosts saturated, mid-lightness pixels.
+- **{3}** — favours hues around warm colours (near orange/red) and boosts saturated, mid-lightness pixels.
+- **{4}** — favours hues around cool colours (near blue) and boosts saturated, mid-lightness pixels.
 - **{5}** — measures vividness (high saturation + not too close to pure black/white).
 - **{6}** — similar to chroma, but weighted by hue to better match perception.
 
 If you want a quick starting point:
 
 - try **{7}** for classic “glitchy” streaks,
-- try **{8}** for bold color separation,
+- try **{8}** for bold colour separation,
 
 
 ### Direction
@@ -208,7 +208,7 @@ Mask-related detail:
 
 ## Masks (what they are)
 
-A **mask** is a black/white image (internally a thresholded grayscale mask).
+A **mask** is a black-and-white image (internally a thresholded greyscale mask).
 
 - **White (inside mask):** pixels are allowed to move/sort.
 - **Black (outside mask):** pixels stay in place.
@@ -258,7 +258,7 @@ You can choose:
 
 ## Presets
 
-Presets allow you to save and load your favorite sorting and masking configurations.
+Presets allow you to save and load your favourite sorting and masking configurations.
 
 - **Load a preset:** On the main screen, use the preset selector to quickly apply a saved configuration.
 - **Create or edit presets:** Choose the **"new preset"** option or navigate to the Presets page. Here you can write custom presets using TOML syntax.

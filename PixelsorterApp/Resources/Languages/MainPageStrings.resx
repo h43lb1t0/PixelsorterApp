@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -131,7 +131,7 @@
     <comment>Title of the Welcome Popup on first start of the app</comment>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu</value>
+    <value>Have a look at the example gallery to see what you can do before getting started. You can always find the gallery via the info menu.</value>
     <comment>Messageof the Welcome Popup on first start of the app</comment>
   </data>
   <data name="WelcomeAction" xml:space="preserve">
@@ -177,10 +177,10 @@
     <value>Share failed: {0}</value>
   </data>
   <data name="MaskingFeatureLicense_Title" xml:space="preserve">
-    <value>Masking feature license</value>
+    <value>Masking feature licence</value>
   </data>
   <data name="MaskingFeatureLicense_Message" xml:space="preserve">
-    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.</value>
+    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>Downloading...</value>

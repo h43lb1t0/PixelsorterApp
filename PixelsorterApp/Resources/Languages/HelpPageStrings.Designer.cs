@@ -61,9 +61,9 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen color criterion, and lets you preview and save results.
+        ///   Looks up a localized string similar to Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen colour criterion, and lets you preview and save results.
         ///
-        ///The main screen is organized like this:
+        ///The main screen is organised like this:
         ///
         ///- **Image preview** (tap to load an image)
         ///- **Sort settings** (what to sort by + sorting direction)
@@ -76,7 +76,7 @@ namespace PixelsorterApp.Resources.Languages {
         ///
         ///## Loading an image
         ///
-        ///### Load b [rest of string was truncated]&quot;;.
+        ///### Load  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string HelpPage_Content {
             get {

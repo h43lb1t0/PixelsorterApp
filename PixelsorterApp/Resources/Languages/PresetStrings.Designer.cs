@@ -367,7 +367,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject masking cannot be enabled before accepting the masking license..
+        ///   Looks up a localized string similar to Subject masking cannot be enabled before accepting the masking licence..
         /// </summary>
         internal static string TomlValidation_subjectLicenseNotAccepted {
             get {

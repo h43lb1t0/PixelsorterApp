@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -101,7 +101,7 @@
     <value>Share sorted image</value>
   </data>
   <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
-    <value>Check out this pixel sorted image I have created with {0}</value>
+    <value>Have a look at this pixel-sorted image I created with {0}</value>
   </data>
   <data name="LicensesPage_Explenation" xml:space="preserve">
     <value>This application uses the following open source packages:</value>
@@ -110,6 +110,6 @@
     <value>by {0}</value>
   </data>
   <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
-    <value>License information unavailable</value>
+    <value>Licence information unavailable</value>
   </data>
 </root>

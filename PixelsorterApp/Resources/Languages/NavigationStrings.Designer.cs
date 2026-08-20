@@ -106,7 +106,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open Source Licenses.
+        ///   Looks up a localized string similar to Open Source Licences.
         /// </summary>
         internal static string PageName_OpenSourceLicenses {
             get {

@@ -185,7 +185,7 @@
     <value>subject_settings.padding must be in range [1, 100].</value>
   </data>
   <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
-    <value>Subject masking cannot be enabled before accepting the masking license.</value>
+    <value>Subject masking cannot be enabled before accepting the masking licence.</value>
   </data>
   <data name="TomlValidation_BackgroundModelIsNotDownloaded" xml:space="preserve">
     <value>Subject masking cannot be enabled because the background model is not downloaded.</value>

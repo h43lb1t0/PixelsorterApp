@@ -205,7 +205,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won&apos;t use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page..
+        ///   Looks up a localized string similar to The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won&apos;t use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page..
         /// </summary>
         internal static string MaskingFeatureLicense_Message {
             get {
@@ -214,7 +214,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Masking feature license.
+        ///   Looks up a localized string similar to Masking feature licence.
         /// </summary>
         internal static string MaskingFeatureLicense_Title {
             get {
@@ -466,7 +466,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu.
+        ///   Looks up a localized string similar to Have a look at the example gallery to see what you can do before getting started. You can always find the gallery via the info menu..
         /// </summary>
         internal static string WelcomeMessage {
             get {

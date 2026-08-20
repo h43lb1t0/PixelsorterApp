@@ -9,7 +9,7 @@ namespace PixelsorterApp
     {
         public static readonly IReadOnlyList<CultureInfo> SupportedCultures =
             [
-                new CultureInfo("en-US"),
+                new CultureInfo("en-GB"),
                 new CultureInfo("de-DE")
             ];
     }
