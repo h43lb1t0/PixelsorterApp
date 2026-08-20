@@ -61,6 +61,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Languages are sorted by their native names..
+        /// </summary>
+        internal static string LanguagesAreSortedByTheirNativeNames {
+            get {
+                return ResourceManager.GetString("LanguagesAreSortedByTheirNativeNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose language.
         /// </summary>
         internal static string LanguageSettingsView_ChooseLanguage {

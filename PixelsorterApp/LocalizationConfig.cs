@@ -7,11 +7,14 @@ namespace PixelsorterApp
 {
     public class LocalizationConfig
     {
-        public static readonly IReadOnlyList<CultureInfo> SupportedCultures =
-            [
+
+        private static List<CultureInfo> unsortedInfos = [
                 new CultureInfo("en-GB"),
                 new CultureInfo("en-US"),
                 new CultureInfo("de-DE")
             ];
+        public static readonly IReadOnlyList<CultureInfo> SupportedCultures = unsortedInfos.OrderBy(x => x.NativeName).ToList();
+
+
     }
 }

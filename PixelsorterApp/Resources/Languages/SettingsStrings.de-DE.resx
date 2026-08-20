@@ -126,4 +126,7 @@
   <data name="LanguageSettingsView_Restart" xml:space="preserve">
     <value>Bitte starte die App neu nachdem du die Sprache gewechselt hast für die beste Erfahrung.</value>
   </data>
+  <data name="LanguagesAreSortedByTheirNativeNames" xml:space="preserve">
+    <value>Die Sprachen sind nach dem Namen in ihrer eigenen Sprache sortiert.</value>
+  </data>
 </root>

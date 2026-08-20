@@ -13,6 +13,7 @@
             Style="{StaticResource CardHeaderLabel}"
             Text="{localization:Translate LanguageSettingsView_LanguageSettings}" />
 
+
         <Border StyleClass="Elevation3">
             <Border.Shadow>
                 <Shadow
@@ -24,7 +25,8 @@
             </Border.Shadow>
 
             <VerticalStackLayout Padding="16" Spacing="16">
-                <!-- Workaround for UraniumUI bug #715 -->
+                <Label Text="{localization:Translate LanguagesAreSortedByTheirNativeNames}" />
+                <!--  Workaround for UraniumUI bug #715  -->
                 <VerticalStackLayout Spacing="4">
                     <Label
                         FontSize="12"
