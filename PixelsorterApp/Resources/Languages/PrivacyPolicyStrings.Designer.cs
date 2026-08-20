@@ -106,7 +106,9 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • Your IP address&amp;#10;• System information (user agent of the requesting client)&amp;#10;• Time of the download.
+        ///   Looks up a localized string similar to • Your IP address
+        ///• System information (user agent of the requesting client)
+        ///• Time of the download.
         /// </summary>
         internal static string PrivacyPolicyPage_Part_2_3 {
             get {
@@ -187,7 +189,13 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • Access your personal data stored by us (Art. 15 GDPR)&amp;#10;• Rectification of inaccurate data (Art. 16 GDPR)&amp;#10;• Erasure of your data stored by us (Art. 17 GDPR)&amp;#10;• Restriction of processing (Art. 18 GDPR)&amp;#10;• Objection to processing (Art. 21 GDPR)&amp;#10;• Data portability (Art. 20 GDPR)&amp;#10;• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR)..
+        ///   Looks up a localized string similar to • Access your personal data stored by us (Art. 15 GDPR)
+        ///• Rectification of inaccurate data (Art. 16 GDPR)
+        ///• Erasure of your data stored by us (Art. 17 GDPR)
+        ///• Restriction of processing (Art. 18 GDPR)
+        ///• Objection to processing (Art. 21 GDPR)
+        ///• Data portability (Art. 20 GDPR)
+        ///• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR)..
         /// </summary>
         internal static string PrivacyPolicyPage_Part_5_2 {
             get {

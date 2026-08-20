@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -116,7 +116,9 @@
     <value>When downloading the model, a network connection to Hugging Face servers is established. During this process, the following data may be transmitted to Hugging Face:</value>
   </data>
   <data name="PrivacyPolicyPage_Part_2_3" xml:space="preserve">
-    <value>• Your IP address&amp;#10;• System information (user agent of the requesting client)&amp;#10;• Time of the download</value>
+    <value>• Your IP address
+• System information (user agent of the requesting client)
+• Time of the download</value>
   </data>
   <data name="PrivacyPolicyPage_Part_2_4" xml:space="preserve">
     <value>Data processing is carried out on the basis of your consent (Art. 6(1)(a) GDPR), because the download is only triggered after your active interaction. You can revoke this consent for the future at any time by deleting the downloaded model in the app settings or by fully uninstalling the app from your device. Further information can be found in Hugging Face's privacy policy.</value>
@@ -143,7 +145,13 @@
     <value>You have the right at any time to:</value>
   </data>
   <data name="PrivacyPolicyPage_Part_5_2" xml:space="preserve">
-    <value>• Access your personal data stored by us (Art. 15 GDPR)&amp;#10;• Rectification of inaccurate data (Art. 16 GDPR)&amp;#10;• Erasure of your data stored by us (Art. 17 GDPR)&amp;#10;• Restriction of processing (Art. 18 GDPR)&amp;#10;• Objection to processing (Art. 21 GDPR)&amp;#10;• Data portability (Art. 20 GDPR)&amp;#10;• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR).</value>
+    <value>• Access your personal data stored by us (Art. 15 GDPR)
+• Rectification of inaccurate data (Art. 16 GDPR)
+• Erasure of your data stored by us (Art. 17 GDPR)
+• Restriction of processing (Art. 18 GDPR)
+• Objection to processing (Art. 21 GDPR)
+• Data portability (Art. 20 GDPR)
+• Lodge a complaint: You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR).</value>
   </data>
   <data name="PrivacyPolicyPage_Part_6_CurrentValidityAndChangesToThisPrivacyPolicy" xml:space="preserve">
     <value>Current Validity and Changes to This Privacy Policy</value>
