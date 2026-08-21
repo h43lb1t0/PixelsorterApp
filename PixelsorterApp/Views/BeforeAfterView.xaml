@@ -76,7 +76,7 @@
                     FontAttributes="Bold"
                     FontFamily="SpaceGroteskRegular"
                     FontSize="11"
-                    Text="{localization:Translate BeforeAfterView_SETTINGSUSED}"
+                    Text="{localization:Translate ExampleGallery_BeforeAfterView_SETTINGSUSED}"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}" />
 
@@ -94,7 +94,7 @@
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
-                                Text="{localization:Translate BeforeAfterView_SORTBY}"
+                                Text="{localization:Translate ExampleGallery_BeforeAfterView_SORTBY}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}" />
                             <Label
@@ -117,7 +117,7 @@
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
-                                Text="{localization:Translate BeforeAfterView_DIRECTION}"
+                                Text="{localization:Translate ExampleGallery_BeforeAfterView_DIRECTION}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}" />
                             <Label
@@ -253,7 +253,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Title}"
+                                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
