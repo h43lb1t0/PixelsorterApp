@@ -116,7 +116,7 @@
     <value>Chroma</value>
   </data>
   <data name="SortStrings_by_perVib" xml:space="preserve">
-    <value>Perceived Vibrancy</value>
+    <value>Vibrancy</value>
   </data>
   <data name="SortStrings_direction_rlr" xml:space="preserve">
     <value>Row Left to Right</value>

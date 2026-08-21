@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PixelSorterHeader" xml:space="preserve">
-    <value>Pixel Sorter</value>
+    <value>Pixelsorter</value>
   </data>
   <data name="AppSlogan" xml:space="preserve">
     <value>Bild laden, Optionen wählen und sortieren.</value>
@@ -142,10 +142,10 @@
     <value>Sortiert nach {0} und {1}</value>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
-    <value>Willkommen beim Pixel Sorter!</value>
+    <value>Willkommen beim Pixelsorter!</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Schau in die Beispiel-Galerie, um zu sehen, was du kreieren kannst, bevor du startest. Du findest sie jederzeit über das Info-Menü</value>
+    <value>Schau in die Beispiel-Galerie, um zu sehen, was du kreieren kannst, bevor du startest. Du findest sie jederzeit über das Info-Menü.</value>
   </data>
   <data name="WelcomeAction" xml:space="preserve">
     <value>Öffne die Beispiel-Galerie</value>
@@ -196,7 +196,7 @@
     <value>Die Maskierungsfunktion nutzt ein vorgefertigtes Machine-Learning-Modell eines Drittanbieters. Wenn du diese Funktion aktivierst, stimmst du zu, mit diesem Tool erstellte oder bearbeitete Bilder nicht für kommerzielle Zwecke zu nutzen. Weitere Informationen findest du auf der Lizenzseite.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
-    <value>Lädt herunter...</value>
+    <value>Lädt KI Model herunter...</value>
   </data>
   <data name="DownloadFailed_Title" xml:space="preserve">
     <value>Download fehlgeschlagen</value>
@@ -223,10 +223,10 @@
     <value>Schwellenwert</value>
   </data>
   <data name="PresetsView_Header" xml:space="preserve">
-    <value>VOREINSTELLUNG</value>
+    <value>VOREINSTELLUNGEN</value>
   </data>
   <data name="PresetsView_Presets" xml:space="preserve">
-    <value>Voreinstellung</value>
+    <value>Voreinstellungen</value>
   </data>
   <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
     <value>Motivmaske</value>
@@ -239,9 +239,6 @@
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
     <value>Vordergrund</value>
-  </data>
-  <data name="SubjectMaskOptionsView_HowToCombineMasks_Title" xml:space="preserve">
-    <value>Maskenkombinationseinstellung</value>
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
     <value>Subtrahieren</value>

@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PixelSorterHeader" xml:space="preserve">
-    <value>Pixel Sorter</value>
+    <value>Pixelsorter</value>
     <comment>Heading of the app</comment>
   </data>
   <data name="AppSlogan" xml:space="preserve">
@@ -127,7 +127,7 @@
     <value>Sort by: {0} • Direction: {1}</value>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
-    <value>Welcome to Pixel Sorter!</value>
+    <value>Welcome to Pixelsorter!</value>
     <comment>Title of the Welcome Popup on first start of the app</comment>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
@@ -183,7 +183,7 @@
     <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
-    <value>Downloading...</value>
+    <value>Downloading AI model...</value>
     <comment>Downloading the background remove model</comment>
   </data>
   <data name="DownloadFailed_Title" xml:space="preserve">
@@ -225,15 +225,13 @@
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
     <value>Choose</value>
+    <comment>Used for choosing subject background or foreground and mask combination sub/add</comment>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
     <value>Background</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
     <value>Foreground</value>
-  </data>
-  <data name="SubjectMaskOptionsView_HowToCombineMasks_Title" xml:space="preserve">
-    <value>How to combine masks</value>
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
     <value>Subtract</value>

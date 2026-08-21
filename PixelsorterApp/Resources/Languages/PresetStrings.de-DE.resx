@@ -196,7 +196,7 @@
     <value>Ungültige TOML-Syntax.</value>
   </data>
   <data name="TomlValidation_MaskMustBeEnabled" xml:space="preserve">
-    <value>Richtung 'im' (Into Mask) benötigt mindestens eine aktivierte Maske.</value>
+    <value>Richtung 'im' (Radial in die Maske) benötigt mindestens eine aktivierte Maske.</value>
   </data>
   <data name="TomlValidation_CannyOutOfRange" xml:space="preserve">
     <value>canny_options.threshold muss im Intervall (0, 100) liegen.</value>

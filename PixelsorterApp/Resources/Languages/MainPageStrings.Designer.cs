@@ -178,7 +178,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading....
+        ///   Looks up a localized string similar to Downloading AI model....
         /// </summary>
         internal static string Downloading {
             get {
@@ -250,7 +250,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pixel Sorter.
+        ///   Looks up a localized string similar to Pixelsorter.
         /// </summary>
         internal static string PixelSorterHeader {
             get {
@@ -394,15 +394,6 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How to combine masks.
-        /// </summary>
-        internal static string SubjectMaskOptionsView_HowToCombineMasks_Title {
-            get {
-                return ResourceManager.GetString("SubjectMaskOptionsView_HowToCombineMasks_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Padding.
         /// </summary>
         internal static string SubjectMaskOptionsView_Padding {
@@ -475,7 +466,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to Pixel Sorter!.
+        ///   Looks up a localized string similar to Welcome to Pixelsorter!.
         /// </summary>
         internal static string WelcomeTitle {
             get {

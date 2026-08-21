@@ -130,19 +130,19 @@
     <value>Sättigung</value>
   </data>
   <data name="SortStrings_by_light" xml:space="preserve">
-    <value>Leichtigkeit</value>
+    <value>Helligkeit</value>
   </data>
   <data name="SortStrings_by_warm" xml:space="preserve">
     <value>Wärme</value>
   </data>
   <data name="SortStrings_by_cool" xml:space="preserve">
-    <value>Kälte</value>
+    <value>Kühle</value>
   </data>
   <data name="SortStrings_by_chroma" xml:space="preserve">
-    <value>Chroma</value>
+    <value>Farbintensität (Chroma)</value>
   </data>
   <data name="SortStrings_by_perVib" xml:space="preserve">
-    <value>Wahrgenommene Lebendigkeit</value>
+    <value>Dynamik</value>
   </data>
   <data name="SortStrings_direction_rlr" xml:space="preserve">
     <value>Reihe links nach rechts</value>

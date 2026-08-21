@@ -7,11 +7,8 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:MainPageViewModel">
 
-    <VerticalStackLayout Spacing="0">
-        <Grid
-            Padding="16,0"
-            ColumnDefinitions="*,Auto"
-            HeightRequest="56">
+    <VerticalStackLayout Padding="0,5" Spacing="0">
+        <Grid Padding="16,0" ColumnDefinitions="*,Auto">
             <VerticalStackLayout
                 Grid.Column="0"
                 Spacing="2"
@@ -118,7 +115,7 @@
             RowDefinitions="Auto,Auto">
             <Label
                 FontSize="16"
-                Text="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Title}"
+                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                 VerticalOptions="Center" />
             <HorizontalStackLayout
                 Grid.Column="1"

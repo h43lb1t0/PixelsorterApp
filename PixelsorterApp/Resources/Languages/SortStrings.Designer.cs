@@ -97,7 +97,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perceived Vibrancy.
+        ///   Looks up a localized string similar to Vibrancy.
         /// </summary>
         internal static string SortStrings_by_perVib {
             get {
