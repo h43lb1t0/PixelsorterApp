@@ -37,16 +37,8 @@ namespace PixelsorterApp
             .UseUXDiversPopups()
             .UseLocalizationResourceManager(settings =>
              {
-                 settings.AddResource(PixelsorterApp.Resources.Languages.CommonStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.ExampleGalleryStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.MainPageStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.NavigationStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.OtherStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.PresetStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.AppStrings.ResourceManager);
                  settings.AddResource(PixelsorterApp.Resources.Languages.PrivacyPolicyStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.SettingsStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.SortStrings.ResourceManager);
-                 settings.AddResource(PixelsorterApp.Resources.Languages.HelpPageStrings.ResourceManager);
                  settings.RestoreLatestCulture(true);
              });
 

@@ -3,10 +3,10 @@
     x:Class="PixelsorterApp.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:properties="clr-namespace:PixelsorterApp.Resources.Languages"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:views="clr-namespace:PixelsorterApp.Views">
     <Shell.TitleView>
-        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{x:Static properties:NavigationStrings.PageName_Settings}" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{localization:Translate PageName_Settings}" />
     </Shell.TitleView>
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,30" Spacing="16">

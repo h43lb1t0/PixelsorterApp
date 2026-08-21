@@ -115,24 +115,24 @@ public class ExampleImageConfig : INotifyPropertyChanged
 	[JsonIgnore]
 	public string SortBySafe => SortBy != null
 		? SortStringLocalizer.LocalizeSortBy(SortBy)
-		: PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+		: PixelsorterApp.Resources.Languages.AppStrings.common_None;
 	
 	[JsonIgnore]
 	public string SortDirectionSafe => SortDirection != null
 		? SortStringLocalizer.LocalizeDirection(SortDirection.Replace(" ", string.Empty))
-		: PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+		: PixelsorterApp.Resources.Languages.AppStrings.common_None;
 	
 	[JsonIgnore]
-	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.CommonStrings.common_NA;
+	public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
 	
 	[JsonIgnore]
-	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.CommonStrings.common_NA;
+	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
 	
 	[JsonIgnore]
-	public string WhatToSortSafe => WhatToSort ?? PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+	public string WhatToSortSafe => WhatToSort ?? PixelsorterApp.Resources.Languages.AppStrings.common_None;
 	
 	[JsonIgnore]
-	public string MaskCombineSafe => MaskCombine ?? PixelsorterApp.Resources.Languages.CommonStrings.common_None;
+	public string MaskCombineSafe => MaskCombine ?? PixelsorterApp.Resources.Languages.AppStrings.common_None;
 }
 
 public class ExampleImageConfigsRoot

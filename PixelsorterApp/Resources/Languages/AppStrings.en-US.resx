@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="HelpPage_Content" xml:space="preserve">
     <value>Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen color criterion, and lets you preview and save results.
 
@@ -293,5 +294,27 @@ Presets allow you to save and load your favorite sorting and masking configurati
 - If **Save** is disabled, you are probably viewing the **original image**. Swipe to a generated result.
 - If enabling **subject masking** does nothing the first time, check your internet connection (model download is required once).
 - For faster experimentation, start without masks and with **Row Left To Right + Lightness**, then add masks when you know the direction/criterion you like.</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu.</value>
+    <comment>Messageof the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Masking feature license</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.</value>
+  </data>
+  <data name="PageName_OpenSourceLicenses" xml:space="preserve">
+    <value>Open Source Licenses</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>License information unavailable</value>
+  </data>
+  <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
+    <value>Check out this pixel sorted image I have created with {0}</value>
+  </data>
+  <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
+    <value>Subject masking cannot be enabled before accepting the masking license.</value>
   </data>
 </root>

@@ -4,28 +4,28 @@ namespace PixelsorterApp.Models;
 
 /// <summary>
 /// Maps internal ClassLib sort-by and direction keys to localized display strings
-/// from the <see cref="SortStrings"/> resource file.
+/// from the <see cref="AppStrings"/> resource file.
 /// </summary>
 public static class SortStringLocalizer
 {
     private static readonly Dictionary<string, Func<string>> SortByMap = new(StringComparer.Ordinal)
     {
-        ["Hue"] = () => SortStrings.SortStrings_by_hue,
-        ["Saturation"] = () => SortStrings.SortStrings_by_sat,
-        ["Lightness"] = () => SortStrings.SortStrings_by_light,
-        ["Warmth"] = () => SortStrings.SortStrings_by_warm,
-        ["Coolness"] = () => SortStrings.SortStrings_by_cool,
-        ["Chroma"] = () => SortStrings.SortStrings_by_chroma,
-        ["PerceivedVibrancy"] = () => SortStrings.SortStrings_by_perVib,
+        ["Hue"] = () => AppStrings.SortStrings_by_hue,
+        ["Saturation"] = () => AppStrings.SortStrings_by_sat,
+        ["Lightness"] = () => AppStrings.SortStrings_by_light,
+        ["Warmth"] = () => AppStrings.SortStrings_by_warm,
+        ["Coolness"] = () => AppStrings.SortStrings_by_cool,
+        ["Chroma"] = () => AppStrings.SortStrings_by_chroma,
+        ["PerceivedVibrancy"] = () => AppStrings.SortStrings_by_perVib,
     };
 
     private static readonly Dictionary<string, Func<string>> DirectionMap = new(StringComparer.Ordinal)
     {
-        ["RowLeftToRight"] = () => SortStrings.SortStrings_direction_rlr,
-        ["RowRightToLeft"] = () => SortStrings.SortStrings_direction_rrl,
-        ["ColumnTopToBottom"] = () => SortStrings.SortStrings_direction_ctb,
-        ["ColumnBottomToTop"] = () => SortStrings.SortStrings_direction_cbt,
-        ["IntoMask"] = () => SortStrings.SortStrings_direction_im,
+        ["RowLeftToRight"] = () => AppStrings.SortStrings_direction_rlr,
+        ["RowRightToLeft"] = () => AppStrings.SortStrings_direction_rrl,
+        ["ColumnTopToBottom"] = () => AppStrings.SortStrings_direction_ctb,
+        ["ColumnBottomToTop"] = () => AppStrings.SortStrings_direction_cbt,
+        ["IntoMask"] = () => AppStrings.SortStrings_direction_im,
     };
 
     /// <summary>

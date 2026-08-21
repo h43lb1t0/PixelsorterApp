@@ -30,12 +30,12 @@ namespace PixelsorterApp.Services
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                return (false, PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_Empty);
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_Empty);
             }
 
             if (map is null)
             {
-                return (false, PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_FailedToLoadTomlMap);
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_FailedToLoadTomlMap);
             }
 
             TomlTable? model;
@@ -45,12 +45,12 @@ namespace PixelsorterApp.Services
             }
             catch (Exception ex)
             {
-                return (false, String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_InvalidSyntaxError, ex.Message));
+                return (false, String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidSyntaxError, ex.Message));
             }
 
             if (model is null)
             {
-                return (false, PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_InvalidSyntax);
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidSyntax);
             }
 
             var sortSettings = GetTable(model, "sort_settings", errors);
@@ -75,17 +75,17 @@ namespace PixelsorterApp.Services
 
             if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny)
             {
-                errors.Add(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_MaskMustBeEnabled);
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MaskMustBeEnabled);
             }
 
             if (cannyThreashold is <= 0 or >= 100)
             {
-                errors.Add(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_CannyOutOfRange);
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_CannyOutOfRange);
             }
 
             if (subjectPadding is < 1 or > 100)
             {
-                errors.Add(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_SubjectPaddingOutOfRange);
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectPaddingOutOfRange);
             }
 
             if (useSubject)
@@ -93,12 +93,12 @@ namespace PixelsorterApp.Services
                 bool licenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
                 if (!licenseAccepted)
                 {
-                    errors.Add(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_subjectLicenseNotAccepted);
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_subjectLicenseNotAccepted);
                 }
 
                 if (!imageProcessingService.IsBackgroundMaskReady)
                 {
-                    errors.Add(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_BackgroundModelIsNotDownloaded);
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_BackgroundModelIsNotDownloaded);
                 }
             }
 
@@ -124,7 +124,7 @@ namespace PixelsorterApp.Services
                 return table;
             }
 
-            errors.Add(String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_MissingOrInvalidTableTableName, tableName));
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidTableTableName, tableName));
             return new TomlTable();
         }
 
@@ -145,7 +145,7 @@ namespace PixelsorterApp.Services
                 return s;
             }
 
-            errors.Add(String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_MissingOrInvalidStringValueKey, key));
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidStringValueKey, key));
             return string.Empty;
         }
 
@@ -165,7 +165,7 @@ namespace PixelsorterApp.Services
                 return b;
             }
 
-            errors.Add(String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_MissingOrInvalidBooleanValue, key));
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidBooleanValue, key));
             return false;
         }
 
@@ -186,7 +186,7 @@ namespace PixelsorterApp.Services
                 return (int)l;
             }
 
-            errors.Add(String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_MissingOrInvalidIntegerValue, key));
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidIntegerValue, key));
             return 0;
         }
 
@@ -213,7 +213,7 @@ namespace PixelsorterApp.Services
 
             if (map is null || !map.ContainsKey(value))
             {
-                errors.Add(String.Format(PixelsorterApp.Resources.Languages.PresetStrings.TomlValidation_InvalidValueForFieldNameValue, fieldName, value));
+                errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidValueForFieldNameValue, fieldName, value));
             }
         }
 

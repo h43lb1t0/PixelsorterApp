@@ -133,7 +133,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets or sets the caption shown for the currently displayed image.
     /// </summary>
     [ObservableProperty]
-    public partial string CurrentCaption { get; set; } = PixelsorterApp.Resources.Languages.MainPageStrings.TapToLoadAnImage;
+    public partial string CurrentCaption { get; set; } = PixelsorterApp.Resources.Languages.AppStrings.TapToLoadAnImage;
 
     private readonly IRelayCommand sortCommand;
     private readonly IRelayCommand saveCommand;
@@ -165,7 +165,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
             if (!IsSortEnabled)
             {
-                CurrentCaption = PixelsorterApp.Resources.Languages.MainPageStrings.TapToLoadAnImage;
+                CurrentCaption = PixelsorterApp.Resources.Languages.AppStrings.TapToLoadAnImage;
             }
 
             suppressPresetSelectionChangedHandling = true;
@@ -395,12 +395,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets the selected sort criterion display name.
     /// </summary>
-    public string SelectedSortByName => SelectedSortBy?.DisplayName ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+    public string SelectedSortByName => SelectedSortBy?.DisplayName ?? PixelsorterApp.Resources.Languages.AppStrings.common_Unknown;
 
     /// <summary>
     /// Gets the selected sort direction display name.
     /// </summary>
-    public string SelectedSortDirectionName => SelectedSortDirection?.DisplayName ?? PixelsorterApp.Resources.Languages.CommonStrings.common_Unknown;
+    public string SelectedSortDirectionName => SelectedSortDirection?.DisplayName ?? PixelsorterApp.Resources.Languages.AppStrings.common_Unknown;
 
     /// <summary>
     /// Refreshes sort direction options based on current mask settings and preserves selection when possible.
