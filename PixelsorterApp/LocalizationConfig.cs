@@ -1,20 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace PixelsorterApp
 {
-    public class LocalizationConfig
+    /// <summary>
+    /// Configuration for application localization and supported cultures.
+    /// The SupportedCultures property is automatically generated at build time in LocalizationConfig.g.cs
+    /// based on available .resx files in Resources/Languages.
+    /// </summary>
+    public static partial class LocalizationConfig
     {
-
-        private static List<CultureInfo> unsortedInfos = [
-                new CultureInfo("en-GB"),
-                new CultureInfo("en-US"),
-                new CultureInfo("de-DE")
-            ];
-        public static readonly IReadOnlyList<CultureInfo> SupportedCultures = unsortedInfos.OrderBy(x => x.NativeName).ToList();
-
-
     }
 }
+
