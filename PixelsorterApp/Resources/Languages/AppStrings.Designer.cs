@@ -472,6 +472,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We can only guarantee that the German and English versions are always fully translated. For other languages, some content may be missing, in which case it will be replaced by the English terms..
+        /// </summary>
+        internal static string LanguageSettingsView_TranslationGuarantee {
+            get {
+                return ResourceManager.GetString("LanguageSettingsView_TranslationGuarantee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by {0}.
         /// </summary>
         internal static string LicensePage_ByItemAuthors {

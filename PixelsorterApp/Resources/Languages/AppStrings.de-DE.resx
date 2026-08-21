@@ -682,4 +682,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="SortStrings_direction_cbt" xml:space="preserve">
     <value>Spalte unten nach oben</value>
   </data>
+  <data name="LanguageSettingsView_TranslationGuarantee" xml:space="preserve">
+    <value>Wir können nur garantieren, dass die deutsche und die englische Version stets vollständig übersetzt sind. Bei anderen Sprachen können Teile des Inhalts fehlen; in diesem Fall werden sie durch die englischen Begriffe ersetzt.</value>
+  </data>
 </root>

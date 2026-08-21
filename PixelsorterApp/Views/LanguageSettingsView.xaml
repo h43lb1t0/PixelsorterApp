@@ -9,6 +9,7 @@
     x:DataType="viewModels:SettingsViewModel">
     <VerticalStackLayout Spacing="16">
         <Label
+            FontSize="16"
             SemanticProperties.HeadingLevel="Level2"
             Style="{StaticResource CardHeaderLabel}"
             Text="{localization:Translate LanguageSettingsView_LanguageSettings}" />
@@ -40,6 +41,12 @@
                         SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
                         TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                     Dark={StaticResource TextPrimaryDark}}" />
+                    <Border>
+                        <Label
+                            Padding="8"
+                            FontSize="12"
+                            Text="{localization:Translate LanguageSettingsView_TranslationGuarantee}" />
+                    </Border>
                 </VerticalStackLayout>
                 <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
 
