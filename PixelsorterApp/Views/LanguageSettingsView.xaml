@@ -3,6 +3,7 @@
     x:Class="PixelsorterApp.Views.LanguageSettingsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
@@ -36,6 +37,7 @@
                                                     Dark={StaticResource TextPrimaryDark}}" />
                     <material:SelectField
                         AllowClear="False"
+                        Icon="{FontImageSource FontFamily=MaterialSymbolsFont, Glyph={x:Static local:MaterialSymbolsFont.Language}}"
                         ItemDisplayBinding="{Binding NativeName}"
                         ItemsSource="{Binding AvailableLanguages}"
                         SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
