@@ -35,13 +35,13 @@ public sealed class HelpNavigationService : IHelpNavigationService
         var parameters = new Dictionary<string, object?>
         {
             { "Title", PixelsorterApp.Resources.Languages.AppStrings.Navigation_Title },
-            { "Options", new List<(string Label, string Icon)> { 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_HelpPage, MaterialSymbolsFont.Help), 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_ExampleGallery, MaterialSymbolsFont.Collections), 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune), 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel), 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip), 
-                (PixelsorterApp.Resources.Languages.AppStrings.PageName_Settings, MaterialSymbolsFont.SettingsGear),
+            { "Options", new List<(string Id, string Label, string Icon)> { 
+                ("Help", PixelsorterApp.Resources.Languages.AppStrings.PageName_HelpPage, MaterialSymbolsFont.Help), 
+                ("Gallery", PixelsorterApp.Resources.Languages.AppStrings.PageName_ExampleGallery, MaterialSymbolsFont.Collections), 
+                ("Presets", PixelsorterApp.Resources.Languages.AppStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune), 
+                ("Licenses", PixelsorterApp.Resources.Languages.AppStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel), 
+                ("Privacy", PixelsorterApp.Resources.Languages.AppStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip), 
+                ("Settings", PixelsorterApp.Resources.Languages.AppStrings.PageName_Settings, MaterialSymbolsFont.SettingsGear),
             } }
         };
 
@@ -50,29 +50,26 @@ public sealed class HelpNavigationService : IHelpNavigationService
 
     private async Task NavigateToSelectionAsync(Page currentPage, string selection)
     {
-        if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_HelpPage)
+        switch (selection)
         {
-            await currentPage.Navigation.PushAsync(new HelpPage());
-        }
-        else if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_ExampleGallery)
-        {
-            await currentPage.Navigation.PushAsync(new ExampleGallery());
-        }
-        else if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_PresetsPage)
-        {
-            await presetNavigationService.ShowCreatePresetPageAsync();
-        }
-        else if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_OpenSourceLicenses)
-        {
-            await currentPage.Navigation.PushAsync(new LicensesPage());
-        }
-        else if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_PrivacyPolicy)
-        {
-            await currentPage.Navigation.PushAsync(new PrivacyPolicyPage());
-        }
-        else if (selection == PixelsorterApp.Resources.Languages.AppStrings.PageName_Settings)
-        {
-            await currentPage.Navigation.PushAsync(serviceProvider.GetRequiredService<SettingsPage>());
+            case "Help":
+                await currentPage.Navigation.PushAsync(new HelpPage());
+                break;
+            case "Gallery":
+                await currentPage.Navigation.PushAsync(new ExampleGallery());
+                break;
+            case "Presets":
+                await presetNavigationService.ShowCreatePresetPageAsync();
+                break;
+            case "Licenses":
+                await currentPage.Navigation.PushAsync(new LicensesPage());
+                break;
+            case "Privacy":
+                await currentPage.Navigation.PushAsync(new PrivacyPolicyPage());
+                break;
+            case "Settings":
+                await currentPage.Navigation.PushAsync(serviceProvider.GetRequiredService<SettingsPage>());
+                break;
         }
     }
 }

@@ -40,18 +40,18 @@ public partial class NavigationPopup : PopupResultPage<String>
             TitleLabel.Text = title?.ToString() ?? PixelsorterApp.Resources.Languages.AppStrings.Navigation;
         }
 
-        if (parameters.TryGetValue("Options", out var options) && options is IEnumerable<(string Label, string Icon)> navOptions)
+        if (parameters.TryGetValue("Options", out var options) && options is IEnumerable<(string Id, string Label, string Icon)> navOptions)
         {
-            var optionsList = new List<(string Label, string Icon)>(navOptions);
+            var optionsList = new List<(string Id, string Label, string Icon)>(navOptions);
             for (int i = 0; i < optionsList.Count; i++)
             {
                 var isLast = i == optionsList.Count - 1;
-                navItemsContainer.Add(CreateNavItem(optionsList[i].Label, optionsList[i].Icon, isLast));
+                navItemsContainer.Add(CreateNavItem(optionsList[i].Id, optionsList[i].Label, optionsList[i].Icon, isLast));
             }
         }
     }
 
-    private View CreateNavItem(string label, string icon, bool isLast)
+    private View CreateNavItem(string id, string label, string icon, bool isLast)
     {
         if (Application.Current == null) return new VerticalStackLayout();
 
@@ -119,7 +119,7 @@ public partial class NavigationPopup : PopupResultPage<String>
         var tapGesture = new TapGestureRecognizer
         {
             Command = SetResultCommand,
-            CommandParameter = label,
+            CommandParameter = id,
         };
         row.GestureRecognizers.Add(tapGesture);
 
