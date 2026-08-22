@@ -22,11 +22,16 @@ namespace PixelsorterApp.ViewModels
             }
         }
 
-
         public SettingsViewModel(ILocalizationResourceManager localizationResourceManager) 
         {
             this.localizationResourceManager = localizationResourceManager;
-            this.selectedLanguage = localizationResourceManager.CurrentCulture;
+            
+            var current = localizationResourceManager.CurrentCulture;
+            this.selectedLanguage = AvailableLanguages.FirstOrDefault(c => c.Name == current.Name)
+                ?? AvailableLanguages.FirstOrDefault(c => c.TwoLetterISOLanguageName == current.TwoLetterISOLanguageName)
+                ?? AvailableLanguages.FirstOrDefault(c => c.Name == "en-GB")
+                ?? AvailableLanguages.FirstOrDefault()
+                ?? current;
         }
     }
 }
