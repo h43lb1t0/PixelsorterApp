@@ -20,6 +20,7 @@ namespace PixelsorterApp
         /// <returns>The configured <see cref="MauiApp"/> instance.</returns>
         public static MauiApp CreateMauiApp()
         {
+            LocalizationConfig.ApplyBestCulture();
             var builder = MauiApp.CreateBuilder();
             builder.UseMauiApp<App>().ConfigureFonts(fonts =>
             {

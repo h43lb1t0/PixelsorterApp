@@ -27,11 +27,7 @@ namespace PixelsorterApp.ViewModels
             this.localizationResourceManager = localizationResourceManager;
             
             var current = localizationResourceManager.CurrentCulture;
-            this.selectedLanguage = AvailableLanguages.FirstOrDefault(c => c.Name == current.Name)
-                ?? AvailableLanguages.FirstOrDefault(c => c.TwoLetterISOLanguageName == current.TwoLetterISOLanguageName)
-                ?? AvailableLanguages.FirstOrDefault(c => c.Name == "en-GB")
-                ?? AvailableLanguages.FirstOrDefault()
-                ?? current;
+            this.selectedLanguage = current;
         }
     }
 }
