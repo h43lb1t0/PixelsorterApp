@@ -127,12 +127,16 @@ public class ExampleImageConfig : INotifyPropertyChanged
 	
 	[JsonIgnore]
 	public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
-	
+
 	[JsonIgnore]
-	public string WhatToSortSafe => WhatToSort ?? PixelsorterApp.Resources.Languages.AppStrings.common_None;
-	
+	public string WhatToSortSafe => WhatToSort != null
+		? SortStringLocalizer.LocalizeMasks(WhatToSort)
+		: PixelsorterApp.Resources.Languages.AppStrings.common_None;
+
 	[JsonIgnore]
-	public string MaskCombineSafe => MaskCombine ?? PixelsorterApp.Resources.Languages.AppStrings.common_None;
+	public string MaskCombineSafe => MaskCombine != null
+		? SortStringLocalizer.LocalizeMasks(MaskCombine)
+		: PixelsorterApp.Resources.Languages.AppStrings.common_None;
 }
 
 public class ExampleImageConfigsRoot

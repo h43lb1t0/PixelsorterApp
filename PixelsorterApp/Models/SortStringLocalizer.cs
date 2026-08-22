@@ -28,6 +28,14 @@ public static class SortStringLocalizer
         ["IntoMask"] = () => AppStrings.SortStrings_direction_im,
     };
 
+    private static readonly Dictionary<string, Func<string>> MaskMap = new(StringComparer.Ordinal)
+    {
+        ["Background"] = () => AppStrings.SubjectMaskOptionsView_WhatToSort_Background,
+        ["Foreground"] = () => AppStrings.SubjectMaskOptionsView_WhatToSort_Foreground,
+        ["Add"] = () => AppStrings.SubjectMaskOptionsView_HowToCombineMasks_Add,
+        ["Subtract"] = () => AppStrings.SubjectMaskOptionsView_HowToCombineMasks_Subtract,
+    };
+
     /// <summary>
     /// Returns the localized display name for a sort-by key (e.g. "Hue" → "Farbton" in German).
     /// Falls back to the raw key if no mapping is found.
@@ -41,4 +49,11 @@ public static class SortStringLocalizer
     /// </summary>
     public static string LocalizeDirection(string enumName)
         => DirectionMap.TryGetValue(enumName, out var getter) ? getter() : enumName;
+
+    /// <summary>
+    /// Returns the localized displayname for all the strings about masks
+    /// </summary>
+    /// <returns></returns>
+    public static string LocalizeMasks(string key)
+        => MaskMap.TryGetValue(key, out var getter) ? getter() : key;
 }
