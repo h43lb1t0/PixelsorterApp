@@ -3,26 +3,24 @@
     x:Class="PixelsorterApp.Views.SubjectMaskOptionsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:MainPageViewModel">
 
-    <VerticalStackLayout Spacing="0">
-        <Grid
-            Padding="16,0"
-            ColumnDefinitions="*,Auto"
-            HeightRequest="56">
+    <VerticalStackLayout Padding="0,5" Spacing="0">
+        <Grid Padding="16,0" ColumnDefinitions="*,Auto">
             <VerticalStackLayout
                 Grid.Column="0"
                 Spacing="2"
                 VerticalOptions="Center">
                 <Label
                     FontSize="16"
-                    Text="Subject mask"
+                    Text="{localization:Translate SubjectMaskOptionsView_Title}"
                     VerticalOptions="Center" />
                 <Label
                     FontSize="12"
                     Opacity="0.65"
-                    Text="Detect people or objects, sort around them"
+                    Text="{localization:Translate SubjectMaskOptionsView_Details}"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}"
                     VerticalOptions="Center" />
@@ -52,7 +50,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 FontSize="14"
-                Text="Padding"
+                Text="{localization:Translate SubjectMaskOptionsView_Padding}"
                 VerticalOptions="Center" />
             <Slider
                 Grid.Row="1"
@@ -83,7 +81,7 @@
             IsVisible="{Binding ShowWhatToSort}">
             <Label
                 FontSize="16"
-                Text="What to sort"
+                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                 VerticalOptions="Center" />
             <HorizontalStackLayout
                 Grid.Column="1"
@@ -91,12 +89,12 @@
                 Spacing="16"
                 VerticalOptions="Center">
                 <RadioButton
-                    Content="Background"
+                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Background}"
                     IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     SemanticProperties.Description="Sort pixels in the background area" />
                 <RadioButton
-                    Content="Foreground"
+                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Foreground}"
                     IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     SemanticProperties.Description="Sort pixels in the foreground area" />
@@ -117,7 +115,7 @@
             RowDefinitions="Auto,Auto">
             <Label
                 FontSize="16"
-                Text="How to combine masks"
+                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                 VerticalOptions="Center" />
             <HorizontalStackLayout
                 Grid.Column="1"
@@ -125,12 +123,12 @@
                 Spacing="16"
                 VerticalOptions="Center">
                 <RadioButton
-                    Content="Subtract"
+                    Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Subtract}"
                     IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
                 <RadioButton
-                    Content="Add"
+                    Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Add}"
                     IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
                     IsEnabled="{Binding IsInteractionEnabled}"
                     SemanticProperties.Description="Adds the Canny mask and the subject mask." />
@@ -142,7 +140,7 @@
                 Padding="2,2,2,2"
                 FontSize="13"
                 SemanticProperties.Description="Combining masks caption"
-                Text="Canny and subject masks are combined when both masking options are on. The canny mask is used as second summand or as subtrahend for the subject mask"
+                Text="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_explenation}"
                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                             Dark={StaticResource TextSecondaryDark}}"
                 VerticalOptions="Start" />

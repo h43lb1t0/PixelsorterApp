@@ -61,7 +61,7 @@ namespace PixelsorterApp.ViewModels
         [ObservableProperty]
         public partial string SavePresetValidationMessage { get; set; }
 
-        public string TomlMapToggleText => IsTomlMapVisible ? "Hide TOML map" : "Show TOML map";
+        public string TomlMapToggleText => IsTomlMapVisible ? PixelsorterApp.Resources.Languages.AppStrings.ToggleTomlMap_Hide : PixelsorterApp.Resources.Languages.AppStrings.ToggleTomlMap_Show;
 
         /// <summary>
         /// Validates the current preset and saves it asynchronously if all validation criteria are met.
@@ -93,7 +93,7 @@ namespace PixelsorterApp.ViewModels
         {
             Preferences.Set("defaultPreset", "base.toml");
             MakeDefaultPreset = false;
-            SavePresetValidationMessage = "Base preset set as default.";
+            SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.BasePresetSetAsDefault;
         }
 
         public ObservableCollection<PresetListItem> AvailablePresets { get; set; }
@@ -104,8 +104,8 @@ namespace PixelsorterApp.ViewModels
             _mainViewModel = mainViewModel;
             this.tomlValidationService = tomlValidationService;
 
-            sortBy = _mainViewModel.SelectedSortByName;
-            sortDirection = _mainViewModel.SelectedSortDirectionName;
+            sortBy = _mainViewModel.SelectedSortBy?.Key ?? string.Empty;
+            sortDirection = _mainViewModel.SelectedSortDirection?.Key ?? string.Empty;
 
             cannyMasking = _mainViewModel.UseCanny;
             cannyThreashold = _mainViewModel.CannyThresholdPercent;
@@ -122,7 +122,7 @@ namespace PixelsorterApp.ViewModels
             PresetToml = CreateToml();
             SavePresetValidationMessage = string.Empty;
 
-            PresetName = $"Preset {_mainViewModel.PresetOptions.Count}";
+            PresetName = String.Format(PixelsorterApp.Resources.Languages.AppStrings.PresetsPageViewModel_PresetsPageViewModel_NewPresetName, _mainViewModel.PresetOptions.Count);
 
             AvailablePresets = new ObservableCollection<PresetListItem>();
             RefreshAvailablePresets();
@@ -142,10 +142,10 @@ namespace PixelsorterApp.ViewModels
             (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml, tomlMap);
 
             SavePresetValidationMessage = isValid
-                ? "TOML is valid."
+                ? PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_Valid
                 : string.IsNullOrWhiteSpace(errors)
-                    ? "TOML is invalid."
-                    : $"TOML is invalid: {errors}";
+                    ? PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_Invalid
+                    : String.Format(PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_InvalidError, errors);
             Debug.WriteLine($"Errors: {errors}");
             return isValid;
         }
@@ -164,7 +164,7 @@ namespace PixelsorterApp.ViewModels
             string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count}" : PresetName;
             if (!TryGetPresetFilePath(presetName, out string fileName, out string filePath))
             {
-                SavePresetValidationMessage = "Invalid preset name.";
+                SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.InvalidPresetName;
                 return;
             }
             try
@@ -174,7 +174,7 @@ namespace PixelsorterApp.ViewModels
                     Directory.CreateDirectory(UserPresetsPath);
                 }
                 await File.WriteAllTextAsync(filePath, PresetToml);
-                SavePresetValidationMessage = "Preset saved successfully.";
+                SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.PresetSavedSuccessfully;
                 if (MakeDefaultPreset)
                 {
                     Preferences.Set("defaultPreset", fileName);
@@ -185,7 +185,7 @@ namespace PixelsorterApp.ViewModels
             }
             catch (Exception ex)
             {
-                SavePresetValidationMessage = $"Error saving preset: {ex.Message}";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.ErrorSavingPreset, ex.Message);
             }
         }
 
@@ -260,11 +260,11 @@ namespace PixelsorterApp.ViewModels
             try
             {
                 await LoadPresetTomlFromFileAsync(preset.Name);
-                SavePresetValidationMessage = $"Loaded preset '{preset.Name}'.";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.LoadedPresetPresetName, preset.Name);
             }
             catch (Exception ex)
             {
-                SavePresetValidationMessage = $"Error loading preset '{preset.Name}': {ex.Message}";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.ErrorLoadingPresetPresetNameExMessage, preset.Name, ex.Message);
             }
         }
 
@@ -286,7 +286,7 @@ namespace PixelsorterApp.ViewModels
             await DeletePresetFileAsync(preset.Name);
             _mainViewModel.RefreshAvailablePresets();
             RefreshAvailablePresets();
-            SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
+            SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.DeletedPresetPresetName, preset.Name);
         }
 
 
@@ -472,7 +472,7 @@ namespace PixelsorterApp.ViewModels
             AvailablePresets.Clear();
             foreach (string preset in _mainViewModel.PresetOptions)
             {
-                if (string.Equals(preset, "new preset", StringComparison.OrdinalIgnoreCase)
+                if (string.Equals(preset, PixelsorterApp.Resources.Languages.AppStrings.NewPresetAction, StringComparison.OrdinalIgnoreCase)
                     || string.Equals(preset, "base", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;

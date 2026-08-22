@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
@@ -30,14 +31,14 @@
                         FontFamily="SpaceGroteskBold"
                         FontSize="28"
                         SemanticProperties.HeadingLevel="Level1"
-                        Text="Pixel Sorter" />
+                        Text="{localization:Translate PixelSorterHeader}" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         FontFamily="SpaceGroteskRegular"
                         FontSize="14"
                         Opacity="0.8"
-                        Text="Load an image, choose options, and sort." />
+                        Text="{localization:Translate AppSlogan}" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
@@ -146,7 +147,7 @@
                 <Label
                     SemanticProperties.HeadingLevel="Level2"
                     Style="{StaticResource CardHeaderLabel}"
-                    Text="SORT SETTINGS" />
+                    Text="{localization:Translate HeaderSortSettings}" />
 
                 <Border StyleClass="Elevation3">
                     <Border.Shadow>
@@ -159,33 +160,48 @@
                     </Border.Shadow>
                     <VerticalStackLayout Spacing="0">
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
-                            <material:SelectField
-                                x:Name="sortBy"
-                                Title="Sort by"
-                                AllowClear="False"
-                                IsEnabled="{Binding IsInteractionEnabled}"
-                                ItemsSource="{Binding SortByOptions}"
-                                SelectedItem="{Binding SelectedSortBy, Mode=TwoWay}"
-                                SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
-                                Style="{StaticResource MySelectFieldStyle}"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
-                            <material:SelectField
-                                x:Name="sortDirection"
-                                Title="Direction"
-                                AllowClear="False"
-                                IsEnabled="{Binding IsInteractionEnabled}"
-                                ItemsSource="{Binding SortDirectionOptions}"
-                                SelectedItem="{Binding SelectedSortDirection, Mode=TwoWay}"
-                                SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
-                                Style="{StaticResource MySelectFieldStyle}"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
+                            <!-- Workaround for UraniumUI bug #715 -->
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    FontSize="12"
+                                    Text="{localization:Translate SortBy}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                                Dark={StaticResource TextPrimaryDark}}" />
+                                <material:SelectField
+                                    x:Name="sortBy"
+                                    AllowClear="False"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
+                                    ItemsSource="{Binding SortByOptions}"
+                                    SelectedItem="{Binding SelectedSortBy, Mode=TwoWay}"
+                                    SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
+                                    Style="{StaticResource MySelectFieldStyle}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                                Dark={StaticResource TextPrimaryDark}}">
+                                </material:SelectField>
+                            </VerticalStackLayout>
+                            <!-- Workaround for UraniumUI bug #715 -->
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    FontSize="12"
+                                    Text="{localization:Translate Direction}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                                Dark={StaticResource TextPrimaryDark}}" />
+                                <material:SelectField
+                                    x:Name="sortDirection"
+                                    AllowClear="False"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
+                                    ItemsSource="{Binding SortDirectionOptions}"
+                                    SelectedItem="{Binding SelectedSortDirection, Mode=TwoWay}"
+                                    SemanticProperties.Description="A dropdown to select in what direction to sort the pixels"
+                                    Style="{StaticResource MySelectFieldStyle}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                                Dark={StaticResource TextPrimaryDark}}" />
+                            </VerticalStackLayout>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
 
-                <Label Style="{StaticResource CardHeaderLabel}" Text="MASKING OPTIONS" />
+                <Label Style="{StaticResource CardHeaderLabel}" Text="{localization:Translate HeaderMaskingOptions}" />
 
                 <views:MaskingOptionsView />
 
@@ -225,7 +241,7 @@
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding IsSortEnabled}"
                 SemanticProperties.Description="Sort the loaded image using the current settings"
-                Text="Sort" />
+                Text="{localization:Translate Sort}" />
             <Button
                 x:Name="saveBtn"
                 Grid.Row="1"
@@ -238,7 +254,7 @@
                 MinimumWidthRequest="140"
                 SemanticProperties.Description="Save the sorted image to your photo gallery"
                 Style="{StaticResource SaveButtonStyle}"
-                Text="Save" />
+                Text="{localization:Translate common_Save}" />
         </Grid>
     </Grid>
 

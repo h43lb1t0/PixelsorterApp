@@ -5,6 +5,7 @@ using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using UraniumUI;
 using UXDivers.Popups.Maui;
+using LocalizationResourceManager.Maui;
 
 namespace PixelsorterApp
 {
@@ -19,6 +20,7 @@ namespace PixelsorterApp
         /// <returns>The configured <see cref="MauiApp"/> instance.</returns>
         public static MauiApp CreateMauiApp()
         {
+            LocalizationConfig.ApplyBestCulture();
             var builder = MauiApp.CreateBuilder();
             builder.UseMauiApp<App>().ConfigureFonts(fonts =>
             {
@@ -33,11 +35,19 @@ namespace PixelsorterApp
             .UseUraniumUI()
             .UseUraniumUIMaterial()
             .UseMarkdownView()
-            .UseUXDiversPopups();
+            .UseUXDiversPopups()
+            .UseLocalizationResourceManager(settings =>
+             {
+                 settings.AddResource(PixelsorterApp.Resources.Languages.AppStrings.ResourceManager);
+                 settings.AddResource(PixelsorterApp.Resources.Languages.PrivacyPolicyStrings.ResourceManager);
+                 settings.RestoreLatestCulture(true);
+             });
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Pages.PresetsPage>();
+            builder.Services.AddTransient<Pages.SettingsPage>();
+            builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddTransient<PresetsPageViewModel>();
             builder.Services.AddSingleton<IImageProcessingService, ImageProcessingService>();

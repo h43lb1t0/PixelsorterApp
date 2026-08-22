@@ -3,6 +3,7 @@
     x:Class="PixelsorterApp.Views.BeforeAfterView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     x:Name="Root">
 
     <Border StrokeShape="RoundRectangle 28">
@@ -75,7 +76,7 @@
                     FontAttributes="Bold"
                     FontFamily="SpaceGroteskRegular"
                     FontSize="11"
-                    Text="SETTINGS USED"
+                    Text="{localization:Translate ExampleGallery_BeforeAfterView_SETTINGSUSED}"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}" />
 
@@ -93,7 +94,7 @@
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
-                                Text="SORT BY"
+                                Text="{localization:Translate ExampleGallery_BeforeAfterView_SORTBY}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}" />
                             <Label
@@ -116,7 +117,7 @@
                         <VerticalStackLayout Spacing="2">
                             <Label
                                 FontSize="10"
-                                Text="DIRECTION"
+                                Text="{localization:Translate ExampleGallery_BeforeAfterView_DIRECTION}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}" />
                             <Label
@@ -142,7 +143,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="13"
-                                Text="Canny masking"
+                                Text="{localization:Translate CannyView_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}"
                                 VerticalOptions="Center" />
@@ -162,7 +163,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="Threshold"
+                                Text="{localization:Translate CannyView_Threshold}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
@@ -187,7 +188,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="13"
-                                Text="Subject masking"
+                                Text="{localization:Translate SubjectMaskOptionsView_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}"
                                 VerticalOptions="Center" />
@@ -208,7 +209,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="Padding"
+                                Text="{localization:Translate SubjectMaskOptionsView_Padding}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
@@ -230,7 +231,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="What to sort"
+                                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
@@ -252,7 +253,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="Combine masks"
+                                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
