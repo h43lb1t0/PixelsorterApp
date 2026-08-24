@@ -117,6 +117,9 @@
 	  <MauiXaml Update="Views\LanguageSettingsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskCombinationView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MaskingOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.MaskCombinationView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:DataType="viewModels:MainPageViewModel">
+    <VerticalStackLayout>
+        <BoxView
+            Margin="16,0,0,0"
+            HeightRequest="1"
+            IsVisible="{Binding ShowHowToCombine}"
+            Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                    Dark={StaticResource DividerDark}}" />
+
+        <Grid
+            Padding="16,10"
+            ColumnDefinitions="*,Auto"
+            IsVisible="{Binding ShowHowToCombine}"
+            RowDefinitions="Auto,Auto">
+            <Label
+                FontSize="16"
+                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
+                VerticalOptions="Center" />
+            <HorizontalStackLayout
+                Grid.Column="1"
+                HorizontalOptions="End"
+                Spacing="16"
+                VerticalOptions="Center">
+                <RadioButton
+                    Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Subtract}"
+                    IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
+                <RadioButton
+                    Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Add}"
+                    IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
+                    IsEnabled="{Binding IsInteractionEnabled}"
+                    SemanticProperties.Description="Adds the Canny mask and the subject mask." />
+            </HorizontalStackLayout>
+            <Label
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0,4,0,0"
+                Padding="2,2,2,2"
+                FontSize="13"
+                SemanticProperties.Description="Combining masks caption"
+                Text="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_explenation}"
+                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                            Dark={StaticResource TextSecondaryDark}}"
+                VerticalOptions="Start" />
+        </Grid>
+    </VerticalStackLayout>
+</ContentView>
