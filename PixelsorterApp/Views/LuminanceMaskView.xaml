@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="PixelsorterApp.Views.SubjectMaskOptionsView"
+    x:Class="PixelsorterApp.Views.LuminanceMaskView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:DataType="viewModels:MainPageViewModel">
-
     <VerticalStackLayout Padding="0,5" Spacing="0">
         <Grid Padding="16,0" ColumnDefinitions="*,Auto">
             <VerticalStackLayout
@@ -15,12 +14,12 @@
                 VerticalOptions="Center">
                 <Label
                     FontSize="16"
-                    Text="{localization:Translate SubjectMaskOptionsView_Title}"
+                    Text="Luminace Mask"
                     VerticalOptions="Center" />
                 <Label
                     FontSize="12"
                     Opacity="0.65"
-                    Text="{localization:Translate SubjectMaskOptionsView_Details}"
+                    Text="A mask based on image luminance"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}"
                     VerticalOptions="Center" />
@@ -28,11 +27,9 @@
             <Switch
                 Grid.Column="1"
                 IsEnabled="{Binding IsInteractionEnabled}"
-                IsToggled="{Binding UseSubjectMask, Mode=TwoWay}"
+                IsToggled="True"
                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                           Dark={StaticResource SecondaryDarkText}}"
-                SemanticProperties.Description="Toggle switch to turn masking on or off"
-                SemanticProperties.Hint="Requires internet the first time to download the model"
                 ThumbColor="{AppThemeBinding Light={StaticResource Primary},
                                              Dark={StaticResource PrimaryDark}}"
                 VerticalOptions="Center" />
@@ -41,7 +38,7 @@
         <Grid
             Padding="16,8"
             ColumnDefinitions="*, 60"
-            IsVisible="{Binding ShowSubjectPadding}"
+            IsVisible="True"
             RowDefinitions="Auto, Auto"
             RowSpacing="4">
 
@@ -50,55 +47,28 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 FontSize="14"
-                Text="{localization:Translate SubjectMaskOptionsView_Padding}"
+                Text="Threshold"
                 VerticalOptions="Center" />
             <Slider
                 Grid.Row="1"
                 Grid.Column="0"
-                IsEnabled="{Binding IsInteractionEnabled}"
+                IsEnabled="True"
                 Maximum="100"
                 Minimum="1"
-                SemanticProperties.Description="Subject mask padding"
                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                              Light={StaticResource PrimaryDark}}"
                 VerticalOptions="Center"
-                Value="{Binding SubjectMaskPadding, Mode=TwoWay}" />
+                Value="0.5" />
 
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
                 FontSize="14"
                 HorizontalOptions="End"
-                Text="{Binding SubjectMaskPaddingText}"
+                Text="0.5"
                 TextColor="{AppThemeBinding Dark={StaticResource White},
                                             Light={StaticResource Black}}"
                 VerticalOptions="Center" />
-        </Grid>
-
-        <Grid
-            Padding="16,10"
-            ColumnDefinitions="*,Auto"
-            IsVisible="{Binding ShowWhatToSort}">
-            <Label
-                FontSize="16"
-                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
-                VerticalOptions="Center" />
-            <HorizontalStackLayout
-                Grid.Column="1"
-                HorizontalOptions="End"
-                Spacing="16"
-                VerticalOptions="Center">
-                <RadioButton
-                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Background}"
-                    IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Sort pixels in the background area" />
-                <RadioButton
-                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Foreground}"
-                    IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Sort pixels in the foreground area" />
-            </HorizontalStackLayout>
         </Grid>
     </VerticalStackLayout>
 </ContentView>

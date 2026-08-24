@@ -26,6 +26,8 @@
                                         Dark={StaticResource DividerDark}}" />
 
             <views:SubjectMaskOptionsView />
+            <views:MaskCombinationView />
+            <views:LuminanceMaskView />
         </VerticalStackLayout>
     </Border>
 </ContentView>
