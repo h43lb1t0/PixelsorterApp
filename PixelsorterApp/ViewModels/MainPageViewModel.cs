@@ -45,6 +45,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowSubjectPadding))]
     [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
     public partial bool UseSubjectMask { get; set; }
 
     /// <summary>
@@ -54,11 +56,40 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowCannyThreshold))]
     [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
     public partial bool UseCanny { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether luminance masking is enabled.
+    /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowLumMaskThreshold))]
+    [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     public partial bool UseLumMask { get; set; }
+
+    /// <summary>
+    /// Gets the count of currently enabled masking options (subject, Canny, luminance).
+    /// </summary>
+    private int ToggeltMaskCount => (UseSubjectMask ? 1 : 0) + (UseCanny ? 1 : 0) + (UseLumMask ? 1 : 0);
+
+
+    /// <summary>
+    /// Gets a value indicating whether Canny masking controls should be enabled based on the current interaction state and masking configuration.
+    /// </summary>
+    public bool IsCannyMaskingEnabled => IsInteractionEnabled && (UseCanny || ToggeltMaskCount < 2);
+    /// <summary>
+    /// Gets a value indicating whether subject masking controls should be enabled based on the current interaction state and masking configuration.
+    /// </summary>
+    public bool IsSubjectMaskingEnabled => IsInteractionEnabled && (UseSubjectMask || ToggeltMaskCount < 2);
+    /// <summary>
+    /// Gets a value indicating whether luminance masking controls should be enabled based on the current interaction state and masking configuration.
+    /// </summary>
+    public bool IsLumMaskingEnabled => IsInteractionEnabled && (UseLumMask || ToggeltMaskCount < 2);
+
+
+
 
     /// <summary>
     /// Gets or sets a value indicating whether sorting is currently enabled.
@@ -82,6 +113,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets or sets a value indicating whether interactive controls should be enabled.
     /// </summary>
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
     public partial bool IsInteractionEnabled { get; set; } = true;
 
     /// <summary>
@@ -110,6 +144,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(CannyThresholdText))]
     public partial int CannyThresholdPercent { get; set; } = 30;
 
+    /// <summary>
+    /// Gets or sets the luminance mask threshold value in percent (1-100).
+    /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LumMaskThresholdText))]
     public partial int LumMaskThreshold { get; set; } = 50;
@@ -427,7 +464,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
         var previousKey = SelectedSortDirection?.Key;
 
         var filtered = allDirectionOptions
-            .Where(opt => UseSubjectMask || UseCanny || !opt.Key.Contains("mask", StringComparison.OrdinalIgnoreCase))
+            .Where(opt => UseSubjectMask || UseCanny || UseLumMask || !opt.Key.Contains("mask", StringComparison.OrdinalIgnoreCase))
             .ToArray();
 
         SortDirectionOptions.Clear();
@@ -499,6 +536,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnUseCannyChanged(bool value)
     {
         RefreshSortDirectionOptions();
+    }
+
+    partial void OnUseLumMaskChanged(bool value)
+    {
+        RefreshSortDirectionOptions(); 
     }
 
     partial void OnIsSortEnabledChanged(bool value)
