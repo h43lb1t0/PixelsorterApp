@@ -288,6 +288,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     public string SubjectMaskPaddingText => $"{SubjectMaskPadding} px";
 
+    /// <summary>
+    /// Gets the formatted luminance mask threshold label.
+    /// </summary>
     public string LumMaskThresholdText => $"{LumMaskThreshold}%";
 
     /// <summary>
