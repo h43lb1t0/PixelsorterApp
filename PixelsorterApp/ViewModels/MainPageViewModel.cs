@@ -66,6 +66,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowLumMaskThreshold))]
     [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
+    [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
     [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     public partial bool UseLumMask { get; set; }
 
@@ -366,12 +368,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets a value indicating whether the foreground/background selection section should be visible.
     /// </summary>
-    public bool ShowWhatToSort => UseSubjectMask && !UseCanny;
+    public bool ShowWhatToSort => UseSubjectMask && !(UseCanny || UseLumMask);
 
     /// <summary>
     /// Gets a value indicating whether the mask combination section should be visible.
     /// </summary>
-    public bool ShowHowToCombine => UseSubjectMask && UseCanny;
+    public bool ShowHowToCombine => (UseCanny ? 1 : 0) + (UseSubjectMask ? 1 : 0) + (UseLumMask ? 1 : 0) == 2;
 
     public bool ShowLumMaskThreshold => UseLumMask;
 
