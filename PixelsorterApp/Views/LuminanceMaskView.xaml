@@ -14,12 +14,12 @@
                 VerticalOptions="Center">
                 <Label
                     FontSize="16"
-                    Text="Luminace Mask"
+                    Text="{localization:Translate LuminanceMaskView_Title}"
                     VerticalOptions="Center" />
                 <Label
                     FontSize="12"
                     Opacity="0.65"
-                    Text="A mask based on image luminance"
+                    Text="{localization:Translate LuminanceMaskView_Details}"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                 Dark={StaticResource TextSecondaryDark}}"
                     VerticalOptions="Center" />
@@ -27,7 +27,7 @@
             <Switch
                 Grid.Column="1"
                 IsEnabled="{Binding IsInteractionEnabled}"
-                IsToggled="True"
+                IsToggled="{Binding UseLumMask, Mode=TwoWay}"
                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                           Dark={StaticResource SecondaryDarkText}}"
                 ThumbColor="{AppThemeBinding Light={StaticResource Primary},
@@ -38,7 +38,7 @@
         <Grid
             Padding="16,8"
             ColumnDefinitions="*, 60"
-            IsVisible="True"
+            IsVisible="{Binding ShowLumMaskThreshold}"
             RowDefinitions="Auto, Auto"
             RowSpacing="4">
 
@@ -47,25 +47,25 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 FontSize="14"
-                Text="Threshold"
+                Text="{localization:Translate LuminanceMaskView_Threshold}"
                 VerticalOptions="Center" />
             <Slider
                 Grid.Row="1"
                 Grid.Column="0"
-                IsEnabled="True"
+                IsEnabled="{Binding IsInteractionEnabled}"
                 Maximum="100"
                 Minimum="1"
                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                              Light={StaticResource PrimaryDark}}"
                 VerticalOptions="Center"
-                Value="0.5" />
+                Value="{Binding LumMaskThreshold, Mode=TwoWay}" />
 
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
                 FontSize="14"
                 HorizontalOptions="End"
-                Text="0.5"
+                Text="{Binding LumMaskThresholdText}"
                 TextColor="{AppThemeBinding Dark={StaticResource White},
                                             Light={StaticResource Black}}"
                 VerticalOptions="Center" />

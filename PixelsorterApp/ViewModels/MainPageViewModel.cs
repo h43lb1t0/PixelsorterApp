@@ -56,6 +56,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
     public partial bool UseCanny { get; set; }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowLumMaskThreshold))]
+    public partial bool UseLumMask { get; set; }
+
     /// <summary>
     /// Gets or sets a value indicating whether sorting is currently enabled.
     /// </summary>
@@ -105,6 +109,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(CannyThreshold))]
     [NotifyPropertyChangedFor(nameof(CannyThresholdText))]
     public partial int CannyThresholdPercent { get; set; } = 30;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LumMaskThresholdText))]
+    public partial int LumMaskThreshold { get; set; } = 50;
 
     /// <summary>
     /// Gets or sets the subject mask padding in pixels (1-100).
@@ -243,6 +251,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     public string SubjectMaskPaddingText => $"{SubjectMaskPadding} px";
 
+    public string LumMaskThresholdText => $"{LumMaskThreshold}%";
+
     /// <summary>
     /// Gets or sets a value indicating whether background sorting is selected.
     /// </summary>
@@ -322,6 +332,8 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets a value indicating whether the mask combination section should be visible.
     /// </summary>
     public bool ShowHowToCombine => UseSubjectMask && UseCanny;
+
+    public bool ShowLumMaskThreshold => UseLumMask;
 
     /// <summary>
     /// Gets the command that requests image sorting.
@@ -520,6 +532,15 @@ public sealed partial class MainPageViewModel : BaseViewModel
         if (value != clamped)
         {
             SubjectMaskPadding = clamped;
+        }
+    }
+
+    partial void OnLumMaskThresholdChanged(int value)
+    {
+        var clamped = Math.Clamp(value, 1, 100);
+        if (value != clamped)
+        {
+            LumMaskThreshold = clamped;
         }
     }
 

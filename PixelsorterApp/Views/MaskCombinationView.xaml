@@ -31,13 +31,11 @@
                 <RadioButton
                     Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Subtract}"
                     IsChecked="{Binding UseSubtractMasksSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Subtracts the Canny mask from the subject mask." />
+                    IsEnabled="{Binding IsInteractionEnabled}" />
                 <RadioButton
                     Content="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_Add}"
                     IsChecked="{Binding UseAddMasksSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Adds the Canny mask and the subject mask." />
+                    IsEnabled="{Binding IsInteractionEnabled}" />
             </HorizontalStackLayout>
             <Label
                 Grid.Row="1"
@@ -45,7 +43,6 @@
                 Margin="0,4,0,0"
                 Padding="2,2,2,2"
                 FontSize="13"
-                SemanticProperties.Description="Combining masks caption"
                 Text="{localization:Translate SubjectMaskOptionsView_HowToCombineMasks_explenation}"
                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                             Dark={StaticResource TextSecondaryDark}}"

@@ -517,6 +517,33 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A mask based on image luminance.
+        /// </summary>
+        internal static string LuminanceMaskView_Details {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Threshold.
+        /// </summary>
+        internal static string LuminanceMaskView_Threshold {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Threshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luminance mask.
+        /// </summary>
+        internal static string LuminanceMaskView_Title {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won&apos;t use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page..
         /// </summary>
         internal static string MaskingFeatureLicense_Message {

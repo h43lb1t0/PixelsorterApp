@@ -693,4 +693,13 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="LanguageSettingsView_TranslationGuarantee" xml:space="preserve">
     <value>We can only guarantee that the German and English versions are always fully translated. For other languages, some content may be missing, in which case it will be replaced by the English terms.</value>
   </data>
+  <data name="LuminanceMaskView_Title" xml:space="preserve">
+    <value>Luminance mask</value>
+  </data>
+  <data name="LuminanceMaskView_Details" xml:space="preserve">
+    <value>A mask based on image luminance</value>
+  </data>
+  <data name="LuminanceMaskView_Threshold" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
 </root>
