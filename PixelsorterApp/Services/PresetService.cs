@@ -138,6 +138,29 @@ public class PresetService : IPresetService
             directionName = directionMapped.Split('.').Last();
         }
 
+        bool? useInvertedLumMask = null;
+        int? lumThresholdPercent = null;
+
+        if (preset.LuminanceOptions is not null)
+        {
+            if (preset.LuminanceOptions.Threshold is > 0)
+            {
+                lumThresholdPercent = preset.LuminanceOptions.Threshold.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(preset.LuminanceOptions.WhatToSort))
+            {
+                if (TryGetMappedValue(map.WhatToSortLum, preset.LuminanceOptions.WhatToSort, out var whatToSortLumMapped))
+                {
+                    useInvertedLumMask = string.Equals(whatToSortLumMapped, "SortLumInvertedSelected", StringComparison.Ordinal);
+                }
+                else
+                {
+                    useInvertedLumMask = string.Equals(preset.LuminanceOptions.WhatToSort, "inverted", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
+
         return new PresetState
         {
             UseCanny = preset.MaskingOptions?.UseCanny,
@@ -147,7 +170,10 @@ public class PresetService : IPresetService
             UseInvertedSubjectMask = useInvertedSubjectMask,
             SortByName = sortByName,
             UseSubtractMasks = useSubtractMasks,
-            DirectionName = directionName
+            DirectionName = directionName,
+            UseLumMask = preset.MaskingOptions?.UseLuminance,
+            LumThresholdPercent = lumThresholdPercent,
+            UseInvertedLumMask = useInvertedLumMask
         };
     }
 

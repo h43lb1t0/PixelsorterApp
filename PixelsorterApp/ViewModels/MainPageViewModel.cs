@@ -723,10 +723,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             if (state.UseCanny.HasValue) UseCanny = state.UseCanny.Value;
             if (state.UseSubjectMask.HasValue) UseSubjectMask = state.UseSubjectMask.Value;
+            if (state.UseLumMask.HasValue) UseLumMask = state.UseLumMask.Value;
             if (state.CannyThresholdPercent.HasValue) CannyThresholdPercent = state.CannyThresholdPercent.Value;
             if (state.SubjectMaskPadding.HasValue) SubjectMaskPadding = state.SubjectMaskPadding.Value;
             if (state.UseInvertedSubjectMask.HasValue) UseInvertedSubjectMask = state.UseInvertedSubjectMask.Value;
             if (state.UseSubtractMasks.HasValue) UseSubtractMasks = state.UseSubtractMasks.Value;
+            if (state.LumThresholdPercent.HasValue) LumMaskThresholdPercent = state.LumThresholdPercent.Value;
+            if (state.UseInvertedLumMask.HasValue) UseInvertedLumMask = state.UseInvertedLumMask.Value;
         }
         finally
         {
