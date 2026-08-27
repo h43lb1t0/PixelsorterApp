@@ -572,6 +572,8 @@ namespace PixelsorterApp
                         viewModel.UseSubtractMasks,
                         viewModel.UseInvertedSubjectMask,
                         viewModel.SubjectMaskPadding,
+                        viewModel.UseLumMask,
+                        viewModel.LumMaskThreshold,
                         viewModel.CannyThreshold);
 
                     sortedImagePath = await imageProcessingService.SortImageAsync(

@@ -150,8 +150,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// Gets or sets the luminance mask threshold value in percent (1-100).
     /// </summary>
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LumMaskThreshold))]
     [NotifyPropertyChangedFor(nameof(LumMaskThresholdText))]
-    public partial int LumMaskThreshold { get; set; } = 50;
+    public partial int LumMaskThresholdPercent { get; set; } = 50;
 
     /// <summary>
     /// Gets or sets the subject mask padding in pixels (1-100).
@@ -290,10 +291,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     public string SubjectMaskPaddingText => $"{SubjectMaskPadding} px";
 
+    public float LumMaskThreshold => LumMaskThresholdPercent / 100f;
+
     /// <summary>
     /// Gets the formatted luminance mask threshold label.
     /// </summary>
-    public string LumMaskThresholdText => $"{LumMaskThreshold}%";
+    public string LumMaskThresholdText => $"{LumMaskThresholdPercent}%";
 
     /// <summary>
     /// Gets or sets a value indicating whether background sorting is selected.
@@ -582,12 +585,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    partial void OnLumMaskThresholdChanged(int value)
+    partial void OnLumMaskThresholdPercentChanged(int value)
     {
         var clamped = Math.Clamp(value, 1, 100);
         if (value != clamped)
         {
-            LumMaskThreshold = clamped;
+            LumMaskThresholdPercent = clamped;
         }
     }
 
