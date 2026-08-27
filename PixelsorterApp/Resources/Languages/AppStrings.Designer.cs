@@ -553,6 +553,24 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverted.
+        /// </summary>
+        internal static string LuminanceMaskView_WhatToSort_Inverted {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_WhatToSort_Inverted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        internal static string LuminanceMaskView_WhatToSort_Normal {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_WhatToSort_Normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won&apos;t use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page..
         /// </summary>
         internal static string MaskingFeatureLicense_Message {
@@ -567,6 +585,15 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string MaskingFeatureLicense_Title {
             get {
                 return ResourceManager.GetString("MaskingFeatureLicense_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose.
+        /// </summary>
+        internal static string MaskOptionsView_WhatToSort_Title {
+            get {
+                return ResourceManager.GetString("MaskOptionsView_WhatToSort_Title", resourceCulture);
             }
         }
         
@@ -1080,15 +1107,6 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string SubjectMaskOptionsView_WhatToSort_Foreground {
             get {
                 return ResourceManager.GetString("SubjectMaskOptionsView_WhatToSort_Foreground", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Choose.
-        /// </summary>
-        internal static string SubjectMaskOptionsView_WhatToSort_Title {
-            get {
-                return ResourceManager.GetString("SubjectMaskOptionsView_WhatToSort_Title", resourceCulture);
             }
         }
         

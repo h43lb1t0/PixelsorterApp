@@ -231,7 +231,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
+                                Text="{localization:Translate MaskOptionsView_WhatToSort_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
@@ -253,7 +253,7 @@
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"
-                                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
+                                Text="{localization:Translate MaskOptionsView_WhatToSort_Title}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />

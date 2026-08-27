@@ -73,9 +73,9 @@
         </Grid>
         <views:WhatToSortView
             IsVisible="{Binding ShowWhatToSortLum}"
-            OptionOne="Normal"
+            OptionOne="{localization:Translate LuminanceMaskView_WhatToSort_Normal}"
             OptionOneSelected="{Binding SortLumNormalSelected, Mode=TwoWay}"
-            OptionTwo="Inverted"
+            OptionTwo="{localization:Translate LuminanceMaskView_WhatToSort_Inverted}"
             OptionTwoSelected="{Binding SortLumInvertedSelected, Mode=TwoWay}" />
     </VerticalStackLayout>
 </ContentView>

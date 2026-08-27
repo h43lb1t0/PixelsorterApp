@@ -21,7 +21,7 @@
             RowDefinitions="Auto,Auto">
             <Label
                 FontSize="16"
-                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
+                Text="{localization:Translate MaskOptionsView_WhatToSort_Title}"
                 VerticalOptions="Center" />
             <HorizontalStackLayout
                 Grid.Column="1"

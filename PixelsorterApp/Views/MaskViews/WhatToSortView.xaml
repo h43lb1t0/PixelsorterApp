@@ -7,26 +7,24 @@
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     x:Name="this"
     x:DataType="viewModels:MainPageViewModel">
-    <VerticalStackLayout>
-        <Grid Padding="16,10" ColumnDefinitions="*,Auto">
-            <Label
-                FontSize="16"
-                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
-                VerticalOptions="Center" />
-            <HorizontalStackLayout
-                Grid.Column="1"
-                HorizontalOptions="End"
-                Spacing="16"
-                VerticalOptions="Center">
-                <RadioButton
-                    Content="{Binding OptionOne, Source={x:Reference this}}"
-                    IsChecked="{Binding OptionOneSelected, Source={x:Reference this}, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}" />
-                <RadioButton
-                    Content="{Binding OptionTwo, Source={x:Reference this}}"
-                    IsChecked="{Binding OptionTwoSelected, Source={x:Reference this}, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}" />
-            </HorizontalStackLayout>
-        </Grid>
-    </VerticalStackLayout>
+    <Grid Padding="16,10" ColumnDefinitions="*,Auto">
+        <Label
+            FontSize="16"
+            Text="{localization:Translate MaskOptionsView_WhatToSort_Title}"
+            VerticalOptions="Center" />
+        <HorizontalStackLayout
+            Grid.Column="1"
+            HorizontalOptions="End"
+            Spacing="16"
+            VerticalOptions="Center">
+            <RadioButton
+                Content="{Binding OptionOne, Source={x:Reference this}}"
+                IsChecked="{Binding OptionOneSelected, Source={x:Reference this}, Mode=TwoWay}"
+                IsEnabled="{Binding IsInteractionEnabled}" />
+            <RadioButton
+                Content="{Binding OptionTwo, Source={x:Reference this}}"
+                IsChecked="{Binding OptionTwoSelected, Source={x:Reference this}, Mode=TwoWay}"
+                IsEnabled="{Binding IsInteractionEnabled}" />
+        </HorizontalStackLayout>
+    </Grid>
 </ContentView>

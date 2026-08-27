@@ -466,7 +466,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
     <value>Detect people or objects, sort around them</value>
   </data>
-  <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
+  <data name="MaskOptionsView_WhatToSort_Title" xml:space="preserve">
     <value>Choose</value>
     <comment>Used for choosing subject background or foreground and mask combination sub/add</comment>
   </data>
@@ -704,5 +704,11 @@ Presets allow you to save and load your favourite sorting and masking configurat
   </data>
   <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
     <value>Analyzing luminance...</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Inverted" xml:space="preserve">
+    <value>Inverted</value>
   </data>
 </root>
