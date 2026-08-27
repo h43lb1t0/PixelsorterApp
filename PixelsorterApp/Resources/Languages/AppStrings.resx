@@ -702,4 +702,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="LuminanceMaskView_Threshold" xml:space="preserve">
     <value>Threshold</value>
   </data>
+  <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
+    <value>Analyzing luminance...</value>
+  </data>
 </root>

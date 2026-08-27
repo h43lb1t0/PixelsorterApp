@@ -223,6 +223,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analyzing luminance....
+        /// </summary>
+        internal static string CycleSortingMessagesAnalyzingLuminance {
+            get {
+                return ResourceManager.GetString("CycleSortingMessagesAnalyzingLuminance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applying subject mask....
         /// </summary>
         internal static string CycleSortingMessagesApplyingSubjectMask {

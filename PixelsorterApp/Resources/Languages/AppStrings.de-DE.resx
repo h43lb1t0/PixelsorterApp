@@ -694,4 +694,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="LuminanceMaskView_Details" xml:space="preserve">
     <value>Eine Maske basierend auf der Helligkeit vom Bild</value>
   </data>
+  <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
+    <value>Helligkeitsmaske wird erstellt...</value>
+  </data>
 </root>

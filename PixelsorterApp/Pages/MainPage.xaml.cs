@@ -450,15 +450,17 @@ namespace PixelsorterApp
             try
             {
                 // Show the mask message once if masking is active
-                if (viewModel.UseSubjectMask || viewModel.UseCanny)
+                if (viewModel.UseSubjectMask || viewModel.UseCanny || viewModel.UseLumMask)
                 {
                     await Task.Delay(2200, token);
                     if (token.IsCancellationRequested) return;
 
-                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny) switch
+                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny, viewModel.UseLumMask) switch
                     {
-                        (true, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks,
-                        (true, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
+                        (true, true, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks,
+                        (true, false, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
+                        (false, true, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges,
+                        (false, false, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesAnalyzingLuminance,
                         _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges
                     };
 
