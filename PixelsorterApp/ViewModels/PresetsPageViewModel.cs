@@ -332,6 +332,7 @@ namespace PixelsorterApp.ViewModels
             AppendOptions("Sort By Options:", map.SortBy);
             AppendOptions("Direction Options:", map.Direction);
             AppendOptions("What To Sort Options:", map.WhatToSort);
+            AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
 
             return sb.ToString().TrimEnd();
