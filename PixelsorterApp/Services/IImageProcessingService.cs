@@ -4,6 +4,7 @@ using SixLabors.ImageSharp.ColorSpaces;
 
 namespace PixelsorterApp.Services;
 
+
 /// <summary>
 /// Defines image processing operations used by the main page workflow.
 /// </summary>
@@ -37,6 +38,14 @@ public interface IImageProcessingService
     Task<(NDArray CannyMask, NDArray InvertedCannyMask)> CreateCannyMaskAsync(string imagePath, float threshold);
 
     /// <summary>
+    /// Creates a luminance mask and its inverted version for an image.
+    /// </summary>
+    /// <param name="imagePath">Path to the source image.</param>
+    /// <param name="threshold">Luminance threshold in normalized 0-1 range.</param>
+    /// <returns>The luminance and inverted luminance masks.</returns>
+    Task<(NDArray LumMask, NDArray InvertedLumMask)> CreateLumMaskAsync(string imagePath, float threshold);
+
+    /// <summary>
     /// Builds the effective mask according to current mask settings.
     /// </summary>
     /// <param name="imagePath">Path to the source image.</param>
@@ -54,6 +63,8 @@ public interface IImageProcessingService
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
         int subjectMaskPadding,
+        bool UseLumMask,
+        float lumThreshold,
         float cannyThreshold);
 
     /// <summary>
