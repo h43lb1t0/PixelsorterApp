@@ -457,11 +457,10 @@ namespace PixelsorterApp
 
                     var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny, viewModel.UseLumMask) switch
                     {
-                        (true, true, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks,
-                        (true, false, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
-                        (false, true, _) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges,
+                        (true, false, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
+                        (false, true, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges,
                         (false, false, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesAnalyzingLuminance,
-                        _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges
+                        _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks
                     };
 
                     await UpdateLoadingStatusAsync(maskMessage);
