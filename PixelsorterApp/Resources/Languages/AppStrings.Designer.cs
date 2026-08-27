@@ -1172,6 +1172,15 @@ namespace PixelsorterApp.Resources.Languages {
                 return ResourceManager.GetString("TomlValidation_FailedToLoadTomlMap", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to luminance_options.threshold must be in range [1, 100]..
+        /// </summary>
+        internal static string TomlValidation_LumThresholdOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_LumThresholdOutOfRange", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to TOML is invalid..

@@ -726,4 +726,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
     <value>Wähle bis zu zwei Masken aus</value>
   </data>
+  <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
+    <value>luminance_options.threshold muss im Intervall [1, 100] liegen.</value>
+  </data>
 </root>

@@ -733,4 +733,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
     <value>Select up to two masks</value>
   </data>
+  <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
+    <value>luminance_options.threshold must be in range [1, 100].</value>
+  </data>
 </root>
