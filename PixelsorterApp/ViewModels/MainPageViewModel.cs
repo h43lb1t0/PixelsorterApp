@@ -44,6 +44,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowSubjectPadding))]
     [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortLum))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
     [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
@@ -55,6 +56,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowCannyThreshold))]
     [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortLum))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
     [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
@@ -67,6 +69,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowLumMaskThreshold))]
     [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortLum))]
     [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
     [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     public partial bool UseLumMask { get; set; }
