@@ -502,7 +502,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
     <value>Add</value>
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
-    <value>Canny and subject masks are combined when both masking options are enabled. The Canny mask is used as the second summand or as the subtrahend for the subject mask</value>
+    <value>Subtract: Subtracts the inversed second mask from the first. Add: Adds both masks</value>
   </data>
   <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
     <value>Padding</value>
@@ -729,5 +729,8 @@ Presets allow you to save and load your favourite sorting and masking configurat
   </data>
   <data name="LuminanceMaskView_WhatToSort_Inverted" xml:space="preserve">
     <value>Inverted</value>
+  </data>
+  <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
+    <value>Select up to two masks</value>
   </data>
 </root>

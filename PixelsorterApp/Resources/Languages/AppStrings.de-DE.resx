@@ -496,7 +496,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
     <value>Addieren</value>
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
-    <value>Canny- und Subjektmaske werden kombiniert, wenn beide Maskierungsoptionen aktiviert sind. Die Canny-Maske wird dabei als zweiter Summand addiert oder als Subtrahend von der Motivmaske abgezogen</value>
+    <value>Subtrahieren: Subtrahiert die invertierte zweite Maske von der Ersten. Addieren: Addiert beide Masken</value>
   </data>
   <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
     <value>Padding (Abstand)</value>
@@ -722,5 +722,8 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   </data>
   <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
     <value>Standdartmaske</value>
+  </data>
+  <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
+    <value>Wähle bis zu zwei Masken aus</value>
   </data>
 </root>

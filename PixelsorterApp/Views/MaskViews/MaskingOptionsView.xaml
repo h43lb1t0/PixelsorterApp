@@ -3,6 +3,7 @@
     x:Class="PixelsorterApp.Views.MaskingOptionsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
     x:DataType="viewModels:MainPageViewModel">
@@ -17,6 +18,10 @@
                 Offset="0,3" />
         </Border.Shadow>
         <VerticalStackLayout Spacing="0">
+            <Label
+                Margin="16,16,16,0"
+                FontSize="13"
+                Text="{localization:Translate MaskingOptionsView_InfoAboutMaskSelectLimit}" />
             <views:CannyMaskOptionsView />
 
             <BoxView
