@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
     x:DataType="viewModels:MainPageViewModel">
 
     <VerticalStackLayout Padding="0,5" Spacing="0">
@@ -75,30 +76,11 @@
                 VerticalOptions="Center" />
         </Grid>
 
-        <Grid
-            Padding="16,10"
-            ColumnDefinitions="*,Auto"
-            IsVisible="{Binding ShowWhatToSort}">
-            <Label
-                FontSize="16"
-                Text="{localization:Translate SubjectMaskOptionsView_WhatToSort_Title}"
-                VerticalOptions="Center" />
-            <HorizontalStackLayout
-                Grid.Column="1"
-                HorizontalOptions="End"
-                Spacing="16"
-                VerticalOptions="Center">
-                <RadioButton
-                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Background}"
-                    IsChecked="{Binding SortBackgroundSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Sort pixels in the background area" />
-                <RadioButton
-                    Content="{localization:Translate SubjectMaskOptionsView_WhatToSort_Foreground}"
-                    IsChecked="{Binding SortForegroundSelected, Mode=TwoWay}"
-                    IsEnabled="{Binding IsInteractionEnabled}"
-                    SemanticProperties.Description="Sort pixels in the foreground area" />
-            </HorizontalStackLayout>
-        </Grid>
+        <views:WhatToSortView
+            IsVisible="{Binding ShowWhatToSortSubject}"
+            OptionOne="{localization:Translate SubjectMaskOptionsView_WhatToSort_Background}"
+            OptionOneSelected="{Binding SortBackgroundSelected, Mode=TwoWay}"
+            OptionTwo="{localization:Translate SubjectMaskOptionsView_WhatToSort_Foreground}"
+            OptionTwoSelected="{Binding SortForegroundSelected, Mode=TwoWay}" />
     </VerticalStackLayout>
 </ContentView>

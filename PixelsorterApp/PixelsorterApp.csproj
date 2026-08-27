@@ -126,6 +126,9 @@
 	  <MauiXaml Update="Views\MaskViews\MaskingOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\WhatToSortView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\PresetsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

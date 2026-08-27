@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
     x:DataType="viewModels:MainPageViewModel">
     <VerticalStackLayout Padding="0,5" Spacing="0">
         <Grid Padding="16,0" ColumnDefinitions="*,Auto">
@@ -70,5 +71,11 @@
                                             Light={StaticResource Black}}"
                 VerticalOptions="Center" />
         </Grid>
+        <views:WhatToSortView
+            IsVisible="{Binding ShowWhatToSortLum}"
+            OptionOne="Normal"
+            OptionOneSelected="{Binding SortLumNormalSelected, Mode=TwoWay}"
+            OptionTwo="Inverted"
+            OptionTwoSelected="{Binding SortLumInvertedSelected, Mode=TwoWay}" />
     </VerticalStackLayout>
 </ContentView>

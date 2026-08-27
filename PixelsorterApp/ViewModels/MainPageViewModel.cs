@@ -43,7 +43,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowSubjectPadding))]
-    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
     [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
@@ -54,7 +54,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowCannyThreshold))]
-    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
     [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(IsLumMaskingEnabled))]
@@ -67,7 +67,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowLumMaskThreshold))]
     [NotifyPropertyChangedFor(nameof(IsCannyMaskingEnabled))]
     [NotifyPropertyChangedFor(nameof(ShowHowToCombine))]
-    [NotifyPropertyChangedFor(nameof(ShowWhatToSort))]
+    [NotifyPropertyChangedFor(nameof(ShowWhatToSortSubject))]
     [NotifyPropertyChangedFor(nameof(IsSubjectMaskingEnabled))]
     public partial bool UseLumMask { get; set; }
 
@@ -153,6 +153,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(LumMaskThreshold))]
     [NotifyPropertyChangedFor(nameof(LumMaskThresholdText))]
     public partial int LumMaskThresholdPercent { get; set; } = 50;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortLumNormalSelected))]
+    [NotifyPropertyChangedFor(nameof(SortLumInvertedSelected))]
+    public partial bool UseInvertedLumMask {  get; set; }
 
     /// <summary>
     /// Gets or sets the subject mask padding in pixels (1-100).
@@ -299,6 +304,36 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public string LumMaskThresholdText => $"{LumMaskThresholdPercent}%";
 
     /// <summary>
+    /// Gets or sets a value indicating whether normal luminance sorting is selected.
+    /// </summary>
+    public bool SortLumNormalSelected
+    {
+        get => !UseInvertedLumMask;
+        set
+        {
+            if (value)
+            {
+                UseInvertedLumMask = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether inverted luminance sorting is selected.
+    /// </summary>
+    public bool SortLumInvertedSelected
+    {
+        get => UseInvertedLumMask;
+        set
+        {
+            if (value)
+            {
+                UseInvertedLumMask = true;
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets or sets a value indicating whether background sorting is selected.
     /// </summary>
     public bool SortBackgroundSelected
@@ -371,7 +406,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets a value indicating whether the foreground/background selection section should be visible.
     /// </summary>
-    public bool ShowWhatToSort => UseSubjectMask && !(UseCanny || UseLumMask);
+    public bool ShowWhatToSortSubject => UseSubjectMask && !(UseCanny || UseLumMask);
+
+    public bool ShowWhatToSortLum => UseLumMask && !(UseCanny || UseSubjectMask);
 
     /// <summary>
     /// Gets a value indicating whether the mask combination section should be visible.
