@@ -295,17 +295,6 @@ You can choose:
   - *Subject &amp; Luminance*: Adds the subject mask and the luminance mask.
   - *Canny &amp; Luminance*: Adds the Canny mask and the luminance mask.
 
-### When both masks are enabled: combining
-
-When **subject masking** and **Canny masking** are both enabled, Pixelsorter combines them.
-
-You can choose:
-
-- **Subtract** — subtracts the Canny mask from the subject mask.
-  - practical effect: reduces sorting around/at detected edges (keeps borders cleaner)
-- **Add** — adds the Canny mask and the subject mask.
-  - practical effect: expands the sortable area to include both the subject region and strong edges
-
 ---
 
 ## Presets
