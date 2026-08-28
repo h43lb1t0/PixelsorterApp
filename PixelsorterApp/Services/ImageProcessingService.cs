@@ -215,10 +215,13 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         cachedImagePath = imagePath;
         cachedSubjectPadding = -1;
         cachedCannyThreshold = -1;
+        cachedLumThreshold = -1;
         subjectMask = null;
         invertedSubjectMask = null;
         cannyMask = null;
         invertedCannyMask = null;
+        lumMask = null;
+        invertedLumMask = null;
         cachedMaskBuildKey = null;
         cachedBuiltMask = null;
     }
