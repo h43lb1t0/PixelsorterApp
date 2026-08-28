@@ -721,7 +721,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
     <value>Invertierte Maske</value>
   </data>
   <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
-    <value>Standdartmaske</value>
+    <value>Standardmaske</value>
   </data>
   <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
     <value>Wähle bis zu zwei Masken aus</value>
