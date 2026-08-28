@@ -19,6 +19,9 @@ public sealed class TomlMap
 
     [JsonPropertyName("whatToSort")]
     public Dictionary<string, string>? WhatToSort { get; init; }
+
+    [JsonPropertyName("whatToSortLum")]
+    public Dictionary<string, string>? WhatToSortLum { get; init; }
 }
 
 /// <summary>
@@ -38,6 +41,9 @@ public sealed class PresetToml
 
     [TomlPropertyName("subject_settings")]
     public SubjectSettings? SubjectSettings { get; init; }
+
+    [TomlPropertyName("luminance_options")]
+    public LuminanceOptions? LuminanceOptions { get; init; }
 
     [TomlPropertyName("mask_combination")]
     public MaskCombination? MaskCombination { get; init; }
@@ -65,6 +71,9 @@ public sealed class MaskingOptions
 
     [TomlPropertyName("use_subject")]
     public bool UseSubject { get; init; }
+
+    [TomlPropertyName("use_luminance")]
+    public bool UseLuminance { get; init; }
 }
 
 /// <summary>
@@ -95,4 +104,16 @@ public sealed class MaskCombination
 {
     [TomlPropertyName("mode")]
     public string? Mode { get; init; }
+}
+
+/// <summary>
+/// Represents configuration options for luminance-based masking.
+/// </summary>
+public sealed class LuminanceOptions
+{
+    [TomlPropertyName("threshold")]
+    public int? Threshold { get; init; }
+
+    [TomlPropertyName("what_to_sort")]
+    public string? WhatToSort { get; init; }
 }

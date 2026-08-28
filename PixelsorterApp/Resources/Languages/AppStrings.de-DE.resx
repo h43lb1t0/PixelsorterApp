@@ -283,6 +283,7 @@ Eine **Maske** ist ein Schwarz-Weiß-Bild (intern eine per Schwellenwert erzeugt
 - **Schwarz (außerhalb der Maske):** Pixel bleiben an ihrem Platz.
 
 Masken sind nützlich, wenn du den Pixelsortier-Effekt nur in bestimmten Bereichen anwenden möchtest (Vordergrund/Hintergrund, Kanten usw.).
+Du kannst bis zu zwei Masken gleichzeitig aktivieren.
 
 ### Motivmaske
 
@@ -294,7 +295,7 @@ Masken sind nützlich, wenn du den Pixelsortier-Effekt nur in bestimmten Bereich
 Optionen:
 
 - **Padding (Abstand)** — erweitert den Motivbereich um die angegebene Anzahl an Pixeln. Nutze dies, wenn der Ausschnitt zu eng ist.
-- **Was sortiert werden soll** (nur sichtbar, wenn *Motivmaske aktiviert* und *Canny deaktiviert* ist):
+- **Was sortiert werden soll** (nur sichtbar, wenn *Motivmaske aktiviert* und *Canny und Helligkeitsmaske deaktiviert* sind):
   - **Hintergrund** — sortiert den Hintergrund und hält das Motiv weitgehend stabil.
   - **Vordergrund** — sortiert das Motiv und hält den Hintergrund weitgehend stabil.
 
@@ -312,16 +313,35 @@ Option:
 
 Diese Maske ist praktisch, wenn die Sortierung sich an Umrissen und Strukturen „orientieren" soll.
 
-### Wenn beide Masken aktiviert sind: Kombinieren
+### Helligkeitsmaske
 
-Wenn sowohl **Motivmaskierung** als auch **Canny-Maskierung** aktiviert sind, kombiniert Pixelsorter beide.
+**Helligkeitsmaske verwenden** erstellt eine Maske basierend auf der Gesamthelligkeit des Bildes.
 
-Du kannst wählen zwischen:
+Optionen:
+- **Schwellenwert** — bestimmt, wie hell ein Pixel sein muss, um in der Maske zu landen.
+  - niedrigere Werte → mehr Pixel werden einbezogen
+  - höhere Werte → weniger Pixel
+- **Was sortiert werden soll** (nur sichtbar, wenn *Helligkeitsmaske aktiviert* und *Motivmaske und Canny deaktiviert* sind):
+  - **Normal** — sortiert Pixel, die heller als der Schwellenwert sind, und lässt dunklere Pixel unverändert.
+  - **Invertieren** — sortiert Pixel, die dunkler als der Schwellenwert sind, und lässt hellere Pixel unverändert.
 
-- **Subtrahieren** — zieht die Canny-Maske von der Motivmaske ab.
-  - praktischer Effekt: verringert die Sortierung um bzw. an erkannten Kanten (hält Ränder sauberer)
-- **Addieren** — addiert die Canny-Maske und die Motivmaske.
-  - praktischer Effekt: erweitert den sortierbaren Bereich, sodass sowohl der Motivbereich als auch starke Kanten einbezogen werden
+*Tipp:* Nutze die Helligkeitsmaske zusammen mit dem Sortierkriterium **Helligkeit**, um einen coolen „Glitch“-Effekt zu erzielen.
+
+
+### Wenn zwei Masken aktiv sind: Kombinieren
+
+Sobald du zwei beliebige Masken aus **Motivmaske**, **Helligkeitsmaske** und **Canny-Maske** gleichzeitig aktivierst, kombiniert Pixelsorter diese miteinander.
+
+Du hast die Wahl:
+
+- **Subtrahieren** — zieht die zweite Maske von der ersten ab.
+  - *Motivmaske &amp; Canny*: Zieht die invertierte Canny-Maske von der Motivmaske ab.
+  - *Subjekt &amp; Helligkeitsmaske*: Zieht die invertierte Helligkeitsmaske von der Motivmaske ab.
+  - *Canny &amp; Helligkeitsmaske*: Zieht die invertierte Helligkeitsmaske von der Canny-Maske ab.
+- **Addieren** — legt beide aktiven Masken zusammen.
+  - *Subjekt &amp; Canny*: Addiert die Motivmaske und die Canny-Maske.
+  - *Subjekt &amp; Helligkeitsmaske*: Addiert die Motivmaske und die Helligkeitsmaske.
+  - *Canny &amp; Helligkeitsmaske*: Addiert die Canny-Maske und die Helligkeitsmaske.
 
 ---
 
@@ -460,7 +480,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
     <value>Erkennt Personen/Objekte und sortiert um sie herum</value>
   </data>
-  <data name="SubjectMaskOptionsView_WhatToSort_Title" xml:space="preserve">
+  <data name="MaskOptionsView_WhatToSort_Title" xml:space="preserve">
     <value>Wähle</value>
   </data>
   <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
@@ -476,7 +496,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
     <value>Addieren</value>
   </data>
   <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
-    <value>Canny- und Subjektmaske werden kombiniert, wenn beide Maskierungsoptionen aktiviert sind. Die Canny-Maske wird dabei als zweiter Summand addiert oder als Subtrahend von der Motivmaske abgezogen</value>
+    <value>Subtrahieren: Subtrahiert die invertierte zweite Maske von der Ersten. Addieren: Addiert beide Masken</value>
   </data>
   <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
     <value>Padding (Abstand)</value>
@@ -684,5 +704,32 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   </data>
   <data name="LanguageSettingsView_TranslationGuarantee" xml:space="preserve">
     <value>Wir können nur garantieren, dass die deutsche und die englische Version stets vollständig übersetzt sind. Bei anderen Sprachen können Teile des Inhalts fehlen; in diesem Fall werden sie durch die englischen Begriffe ersetzt.</value>
+  </data>
+  <data name="LuminanceMaskView_Title" xml:space="preserve">
+    <value>Helligkeitsmaske</value>
+  </data>
+  <data name="LuminanceMaskView_Threshold" xml:space="preserve">
+    <value>Schwellenwert</value>
+  </data>
+  <data name="LuminanceMaskView_Details" xml:space="preserve">
+    <value>Eine Maske basierend auf der Helligkeit vom Bild</value>
+  </data>
+  <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
+    <value>Helligkeitsmaske wird erstellt...</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Inverted" xml:space="preserve">
+    <value>Invertierte Maske</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
+    <value>Standardmaske</value>
+  </data>
+  <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
+    <value>Wähle bis zu zwei Masken aus</value>
+  </data>
+  <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
+    <value>luminance_options.threshold muss im Intervall [1, 100] liegen.</value>
+  </data>
+  <data name="TomlValidationService_TooManyMasksEnabled" xml:space="preserve">
+    <value>Es können nur bis zu 2 Masken gleichzeitig aktiviert werden. Du hast {0} Masken aktiviert.</value>
   </data>
 </root>

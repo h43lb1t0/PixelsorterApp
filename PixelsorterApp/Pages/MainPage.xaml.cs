@@ -119,6 +119,10 @@ namespace PixelsorterApp
             {
                 HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
+            else if (e.PropertyName == nameof(MainPageViewModel.UseLumMask))
+            {
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+            }
             else if (e.PropertyName == nameof(MainPageViewModel.IsSaveEnabled))
             {
                 await AnimateShareFabAsync(viewModel.IsSaveEnabled);
@@ -450,16 +454,17 @@ namespace PixelsorterApp
             try
             {
                 // Show the mask message once if masking is active
-                if (viewModel.UseSubjectMask || viewModel.UseCanny)
+                if (viewModel.UseSubjectMask || viewModel.UseCanny || viewModel.UseLumMask)
                 {
                     await Task.Delay(2200, token);
                     if (token.IsCancellationRequested) return;
 
-                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny) switch
+                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny, viewModel.UseLumMask) switch
                     {
-                        (true, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks,
-                        (true, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
-                        _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges
+                        (true, false, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
+                        (false, true, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges,
+                        (false, false, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesAnalyzingLuminance,
+                        _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks
                     };
 
                     await UpdateLoadingStatusAsync(maskMessage);
@@ -572,6 +577,9 @@ namespace PixelsorterApp
                         viewModel.UseSubtractMasks,
                         viewModel.UseInvertedSubjectMask,
                         viewModel.SubjectMaskPadding,
+                        viewModel.UseLumMask,
+                        viewModel.LumMaskThreshold,
+                        viewModel.UseInvertedLumMask,
                         viewModel.CannyThreshold);
 
                     sortedImagePath = await imageProcessingService.SortImageAsync(

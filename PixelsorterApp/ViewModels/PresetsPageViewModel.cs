@@ -20,6 +20,9 @@ namespace PixelsorterApp.ViewModels
         private readonly bool subjectMasking;
         private readonly int subjectPadding;
         private readonly bool subjectBackground;
+        private readonly bool lumMasking;
+        private readonly int lumThreshold;
+        private readonly bool lumInverted;
         private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
 
         private readonly bool subtractMask;
@@ -113,6 +116,10 @@ namespace PixelsorterApp.ViewModels
             subjectMasking = _mainViewModel.UseSubjectMask;
             subjectPadding = _mainViewModel.SubjectMaskPadding;
             subjectBackground = _mainViewModel.UseInvertedSubjectMask;
+
+            lumMasking = _mainViewModel.UseLumMask;
+            lumThreshold = _mainViewModel.LumMaskThresholdPercent;
+            lumInverted = _mainViewModel.UseInvertedLumMask;
 
             subtractMask = _mainViewModel.UseSubtractMasks;
 
@@ -325,6 +332,7 @@ namespace PixelsorterApp.ViewModels
             AppendOptions("Sort By Options:", map.SortBy);
             AppendOptions("Direction Options:", map.Direction);
             AppendOptions("What To Sort Options:", map.WhatToSort);
+            AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
 
             return sb.ToString().TrimEnd();
@@ -356,9 +364,14 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine($"direction = \"{directionKey}\"");
             sb.AppendLine("");
 
+            string whatToSortLumKey = lumInverted
+                ? ResolveBooleanMapKey(tomlMap?.WhatToSortLum, "SortLumInvertedSelected", "SortLumNormalSelected", true, "inverted", "normal")
+                : ResolveBooleanMapKey(tomlMap?.WhatToSortLum, "SortLumInvertedSelected", "SortLumNormalSelected", false, "inverted", "normal");
+
             sb.AppendLine("[masking_options]");
             sb.AppendLine($"use_canny = {cannyMasking.ToString().ToLowerInvariant()}");
             sb.AppendLine($"use_subject = {subjectMasking.ToString().ToLowerInvariant()}");
+            sb.AppendLine($"use_luminance = {lumMasking.ToString().ToLowerInvariant()}");
             sb.AppendLine("");
 
             sb.AppendLine("[canny_options]");
@@ -368,6 +381,11 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("[subject_settings]");
             sb.AppendLine($"padding = {subjectPadding}");
             sb.AppendLine($"what_to_sort = \"{whatToSortKey}\"");
+            sb.AppendLine("");
+
+            sb.AppendLine("[luminance_options]");
+            sb.AppendLine($"threshold = {lumThreshold}");
+            sb.AppendLine($"what_to_sort = \"{whatToSortLumKey}\"");
             sb.AppendLine("");
 
             sb.AppendLine("[mask_combination]");
@@ -491,14 +509,58 @@ namespace PixelsorterApp.ViewModels
         {
             string fileName = $"{presetName}.toml";
             string filePath = Path.Combine(UserPresetsPath, fileName);
-            PresetToml = Path.IsPathRooted(filePath)
+            string rawToml = Path.IsPathRooted(filePath)
                 ? await File.ReadAllTextAsync(filePath)
                 : await ReadAppPackageTextAsync(filePath);
+            PresetToml = EnsureLuminanceSections(rawToml);
             PresetName = presetName;
             MakeDefaultPreset = string.Equals(
                 Preferences.Get("defaultPreset", string.Empty),
                 fileName,
                 StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Injects default luminance sections into preset TOML text if they are missing.
+        /// This ensures old presets get the new fields when opened for editing.
+        /// </summary>
+        private static string EnsureLuminanceSections(string toml)
+        {
+            var sb = new StringBuilder(toml);
+
+            if (!toml.Contains("use_luminance", StringComparison.OrdinalIgnoreCase))
+            {
+                // Insert after the last existing masking_options line
+                int maskingEnd = toml.IndexOf("[canny_options]", StringComparison.OrdinalIgnoreCase);
+                if (maskingEnd >= 0)
+                {
+                    sb.Insert(maskingEnd, "use_luminance = false\r\n\r\n");
+                }
+                else
+                {
+                    sb.AppendLine("use_luminance = false");
+                }
+            }
+
+            if (!toml.Contains("[luminance_options]", StringComparison.OrdinalIgnoreCase))
+            {
+                // Insert before [mask_combination] if present, otherwise append
+                string current = sb.ToString();
+                int maskCombIdx = current.IndexOf("[mask_combination]", StringComparison.OrdinalIgnoreCase);
+                if (maskCombIdx >= 0)
+                {
+                    sb.Insert(maskCombIdx, "[luminance_options]\r\nthreshold = 50\r\nwhat_to_sort = \"normal\"\r\n\r\n");
+                }
+                else
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("[luminance_options]");
+                    sb.AppendLine("threshold = 50");
+                    sb.AppendLine("what_to_sort = \"normal\"");
+                }
+            }
+
+            return sb.ToString();
         }
 
         private Task DeletePresetFileAsync(string presetName)

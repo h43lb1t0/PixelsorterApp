@@ -223,6 +223,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analyzing luminance....
+        /// </summary>
+        internal static string CycleSortingMessagesAnalyzingLuminance {
+            get {
+                return ResourceManager.GetString("CycleSortingMessagesAnalyzingLuminance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applying subject mask....
         /// </summary>
         internal static string CycleSortingMessagesApplyingSubjectMask {
@@ -517,6 +526,51 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A mask based on image luminance.
+        /// </summary>
+        internal static string LuminanceMaskView_Details {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Threshold.
+        /// </summary>
+        internal static string LuminanceMaskView_Threshold {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Threshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luminance mask.
+        /// </summary>
+        internal static string LuminanceMaskView_Title {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverted.
+        /// </summary>
+        internal static string LuminanceMaskView_WhatToSort_Inverted {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_WhatToSort_Inverted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        internal static string LuminanceMaskView_WhatToSort_Normal {
+            get {
+                return ResourceManager.GetString("LuminanceMaskView_WhatToSort_Normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won&apos;t use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page..
         /// </summary>
         internal static string MaskingFeatureLicense_Message {
@@ -531,6 +585,24 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string MaskingFeatureLicense_Title {
             get {
                 return ResourceManager.GetString("MaskingFeatureLicense_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select up to two masks.
+        /// </summary>
+        internal static string MaskingOptionsView_InfoAboutMaskSelectLimit {
+            get {
+                return ResourceManager.GetString("MaskingOptionsView_InfoAboutMaskSelectLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose.
+        /// </summary>
+        internal static string MaskOptionsView_WhatToSort_Title {
+            get {
+                return ResourceManager.GetString("MaskOptionsView_WhatToSort_Title", resourceCulture);
             }
         }
         
@@ -994,7 +1066,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Canny and subject masks are combined when both masking options are enabled. The Canny mask is used as the second summand or as the subtrahend for the subject mask.
+        ///   Looks up a localized string similar to Subtract: Subtracts the inversed second mask from the first. Add: Adds both masks.
         /// </summary>
         internal static string SubjectMaskOptionsView_HowToCombineMasks_explenation {
             get {
@@ -1044,15 +1116,6 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string SubjectMaskOptionsView_WhatToSort_Foreground {
             get {
                 return ResourceManager.GetString("SubjectMaskOptionsView_WhatToSort_Foreground", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Choose.
-        /// </summary>
-        internal static string SubjectMaskOptionsView_WhatToSort_Title {
-            get {
-                return ResourceManager.GetString("SubjectMaskOptionsView_WhatToSort_Title", resourceCulture);
             }
         }
         
@@ -1165,6 +1228,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to luminance_options.threshold must be in range [1, 100]..
+        /// </summary>
+        internal static string TomlValidation_LumThresholdOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_LumThresholdOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction &apos;im&apos; (Into Mask) requires at least one mask to be enabled..
         /// </summary>
         internal static string TomlValidation_MaskMustBeEnabled {
@@ -1233,6 +1305,15 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string TOMLValidation_Valid {
             get {
                 return ResourceManager.GetString("TOMLValidation_Valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only up to 2 masks can be enabled at a time. You have enabled {0}..
+        /// </summary>
+        internal static string TomlValidationService_TooManyMasksEnabled {
+            get {
+                return ResourceManager.GetString("TomlValidationService_TooManyMasksEnabled", resourceCulture);
             }
         }
         

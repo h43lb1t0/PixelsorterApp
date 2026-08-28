@@ -27,7 +27,7 @@
             </VerticalStackLayout>
             <Switch
                 Grid.Column="1"
-                IsEnabled="{Binding IsInteractionEnabled}"
+                IsEnabled="{Binding IsCannyMaskingEnabled}"
                 IsToggled="{Binding UseCanny, Mode=TwoWay}"
                 OnColor="{AppThemeBinding Light={StaticResource Secondary},
                                           Dark={StaticResource SecondaryDarkText}}"

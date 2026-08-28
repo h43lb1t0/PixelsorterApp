@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.LuminanceMaskView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    xmlns:views="clr-namespace:PixelsorterApp.Views"
+    x:DataType="viewModels:MainPageViewModel">
+    <VerticalStackLayout Padding="0,5" Spacing="0">
+        <Grid Padding="16,0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout
+                Grid.Column="0"
+                Spacing="2"
+                VerticalOptions="Center">
+                <Label
+                    FontSize="16"
+                    Text="{localization:Translate LuminanceMaskView_Title}"
+                    VerticalOptions="Center" />
+                <Label
+                    FontSize="12"
+                    Opacity="0.65"
+                    Text="{localization:Translate LuminanceMaskView_Details}"
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                Dark={StaticResource TextSecondaryDark}}"
+                    VerticalOptions="Center" />
+            </VerticalStackLayout>
+            <Switch
+                Grid.Column="1"
+                IsEnabled="{Binding IsLumMaskingEnabled}"
+                IsToggled="{Binding UseLumMask, Mode=TwoWay}"
+                OnColor="{AppThemeBinding Light={StaticResource Secondary},
+                                          Dark={StaticResource SecondaryDarkText}}"
+                ThumbColor="{AppThemeBinding Light={StaticResource Primary},
+                                             Dark={StaticResource PrimaryDark}}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Grid
+            Padding="16,8"
+            ColumnDefinitions="*, 60"
+            IsVisible="{Binding ShowLumMaskThreshold}"
+            RowDefinitions="Auto, Auto"
+            RowSpacing="4">
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontSize="14"
+                Text="{localization:Translate LuminanceMaskView_Threshold}"
+                VerticalOptions="Center" />
+            <Slider
+                Grid.Row="1"
+                Grid.Column="0"
+                IsEnabled="{Binding IsInteractionEnabled}"
+                Maximum="99"
+                Minimum="1"
+                ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                             Light={StaticResource PrimaryDark}}"
+                VerticalOptions="Center"
+                Value="{Binding LumMaskThresholdPercent, Mode=TwoWay}" />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                HorizontalOptions="End"
+                Text="{Binding LumMaskThresholdText}"
+                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                            Light={StaticResource Black}}"
+                VerticalOptions="Center" />
+        </Grid>
+        <views:WhatToSortView
+            IsVisible="{Binding ShowWhatToSortLum}"
+            OptionOne="{localization:Translate LuminanceMaskView_WhatToSort_Normal}"
+            OptionOneSelected="{Binding SortLumNormalSelected, Mode=TwoWay}"
+            OptionTwo="{localization:Translate LuminanceMaskView_WhatToSort_Inverted}"
+            OptionTwoSelected="{Binding SortLumInvertedSelected, Mode=TwoWay}" />
+    </VerticalStackLayout>
+</ContentView>
