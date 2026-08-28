@@ -61,6 +61,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         return cannyMasker.GetMaskAsync(imagePath, new CannyMaskOptions(threshold));
     }
 
+    /// <inheritdoc/>
     public Task<(NDArray LumMask, NDArray InvertedLumMask)> CreateLumMaskAsync(string imagePath, float threshold)
     {
         return luminanceMasker.GetMaskAsync(imagePath, new LuminanceMaskOptions(threshold));
@@ -226,6 +227,11 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         cachedBuiltMask = null;
     }
 
+    /// <summary>
+    /// Converts a normalized threshold value (0-1) to an integer bucket for caching purposes.
+    /// </summary>
+    /// <param name="threshold"></param>
+    /// <returns></returns>
     private static int GetThresholdBucket(float threshold)
     {
         return (int)MathF.Round(threshold * 10000f);
@@ -270,6 +276,12 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         cachedCannyThreshold = threshold;
     }
 
+    /// <summary>
+    /// Ensures that luminance masks are available for the current image and threshold settings.
+    /// </summary>
+    /// <param name="imagePath">Path of the image being processed.</param>
+    /// <param name="threshold">Luminance threshold in normalized 0-1 range.</param>
+    /// <returns></returns>
     private async Task EnsureLumMaskAsync(string imagePath, float threshold)
     {
        if (lumMask is not null && invertedLumMask is not null && Math.Abs(cachedLumThreshold - threshold) < 0.0001f)

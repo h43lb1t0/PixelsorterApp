@@ -1311,9 +1311,9 @@ namespace PixelsorterApp.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Only up to 2 masks can be enabled at a time. You have enabled {0}..
         /// </summary>
-        internal static string TomlValidationService_ToManyMasksEnabled {
+        internal static string TomlValidationService_TooManyMasksEnabled {
             get {
-                return ResourceManager.GetString("TomlValidationService_ToManyMasksEnabled", resourceCulture);
+                return ResourceManager.GetString("TomlValidationService_TooManyMasksEnabled", resourceCulture);
             }
         }
         
