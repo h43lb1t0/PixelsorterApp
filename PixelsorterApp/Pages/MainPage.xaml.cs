@@ -119,6 +119,10 @@ namespace PixelsorterApp
             {
                 HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
+            else if (e.PropertyName == nameof(MainPageViewModel.UseLumMask))
+            {
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+            }
             else if (e.PropertyName == nameof(MainPageViewModel.IsSaveEnabled))
             {
                 await AnimateShareFabAsync(viewModel.IsSaveEnabled);
