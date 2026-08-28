@@ -63,9 +63,9 @@ public interface IImageProcessingService
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
         int subjectMaskPadding,
-        bool UseLumMask,
+        bool useLumMask,
         float lumThreshold,
-        bool UseInvertedLumMask,
+        bool useInvertedLumMask,
         float cannyThreshold);
 
     /// <summary>

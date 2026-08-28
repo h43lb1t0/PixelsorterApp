@@ -74,9 +74,9 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
         int subjectMaskPadding,
-        bool UseLumMask,
+        bool useLumMask,
         float lumThreshold,
-        bool UseInvertedLumMask,
+        bool useInvertedLumMask,
         float cannyThreshold)
     {
         EnsureCacheScope(imagePath);
@@ -88,8 +88,8 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             useInvertedSubjectMask,
             subjectMaskPadding,
             GetThresholdBucket(cannyThreshold),
-            UseLumMask,
-            UseInvertedLumMask,
+            useLumMask,
+            useInvertedLumMask,
             GetThresholdBucket(lumThreshold));
 
         if (cachedMaskBuildKey is MaskBuildCacheKey existingCacheKey && existingCacheKey == cacheKey)
@@ -97,7 +97,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             return cachedBuiltMask;
         }
 
-        if (!useSubjectMask && !useCanny && !UseLumMask)
+        if (!useSubjectMask && !useCanny && !useLumMask)
         {
             return CacheAndReturn(cacheKey, null);
         }
@@ -126,12 +126,12 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             masks.Add((cannyMask, invertedCannyMask));
         }
 
-        if (UseLumMask)
+        if (useLumMask)
         {
             await EnsureLumMaskAsync(imagePath, lumThreshold);
             if (lumMask is null || invertedLumMask is null)
                 return CacheAndReturn(cacheKey, null);
-            var effectiveLum = UseInvertedLumMask
+            var effectiveLum = useInvertedLumMask
                 ? (invertedLumMask, lumMask)
                 : (lumMask, invertedLumMask);
             masks.Add(effectiveLum);

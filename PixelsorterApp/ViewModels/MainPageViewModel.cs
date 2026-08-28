@@ -77,21 +77,21 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets the count of currently enabled masking options (subject, Canny, luminance).
     /// </summary>
-    private int ToggeltMaskCount => (UseSubjectMask ? 1 : 0) + (UseCanny ? 1 : 0) + (UseLumMask ? 1 : 0);
+    private int ToggledMaskCount => (UseSubjectMask ? 1 : 0) + (UseCanny ? 1 : 0) + (UseLumMask ? 1 : 0);
 
 
     /// <summary>
     /// Gets a value indicating whether Canny masking controls should be enabled based on the current interaction state and masking configuration.
     /// </summary>
-    public bool IsCannyMaskingEnabled => IsInteractionEnabled && (UseCanny || ToggeltMaskCount < 2);
+    public bool IsCannyMaskingEnabled => IsInteractionEnabled && (UseCanny || ToggledMaskCount < 2);
     /// <summary>
     /// Gets a value indicating whether subject masking controls should be enabled based on the current interaction state and masking configuration.
     /// </summary>
-    public bool IsSubjectMaskingEnabled => IsInteractionEnabled && (UseSubjectMask || ToggeltMaskCount < 2);
+    public bool IsSubjectMaskingEnabled => IsInteractionEnabled && (UseSubjectMask || ToggledMaskCount < 2);
     /// <summary>
     /// Gets a value indicating whether luminance masking controls should be enabled based on the current interaction state and masking configuration.
     /// </summary>
-    public bool IsLumMaskingEnabled => IsInteractionEnabled && (UseLumMask || ToggeltMaskCount < 2);
+    public bool IsLumMaskingEnabled => IsInteractionEnabled && (UseLumMask || ToggledMaskCount < 2);
 
 
 
