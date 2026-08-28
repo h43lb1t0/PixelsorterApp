@@ -54,7 +54,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 IsEnabled="{Binding IsInteractionEnabled}"
-                Maximum="100"
+                Maximum="99"
                 Minimum="1"
                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                              Light={StaticResource PrimaryDark}}"

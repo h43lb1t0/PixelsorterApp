@@ -81,7 +81,7 @@ namespace PixelsorterApp.Services
                 int lumThreshold = GetInt(luminanceOptions, "threshold", errors);
                 string lumWhatToSort = GetString(luminanceOptions, "what_to_sort", errors);
 
-                if (lumThreshold is < 1 or > 100)
+                if (lumThreshold is < 1 or >= 100)
                 {
                     errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_LumThresholdOutOfRange);
                 }
