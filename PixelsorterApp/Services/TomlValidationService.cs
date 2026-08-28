@@ -99,6 +99,12 @@ namespace PixelsorterApp.Services
                 errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MaskMustBeEnabled);
             }
 
+            int totalMasksEnabled = (useSubject ? 1 : 0) + (useCanny ? 1 : 0) + (useLuminance ? 1 : 0);
+            if ( totalMasksEnabled > 2)
+            {
+                errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidationService_ToManyMasksEnabled, totalMasksEnabled));
+            }
+
             if (cannyThreashold is <= 0 or >= 100)
             {
                 errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_CannyOutOfRange);

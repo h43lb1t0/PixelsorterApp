@@ -736,4 +736,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
     <value>luminance_options.threshold must be in range [1, 100].</value>
   </data>
+  <data name="TomlValidationService_ToManyMasksEnabled" xml:space="preserve">
+    <value>Only up to 2 masks can be enabled at a time. You have enabled {0}.</value>
+  </data>
 </root>

@@ -589,6 +589,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select up to two masks.
+        /// </summary>
+        internal static string MaskingOptionsView_InfoAboutMaskSelectLimit {
+            get {
+                return ResourceManager.GetString("MaskingOptionsView_InfoAboutMaskSelectLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose.
         /// </summary>
         internal static string MaskOptionsView_WhatToSort_Title {
@@ -1057,7 +1066,7 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Canny and subject masks are combined when both masking options are enabled. The Canny mask is used as the second summand or as the subtrahend for the subject mask.
+        ///   Looks up a localized string similar to Subtract: Subtracts the inversed second mask from the first. Add: Adds both masks.
         /// </summary>
         internal static string SubjectMaskOptionsView_HowToCombineMasks_explenation {
             get {
@@ -1172,15 +1181,6 @@ namespace PixelsorterApp.Resources.Languages {
                 return ResourceManager.GetString("TomlValidation_FailedToLoadTomlMap", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to luminance_options.threshold must be in range [1, 100]..
-        /// </summary>
-        internal static string TomlValidation_LumThresholdOutOfRange {
-            get {
-                return ResourceManager.GetString("TomlValidation_LumThresholdOutOfRange", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to TOML is invalid..
@@ -1224,6 +1224,15 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string TomlValidation_InvalidValueForFieldNameValue {
             get {
                 return ResourceManager.GetString("TomlValidation_InvalidValueForFieldNameValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to luminance_options.threshold must be in range [1, 100]..
+        /// </summary>
+        internal static string TomlValidation_LumThresholdOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_LumThresholdOutOfRange", resourceCulture);
             }
         }
         
@@ -1296,6 +1305,15 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string TOMLValidation_Valid {
             get {
                 return ResourceManager.GetString("TOMLValidation_Valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only up to 2 masks can be enabled at a time. You have enabled {0}..
+        /// </summary>
+        internal static string TomlValidationService_ToManyMasksEnabled {
+            get {
+                return ResourceManager.GetString("TomlValidationService_ToManyMasksEnabled", resourceCulture);
             }
         }
         
