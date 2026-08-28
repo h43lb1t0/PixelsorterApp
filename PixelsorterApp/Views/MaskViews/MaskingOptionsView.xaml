@@ -31,7 +31,15 @@
                                         Dark={StaticResource DividerDark}}" />
 
             <views:SubjectMaskOptionsView />
+
+            <BoxView
+                Margin="16,0,0,0"
+                HeightRequest="1"
+                Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                        Dark={StaticResource DividerDark}}" />
+
             <views:LuminanceMaskView />
+
             <views:MaskCombinationView />
         </VerticalStackLayout>
     </Border>
