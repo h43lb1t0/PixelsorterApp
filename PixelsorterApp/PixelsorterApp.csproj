@@ -143,13 +143,6 @@
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 	</Target>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <AndroidEnableR8>true</AndroidEnableR8>
-    <AndroidLinkTool>r8</AndroidLinkTool>
-    <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
-  </PropertyGroup>
-
-
 
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
@@ -256,5 +249,30 @@ public static partial class LocalizationConfig
 			<FileWrites Include="$(_GeneratedLocalizationConfigFile)" />
 		</ItemGroup>
 	</Target>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidEnableR8>true</AndroidEnableR8>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidLinkResources>true</AndroidLinkResources>
+    <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and $(TargetFramework.Contains('-android'))">
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+    <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
+  </PropertyGroup>
 
 </Project>
