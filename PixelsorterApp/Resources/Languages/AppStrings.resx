@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="common_Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>For Buttons that save something</comment>
+  </data>
+  <data name="common_Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+    <comment>For Buttons that dismiss a popup with a only informative message</comment>
+  </data>
+  <data name="common_Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Used as Title for Error popups</comment>
+  </data>
+  <data name="common_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>For buttons</comment>
+  </data>
+  <data name="common_None" xml:space="preserve">
+    <value>None</value>
+    <comment>Displayed when a String value is missing that should be displayed</comment>
+  </data>
+  <data name="common_NA" xml:space="preserve">
+    <value>N/A</value>
+    <comment>Indicates a value is not used/set for something</comment>
+  </data>
+  <data name="common_Edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Edit an item</comment>
+  </data>
+  <data name="common_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Delete an item</comment>
+  </data>
+  <data name="common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Cancle and action</comment>
+  </data>
+  <data name="common_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>Used when an Value that should be known is not</comment>
+  </data>
+  <data name="common_Accept" xml:space="preserve">
+    <value>Accept</value>
+    <comment>For buttons that accept something</comment>
+  </data>
+  <data name="common_DontAccept" xml:space="preserve">
+    <value>Decline</value>
+    <comment>For buttons that decline something</comment>
+  </data>
+  <data name="common_dngErrorMessage" xml:space="preserve">
+    <value>Can't load RAW Images (dng files)</value>
+    <comment>Message that the App can't handle images in any RAW format</comment>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_SORTBY" xml:space="preserve">
+    <value>SORT BY</value>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_SETTINGSUSED" xml:space="preserve">
+    <value>SETTINGS USED</value>
+    <comment>Used in the before and after view. In past tense.</comment>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_DIRECTION" xml:space="preserve">
+    <value>DIRECTION</value>
+  </data>
+  <data name="ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage" xml:space="preserve">
+    <value>Drag the slider to compare the original and sorted image.</value>
+  </data>
+  <data name="HelpPage_Content" xml:space="preserve">
+    <value>Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen colour criterion, and lets you preview and save results.
+
+The main screen is organised like this:
+
+- **Image preview** (tap to load an image)
+- **Sort settings** (what to sort by + sorting direction)
+- **Masking options** (optional: limit which pixels are allowed to move)
+- **Sort** button (creates a new sorted result)
+- **Save** button (saves the currently displayed result)
+
+---
+
+
+## Loading an image
+
+### Load by tapping the preview
+
+1. On the main screen, **tap the image preview**.
+2. Select an image.
+3. After loading, the caption below the preview will show **“Original image”**, and the app will announce that it’s ready to sort.
+
+Notes:
+
+- Once an image is loaded, the **Sort** button becomes enabled.
+- The preview area can show multiple images (original + results). See Previewing results (swipe).
+
+### Android: share / “Send to” Pixelsorter
+
+On Android, Pixelsorter can receive an image from other apps:
+
+1. In your gallery, file manager, or another app, use **Share**.
+2. Choose **Pixelsorter**.
+
+Pixelsorter will open and load the shared image automatically.
+
+---
+
+## Previewing results (swipe)
+
+Every time you press **Sort**, Pixelsorter generates a new processed image and adds it to the preview.
+
+**Android only!**
+You can **swipe left/right** on the preview to switch between:
+
+- the **original image**, and
+- one or more **sorted results**.
+
+The text under the preview describes what you’re currently seeing (for example, “Original image” or the options used).
+
+---
+
+## Saving
+
+The **Save** button saves the **currently displayed image**.
+
+Important behaviour:
+
+- **Save is disabled for the original image**. It becomes enabled only when you swipe to a generated result.
+- If you have multiple results, swipe to the one you want and then tap **Save**.
+
+---
+
+## Sorting options
+
+Pixel sorting works like this:
+
+- Pixels are processed in **runs** along the chosen direction (rows or columns).
+- Within each run, pixels are reordered by a **Sort by** criterion.
+- If a **mask** is enabled, only pixels inside the mask are considered sortable; pixels outside keep their original positions.
+
+### Sort by
+
+**Sort by** controls the value used to compare pixels. The app uses HSL colour space (Hue/Saturation/Lightness) and offers these criteria:
+
+- **{0}** — sorts by hue angle (0–360). Produces strong colour banding / rainbow-like transitions.
+- **{1}** — sorts by saturation (how “colourful” a pixel is).
+- **{2}** — sorts by brightness.
+- **{3}** — favours hues around warm colours (near orange/red) and boosts saturated, mid-lightness pixels.
+- **{4}** — favours hues around cool colours (near blue) and boosts saturated, mid-lightness pixels.
+- **{5}** — measures vividness (high saturation + not too close to pure black/white).
+- **{6}** — similar to chroma, but weighted by hue to better match perception.
+
+If you want a quick starting point:
+
+- try **{7}** for classic “glitchy” streaks,
+- try **{8}** for bold colour separation,
+
+
+### Direction
+
+**Direction** controls in which order pixels are sorted:
+
+- **{9}** — sorts within each row.
+- **{10}** — same, but writes results reversed.
+- **{11}** — sorts within each column.
+- **{12}** — same, but writes results reversed.
+- **{13}** — special mode that sorts pixels *radially into the mask* (requires a mask).
+
+Mask-related detail:
+
+- When **no masks** are enabled, only the basic row/column directions are relevant.
+- When a mask is enabled, sorting happens in contiguous masked segments:
+  - for row sorting: masked stretches in each row are sorted independently
+  - for column sorting: masked stretches in each column are sorted independently
+- **{14}** is only available/meaningful when you have a mask, because it uses the mask shape to guide sorting.
+
+---
+
+## Masks (what they are)
+
+A **mask** is a black-and-white image (internally a thresholded greyscale mask).
+
+- **White (inside mask):** pixels are allowed to move/sort.
+- **Black (outside mask):** pixels stay in place.
+
+Masks are useful when you want a pixel-sorting effect only in certain regions (foreground/background, edges, etc.).
+You can enable up to two masks at the same time. If two maks are enabled, Pixelsorter combines them (see Combining masks).
+
+### Subject mask
+
+**Use subject masking** tries to separate the main subject from the background using a machine-learning model.
+
+- The **first time** you enable it, the model may need to be downloaded (internet required).
+- Afterwards it runs locally using the cached model.
+
+Options:
+
+- **Padding** — expands the subject area by the given number of pixels. Use this when the cutout is too tight.
+- **What to sort** (only visible when *subject mask is on* and *Canny and Luminance is off*):
+  - **Background** — sorts the background and keeps the subject mostly stable.
+  - **Foreground** — sorts the subject and keeps the background mostly stable.
+
+### Canny mask (edge mask)
+
+**Use Canny masking** creates an additional mask from image edges (edge detection).
+
+- This is processed on-device.
+
+Option:
+
+- **Threshold** — controls how strong edge detection is.
+  - lower values → more edges included
+  - higher values → fewer edges
+
+This mask is handy when you want the sorting to “stick” to outlines and structures.
+
+### Luminance mask
+
+**Use luminance masking** creates a mask based on the image's overall luminance.
+
+Options:
+- **Threshold** — controls how bright a pixel must be to be included in the mask.
+  - lower values → more pixels included
+  - higher values → fewer pixels
+- **What to sort** (only visible when *luminance mask is on* and *subject and Canny are off*):
+  - **Normal** — sorts pixels brighter than the threshold and keeps darker pixels stable.
+  - **Invert** — sorts pixels darker than the threshold and keeps brighter pixels stable. 
+
+*Tip:* Use the Luminance mask with the **lightness** sorting criterion for a ‘glitchy’ effect.
+
+
+### When two masks are enabled: combining
+
+When any combination of **subject masking**, **luminance masking** and **Canny masking** (with two enabled) is selected, Pixelsorter combines them.
+
+You can choose:
+
+- **Subtract** — subtracts the second mask from the first mask.
+  - *Subject &amp; Canny*: Subtracts the inverted Canny mask from the subject mask.
+  - *Subject &amp; Luminance*: Subtracts the inverted luminance mask from the subject mask.
+  - *Canny &amp; Luminance*: Subtracts the inverted luminance mask from the Canny mask.
+- **Add** — adds the two enabled masks together.
+  - *Subject &amp; Canny*: Adds the subject mask and the Canny mask.
+  - *Subject &amp; Luminance*: Adds the subject mask and the luminance mask.
+  - *Canny &amp; Luminance*: Adds the Canny mask and the luminance mask.
+---
+
+## Presets
+
+Presets allow you to save and load your favourite sorting and masking configurations.
+
+- **Load a preset:** On the main screen, use the preset selector to quickly apply a saved configuration.
+- **Create or edit presets:** Choose the **"new preset"** option or navigate to the Presets page. Here you can write custom presets using TOML syntax.
+- **Preset options:** You can view the TOML Map on the Presets page to guide you through the available configuration keys (such as `sort\_settings`, `masking\_options`, etc.).
+- **Default preset:** You can assign any preset as your default, so Pixelsorter always starts with your preferred settings.
+
+---
+
+## Tips &amp; troubleshooting
+
+- If **Sort** is disabled, make sure you loaded an image first.
+- If **Save** is disabled, you are probably viewing the **original image**. Swipe to a generated result.
+- If enabling **subject masking** does nothing the first time, check your internet connection (model download is required once).
+- For faster experimentation, start without masks and with **Row Left To Right + Lightness**, then add masks when you know the direction/criterion you like.</value>
+    <comment>Names of the SortBy and directions are set via variables to make sure they match the rest of the App. For all other names it's important to manually update them here too.</comment>
+  </data>
+  <data name="AppSlogan" xml:space="preserve">
+    <value>Load an image, choose options, and sort.</value>
+    <comment>The slogan for the app</comment>
+  </data>
+  <data name="PixelSorterHeader" xml:space="preserve">
+    <value>Pixelsorter</value>
+    <comment>Heading of the app</comment>
+  </data>
+  <data name="HeaderSortSettings" xml:space="preserve">
+    <value>SORT SETTINGS</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort by</value>
+    <comment>Title of the Dropdown for choosing the sorting criteria</comment>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+    <comment>Title for the Dropdown choosing the sorting direction</comment>
+  </data>
+  <data name="HeaderMaskingOptions" xml:space="preserve">
+    <value>MASKING OPTIONS</value>
+  </data>
+  <data name="Sort" xml:space="preserve">
+    <value>Sort</value>
+    <comment>For the button that starts sorting</comment>
+  </data>
+  <data name="SortCaption" xml:space="preserve">
+    <value>Sort by: {0} • Direction: {1}</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to Pixelsorter!</value>
+    <comment>Title of the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Have a look at the example gallery to see what you can do before getting started. You can always find the gallery via the info menu.</value>
+    <comment>Messageof the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="WelcomeAction" xml:space="preserve">
+    <value>Go to gallery</value>
+  </data>
+  <data name="OriginalImage" xml:space="preserve">
+    <value>Original image</value>
+  </data>
+  <data name="CycleSortingMessagesCombiningMasks" xml:space="preserve">
+    <value>Combining masks...</value>
+  </data>
+  <data name="CycleSortingMessagesApplyingSubjectMask" xml:space="preserve">
+    <value>Applying subject mask...</value>
+  </data>
+  <data name="CycleSortingMessagesDetectingEdges" xml:space="preserve">
+    <value>Detecting edges...</value>
+  </data>
+  <data name="CycleSortingMessagesSortingBy" xml:space="preserve">
+    <value>Sorting by {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesArrangingPixels" xml:space="preserve">
+    <value>Arranging pixels {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesReadingPixelData" xml:space="preserve">
+    <value>Reading pixel data...</value>
+  </data>
+  <data name="SortAsync_AnErrorOccurredExMessage" xml:space="preserve">
+    <value>An error occurred: {0}</value>
+  </data>
+  <data name="SaveAsync_NoImageAvailableToSave" xml:space="preserve">
+    <value>No image available to save.</value>
+  </data>
+  <data name="SaveAsync_ImageSaved" xml:space="preserve">
+    <value>Image saved</value>
+  </data>
+  <data name="SaveAsync_FailedToSaveImage" xml:space="preserve">
+    <value>Failed to save image</value>
+  </data>
+  <data name="ShareAsync_NoImageAvailableToShare" xml:space="preserve">
+    <value>No image available to share.</value>
+  </data>
+  <data name="ShareAsync_ShareFailed" xml:space="preserve">
+    <value>Share failed: {0}</value>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Masking feature licence</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the licence page.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading AI model...</value>
+    <comment>Downloading the background remove model</comment>
+  </data>
+  <data name="DownloadFailed_Title" xml:space="preserve">
+    <value>Download failed</value>
+  </data>
+  <data name="DownloadFailed_Message" xml:space="preserve">
+    <value>The masking model could not be downloaded. Please check your internet connection and try again.</value>
+  </data>
+  <data name="NoInternetConnection_Title" xml:space="preserve">
+    <value>No internet connection</value>
+  </data>
+  <data name="NoInternetConnection_Message" xml:space="preserve">
+    <value>An internet connection is required to use the masking feature. Please connect to the internet and try again.</value>
+  </data>
+  <data name="TapToLoadAnImage" xml:space="preserve">
+    <value>Tap to load an image</value>
+  </data>
+  <data name="CannyView_Title" xml:space="preserve">
+    <value>Canny edge mask</value>
+  </data>
+  <data name="CannyView_details" xml:space="preserve">
+    <value>Keeps edges unsorted</value>
+  </data>
+  <data name="CannyView_Threshold" xml:space="preserve">
+    <value>Sensitivity threshold</value>
+  </data>
+  <data name="PresetsView_Header" xml:space="preserve">
+    <value>PRESETS</value>
+  </data>
+  <data name="PresetsView_Presets" xml:space="preserve">
+    <value>Presets</value>
+    <comment>Title for the Presets dropdown</comment>
+  </data>
+  <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
+    <value>Subject mask</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
+    <value>Detect people or objects, sort around them</value>
+  </data>
+  <data name="MaskOptionsView_WhatToSort_Title" xml:space="preserve">
+    <value>Choose</value>
+    <comment>Used for choosing subject background or foreground and mask combination sub/add</comment>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
+    <value>Foreground</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
+    <value>Subtract</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
+    <value>Subtract: Subtracts the inversed second mask from the first. Add: Adds both masks</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
+    <value>Padding</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Navigation_Title" xml:space="preserve">
+    <value>Help &amp; Info</value>
+  </data>
+  <data name="PageName_HelpPage" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="PageName_ExampleGallery" xml:space="preserve">
+    <value>Example gallery</value>
+  </data>
+  <data name="PageName_PresetsPage" xml:space="preserve">
+    <value>Presets page</value>
+  </data>
+  <data name="PageName_OpenSourceLicenses" xml:space="preserve">
+    <value>Open Source Licences</value>
+  </data>
+  <data name="PageName_PrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="HelpPage_DisplayPageName_HowToUseThePixelsorter" xml:space="preserve">
+    <value>How to use the Pixelsorter</value>
+  </data>
+  <data name="PageName_Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Settings page name</comment>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>Licence information unavailable</value>
+  </data>
+  <data name="ShareFeature_ShareDialog_Title" xml:space="preserve">
+    <value>Share sorted image</value>
+  </data>
+  <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
+    <value>Have a look at this pixel-sorted image I created with {0}</value>
+  </data>
+  <data name="LicensesPage_Explenation" xml:space="preserve">
+    <value>This application uses the following open source packages:</value>
+  </data>
+  <data name="LicensePage_ByItemAuthors" xml:space="preserve">
+    <value>by {0}</value>
+  </data>
+  <data name="PresetsPage_Header" xml:space="preserve">
+    <value>PRESET DETAILS</value>
+  </data>
+  <data name="PresetsPage_CreateYourPresetExplenation" xml:space="preserve">
+    <value>Create your preset by configuring the options below. The currently shown preset is based on your selections. Use the TOML map to find out how to configure each option.</value>
+  </data>
+  <data name="PresetsPage_PresetEditor_Heading" xml:space="preserve">
+    <value>Preset TOML</value>
+  </data>
+  <data name="PresetsPage_NewPresetName_Title" xml:space="preserve">
+    <value>Preset name</value>
+  </data>
+  <data name="PresetsPage_SetAsDefaultPreset" xml:space="preserve">
+    <value>Set as default preset</value>
+  </data>
+  <data name="PresetsPage_SetBasePresetAsDefault" xml:space="preserve">
+    <value>Set base preset as default</value>
+  </data>
+  <data name="PresetsPage_SavePreset" xml:space="preserve">
+    <value>Save preset</value>
+  </data>
+  <data name="PresetsPage_AvilablePresets_Header" xml:space="preserve">
+    <value>AVAILABLE PRESETS</value>
+  </data>
+  <data name="PresetsPage_Preset" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="ToggleTomlMap_Hide" xml:space="preserve">
+    <value>Hide TOML map</value>
+  </data>
+  <data name="ToggleTomlMap_Show" xml:space="preserve">
+    <value>Show TOML map</value>
+  </data>
+  <data name="BasePresetSetAsDefault" xml:space="preserve">
+    <value>Base preset set as default.</value>
+  </data>
+  <data name="TOMLValidation_Invalid" xml:space="preserve">
+    <value>TOML is invalid.</value>
+  </data>
+  <data name="TOMLValidation_InvalidError" xml:space="preserve">
+    <value>TOML is invalid: {0}</value>
+  </data>
+  <data name="TOMLValidation_Valid" xml:space="preserve">
+    <value>TOML is valid.</value>
+  </data>
+  <data name="InvalidPresetName" xml:space="preserve">
+    <value>Invalid preset name.</value>
+  </data>
+  <data name="PresetSavedSuccessfully" xml:space="preserve">
+    <value>Preset saved successfully.</value>
+  </data>
+  <data name="ErrorSavingPreset" xml:space="preserve">
+    <value>Error saving preset: {0}</value>
+  </data>
+  <data name="LoadedPresetPresetName" xml:space="preserve">
+    <value>Loaded preset '{0}'.</value>
+  </data>
+  <data name="ErrorLoadingPresetPresetNameExMessage" xml:space="preserve">
+    <value>Error loading preset '{0}': {1}</value>
+  </data>
+  <data name="DeletedPresetPresetName" xml:space="preserve">
+    <value>Deleted preset '{0}'.</value>
+  </data>
+  <data name="NewPresetAction" xml:space="preserve">
+    <value>new preset</value>
+  </data>
+  <data name="TomlValidation_Empty" xml:space="preserve">
+    <value>TOML content is empty.</value>
+  </data>
+  <data name="TomlValidation_FailedToLoadTomlMap" xml:space="preserve">
+    <value>Failed to load toml map.</value>
+  </data>
+  <data name="TomlValidation_InvalidSyntaxError" xml:space="preserve">
+    <value>Invalid TOML syntax: {0}</value>
+  </data>
+  <data name="TomlValidation_InvalidSyntax" xml:space="preserve">
+    <value>Invalid TOML syntax.</value>
+  </data>
+  <data name="TomlValidation_MaskMustBeEnabled" xml:space="preserve">
+    <value>Direction 'im' (Into Mask) requires at least one mask to be enabled.</value>
+  </data>
+  <data name="TomlValidation_CannyOutOfRange" xml:space="preserve">
+    <value>canny_options.threshold must be in range (0, 100).</value>
+  </data>
+  <data name="TomlValidation_SubjectPaddingOutOfRange" xml:space="preserve">
+    <value>subject_settings.padding must be in range [1, 100].</value>
+  </data>
+  <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
+    <value>Subject masking cannot be enabled before accepting the masking licence.</value>
+  </data>
+  <data name="TomlValidation_BackgroundModelIsNotDownloaded" xml:space="preserve">
+    <value>Subject masking cannot be enabled because the background model is not downloaded.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidTableTableName" xml:space="preserve">
+    <value>Missing or invalid table: [{0}].</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidStringValueKey" xml:space="preserve">
+    <value>Missing or invalid string value: {0}.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidBooleanValue" xml:space="preserve">
+    <value>Missing or invalid boolean value: {0}.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidIntegerValue" xml:space="preserve">
+    <value>Missing or invalid integer value: {0}.</value>
+  </data>
+  <data name="TomlValidation_InvalidValueForFieldNameValue" xml:space="preserve">
+    <value>Invalid value for {0}: '{1}'.</value>
+  </data>
+  <data name="PresetsPageViewModel_PresetsPageViewModel_NewPresetName" xml:space="preserve">
+    <value>Preset {0}</value>
+  </data>
+  <data name="LanguagesAreSortedByTheirNativeNames" xml:space="preserve">
+    <value>Languages are sorted by their native names.</value>
+  </data>
+  <data name="LanguageSettingsView_LanguageSettings" xml:space="preserve">
+    <value>Language settings</value>
+  </data>
+  <data name="LanguageSettingsView_ChooseLanguage" xml:space="preserve">
+    <value>Choose language</value>
+  </data>
+  <data name="LanguageSettingsView_Restart" xml:space="preserve">
+    <value>Please restart the app after changing the language for the best experience.</value>
+  </data>
+  <data name="SortStrings_direction_im" xml:space="preserve">
+    <value>Into mask</value>
+  </data>
+  <data name="SortStrings_by_hue" xml:space="preserve">
+    <value>Hue</value>
+  </data>
+  <data name="SortStrings_by_sat" xml:space="preserve">
+    <value>Saturation</value>
+  </data>
+  <data name="SortStrings_by_light" xml:space="preserve">
+    <value>Lightness</value>
+  </data>
+  <data name="SortStrings_by_warm" xml:space="preserve">
+    <value>Warmth</value>
+  </data>
+  <data name="SortStrings_by_cool" xml:space="preserve">
+    <value>Coolness</value>
+  </data>
+  <data name="SortStrings_by_chroma" xml:space="preserve">
+    <value>Chroma</value>
+  </data>
+  <data name="SortStrings_by_perVib" xml:space="preserve">
+    <value>Vibrancy</value>
+  </data>
+  <data name="SortStrings_direction_rlr" xml:space="preserve">
+    <value>Row Left to Right</value>
+  </data>
+  <data name="SortStrings_direction_rrl" xml:space="preserve">
+    <value>Row Right to Left</value>
+  </data>
+  <data name="SortStrings_direction_ctb" xml:space="preserve">
+    <value>Column Top to Bottom</value>
+  </data>
+  <data name="SortStrings_direction_cbt" xml:space="preserve">
+    <value>Column Bottom to Top</value>
+  </data>
+  <data name="LanguageSettingsView_TranslationGuarantee" xml:space="preserve">
+    <value>We can only guarantee that the German and English versions are always fully translated. For other languages, some content may be missing, in which case it will be replaced by the English terms.</value>
+  </data>
+  <data name="LuminanceMaskView_Title" xml:space="preserve">
+    <value>Luminance mask</value>
+  </data>
+  <data name="LuminanceMaskView_Details" xml:space="preserve">
+    <value>A mask based on image luminance</value>
+  </data>
+  <data name="LuminanceMaskView_Threshold" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
+  <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
+    <value>Analyzing luminance...</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Inverted" xml:space="preserve">
+    <value>Inverted</value>
+  </data>
+  <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
+    <value>Select up to two masks</value>
+  </data>
+  <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
+    <value>luminance_options.threshold must be in range [1, 100].</value>
+  </data>
+  <data name="TomlValidationService_TooManyMasksEnabled" xml:space="preserve">
+    <value>Only up to 2 masks can be enabled at a time. You have enabled {0}.</value>
+  </data>
+</root>

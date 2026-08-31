@@ -20,6 +20,9 @@ namespace PixelsorterApp.ViewModels
         private readonly bool subjectMasking;
         private readonly int subjectPadding;
         private readonly bool subjectBackground;
+        private readonly bool lumMasking;
+        private readonly int lumThreshold;
+        private readonly bool lumInverted;
         private readonly string UserPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
 
         private readonly bool subtractMask;
@@ -61,7 +64,7 @@ namespace PixelsorterApp.ViewModels
         [ObservableProperty]
         public partial string SavePresetValidationMessage { get; set; }
 
-        public string TomlMapToggleText => IsTomlMapVisible ? "Hide TOML map" : "Show TOML map";
+        public string TomlMapToggleText => IsTomlMapVisible ? PixelsorterApp.Resources.Languages.AppStrings.ToggleTomlMap_Hide : PixelsorterApp.Resources.Languages.AppStrings.ToggleTomlMap_Show;
 
         /// <summary>
         /// Validates the current preset and saves it asynchronously if all validation criteria are met.
@@ -93,7 +96,7 @@ namespace PixelsorterApp.ViewModels
         {
             Preferences.Set("defaultPreset", "base.toml");
             MakeDefaultPreset = false;
-            SavePresetValidationMessage = "Base preset set as default.";
+            SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.BasePresetSetAsDefault;
         }
 
         public ObservableCollection<PresetListItem> AvailablePresets { get; set; }
@@ -104,8 +107,8 @@ namespace PixelsorterApp.ViewModels
             _mainViewModel = mainViewModel;
             this.tomlValidationService = tomlValidationService;
 
-            sortBy = _mainViewModel.SelectedSortByName;
-            sortDirection = _mainViewModel.SelectedSortDirectionName;
+            sortBy = _mainViewModel.SelectedSortBy?.Key ?? string.Empty;
+            sortDirection = _mainViewModel.SelectedSortDirection?.Key ?? string.Empty;
 
             cannyMasking = _mainViewModel.UseCanny;
             cannyThreashold = _mainViewModel.CannyThresholdPercent;
@@ -113,6 +116,10 @@ namespace PixelsorterApp.ViewModels
             subjectMasking = _mainViewModel.UseSubjectMask;
             subjectPadding = _mainViewModel.SubjectMaskPadding;
             subjectBackground = _mainViewModel.UseInvertedSubjectMask;
+
+            lumMasking = _mainViewModel.UseLumMask;
+            lumThreshold = _mainViewModel.LumMaskThresholdPercent;
+            lumInverted = _mainViewModel.UseInvertedLumMask;
 
             subtractMask = _mainViewModel.UseSubtractMasks;
 
@@ -122,7 +129,7 @@ namespace PixelsorterApp.ViewModels
             PresetToml = CreateToml();
             SavePresetValidationMessage = string.Empty;
 
-            PresetName = $"Preset {_mainViewModel.PresetOptions.Count}";
+            PresetName = String.Format(PixelsorterApp.Resources.Languages.AppStrings.PresetsPageViewModel_PresetsPageViewModel_NewPresetName, _mainViewModel.PresetOptions.Count);
 
             AvailablePresets = new ObservableCollection<PresetListItem>();
             RefreshAvailablePresets();
@@ -142,10 +149,10 @@ namespace PixelsorterApp.ViewModels
             (bool isValid, string errors) = await tomlValidationService.Validate(PresetToml, tomlMap);
 
             SavePresetValidationMessage = isValid
-                ? "TOML is valid."
+                ? PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_Valid
                 : string.IsNullOrWhiteSpace(errors)
-                    ? "TOML is invalid."
-                    : $"TOML is invalid: {errors}";
+                    ? PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_Invalid
+                    : String.Format(PixelsorterApp.Resources.Languages.AppStrings.TOMLValidation_InvalidError, errors);
             Debug.WriteLine($"Errors: {errors}");
             return isValid;
         }
@@ -164,7 +171,7 @@ namespace PixelsorterApp.ViewModels
             string presetName = string.IsNullOrWhiteSpace(PresetName) ? $"Preset {_mainViewModel.PresetOptions.Count}" : PresetName;
             if (!TryGetPresetFilePath(presetName, out string fileName, out string filePath))
             {
-                SavePresetValidationMessage = "Invalid preset name.";
+                SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.InvalidPresetName;
                 return;
             }
             try
@@ -174,7 +181,7 @@ namespace PixelsorterApp.ViewModels
                     Directory.CreateDirectory(UserPresetsPath);
                 }
                 await File.WriteAllTextAsync(filePath, PresetToml);
-                SavePresetValidationMessage = "Preset saved successfully.";
+                SavePresetValidationMessage = PixelsorterApp.Resources.Languages.AppStrings.PresetSavedSuccessfully;
                 if (MakeDefaultPreset)
                 {
                     Preferences.Set("defaultPreset", fileName);
@@ -185,7 +192,7 @@ namespace PixelsorterApp.ViewModels
             }
             catch (Exception ex)
             {
-                SavePresetValidationMessage = $"Error saving preset: {ex.Message}";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.ErrorSavingPreset, ex.Message);
             }
         }
 
@@ -260,11 +267,11 @@ namespace PixelsorterApp.ViewModels
             try
             {
                 await LoadPresetTomlFromFileAsync(preset.Name);
-                SavePresetValidationMessage = $"Loaded preset '{preset.Name}'.";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.LoadedPresetPresetName, preset.Name);
             }
             catch (Exception ex)
             {
-                SavePresetValidationMessage = $"Error loading preset '{preset.Name}': {ex.Message}";
+                SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.ErrorLoadingPresetPresetNameExMessage, preset.Name, ex.Message);
             }
         }
 
@@ -286,7 +293,7 @@ namespace PixelsorterApp.ViewModels
             await DeletePresetFileAsync(preset.Name);
             _mainViewModel.RefreshAvailablePresets();
             RefreshAvailablePresets();
-            SavePresetValidationMessage = $"Deleted preset '{preset.Name}'.";
+            SavePresetValidationMessage = String.Format(PixelsorterApp.Resources.Languages.AppStrings.DeletedPresetPresetName, preset.Name);
         }
 
 
@@ -325,6 +332,7 @@ namespace PixelsorterApp.ViewModels
             AppendOptions("Sort By Options:", map.SortBy);
             AppendOptions("Direction Options:", map.Direction);
             AppendOptions("What To Sort Options:", map.WhatToSort);
+            AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
 
             return sb.ToString().TrimEnd();
@@ -356,9 +364,14 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine($"direction = \"{directionKey}\"");
             sb.AppendLine("");
 
+            string whatToSortLumKey = lumInverted
+                ? ResolveBooleanMapKey(tomlMap?.WhatToSortLum, "SortLumInvertedSelected", "SortLumNormalSelected", true, "inverted", "normal")
+                : ResolveBooleanMapKey(tomlMap?.WhatToSortLum, "SortLumInvertedSelected", "SortLumNormalSelected", false, "inverted", "normal");
+
             sb.AppendLine("[masking_options]");
             sb.AppendLine($"use_canny = {cannyMasking.ToString().ToLowerInvariant()}");
             sb.AppendLine($"use_subject = {subjectMasking.ToString().ToLowerInvariant()}");
+            sb.AppendLine($"use_luminance = {lumMasking.ToString().ToLowerInvariant()}");
             sb.AppendLine("");
 
             sb.AppendLine("[canny_options]");
@@ -368,6 +381,11 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("[subject_settings]");
             sb.AppendLine($"padding = {subjectPadding}");
             sb.AppendLine($"what_to_sort = \"{whatToSortKey}\"");
+            sb.AppendLine("");
+
+            sb.AppendLine("[luminance_options]");
+            sb.AppendLine($"threshold = {lumThreshold}");
+            sb.AppendLine($"what_to_sort = \"{whatToSortLumKey}\"");
             sb.AppendLine("");
 
             sb.AppendLine("[mask_combination]");
@@ -472,7 +490,7 @@ namespace PixelsorterApp.ViewModels
             AvailablePresets.Clear();
             foreach (string preset in _mainViewModel.PresetOptions)
             {
-                if (string.Equals(preset, "new preset", StringComparison.OrdinalIgnoreCase)
+                if (string.Equals(preset, PixelsorterApp.Resources.Languages.AppStrings.NewPresetAction, StringComparison.OrdinalIgnoreCase)
                     || string.Equals(preset, "base", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
@@ -491,14 +509,58 @@ namespace PixelsorterApp.ViewModels
         {
             string fileName = $"{presetName}.toml";
             string filePath = Path.Combine(UserPresetsPath, fileName);
-            PresetToml = Path.IsPathRooted(filePath)
+            string rawToml = Path.IsPathRooted(filePath)
                 ? await File.ReadAllTextAsync(filePath)
                 : await ReadAppPackageTextAsync(filePath);
+            PresetToml = EnsureLuminanceSections(rawToml);
             PresetName = presetName;
             MakeDefaultPreset = string.Equals(
                 Preferences.Get("defaultPreset", string.Empty),
                 fileName,
                 StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Injects default luminance sections into preset TOML text if they are missing.
+        /// This ensures old presets get the new fields when opened for editing.
+        /// </summary>
+        private static string EnsureLuminanceSections(string toml)
+        {
+            var sb = new StringBuilder(toml);
+
+            if (!toml.Contains("use_luminance", StringComparison.OrdinalIgnoreCase))
+            {
+                // Insert after the last existing masking_options line
+                int maskingEnd = toml.IndexOf("[canny_options]", StringComparison.OrdinalIgnoreCase);
+                if (maskingEnd >= 0)
+                {
+                    sb.Insert(maskingEnd, "use_luminance = false\r\n\r\n");
+                }
+                else
+                {
+                    sb.AppendLine("use_luminance = false");
+                }
+            }
+
+            if (!toml.Contains("[luminance_options]", StringComparison.OrdinalIgnoreCase))
+            {
+                // Insert before [mask_combination] if present, otherwise append
+                string current = sb.ToString();
+                int maskCombIdx = current.IndexOf("[mask_combination]", StringComparison.OrdinalIgnoreCase);
+                if (maskCombIdx >= 0)
+                {
+                    sb.Insert(maskCombIdx, "[luminance_options]\r\nthreshold = 50\r\nwhat_to_sort = \"normal\"\r\n\r\n");
+                }
+                else
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("[luminance_options]");
+                    sb.AppendLine("threshold = 50");
+                    sb.AppendLine("what_to_sort = \"normal\"");
+                }
+            }
+
+            return sb.ToString();
         }
 
         private Task DeletePresetFileAsync(string presetName)

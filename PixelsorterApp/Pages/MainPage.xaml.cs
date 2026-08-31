@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Extensions;
 using PixelsorterApp.Extensions;
+using PixelsorterApp.Models;
 using PixelsorterApp.Popups;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
@@ -30,7 +31,30 @@ namespace PixelsorterApp
         private string? imagePath;
 
         // image viewer
-        private readonly List<string> imageCaptions = [];
+        private class ImageCaptionInfo
+        {
+            public bool IsOriginal { get; set; }
+            public string? SortByKey { get; set; }
+            public string? DirectionKey { get; set; }
+
+            public string GetLocalizedText()
+            {
+                if (IsOriginal)
+                    return PixelsorterApp.Resources.Languages.AppStrings.OriginalImage;
+
+                var sortByDisplay = SortByKey != null
+                    ? SortStringLocalizer.LocalizeSortBy(SortByKey)
+                    : PixelsorterApp.Resources.Languages.AppStrings.common_Unknown;
+                var directionDisplay = DirectionKey != null
+                    ? SortStringLocalizer.LocalizeDirection(DirectionKey)
+                    : PixelsorterApp.Resources.Languages.AppStrings.common_Unknown;
+
+                return string.Format(PixelsorterApp.Resources.Languages.AppStrings.SortCaption,
+                    sortByDisplay, directionDisplay);
+            }
+        }
+
+        private readonly List<ImageCaptionInfo> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
@@ -41,7 +65,7 @@ namespace PixelsorterApp
         /// <param name="viewModel">The view model bound to this page.</param>
         /// <param name="imageProcessingService">Service used for image processing operations.</param>
         /// <param name="shareService">Service used for sharing images.</param>
-        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService, IShareService shareService)
+        public MainPage(MainPageViewModel viewModel, IImageProcessingService imageProcessingService, IShareService shareService, LocalizationResourceManager.Maui.ILocalizationResourceManager localizationResourceManager)
         {
             this.viewModel = viewModel;
             this.imageProcessingService = imageProcessingService;
@@ -63,6 +87,17 @@ namespace PixelsorterApp
             this.viewModel.PropertyChanged += OnViewModelPropertyChanged;
             imageViewer.DisplayedImageIndexChanged += ImageViewer_DisplayedImageIndexChanged;
             this.viewModel.ShareRequested += OnShareRequested;
+
+            ((System.ComponentModel.INotifyPropertyChanged)localizationResourceManager).PropertyChanged += (s, e) =>
+            {
+                if (currentDisplayedImageIndex >= 0 && currentDisplayedImageIndex < imageCaptions.Count)
+                {
+                    var captionText = imageCaptions[currentDisplayedImageIndex].GetLocalizedText();
+                    viewModel.CurrentCaption = captionText;
+                    SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                    SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
+                }
+            };
         }
 
         /// <summary>
@@ -81,6 +116,10 @@ namespace PixelsorterApp
                 }
             }
             else if (e.PropertyName == nameof(MainPageViewModel.UseCanny))
+            {
+                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.UseLumMask))
             {
                 HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
@@ -183,9 +222,10 @@ namespace PixelsorterApp
 
             if (index >= 0 && index < imageCaptions.Count)
             {
-                viewModel.CurrentCaption = imageCaptions[index];
-                SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {imageCaptions[index]}");
-                SemanticProperties.SetDescription(imageViewer, $"Image preview. {imageCaptions[index]}");
+                var captionText = imageCaptions[index].GetLocalizedText();
+                viewModel.CurrentCaption = captionText;
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
             }
 
             viewModel.IsSaveEnabled = index > 0 && index < imagePaths.Count;
@@ -219,12 +259,14 @@ namespace PixelsorterApp
         /// will be displayed for that part of the caption.</remarks>
         /// <returns>A string representing the sorting criteria and direction, formatted as 'Sort by: {sortByText} • Direction:
         /// {directionText}'.</returns>
-        private string BuildSortCaption()
+        private ImageCaptionInfo BuildSortCaption()
         {
-            var sortByText = viewModel.SelectedSortByName;
-            var directionText = viewModel.SelectedSortDirectionName;
-
-            return $"Sort by: {sortByText} • Direction: {directionText}";
+            return new ImageCaptionInfo
+            {
+                IsOriginal = false,
+                SortByKey = viewModel.SelectedSortBy?.Key,
+                DirectionKey = viewModel.SelectedSortDirection?.Key
+            };
         }
 
         /// <summary>
@@ -250,10 +292,10 @@ namespace PixelsorterApp
                 var popup = new ConfirmationPopup(true);
                 var parameters = new Dictionary<string, object?>
                 {
-                    { "Title", "Welcome to Pixel Sorter!" },
-                    { "message", "Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu" },
-                    { "ConfirmButton", "Go to Gallery" },
-                    { "CancelButton", "Dismiss" }
+                    { "Title", PixelsorterApp.Resources.Languages.AppStrings.WelcomeTitle },
+                    { "message", PixelsorterApp.Resources.Languages.AppStrings.WelcomeMessage },
+                    { "ConfirmButton", PixelsorterApp.Resources.Languages.AppStrings.WelcomeAction },
+                    { "CancelButton", PixelsorterApp.Resources.Languages.AppStrings.common_Dismiss }
                 };
 
                 var response = await IPopupService.Current.PushAsync(popup, parameters);
@@ -301,7 +343,7 @@ namespace PixelsorterApp
             this.imagePath = path;
             imageCaptions.Clear();
             imagePaths.Clear();
-            imageCaptions.Add("Original image");
+            imageCaptions.Add(new ImageCaptionInfo { IsOriginal = true });
             imagePaths.Add(path);
             currentDisplayedImageIndex = 0;
 
@@ -311,8 +353,10 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                viewModel.CurrentCaption = imageCaptions[0];
-                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {imageCaptions[0]}");
+                
+                var originalText = imageCaptions[0].GetLocalizedText();
+                viewModel.CurrentCaption = originalText;
+                SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {originalText}");
                 SemanticProperties.SetDescription(imageViewer, "Image preview. Original image. Double tap to load another image.");
 
                 whatIsThisLabel.IsVisible = true;
@@ -410,16 +454,17 @@ namespace PixelsorterApp
             try
             {
                 // Show the mask message once if masking is active
-                if (viewModel.UseSubjectMask || viewModel.UseCanny)
+                if (viewModel.UseSubjectMask || viewModel.UseCanny || viewModel.UseLumMask)
                 {
                     await Task.Delay(2200, token);
                     if (token.IsCancellationRequested) return;
 
-                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny) switch
+                    var maskMessage = (viewModel.UseSubjectMask, viewModel.UseCanny, viewModel.UseLumMask) switch
                     {
-                        (true, true) => "Combining masks...",
-                        (true, false) => "Applying subject mask...",
-                        _ => "Detecting edges..."
+                        (true, false, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesApplyingSubjectMask,
+                        (false, true, false) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesDetectingEdges,
+                        (false, false, true) => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesAnalyzingLuminance,
+                        _ => PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesCombiningMasks
                     };
 
                     await UpdateLoadingStatusAsync(maskMessage);
@@ -428,8 +473,8 @@ namespace PixelsorterApp
                 // Cycle only between sort criterion and direction
                 var cycleMessages = new[]
                 {
-                    $"Sorting by {viewModel.SelectedSortByName}...",
-                    $"Arranging pixels {viewModel.SelectedSortDirectionName}..."
+                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesSortingBy,viewModel.SelectedSortByName),
+                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, viewModel.SelectedSortDirectionName)
                 };
                 var index = 0;
 
@@ -472,7 +517,7 @@ namespace PixelsorterApp
             {
                 var popup = new Toast()
                 {
-                    Title = "Can't load RAW Images (dng files)",
+                    Title = PixelsorterApp.Resources.Languages.AppStrings.common_dngErrorMessage,
                     IconText = MaterialSymbolsFont.Error,
                     IconColor = Colors.Red,
                 };
@@ -509,7 +554,7 @@ namespace PixelsorterApp
                 onStart: () =>
                 {
                     ToggleUiForSorting(false);
-                    _ = UseLoadingOverlayAsync("Reading pixel data...");
+                    _ = UseLoadingOverlayAsync(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesReadingPixelData);
                     _ = CycleSortingMessagesAsync(messageCts.Token);
                 },
                 onComplete: () =>
@@ -532,6 +577,9 @@ namespace PixelsorterApp
                         viewModel.UseSubtractMasks,
                         viewModel.UseInvertedSubjectMask,
                         viewModel.SubjectMaskPadding,
+                        viewModel.UseLumMask,
+                        viewModel.LumMaskThreshold,
+                        viewModel.UseInvertedLumMask,
                         viewModel.CannyThreshold);
 
                     sortedImagePath = await imageProcessingService.SortImageAsync(
@@ -549,13 +597,15 @@ namespace PixelsorterApp
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         imageViewer.ShowImage(sortedImagePath);
-                        var caption = BuildSortCaption();
-                        imageCaptions.Add(caption);
+                        var captionInfo = BuildSortCaption();
+                        imageCaptions.Add(captionInfo);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        viewModel.CurrentCaption = caption;
-                        SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {caption}");
-                        SemanticProperties.SetDescription(imageViewer, $"Image preview. {caption}");
+                        
+                        var captionText = captionInfo.GetLocalizedText();
+                        viewModel.CurrentCaption = captionText;
+                        SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
+                        SemanticProperties.SetDescription(imageViewer, $"Image preview. {captionText}");
                         viewModel.IsSaveVisible = true;
                         viewModel.IsSaveEnabled = true;
                         HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
@@ -568,7 +618,7 @@ namespace PixelsorterApp
                 catch (Exception ex)
                 {
                     // Handle exceptions (e.g., show an alert)
-                    await DisplayAlertAsync("Error", $"An error occurred: {ex.Message}", "OK");
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.AppStrings.common_Error, String.Format(PixelsorterApp.Resources.Languages.AppStrings.SortAsync_AnErrorOccurredExMessage, ex.Message), PixelsorterApp.Resources.Languages.AppStrings.common_OK);
                     SemanticScreenReader.Announce($"Error: {ex.Message}");
                 }
 
@@ -591,8 +641,8 @@ namespace PixelsorterApp
 
             if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
             {
-                await DisplayAlertAsync("Error", "No image available to save.", "OK");
-                SemanticScreenReader.Announce("No image available to save.");
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.AppStrings.common_Error, PixelsorterApp.Resources.Languages.AppStrings.SaveAsync_NoImageAvailableToSave, PixelsorterApp.Resources.Languages.AppStrings.common_OK);
+                SemanticScreenReader.Announce(PixelsorterApp.Resources.Languages.AppStrings.SaveAsync_NoImageAvailableToSave);
                 return;
             }
 
@@ -603,7 +653,7 @@ namespace PixelsorterApp
             {
                 var popup = new Toast()
                 {
-                    Title = "Image saved",
+                    Title = PixelsorterApp.Resources.Languages.AppStrings.SaveAsync_ImageSaved,
                     IconText = MaterialSymbolsFont.Check_circle,
                     IconColor = Colors.Green
                 };
@@ -617,7 +667,7 @@ namespace PixelsorterApp
             {
                 var popup = new Toast()
                 {
-                    Title = "Failed to save image",
+                    Title = PixelsorterApp.Resources.Languages.AppStrings.SaveAsync_FailedToSaveImage,
                     IconText = MaterialSymbolsFont.Error,
                     IconColor = Colors.Red
                 };
@@ -637,7 +687,7 @@ namespace PixelsorterApp
                 var focusedImagePath = GetFocusedImagePath();
                 if (string.IsNullOrEmpty(focusedImagePath) || !File.Exists(focusedImagePath))
                 {
-                    await DisplayAlertAsync("Error", "No image available to share.", "OK");
+                    await DisplayAlertAsync(PixelsorterApp.Resources.Languages.AppStrings.common_Error, PixelsorterApp.Resources.Languages.AppStrings.ShareAsync_NoImageAvailableToShare, PixelsorterApp.Resources.Languages.AppStrings.common_OK);
                     SemanticScreenReader.Announce("No image available to share.");
                     return;
                 }
@@ -646,7 +696,7 @@ namespace PixelsorterApp
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", $"Share failed: {ex.Message}", "OK");
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.AppStrings.common_Error, String.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareAsync_ShareFailed, ex.Message), PixelsorterApp.Resources.Languages.AppStrings.common_OK);
             }
         }
 
@@ -677,10 +727,10 @@ namespace PixelsorterApp
                 var popup = new ConfirmationPopup();
                 var parameters = new Dictionary<string, object?>
                 {
-                    {"Title", "Masking Feature License" },
-                    { "message", "The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page." },
-                    { "ConfirmButton", "Accept" },
-                    { "CancelButton", "Don't accept" }
+                    {"Title", PixelsorterApp.Resources.Languages.AppStrings.MaskingFeatureLicense_Title },
+                    { "message", PixelsorterApp.Resources.Languages.AppStrings.MaskingFeatureLicense_Message },
+                    { "ConfirmButton", PixelsorterApp.Resources.Languages.AppStrings.common_Accept },
+                    { "CancelButton", PixelsorterApp.Resources.Languages.AppStrings.common_DontAccept }
                 };
 
                 bool response = await IPopupService.Current.PushAsync(popup, parameters);
@@ -699,7 +749,7 @@ namespace PixelsorterApp
                 onStart: () =>
                 {
                     ToggleUiForSorting(false);
-                    _ = UseLoadingOverlayAsync("Downloading...");
+                    _ = UseLoadingOverlayAsync(PixelsorterApp.Resources.Languages.AppStrings.Downloading);
                 },
                 onComplete: () =>
                 {
@@ -717,9 +767,9 @@ namespace PixelsorterApp
                     catch (Exception)
                     {
                         await DisplayAlertAsync(
-                            "Download failed",
-                            "The masking model could not be downloaded. Please check your internet connection and try again.",
-                            "OK");
+                            PixelsorterApp.Resources.Languages.AppStrings.DownloadFailed_Title,
+                            PixelsorterApp.Resources.Languages.AppStrings.DownloadFailed_Message,
+                            PixelsorterApp.Resources.Languages.AppStrings.common_OK);
                         DisableSubjectMaskWithoutReentry();
                         return;
                     }
@@ -746,7 +796,7 @@ namespace PixelsorterApp
 
             if (accessType != NetworkAccess.Internet)
             {
-                await DisplayAlertAsync("No Internet Connection", "An internet connection is required to use the masking feature. Please connect to the internet and try again.", "OK");
+                await DisplayAlertAsync(PixelsorterApp.Resources.Languages.AppStrings.NoInternetConnection_Title, PixelsorterApp.Resources.Languages.AppStrings.NoInternetConnection_Message, PixelsorterApp.Resources.Languages.AppStrings.common_OK);
                 return false;
             }
             return true;

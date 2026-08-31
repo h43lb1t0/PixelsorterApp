@@ -28,7 +28,12 @@ Download it either from the [Google Playstore](https://play.google.com/store/app
 <img height="800" alt="signal-2026-08-15-22-12-00-932_003" src="https://github.com/user-attachments/assets/1ff4030d-91b0-48d0-a5b9-706e183ff376" />
 
 
+## Localization
+This App is localized with [Weblate](https://hosted.weblate.org/engage/pixelsorter/). You are welcome to help adding more languages or improve other translations.
 
+**Progress:**
+
+[![Übersetzungsstatus](https://hosted.weblate.org/widget/pixelsorter/multi-red.svg)](https://hosted.weblate.org/engage/pixelsorter/)
 
 ## Prerequisites
 

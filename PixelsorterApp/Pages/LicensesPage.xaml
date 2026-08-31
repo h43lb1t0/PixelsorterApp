@@ -4,15 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     SemanticProperties.Description="Open source licenses used by the app">
     <Shell.TitleView>
-        <Label Style="{StaticResource TitleViewLabelStyle}" Text="Open Source Licenses" />
+        <Label Style="{StaticResource TitleViewLabelStyle}" Text="{localization:Translate PageName_OpenSourceLicenses}" />
     </Shell.TitleView>
 
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
-            <Label Opacity="0.8" Text="This application uses the following open source packages:" />
+            <Label Opacity="0.8" Text="{localization:Translate LicensesPage_Explenation}" />
 
             <Border>
                 <VerticalStackLayout x:Name="LicensesContainer" Spacing="0">

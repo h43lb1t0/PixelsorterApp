@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<NeutralLanguage>en-GB</NeutralLanguage>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
 		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
@@ -66,10 +67,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.10.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
+		<PackageReference Include="LocalizationResourceManager.Maui" Version="1.2.6" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
 		<PackageReference Include="Tomlyn" Version="2.10.1" />
 		<PackageReference Include="UraniumUI" Version="3.0.0" />
@@ -97,6 +99,9 @@
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Popups\ConfirmationPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -106,16 +111,28 @@
 	  <MauiXaml Update="Views\BeforeAfterView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CannyMaskOptionsView.xaml">
+	  <MauiXaml Update="Views\MaskViews\CannyMaskOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MaskingOptionsView.xaml">
+	  <MauiXaml Update="Views\LanguageSettingsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\LuminanceMaskView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\MaskCombinationView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\MaskingOptionsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\WhatToSortView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PresetsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\SubjectMaskOptionsView.xaml">
+	  <MauiXaml Update="Views\MaskViews\SubjectMaskOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
@@ -126,13 +143,6 @@
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 	</Target>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>portable</DebugType>
-		<AndroidEnableProguardMappingFile>true</AndroidEnableProguardMappingFile>
-	</PropertyGroup>
-
-
 
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
@@ -142,6 +152,127 @@
 	  <Compile Update="Pages\PresetsPage.xaml.cs">
 	    <DependentUpon>PresetsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\AppStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppStrings.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Languages\PrivacyPolicyStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>PrivacyPolicyStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Languages\AppStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AppStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\PrivacyPolicyStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>PrivacyPolicyStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<!-- Auto-generate LocalizationConfig.g.cs from .resx files so Weblate-added languages are picked up automatically -->
+	<UsingTask TaskName="GenerateSupportedCulturesTask" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<ResxFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+			<DefaultCultures ParameterType="System.String" Required="false" />
+			<OutputFile ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Linq" />
+			<Using Namespace="System.Globalization" />
+			<Using Namespace="System.Collections.Generic" />
+			<Code Type="Fragment" Language="cs">
+<![CDATA[
+				// Collect culture codes from DefaultCultures param and .resx filenames
+				var cultures = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
+
+				foreach (var c in (DefaultCultures ?? "").Split(';').Where(s => s.Length > 0))
+					cultures.Add(c);
+
+				foreach (var item in ResxFiles)
+				{
+					var name = Path.GetFileNameWithoutExtension(item.ItemSpec);
+					var dot = name.LastIndexOf('.');
+					if (dot < 0) continue;
+					var tag = name.Substring(dot + 1);
+					try { CultureInfo.GetCultureInfo(tag); cultures.Add(tag); }
+					catch { /* not a culture code, skip */ }
+				}
+
+				// Generate the partial class
+				var entries = string.Join(", ", cultures.Select(c => $"\"{c}\""));
+				var code =
+@"// <auto-generated/>
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+namespace PixelsorterApp;
+
+public static partial class LocalizationConfig
+{
+    public static readonly IReadOnlyList<CultureInfo> SupportedCultures =
+        new[] { " + entries + @" }
+            .Select(CultureInfo.GetCultureInfo)
+            .OrderBy(c => c.NativeName)
+            .ToList();
+}
+";
+				var outDir = Path.GetDirectoryName(OutputFile);
+				if (!string.IsNullOrEmpty(outDir) && !Directory.Exists(outDir))
+					Directory.CreateDirectory(outDir);
+
+				if (!File.Exists(OutputFile) || File.ReadAllText(OutputFile) != code)
+					File.WriteAllText(OutputFile, code, System.Text.Encoding.UTF8);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="GenerateSupportedLocalizationCultures" BeforeTargets="CoreCompile;XamlPreCompile">
+		<ItemGroup>
+			<_ResxLocalizationFiles Include="Resources\Languages\*.resx" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_GeneratedLocalizationConfigFile>$(IntermediateOutputPath)LocalizationConfig.g.cs</_GeneratedLocalizationConfigFile>
+		</PropertyGroup>
+		<GenerateSupportedCulturesTask ResxFiles="@(_ResxLocalizationFiles)" DefaultCultures="en-GB;en-US" OutputFile="$(_GeneratedLocalizationConfigFile)" />
+		<ItemGroup>
+			<Compile Include="$(_GeneratedLocalizationConfigFile)" />
+			<FileWrites Include="$(_GeneratedLocalizationConfigFile)" />
+		</ItemGroup>
+	</Target>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidEnableR8>true</AndroidEnableR8>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidLinkResources>true</AndroidLinkResources>
+    <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and $(TargetFramework.Contains('-android'))">
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+    <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
+  </PropertyGroup>
 
 </Project>

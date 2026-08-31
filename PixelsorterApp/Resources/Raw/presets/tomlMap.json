@@ -22,5 +22,9 @@
   "whatToSort": {
     "background": "SortBackgroundSelected",
     "foreground": "SortForegroundSelected"
+  },
+  "whatToSortLum": {
+    "normal": "SortLumNormalSelected",
+    "inverted": "SortLumInvertedSelected"
   }
-}
+}

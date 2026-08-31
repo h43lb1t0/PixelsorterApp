@@ -14,6 +14,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 {
     private readonly BackgroundMask backgroundMasker = new();
     private readonly CannyMask cannyMasker = new();
+    private readonly LuminanceMask luminanceMasker = new();
 
     private string? cachedImagePath;
     private int cachedSubjectPadding = -1;
@@ -22,6 +23,9 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     private NDArray? invertedSubjectMask;
     private NDArray? cannyMask;
     private NDArray? invertedCannyMask;
+    private NDArray? lumMask;
+    private NDArray? invertedLumMask;
+    private float cachedLumThreshold = -1;
     private MaskBuildCacheKey? cachedMaskBuildKey;
     private NDArray? cachedBuiltMask;
 
@@ -31,7 +35,10 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool UseSubtractMasks,
         bool UseInvertedSubjectMask,
         int SubjectMaskPadding,
-        int CannyThresholdBucket);
+        int CannyThresholdBucket,
+        bool UseLumMask,
+        bool UseInvertedLumMask,
+        int LumThresholdBucket);
 
     /// <inheritdoc/>
     public bool IsBackgroundMaskReady => backgroundMasker.IsReadyToUse;
@@ -55,6 +62,12 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     }
 
     /// <inheritdoc/>
+    public Task<(NDArray LumMask, NDArray InvertedLumMask)> CreateLumMaskAsync(string imagePath, float threshold)
+    {
+        return luminanceMasker.GetMaskAsync(imagePath, new LuminanceMaskOptions(threshold));
+    }
+
+    /// <inheritdoc/>
     public async Task<NDArray?> BuildMaskAsync(
         string imagePath,
         bool useSubjectMask,
@@ -62,6 +75,9 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
         int subjectMaskPadding,
+        bool useLumMask,
+        float lumThreshold,
+        bool useInvertedLumMask,
         float cannyThreshold)
     {
         EnsureCacheScope(imagePath);
@@ -72,71 +88,81 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             useSubtractMasks,
             useInvertedSubjectMask,
             subjectMaskPadding,
-            GetCannyThresholdBucket(cannyThreshold));
+            GetThresholdBucket(cannyThreshold),
+            useLumMask,
+            useInvertedLumMask,
+            GetThresholdBucket(lumThreshold));
 
         if (cachedMaskBuildKey is MaskBuildCacheKey existingCacheKey && existingCacheKey == cacheKey)
         {
             return cachedBuiltMask;
         }
 
-        if (!useSubjectMask && !useCanny)
+        if (!useSubjectMask && !useCanny && !useLumMask)
         {
-            cachedMaskBuildKey = cacheKey;
-            cachedBuiltMask = null;
-            return null;
+            return CacheAndReturn(cacheKey, null);
         }
+
+        // Gather all enabled masks (normal + inverted)
+        var masks = new List<(NDArray normal, NDArray inverted)>();
 
         if (useSubjectMask)
         {
             await EnsureSubjectMaskAsync(imagePath, subjectMaskPadding);
+            if (subjectMask is null || invertedSubjectMask is null)
+                return CacheAndReturn(cacheKey, null);
+
+            // Apply inversion preference for subject mask
+            var effective = useInvertedSubjectMask
+                ? (invertedSubjectMask, subjectMask)
+                : (subjectMask, invertedSubjectMask);
+            masks.Add(effective);
         }
 
         if (useCanny)
         {
             await EnsureCannyMaskAsync(imagePath, cannyThreshold);
+            if (cannyMask is null || invertedCannyMask is null)
+                return CacheAndReturn(cacheKey, null);
+            masks.Add((cannyMask, invertedCannyMask));
         }
 
-        if (useSubjectMask && useCanny)
+        if (useLumMask)
         {
-            if (subjectMask is null || invertedCannyMask is null || cannyMask is null)
-            {
-                cachedMaskBuildKey = cacheKey;
-                cachedBuiltMask = null;
-                return null;
-            }
-
-            cachedBuiltMask = useSubtractMasks
-                ? MaskCombiner.SubtractMasks(subjectMask, invertedCannyMask)
-                : MaskCombiner.AddMasks(subjectMask, cannyMask);
-
-            cachedMaskBuildKey = cacheKey;
-            return cachedBuiltMask;
+            await EnsureLumMaskAsync(imagePath, lumThreshold);
+            if (lumMask is null || invertedLumMask is null)
+                return CacheAndReturn(cacheKey, null);
+            var effectiveLum = useInvertedLumMask
+                ? (invertedLumMask, lumMask)
+                : (lumMask, invertedLumMask);
+            masks.Add(effectiveLum);
         }
 
-        if (useCanny)
+        if (masks.Count == 0)
         {
-            cachedMaskBuildKey = cacheKey;
-            cachedBuiltMask = cannyMask;
-            return cachedBuiltMask;
+            return CacheAndReturn(cacheKey, null);
         }
 
-        if (useSubjectMask)
+        // Fold masks together: start with the first, combine the rest
+        var result = masks[0].normal;
+        for (var i = 1; i < masks.Count; i++)
         {
-            if (subjectMask is null || invertedSubjectMask is null)
-            {
-                cachedMaskBuildKey = cacheKey;
-                cachedBuiltMask = null;
-                return null;
-            }
-
-            cachedBuiltMask = useInvertedSubjectMask ? invertedSubjectMask : subjectMask;
-            cachedMaskBuildKey = cacheKey;
-            return cachedBuiltMask;
+            result = useSubtractMasks
+                ? MaskCombiner.SubtractMasks(result, masks[i].inverted)
+                : MaskCombiner.AddMasks(result, masks[i].normal);
         }
 
-        cachedMaskBuildKey = cacheKey;
-        cachedBuiltMask = null;
-        return null;
+        return CacheAndReturn(cacheKey, result);
+    }
+
+    /// <summary>
+    /// Stores the built mask in the cache and returns it.
+    /// </summary>
+    private NDArray? CacheAndReturn(MaskBuildCacheKey key, NDArray? mask)
+    {
+        cachedMaskBuildKey = key;
+        cachedBuiltMask = mask;
+        return mask;
     }
 
     /// <inheritdoc/>
@@ -190,15 +216,23 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         cachedImagePath = imagePath;
         cachedSubjectPadding = -1;
         cachedCannyThreshold = -1;
+        cachedLumThreshold = -1;
         subjectMask = null;
         invertedSubjectMask = null;
         cannyMask = null;
         invertedCannyMask = null;
+        lumMask = null;
+        invertedLumMask = null;
         cachedMaskBuildKey = null;
         cachedBuiltMask = null;
     }
 
-    private static int GetCannyThresholdBucket(float threshold)
+    /// <summary>
+    /// Converts a normalized threshold value (0-1) to an integer bucket for caching purposes.
+    /// </summary>
+    /// <param name="threshold"></param>
+    /// <returns></returns>
+    private static int GetThresholdBucket(float threshold)
     {
         return (int)MathF.Round(threshold * 10000f);
     }
@@ -240,5 +274,22 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 
         (cannyMask, invertedCannyMask) = await CreateCannyMaskAsync(imagePath, threshold);
         cachedCannyThreshold = threshold;
+    }
+
+    /// <summary>
+    /// Ensures that luminance masks are available for the current image and threshold settings.
+    /// </summary>
+    /// <param name="imagePath">Path of the image being processed.</param>
+    /// <param name="threshold">Luminance threshold in normalized 0-1 range.</param>
+    /// <returns></returns>
+    private async Task EnsureLumMaskAsync(string imagePath, float threshold)
+    {
+       if (lumMask is not null && invertedLumMask is not null && Math.Abs(cachedLumThreshold - threshold) < 0.0001f)
+        {
+            return;
+        }
+
+        (lumMask, invertedLumMask) = await CreateLumMaskAsync(imagePath, threshold);
+        cachedLumThreshold = threshold;
     }
 }
