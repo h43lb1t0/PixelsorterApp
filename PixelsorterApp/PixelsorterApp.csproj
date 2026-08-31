@@ -143,11 +143,11 @@
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 	</Target>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>portable</DebugType>
-		<AndroidEnableProguardMappingFile>true</AndroidEnableProguardMappingFile>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidEnableR8>true</AndroidEnableR8>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
+  </PropertyGroup>
 
 
 
