@@ -739,4 +739,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="TomlValidationService_TooManyMasksEnabled" xml:space="preserve">
     <value>Only up to 2 masks can be enabled at a time. You have enabled {0}.</value>
   </data>
+  <data name="SortStrings_direction_ArbitraryAngle" xml:space="preserve">
+    <value>Arbitrary Angle</value>
+  </data>
 </root>

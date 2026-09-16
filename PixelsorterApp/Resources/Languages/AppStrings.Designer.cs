@@ -1003,6 +1003,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arbitrary Angle.
+        /// </summary>
+        internal static string SortStrings_direction_ArbitraryAngle {
+            get {
+                return ResourceManager.GetString("SortStrings_direction_ArbitraryAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Bottom to Top.
         /// </summary>
         internal static string SortStrings_direction_cbt {
