@@ -135,6 +135,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     public partial LocalizedOption? SelectedSortDirection { get; set; }
 
+    /// <summary>
+    /// Gets or sets the angle vor Arbitrary angle sorting direction.
+    /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ArbitraryAngleValueText))]
     public partial float ArbitraryAngleValue { get; set; } = 45f;
@@ -504,6 +507,10 @@ public sealed partial class MainPageViewModel : BaseViewModel
             ? direction
             : SortDirections.RowRightToLeft;
 
+    /// <summary>
+    /// Sets ShowAngleSlider to true when ArbitraryAngle is selected as the sort direction.
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnSelectedSortDirectionChanged(LocalizedOption? value)
     {
         if (value != null && sortDirectionOptions.ContainsKey(value.Key))
