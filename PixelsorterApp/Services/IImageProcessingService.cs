@@ -76,7 +76,7 @@ public interface IImageProcessingService
     /// <param name="sortingDirection">Sorting direction.</param>
     /// <param name="maskToUse">Optional mask used while sorting.</param>
     /// <returns>The path of the generated sorted image file.</returns>
-    Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse);
+    Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse, float angle);
 
     /// <summary>
     /// Saves an image file to the device gallery.

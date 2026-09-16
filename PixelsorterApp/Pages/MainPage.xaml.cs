@@ -586,7 +586,8 @@ namespace PixelsorterApp
                         this.imagePath,
                         viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
                         viewModel.SortingDirection,
-                        maskToUse);
+                        maskToUse,
+                        viewModel.ArbitraryAngleValue);
 
                     sortSucceeded = true;
 
