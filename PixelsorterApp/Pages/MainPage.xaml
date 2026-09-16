@@ -160,7 +160,7 @@
                     </Border.Shadow>
                     <VerticalStackLayout Spacing="0">
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
-                            <!-- Workaround for UraniumUI bug #715 -->
+                            <!--  Workaround for UraniumUI bug #715  -->
                             <VerticalStackLayout Spacing="4">
                                 <Label
                                     FontSize="12"
@@ -176,10 +176,9 @@
                                     SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                     Style="{StaticResource MySelectFieldStyle}"
                                     TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                                Dark={StaticResource TextPrimaryDark}}">
-                                </material:SelectField>
+                                                                Dark={StaticResource TextPrimaryDark}}" />
                             </VerticalStackLayout>
-                            <!-- Workaround for UraniumUI bug #715 -->
+                            <!--  Workaround for UraniumUI bug #715  -->
                             <VerticalStackLayout Spacing="4">
                                 <Label
                                     FontSize="12"
@@ -197,6 +196,41 @@
                                     TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                                 Dark={StaticResource TextPrimaryDark}}" />
                             </VerticalStackLayout>
+                            <Grid
+                                Padding="14,8"
+                                ColumnDefinitions="*, 60"
+                                IsVisible="{Binding ShowAngleSlider}"
+                                RowDefinitions="Auto, Auto"
+                                RowSpacing="4">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    FontSize="14"
+                                    Text="Set the angle for sorting the image"
+                                    VerticalOptions="Center" />
+                                <Slider
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    IsEnabled="{Binding IsInteractionEnabled}"
+                                    Maximum="360"
+                                    Minimum="0"
+                                    ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                                                 Light={StaticResource PrimaryDark}}"
+                                    VerticalOptions="Center"
+                                    Value="{Binding ArbitraryAngleValue, Mode=TwoWay}" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontFamily="JetBrainsMonoRegular"
+                                    FontSize="14"
+                                    HorizontalOptions="End"
+                                    Text="{Binding ArbitraryAngleValueText}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                                Light={StaticResource Black}}"
+                                    VerticalOptions="Center" />
+                            </Grid>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>

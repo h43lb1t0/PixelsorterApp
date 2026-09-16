@@ -136,6 +136,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial LocalizedOption? SelectedSortDirection { get; set; }
 
     /// <summary>
+    /// Gets or sets the angle vor Arbitrary angle sorting direction.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ArbitraryAngleValueText))]
+    public partial float ArbitraryAngleValue { get; set; } = 45f;
+
+    /// <summary>
     /// Gets or sets the selected preset option.
     /// </summary>
     [ObservableProperty]
@@ -285,6 +292,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     }
 
     /// <summary>
+    /// Gets the formatted arbitrary angle value label.
+    /// </summary>
+    public string ArbitraryAngleValueText => $"{ArbitraryAngleValue:F2}°";
+
+    /// <summary>
     /// Gets the Canny threshold value as a 0-1 floating point number.
     /// </summary>
     public float CannyThreshold => CannyThresholdPercent / 100f;
@@ -397,6 +409,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the angle slider should be visible.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool ShowAngleSlider { get; set; } = false;
+
+    /// <summary>
     /// Gets a value indicating whether the Canny threshold section should be visible.
     /// </summary>
     public bool ShowCannyThreshold => UseCanny;
@@ -488,6 +506,24 @@ public sealed partial class MainPageViewModel : BaseViewModel
         SelectedSortDirection != null && sortDirectionOptions.TryGetValue(SelectedSortDirection.Key, out var direction)
             ? direction
             : SortDirections.RowRightToLeft;
+
+    /// <summary>
+    /// Sets ShowAngleSlider to true when ArbitraryAngle is selected as the sort direction.
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnSelectedSortDirectionChanged(LocalizedOption? value)
+    {
+        if (value != null && sortDirectionOptions.ContainsKey(value.Key))
+        {
+            if (sortDirectionOptions.TryGetValue(value.Key, out var direction))
+            {
+                if (direction == SortDirections.ArbitraryAngle)
+                    ShowAngleSlider = true;
+                else
+                    ShowAngleSlider = false;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the selected sort criterion display name.
@@ -605,6 +641,13 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnIsInteractionEnabledChanged(bool value)
     {
         loadImageCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnArbitraryAngleValueChanged(float value)
+    {
+        var rounded = MathF.Round(value, 2);
+        if (value != rounded)
+            ArbitraryAngleValue = rounded;
     }
 
     partial void OnCannyThresholdPercentChanged(int value)
