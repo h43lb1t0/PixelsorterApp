@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.AngleArrowOverlayView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:Name="this"
+    x:DataType="viewModels:MainPageViewModel">
+    <Path
+        AnchorX="0.5"
+        AnchorY="0.5"
+        Aspect="Uniform"
+        Data="M 10,30 L 50,0 L 90,30 M 50,0 L 50,100"
+        HeightRequest="60"
+        HorizontalOptions="Center"
+        InputTransparent="True"
+        Rotation="{Binding ArbitraryAngleRotationValue}"
+        Stroke="{AppThemeBinding Dark={StaticResource Primary},
+                                 Light={StaticResource PrimaryDark}}"
+        StrokeLineCap="Round"
+        StrokeLineJoin="Round"
+        StrokeThickness="6"
+        VerticalOptions="Center"
+        WidthRequest="60" />
+</ContentView>

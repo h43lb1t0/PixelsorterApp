@@ -10,6 +10,7 @@
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
+    x:Name="this"
     x:DataType="viewModels:MainPageViewModel"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
     Shell.NavBarIsVisible="False">
@@ -104,6 +105,10 @@
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
                         </Grid>
+                        <views:AngleArrowOverlayView 
+                            Grid.Row="0"
+                            InputTransparent="True"
+                            IsVisible="{Binding ShowAngleSlider}" />
                         <!--  Share FAB overlaid on image  -->
                         <Border
                             x:Name="shareFab"
