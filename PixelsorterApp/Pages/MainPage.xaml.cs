@@ -471,10 +471,15 @@ namespace PixelsorterApp
                 }
 
                 // Cycle only between sort criterion and direction
-                var cycleMessages = new[]
+                var directionText = viewModel.SelectedSortDirectionName;
+                if (viewModel.SortingDirection == SortDirections.ArbitraryAngle)
+                {
+                    directionText = viewModel.ArbitraryAngleValueText;
+                }
+                    var cycleMessages = new[]
                 {
                     String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesSortingBy,viewModel.SelectedSortByName),
-                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, viewModel.SelectedSortDirectionName)
+                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, directionText)
                 };
                 var index = 0;
 
