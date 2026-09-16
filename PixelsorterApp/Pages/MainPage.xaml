@@ -201,13 +201,13 @@
                                 ColumnDefinitions="*, 60"
                                 IsVisible="{Binding ShowAngleSlider}"
                                 RowDefinitions="Auto, Auto"
-                                RowSpacing="4">
+                                RowSpacing="3">
                                 <Label
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
                                     FontSize="14"
-                                    Text="Set the angle for sorting the image"
+                                    Text="{localization:Translate DirectionAngle}"
                                     VerticalOptions="Center" />
                                 <Slider
                                     Grid.Row="1"

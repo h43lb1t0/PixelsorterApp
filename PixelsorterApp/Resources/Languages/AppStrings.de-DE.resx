@@ -735,4 +735,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="SortStrings_direction_ArbitraryAngle" xml:space="preserve">
     <value>Beliebiger Winkel</value>
   </data>
+  <data name="DirectionAngle" xml:space="preserve">
+    <value>Wähle den Winkel zum sortieren aus</value>
+  </data>
 </root>

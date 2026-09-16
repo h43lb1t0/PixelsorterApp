@@ -304,6 +304,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set the angle for sorting the image.
+        /// </summary>
+        internal static string DirectionAngle {
+            get {
+                return ResourceManager.GetString("DirectionAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The masking model could not be downloaded. Please check your internet connection and try again..
         /// </summary>
         internal static string DownloadFailed_Message {

@@ -742,4 +742,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="SortStrings_direction_ArbitraryAngle" xml:space="preserve">
     <value>Arbitrary Angle</value>
   </data>
+  <data name="DirectionAngle" xml:space="preserve">
+    <value>Set the angle for sorting the image</value>
+  </data>
 </root>
