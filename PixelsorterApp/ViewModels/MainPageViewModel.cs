@@ -144,9 +144,9 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial float ArbitraryAngleValue { get; set; } = 45f;
 
     /// <summary>
-    /// The angle mapped to a clockwise UI rotation where 90 degrees is Up.
+    /// The angle mapped to a clockwise UI rotation where 270 degrees is Up.
     /// </summary>
-    public float ArbitraryAngleRotationValue => 90f - ArbitraryAngleValue;
+    public float ArbitraryAngleRotationValue => 90f + ArbitraryAngleValue;
 
     /// <summary>
     /// Gets or sets the selected preset option.
