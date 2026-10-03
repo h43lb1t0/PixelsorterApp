@@ -653,7 +653,40 @@ public sealed partial class MainPageViewModel : BaseViewModel
     {
         var rounded = MathF.Round(value, 2);
         if (value != rounded)
+        {
             ArbitraryAngleValue = rounded;
+            return;
+        }
+
+        if (ShowAngleSlider)
+        {
+            _ = ShowAngleOverlayTemporarilyAsync();
+        }
+    }
+
+    private CancellationTokenSource? angleOverlayHideCts;
+
+    /// <summary>
+    /// Gets or sets whether the angle arrow overlay is currently visible.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool ShowAngleOverlay { get; set; }
+
+    private async Task ShowAngleOverlayTemporarilyAsync()
+    {
+        angleOverlayHideCts?.Cancel();
+        angleOverlayHideCts?.Dispose();
+        var cts = angleOverlayHideCts = new CancellationTokenSource();
+        ShowAngleOverlay = true;
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(2), cts.Token);
+            ShowAngleOverlay = false;
+        }
+        catch (TaskCanceledException)
+        {
+            // A newer value change restarted the timer.
+        }
     }
 
     partial void OnCannyThresholdPercentChanged(int value)
