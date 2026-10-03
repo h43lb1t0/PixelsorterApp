@@ -203,7 +203,7 @@
                             </VerticalStackLayout>
                             <Grid
                                 Padding="14,8"
-                                ColumnDefinitions="*, 60"
+                                ColumnDefinitions="*, Auto"
                                 IsVisible="{Binding ShowAngleSlider}"
                                 RowDefinitions="Auto, Auto"
                                 RowSpacing="3">
@@ -231,6 +231,10 @@
                                     FontFamily="JetBrainsMonoRegular"
                                     FontSize="14"
                                     HorizontalOptions="End"
+                                    HorizontalTextAlignment="End"
+                                    LineBreakMode="NoWrap"
+                                    MaxLines="1"
+                                    Margin="0,0,4,0"
                                     Text="{Binding ArbitraryAngleValueText}"
                                     TextColor="{AppThemeBinding Dark={StaticResource White},
                                                                 Light={StaticResource Black}}"
