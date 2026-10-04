@@ -8,6 +8,10 @@ using PixelsorterClassLib.Core;
 using UXDivers.Popups.Maui.Controls;
 using UXDivers.Popups.Services;
 using Color = Microsoft.Maui.Graphics.Color;
+using SkiaSharp;
+using Microsoft.Maui.Graphics;
+using CommunityToolkit.Maui.Core.Extensions;
+using PixelsorterApp.Views;
 
 namespace PixelsorterApp
 {
@@ -127,6 +131,13 @@ namespace PixelsorterApp
             {
                 await AnimateShareFabAsync(viewModel.IsSaveEnabled);
             }
+            else if (e.PropertyName == nameof(MainPageViewModel.ShowAngleOverlay))
+            {
+                if (viewModel.ShowAngleOverlay)
+                {
+                    viewModel.SortDirectionArrowColor = GetColorForAngleArrow();
+                }
+            }
         }
 
         private void OnOpenHelpClicked(object sender, EventArgs e)
@@ -222,6 +233,10 @@ namespace PixelsorterApp
 
             if (index >= 0 && index < imageCaptions.Count)
             {
+                if (viewModel.ShowAngleOverlay)
+                {
+                    viewModel.SortDirectionArrowColor = GetColorForAngleArrow();
+                }
                 var captionText = imageCaptions[index].GetLocalizedText();
                 viewModel.CurrentCaption = captionText;
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
@@ -251,6 +266,62 @@ namespace PixelsorterApp
 
             return imagePaths[^1];
         }
+
+        private static Color GetOverallColor(Stream imageStream)
+        {
+            using var originalBitmap = SKBitmap.Decode(imageStream);
+            if (originalBitmap == null)
+                return Colors.Transparent;
+
+            // Crop to the center 25% of the image to get the color directly behind the arrow
+            int cropWidth = originalBitmap.Width / 4;
+            int cropHeight = originalBitmap.Height / 4;
+            int x = (originalBitmap.Width - cropWidth) / 2;
+            int y = (originalBitmap.Height - cropHeight) / 2;
+
+            var cropRect = new SKRectI(x, y, x + cropWidth, y + cropHeight);
+            using var croppedBitmap = new SKBitmap(cropWidth, cropHeight);
+            originalBitmap.ExtractSubset(croppedBitmap, cropRect);
+
+            // Target specification (1x1 pixel)
+            var targetInfo = new SKImageInfo(1, 1, SKColorType.Rgba8888, SKAlphaType.Premul);
+
+            // Resize the CROPPED image to 1x1
+            var samplingOptions = new SKSamplingOptions(SKCubicResampler.CatmullRom);
+            using var singlePixelBitmap = croppedBitmap.Resize(targetInfo, samplingOptions);
+
+            if (singlePixelBitmap == null)
+                return Colors.Transparent;
+
+            // Sample the single blended pixel
+            SKColor avgColor = singlePixelBitmap.GetPixel(0, 0);
+
+            return Color.FromRgba(avgColor.Red, avgColor.Green, avgColor.Blue, avgColor.Alpha);
+        }
+
+
+        private Color GetColorForAngleArrow()
+        {
+            var app = Application.Current;
+            if (app == null) return Colors.Red;
+            string? path = GetFocusedImagePath();
+            if (path is null || !File.Exists(path))
+            {
+                return app.RequestedTheme == AppTheme.Dark ? (Color)app.Resources["PrimaryDark"] : (Color)app.Resources["Primary"];
+            }
+
+            using var inputStream = File.OpenRead(path);
+            Color average = GetOverallColor(inputStream);
+
+            // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
+            Color inverted = average.ToInverseColor().WithSaturation(1.0f);
+
+            float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
+
+            // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
+            return luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+        }
+
 
         /// <summary>
         /// Constructs a formatted string that indicates the current sorting criteria and direction.

@@ -136,6 +136,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial LocalizedOption? SelectedSortDirection { get; set; }
 
     /// <summary>
+    /// Gets or sets the color of the sort direction arrow.
+    /// </summary>
+    [ObservableProperty]
+    public partial Color SortDirectionArrowColor { get; set; } = Colors.Red;
+
+    /// <summary>
     /// Gets or sets the angle vor Arbitrary angle sorting direction.
     /// </summary>
     [ObservableProperty]

@@ -18,8 +18,7 @@
         HorizontalOptions="Center"
         InputTransparent="True"
         Rotation="{Binding ArbitraryAngleRotationValue}"
-        Stroke="{AppThemeBinding Dark={StaticResource Primary},
-                                 Light={StaticResource PrimaryDark}}"
+        Stroke="{Binding SortDirectionArrowColor}"
         StrokeLineCap="Round"
         StrokeLineJoin="Round"
         StrokeThickness="6"
