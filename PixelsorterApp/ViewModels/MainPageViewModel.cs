@@ -530,9 +530,16 @@ public sealed partial class MainPageViewModel : BaseViewModel
             if (sortDirectionOptions.TryGetValue(value.Key, out var direction))
             {
                 if (direction == SortDirections.ArbitraryAngle)
+                {
                     ShowAngleSlider = true;
+                    ShowAngleOverlay = true;
+                    _ = ShowAngleOverlayTemporarilyAsync();
+                }
                 else
+                {
                     ShowAngleSlider = false;
+                    ShowAngleOverlay = false;
+                }
             }
         }
     }
