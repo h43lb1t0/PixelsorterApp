@@ -306,9 +306,9 @@ namespace PixelsorterApp.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Set the angle for sorting the image.
         /// </summary>
-        internal static string DirectionAngle {
+        internal static string DirectionAngle_Title {
             get {
-                return ResourceManager.GetString("DirectionAngle", resourceCulture);
+                return ResourceManager.GetString("DirectionAngle_Title", resourceCulture);
             }
         }
         

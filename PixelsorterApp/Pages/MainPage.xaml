@@ -153,18 +153,20 @@
                             Margin="0,8,0,0"
                             ColumnDefinitions="*, Auto"
                             ColumnSpacing="8"
-                            IsVisible="{Binding ShowAngleSlider}">
+                            IsVisible="{Binding ShowAngleSlider}"
+                            RowDefinitions="Auto, Auto">
                             <Slider
+                                Grid.Row="0"
                                 Grid.Column="0"
                                 IsEnabled="{Binding IsInteractionEnabled}"
                                 Maximum="360"
                                 Minimum="0"
-                                SemanticProperties.Description="{localization:Translate DirectionAngle}"
                                 ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
                                                              Light={StaticResource PrimaryDark}}"
                                 VerticalOptions="Center"
                                 Value="{Binding ArbitraryAngleValue, Mode=TwoWay}" />
                             <Label
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 Margin="0,0,4,0"
                                 FontFamily="JetBrainsMonoRegular"
@@ -177,6 +179,15 @@
                                                             Light={StaticResource Black}}"
                                 VerticalOptions="Center"
                                 WidthRequest="80" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HorizontalOptions="Center"
+                                Text="{localization:Translate DirectionAngle_Title}"
+                                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                            Light={StaticResource Black}}"
+                                VerticalOptions="Center" />
                         </Grid>
                     </Grid>
                 </Border>
