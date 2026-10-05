@@ -745,4 +745,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="DirectionAngle_Title" xml:space="preserve">
     <value>Set the angle for sorting the image</value>
   </data>
+  <data name="TomlValidation_AngleOutOfRange" xml:space="preserve">
+    <value>sortsettings.direction.angle must be in range [0.0, 360.0].</value>
+  </data>
 </root>

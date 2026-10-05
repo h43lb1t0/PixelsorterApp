@@ -738,4 +738,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="DirectionAngle_Title" xml:space="preserve">
     <value>Wähle den Winkel zum sortieren aus</value>
   </data>
+  <data name="TomlValidation_AngleOutOfRange" xml:space="preserve">
+    <value>sortsettings.direction.angle muss im Intervall [0.0, 360.0] liegen.</value>
+  </data>
 </root>

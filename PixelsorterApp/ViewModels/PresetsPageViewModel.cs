@@ -4,6 +4,7 @@ using PixelsorterApp.Models.Presets;
 using PixelsorterApp.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -15,6 +16,7 @@ namespace PixelsorterApp.ViewModels
         private readonly ITomlValidationService tomlValidationService;
         private readonly string sortBy;
         private readonly string sortDirection;
+        private readonly float arbitraryAngle;
         private readonly bool cannyMasking;
         private readonly int cannyThreashold;
         private readonly bool subjectMasking;
@@ -109,6 +111,7 @@ namespace PixelsorterApp.ViewModels
 
             sortBy = _mainViewModel.SelectedSortBy?.Key ?? string.Empty;
             sortDirection = _mainViewModel.SelectedSortDirection?.Key ?? string.Empty;
+            arbitraryAngle = _mainViewModel.ArbitraryAngleValue;
 
             cannyMasking = _mainViewModel.UseCanny;
             cannyThreashold = _mainViewModel.CannyThresholdPercent;
@@ -331,6 +334,9 @@ namespace PixelsorterApp.ViewModels
 
             AppendOptions("Sort By Options:", map.SortBy);
             AppendOptions("Direction Options:", map.Direction);
+            sb.AppendLine("Angle (sort_settings.angle, optional):");
+            sb.AppendLine("  - 0.0 - 360.0 (used with direction \"aa\")");
+            sb.AppendLine();
             AppendOptions("What To Sort Options:", map.WhatToSort);
             AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
@@ -362,6 +368,7 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("[sort_settings]");
             sb.AppendLine($"sort_by = \"{sortByKey}\"");
             sb.AppendLine($"direction = \"{directionKey}\"");
+            sb.AppendLine($"angle = {arbitraryAngle.ToString("0.0#", CultureInfo.InvariantCulture)}");
             sb.AppendLine("");
 
             string whatToSortLumKey = lumInverted

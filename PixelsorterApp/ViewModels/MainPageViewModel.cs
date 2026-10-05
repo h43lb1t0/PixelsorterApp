@@ -306,7 +306,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     /// <summary>
     /// Gets the formatted arbitrary angle value label.
     /// </summary>
-    public string ArbitraryAngleValueText => $"{ArbitraryAngleValue:F2}°";
+    public string ArbitraryAngleValueText => $"{ArbitraryAngleValue.ToString("F2", localizationResourceManager.CurrentCulture)}°";
 
     /// <summary>
     /// Gets the Canny threshold value as a 0-1 floating point number.
@@ -633,6 +633,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             SelectedSortDirection = SortDirectionOptions.FirstOrDefault(o => o.Key == previousDirectionKey) ?? SortDirectionOptions.FirstOrDefault();
         }
 
+        OnPropertyChanged(nameof(ArbitraryAngleValueText));
         LanguageChanged?.Invoke();
     }
 
@@ -836,6 +837,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             var match = SortByOptions.FirstOrDefault(o => o.Key == state.SortByName);
             if (match != null) SelectedSortBy = match;
+        }
+
+        if (state.ArbitraryAngle.HasValue)
+        {
+            ArbitraryAngleValue = Math.Clamp(state.ArbitraryAngle.Value, 0f, 360f);
         }
 
         if (!string.IsNullOrEmpty(state.DirectionName))

@@ -1165,6 +1165,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sortsettings.direction.angle must be in range [0.0, 360.0]..
+        /// </summary>
+        internal static string TomlValidation_AngleOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_AngleOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subject masking cannot be enabled because the background model is not downloaded..
         /// </summary>
         internal static string TomlValidation_BackgroundModelIsNotDownloaded {

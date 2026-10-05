@@ -13,7 +13,8 @@
     "rl": "SortDirections.RowRightToLeft",
     "tb": "SortDirections.ColumnTopToBottom",
     "bt": "SortDirections.ColumnBottomToTop",
-    "im": "SortDirections.IntoMask"
+    "im": "SortDirections.IntoMask",
+    "aa": "SortDirections.ArbitraryAngle"
   },
   "maskCombination": {
     "sub": "UseSubtractMasksSelected",

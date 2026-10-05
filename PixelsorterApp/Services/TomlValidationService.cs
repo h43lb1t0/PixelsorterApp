@@ -94,6 +94,22 @@ namespace PixelsorterApp.Services
             ValidateMappedOption(whatToSort, map.WhatToSort, "subject_settings.what_to_sort", errors);
             ValidateMappedOption(mode, map.MaskCombination, "mask_combination.mode", errors);
 
+            // The arbitrary angle is optional for backward compatibility; accept TOML integers and floats.
+            if (sortSettings.TryGetValue("angle", out object? angleValue))
+            {
+                double? angle = angleValue switch
+                {
+                    double d => d,
+                    long l => l,
+                    _ => null
+                };
+
+                if (angle is null || double.IsNaN(angle.Value) || angle.Value < 0 || angle.Value > 360)
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_AngleOutOfRange);
+                }
+            }
+
             if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny && !useLuminance)
             {
                 errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MaskMustBeEnabled);
