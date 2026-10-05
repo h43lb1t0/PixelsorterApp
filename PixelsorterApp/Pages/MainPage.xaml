@@ -166,6 +166,7 @@
                                 Value="{Binding ArbitraryAngleValue, Mode=TwoWay}" />
                             <Label
                                 Grid.Column="1"
+                                Margin="0,0,4,0"
                                 FontFamily="JetBrainsMonoRegular"
                                 FontSize="14"
                                 HorizontalTextAlignment="End"
@@ -175,7 +176,7 @@
                                 TextColor="{AppThemeBinding Dark={StaticResource White},
                                                             Light={StaticResource Black}}"
                                 VerticalOptions="Center"
-                                WidthRequest="64" />
+                                WidthRequest="80" />
                         </Grid>
                     </Grid>
                 </Border>
