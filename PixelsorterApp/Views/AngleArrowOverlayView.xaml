@@ -9,19 +9,39 @@
     InputTransparent="True"
     IsVisible="False"
     Opacity="0">
-    <Path
-        AnchorX="0.5"
-        AnchorY="0.5"
-        Aspect="Uniform"
-        Data="M 10,30 L 50,0 L 90,30 M 50,0 L 50,100"
-        HeightRequest="60"
-        HorizontalOptions="Center"
-        InputTransparent="True"
-        Rotation="{Binding ArbitraryAngleRotationValue}"
-        Stroke="{Binding SortDirectionArrowColor}"
-        StrokeLineCap="Round"
-        StrokeLineJoin="Round"
-        StrokeThickness="6"
-        VerticalOptions="Center"
-        WidthRequest="60" />
+    <Grid HorizontalOptions="Center" VerticalOptions="Center" InputTransparent="True">
+        <!-- Outline (Black stroke) -->
+        <Path
+            AnchorX="0.5"
+            AnchorY="0.5"
+            Aspect="Uniform"
+            Data="M 10,30 L 50,0 L 90,30 M 50,0 L 50,100"
+            HeightRequest="60"
+            HorizontalOptions="Center"
+            InputTransparent="True"
+            Rotation="{Binding ArbitraryAngleRotationValue}"
+            Stroke="Black"
+            StrokeLineCap="Round"
+            StrokeLineJoin="Round"
+            StrokeThickness="14"
+            VerticalOptions="Center"
+            WidthRequest="60" />
+        
+        <!-- Inner arrow -->
+        <Path
+            AnchorX="0.5"
+            AnchorY="0.5"
+            Aspect="Uniform"
+            Data="M 10,30 L 50,0 L 90,30 M 50,0 L 50,100"
+            HeightRequest="60"
+            HorizontalOptions="Center"
+            InputTransparent="True"
+            Rotation="{Binding ArbitraryAngleRotationValue}"
+            Stroke="{Binding SortDirectionArrowColor}"
+            StrokeLineCap="Round"
+            StrokeLineJoin="Round"
+            StrokeThickness="6"
+            VerticalOptions="Center"
+            WidthRequest="60" />
+    </Grid>
 </ContentView>
