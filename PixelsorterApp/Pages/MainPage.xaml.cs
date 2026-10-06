@@ -141,7 +141,7 @@ namespace PixelsorterApp
             {
                 if (viewModel.ShowAngleOverlay)
                 {
-                    viewModel.SortDirectionArrowColor = GetColorForAngleArrow();
+                    viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace PixelsorterApp
         /// <param name="sender">The source of the event, typically the image viewer control that triggered the index change.</param>
         /// <param name="index">The new index of the displayed image. Must be greater than or equal to 0 and less than the total number of
         /// available images.</param>
-        private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
+        private async void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
@@ -241,7 +241,7 @@ namespace PixelsorterApp
             {
                 if (viewModel.ShowAngleOverlay)
                 {
-                    viewModel.SortDirectionArrowColor = GetColorForAngleArrow();
+                    viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
                 }
                 var captionText = imageCaptions[index].GetLocalizedText();
                 viewModel.CurrentCaption = captionText;
@@ -286,14 +286,17 @@ namespace PixelsorterApp
                 return Colors.Transparent;
 
             // Crop to the center 25% of the image to get the color directly behind the arrow
-            int cropWidth = originalBitmap.Width / 4;
-            int cropHeight = originalBitmap.Height / 4;
+            int cropWidth = Math.Max(1, originalBitmap.Width / 4);
+            int cropHeight = Math.Max(1, originalBitmap.Height / 4);
             int x = (originalBitmap.Width - cropWidth) / 2;
             int y = (originalBitmap.Height - cropHeight) / 2;
 
             var cropRect = new SKRectI(x, y, x + cropWidth, y + cropHeight);
             using var croppedBitmap = new SKBitmap(cropWidth, cropHeight);
-            originalBitmap.ExtractSubset(croppedBitmap, cropRect);
+            bool subsetSuccess = originalBitmap.ExtractSubset(croppedBitmap, cropRect);
+
+            if (!subsetSuccess)
+                return Colors.Transparent;
 
             // Target specification (1x1 pixel)
             var targetInfo = new SKImageInfo(1, 1, SKColorType.Rgba8888, SKAlphaType.Premul);
@@ -317,7 +320,7 @@ namespace PixelsorterApp
         /// Gets the color for the angle arrow based on the currently focused image.
         /// </summary>
         /// <returns>The color for the angle arrow.</returns>
-        private Color GetColorForAngleArrow()
+        private async Task<Color> GetColorForAngleArrowAsync()
         {
             var app = Application.Current;
             if (app == null) return Colors.Red;
@@ -334,17 +337,20 @@ namespace PixelsorterApp
 
             try
             {
-                using var inputStream = File.OpenRead(path);
-                Color average = GetOverallColor(inputStream);
-                // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
-                Color inverted = average.ToInverseColor().WithSaturation(1.0f);
+                Color arrowColor = await Task.Run(() =>
+                {
+                    using var inputStream = File.OpenRead(path);
+                    Color average = GetOverallColor(inputStream);
+                    // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
+                    Color inverted = average.ToInverseColor().WithSaturation(1.0f);
 
-                float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
+                    float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
 
-                // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
-               Color arrowColor = luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+                    // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
+                    return luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+                });
                 
-                ArrowOverlayColor.Add(path, arrowColor);
+                ArrowOverlayColor[path] = arrowColor;
 
                 return arrowColor;
             }
