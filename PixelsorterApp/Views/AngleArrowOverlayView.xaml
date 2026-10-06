@@ -4,13 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
-    x:Name="this"
     x:DataType="viewModels:MainPageViewModel"
     InputTransparent="True"
     IsVisible="False"
     Opacity="0">
-    <Grid HorizontalOptions="Center" VerticalOptions="Center" InputTransparent="True">
-        <!-- Outline (Black stroke) -->
+    <Grid
+        HorizontalOptions="Center"
+        InputTransparent="True"
+        VerticalOptions="Center">
+        <!--  Outline (Black stroke)  -->
         <Path
             AnchorX="0.5"
             AnchorY="0.5"
@@ -26,8 +28,8 @@
             StrokeThickness="14"
             VerticalOptions="Center"
             WidthRequest="60" />
-        
-        <!-- Inner arrow -->
+
+        <!--  Inner arrow  -->
         <Path
             AnchorX="0.5"
             AnchorY="0.5"
