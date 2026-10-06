@@ -12,6 +12,7 @@ using SkiaSharp;
 using Microsoft.Maui.Graphics;
 using CommunityToolkit.Maui.Core.Extensions;
 using PixelsorterApp.Views;
+using System.Diagnostics;
 
 namespace PixelsorterApp
 {
@@ -33,6 +34,11 @@ namespace PixelsorterApp
 
         // image
         private string? imagePath;
+
+        /// <summary>
+        /// Caches the computed arrow overlay colors for each image path to avoid recalculating the average color on subsequent displays of the same image.
+        /// </summary>
+        private Dictionary<string, Color> ArrowOverlayColor = [];
 
         // image viewer
         private class ImageCaptionInfo
@@ -267,7 +273,13 @@ namespace PixelsorterApp
             return imagePaths[^1];
         }
 
-        private static Color GetOverallColor(Stream imageStream)
+
+        /// <summary>
+        /// Calculates the overall average color of the image represented by the provided stream.
+        /// </summary>
+        /// <param name="imageStream"></param>
+        /// <returns>The average color of the image.</returns>
+        private Color GetOverallColor(Stream imageStream)
         {
             using var originalBitmap = SKBitmap.Decode(imageStream);
             if (originalBitmap == null)
@@ -300,6 +312,11 @@ namespace PixelsorterApp
         }
 
 
+
+        /// <summary>
+        /// Gets the color for the angle arrow based on the currently focused image.
+        /// </summary>
+        /// <returns>The color for the angle arrow.</returns>
         private Color GetColorForAngleArrow()
         {
             var app = Application.Current;
@@ -310,16 +327,32 @@ namespace PixelsorterApp
                 return app.RequestedTheme == AppTheme.Dark ? (Color)app.Resources["PrimaryDark"] : (Color)app.Resources["Primary"];
             }
 
-            using var inputStream = File.OpenRead(path);
-            Color average = GetOverallColor(inputStream);
+            if (ArrowOverlayColor.TryGetValue(path, out var cachedColor))
+            {
+                return cachedColor;
+            }
 
-            // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
-            Color inverted = average.ToInverseColor().WithSaturation(1.0f);
+            try
+            {
+                using var inputStream = File.OpenRead(path);
+                Color average = GetOverallColor(inputStream);
+                // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
+                Color inverted = average.ToInverseColor().WithSaturation(1.0f);
 
-            float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
+                float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
 
-            // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
-            return luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+                // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
+               Color arrowColor = luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+                
+                ArrowOverlayColor.Add(path, arrowColor);
+
+                return arrowColor;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error calculating average color for angle arrow: {ex.Message}");
+                return app.RequestedTheme == AppTheme.Dark ? (Color)app.Resources["PrimaryDark"] : (Color)app.Resources["Primary"];
+            }
         }
 
 
@@ -604,6 +637,8 @@ namespace PixelsorterApp
                 await IPopupService.Current.PopAsync(popup);
                 await LoadImageAsync();
             }
+            ArrowOverlayColor.Clear();
+            ArrowOverlayColor.TrimExcess();
         }
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
