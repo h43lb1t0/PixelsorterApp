@@ -1165,6 +1165,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sortsettings.direction.angle must be a floating point number..
+        /// </summary>
+        internal static string TomlValidation_Angle_NaN {
+            get {
+                return ResourceManager.GetString("TomlValidation_Angle_NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to sortsettings.direction.angle must be in range [0.0, 360.0]..
         /// </summary>
         internal static string TomlValidation_AngleOutOfRange {

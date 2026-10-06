@@ -748,4 +748,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="TomlValidation_AngleOutOfRange" xml:space="preserve">
     <value>sortsettings.direction.angle must be in range [0.0, 360.0].</value>
   </data>
+  <data name="TomlValidation_Angle_NaN" xml:space="preserve">
+    <value>sortsettings.direction.angle must be a floating point number.</value>
+  </data>
 </root>

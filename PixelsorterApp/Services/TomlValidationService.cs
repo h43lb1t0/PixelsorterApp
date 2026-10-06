@@ -104,9 +104,14 @@ namespace PixelsorterApp.Services
                     _ => null
                 };
 
-                if (angle is null || double.IsNaN(angle.Value) || angle.Value < 0 || angle.Value > 360)
+                if (angle is null || double.IsNaN(angle.Value))
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_Angle_NaN);
+                }
+                else if (angle is null || angle.Value < 0 || angle.Value > 360)
                 {
                     errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_AngleOutOfRange);
+
                 }
             }
 
