@@ -8,7 +8,6 @@ using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -179,7 +178,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SortLumNormalSelected))]
     [NotifyPropertyChangedFor(nameof(SortLumInvertedSelected))]
-    public partial bool UseInvertedLumMask {  get; set; }
+    public partial bool UseInvertedLumMask { get; set; }
 
     /// <summary>
     /// Gets or sets the subject mask padding in pixels (1-100).
@@ -644,7 +643,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     partial void OnUseLumMaskChanged(bool value)
     {
-        RefreshSortDirectionOptions(); 
+        RefreshSortDirectionOptions();
     }
 
     partial void OnIsSortEnabledChanged(bool value)

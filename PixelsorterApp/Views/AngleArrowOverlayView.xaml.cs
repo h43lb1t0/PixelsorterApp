@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using PixelsorterApp.ViewModels;
+using System.ComponentModel;
 
 namespace PixelsorterApp.Views;
 

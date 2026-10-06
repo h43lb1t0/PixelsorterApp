@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Models;
@@ -5,14 +6,11 @@ using PixelsorterApp.Popups;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
+using SkiaSharp;
+using System.Diagnostics;
 using UXDivers.Popups.Maui.Controls;
 using UXDivers.Popups.Services;
 using Color = Microsoft.Maui.Graphics.Color;
-using SkiaSharp;
-using Microsoft.Maui.Graphics;
-using CommunityToolkit.Maui.Core.Extensions;
-using PixelsorterApp.Views;
-using System.Diagnostics;
 
 namespace PixelsorterApp
 {
@@ -349,7 +347,7 @@ namespace PixelsorterApp
                     // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
                     return luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
                 });
-                
+
                 ArrowOverlayColor[path] = arrowColor;
 
                 return arrowColor;
@@ -463,7 +461,7 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                
+
                 var originalText = imageCaptions[0].GetLocalizedText();
                 viewModel.CurrentCaption = originalText;
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {originalText}");
@@ -586,8 +584,8 @@ namespace PixelsorterApp
                 {
                     directionText = viewModel.ArbitraryAngleValueText;
                 }
-                    var cycleMessages = new[]
-                {
+                var cycleMessages = new[]
+            {
                     String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesSortingBy,viewModel.SelectedSortByName),
                     String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, directionText)
                 };
@@ -719,7 +717,7 @@ namespace PixelsorterApp
                         imageCaptions.Add(captionInfo);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        
+
                         var captionText = captionInfo.GetLocalizedText();
                         viewModel.CurrentCaption = captionText;
                         SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
@@ -942,5 +940,5 @@ namespace PixelsorterApp
 
         }
 
-            }
-        }
+    }
+}
