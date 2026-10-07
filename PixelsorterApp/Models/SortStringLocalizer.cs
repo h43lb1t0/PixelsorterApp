@@ -26,6 +26,7 @@ public static class SortStringLocalizer
         ["ColumnTopToBottom"] = () => AppStrings.SortStrings_direction_ctb,
         ["ColumnBottomToTop"] = () => AppStrings.SortStrings_direction_cbt,
         ["IntoMask"] = () => AppStrings.SortStrings_direction_im,
+        ["ArbitraryAngle"] = () => AppStrings.SortStrings_direction_ArbitraryAngle,
     };
 
     private static readonly Dictionary<string, Func<string>> MaskMap = new(StringComparer.Ordinal)

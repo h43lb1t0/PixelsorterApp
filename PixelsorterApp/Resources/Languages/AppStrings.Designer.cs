@@ -304,6 +304,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set the angle for sorting the image.
+        /// </summary>
+        internal static string DirectionAngle_Title {
+            get {
+                return ResourceManager.GetString("DirectionAngle_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The masking model could not be downloaded. Please check your internet connection and try again..
         /// </summary>
         internal static string DownloadFailed_Message {
@@ -1003,6 +1012,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arbitrary Angle.
+        /// </summary>
+        internal static string SortStrings_direction_ArbitraryAngle {
+            get {
+                return ResourceManager.GetString("SortStrings_direction_ArbitraryAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Bottom to Top.
         /// </summary>
         internal static string SortStrings_direction_cbt {
@@ -1143,6 +1161,24 @@ namespace PixelsorterApp.Resources.Languages {
         internal static string ToggleTomlMap_Show {
             get {
                 return ResourceManager.GetString("ToggleTomlMap_Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sortsettings.direction.angle must be a floating point number..
+        /// </summary>
+        internal static string TomlValidation_Angle_NaN {
+            get {
+                return ResourceManager.GetString("TomlValidation_Angle_NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sortsettings.direction.angle must be in range [0.0, 360.0]..
+        /// </summary>
+        internal static string TomlValidation_AngleOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_AngleOutOfRange", resourceCulture);
             }
         }
         

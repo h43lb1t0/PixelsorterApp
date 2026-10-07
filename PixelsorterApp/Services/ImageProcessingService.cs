@@ -166,7 +166,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     }
 
     /// <inheritdoc/>
-    public async Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse)
+    public async Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse, float angle = -1f)
     {
         var sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
 
@@ -176,7 +176,8 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
                 Image.LoadImage(imagePath),
                 sortingCriterion,
                 sortingDirection,
-                maskToUse);
+                maskToUse,
+                angle);
 
             Image.SaveImage(imgData, sortedImagePath);
         });

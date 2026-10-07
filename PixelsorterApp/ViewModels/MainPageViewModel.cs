@@ -8,7 +8,6 @@ using PixelsorterClassLib.Core;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace PixelsorterApp.ViewModels;
 
@@ -136,6 +135,25 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial LocalizedOption? SelectedSortDirection { get; set; }
 
     /// <summary>
+    /// Gets or sets the color of the sort direction arrow.
+    /// </summary>
+    [ObservableProperty]
+    public partial Color SortDirectionArrowColor { get; set; } = Colors.Red;
+
+    /// <summary>
+    /// Gets or sets the angle vor Arbitrary angle sorting direction.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ArbitraryAngleValueText))]
+    [NotifyPropertyChangedFor(nameof(ArbitraryAngleRotationValue))]
+    public partial float ArbitraryAngleValue { get; set; } = 45f;
+
+    /// <summary>
+    /// The angle mapped to a clockwise UI rotation where 270 degrees is Up.
+    /// </summary>
+    public float ArbitraryAngleRotationValue => 90f + ArbitraryAngleValue;
+
+    /// <summary>
     /// Gets or sets the selected preset option.
     /// </summary>
     [ObservableProperty]
@@ -160,7 +178,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SortLumNormalSelected))]
     [NotifyPropertyChangedFor(nameof(SortLumInvertedSelected))]
-    public partial bool UseInvertedLumMask {  get; set; }
+    public partial bool UseInvertedLumMask { get; set; }
 
     /// <summary>
     /// Gets or sets the subject mask padding in pixels (1-100).
@@ -285,6 +303,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
     }
 
     /// <summary>
+    /// Gets the formatted arbitrary angle value label.
+    /// </summary>
+    public string ArbitraryAngleValueText => $"{ArbitraryAngleValue.ToString("F2", localizationResourceManager.CurrentCulture)}°";
+
+    /// <summary>
     /// Gets the Canny threshold value as a 0-1 floating point number.
     /// </summary>
     public float CannyThreshold => CannyThresholdPercent / 100f;
@@ -397,6 +420,12 @@ public sealed partial class MainPageViewModel : BaseViewModel
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the angle slider should be visible.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool ShowAngleSlider { get; set; } = false;
+
+    /// <summary>
     /// Gets a value indicating whether the Canny threshold section should be visible.
     /// </summary>
     public bool ShowCannyThreshold => UseCanny;
@@ -490,6 +519,31 @@ public sealed partial class MainPageViewModel : BaseViewModel
             : SortDirections.RowRightToLeft;
 
     /// <summary>
+    /// Sets ShowAngleSlider to true when ArbitraryAngle is selected as the sort direction.
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnSelectedSortDirectionChanged(LocalizedOption? value)
+    {
+        if (value != null && sortDirectionOptions.ContainsKey(value.Key))
+        {
+            if (sortDirectionOptions.TryGetValue(value.Key, out var direction))
+            {
+                if (direction == SortDirections.ArbitraryAngle)
+                {
+                    ShowAngleSlider = true;
+                    ShowAngleOverlay = true;
+                    _ = ShowAngleOverlayTemporarilyAsync();
+                }
+                else
+                {
+                    ShowAngleSlider = false;
+                    ShowAngleOverlay = false;
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets the selected sort criterion display name.
     /// </summary>
     public string SelectedSortByName => SelectedSortBy?.DisplayName ?? PixelsorterApp.Resources.Languages.AppStrings.common_Unknown;
@@ -578,6 +632,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             SelectedSortDirection = SortDirectionOptions.FirstOrDefault(o => o.Key == previousDirectionKey) ?? SortDirectionOptions.FirstOrDefault();
         }
 
+        OnPropertyChanged(nameof(ArbitraryAngleValueText));
         LanguageChanged?.Invoke();
     }
 
@@ -588,7 +643,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
 
     partial void OnUseLumMaskChanged(bool value)
     {
-        RefreshSortDirectionOptions(); 
+        RefreshSortDirectionOptions();
     }
 
     partial void OnIsSortEnabledChanged(bool value)
@@ -605,6 +660,46 @@ public sealed partial class MainPageViewModel : BaseViewModel
     partial void OnIsInteractionEnabledChanged(bool value)
     {
         loadImageCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnArbitraryAngleValueChanged(float value)
+    {
+        var rounded = MathF.Round(value, 2);
+        if (value != rounded)
+        {
+            ArbitraryAngleValue = rounded;
+            return;
+        }
+
+        if (ShowAngleSlider)
+        {
+            _ = ShowAngleOverlayTemporarilyAsync();
+        }
+    }
+
+    private CancellationTokenSource? angleOverlayHideCts;
+
+    /// <summary>
+    /// Gets or sets whether the angle arrow overlay is currently visible.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool ShowAngleOverlay { get; set; }
+
+    private async Task ShowAngleOverlayTemporarilyAsync()
+    {
+        angleOverlayHideCts?.Cancel();
+        angleOverlayHideCts?.Dispose();
+        var cts = angleOverlayHideCts = new CancellationTokenSource();
+        ShowAngleOverlay = true;
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(2), cts.Token);
+            ShowAngleOverlay = false;
+        }
+        catch (TaskCanceledException)
+        {
+            // A newer value change restarted the timer.
+        }
     }
 
     partial void OnCannyThresholdPercentChanged(int value)
@@ -741,6 +836,11 @@ public sealed partial class MainPageViewModel : BaseViewModel
         {
             var match = SortByOptions.FirstOrDefault(o => o.Key == state.SortByName);
             if (match != null) SelectedSortBy = match;
+        }
+
+        if (state.ArbitraryAngle.HasValue)
+        {
+            ArbitraryAngleValue = Math.Clamp(state.ArbitraryAngle.Value, 0f, 360f);
         }
 
         if (!string.IsNullOrEmpty(state.DirectionName))

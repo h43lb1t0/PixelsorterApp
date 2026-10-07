@@ -732,4 +732,16 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="TomlValidationService_TooManyMasksEnabled" xml:space="preserve">
     <value>Es können nur bis zu 2 Masken gleichzeitig aktiviert werden. Du hast {0} Masken aktiviert.</value>
   </data>
+  <data name="SortStrings_direction_ArbitraryAngle" xml:space="preserve">
+    <value>Beliebiger Winkel</value>
+  </data>
+  <data name="DirectionAngle_Title" xml:space="preserve">
+    <value>Wähle den Winkel zum sortieren aus</value>
+  </data>
+  <data name="TomlValidation_AngleOutOfRange" xml:space="preserve">
+    <value>sortsettings.direction.angle muss im Intervall [0.0, 360.0] liegen.</value>
+  </data>
+  <data name="TomlValidation_Angle_NaN" xml:space="preserve">
+    <value>sortsettings.direction.angle muss eine Gleitkommazahl sein.</value>
+  </data>
 </root>

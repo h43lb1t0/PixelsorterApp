@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Models;
@@ -5,6 +6,8 @@ using PixelsorterApp.Popups;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using PixelsorterClassLib.Core;
+using SkiaSharp;
+using System.Diagnostics;
 using UXDivers.Popups.Maui.Controls;
 using UXDivers.Popups.Services;
 using Color = Microsoft.Maui.Graphics.Color;
@@ -29,6 +32,11 @@ namespace PixelsorterApp
 
         // image
         private string? imagePath;
+
+        /// <summary>
+        /// Caches the computed arrow overlay colors for each image path to avoid recalculating the average color on subsequent displays of the same image.
+        /// </summary>
+        private Dictionary<string, Color> ArrowOverlayColor = [];
 
         // image viewer
         private class ImageCaptionInfo
@@ -127,6 +135,13 @@ namespace PixelsorterApp
             {
                 await AnimateShareFabAsync(viewModel.IsSaveEnabled);
             }
+            else if (e.PropertyName == nameof(MainPageViewModel.ShowAngleOverlay))
+            {
+                if (viewModel.ShowAngleOverlay)
+                {
+                    viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
+                }
+            }
         }
 
         private void OnOpenHelpClicked(object sender, EventArgs e)
@@ -215,13 +230,17 @@ namespace PixelsorterApp
         /// <param name="sender">The source of the event, typically the image viewer control that triggered the index change.</param>
         /// <param name="index">The new index of the displayed image. Must be greater than or equal to 0 and less than the total number of
         /// available images.</param>
-        private void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
+        private async void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
 
             if (index >= 0 && index < imageCaptions.Count)
             {
+                if (viewModel.ShowAngleOverlay)
+                {
+                    viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
+                }
                 var captionText = imageCaptions[index].GetLocalizedText();
                 viewModel.CurrentCaption = captionText;
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
@@ -251,6 +270,95 @@ namespace PixelsorterApp
 
             return imagePaths[^1];
         }
+
+
+        /// <summary>
+        /// Calculates the overall average color of the image represented by the provided stream.
+        /// </summary>
+        /// <param name="imageStream"></param>
+        /// <returns>The average color of the image.</returns>
+        private Color GetOverallColor(Stream imageStream)
+        {
+            using var originalBitmap = SKBitmap.Decode(imageStream);
+            if (originalBitmap == null)
+                return Colors.Transparent;
+
+            // Crop to the center 25% of the image to get the color directly behind the arrow
+            int cropWidth = Math.Max(1, originalBitmap.Width / 4);
+            int cropHeight = Math.Max(1, originalBitmap.Height / 4);
+            int x = (originalBitmap.Width - cropWidth) / 2;
+            int y = (originalBitmap.Height - cropHeight) / 2;
+
+            var cropRect = new SKRectI(x, y, x + cropWidth, y + cropHeight);
+            using var croppedBitmap = new SKBitmap(cropWidth, cropHeight);
+            bool subsetSuccess = originalBitmap.ExtractSubset(croppedBitmap, cropRect);
+
+            if (!subsetSuccess)
+                return Colors.Transparent;
+
+            // Target specification (1x1 pixel)
+            var targetInfo = new SKImageInfo(1, 1, SKColorType.Rgba8888, SKAlphaType.Premul);
+
+            // Resize the CROPPED image to 1x1
+            var samplingOptions = new SKSamplingOptions(SKCubicResampler.CatmullRom);
+            using var singlePixelBitmap = croppedBitmap.Resize(targetInfo, samplingOptions);
+
+            if (singlePixelBitmap == null)
+                return Colors.Transparent;
+
+            // Sample the single blended pixel
+            SKColor avgColor = singlePixelBitmap.GetPixel(0, 0);
+
+            return Color.FromRgba(avgColor.Red, avgColor.Green, avgColor.Blue, avgColor.Alpha);
+        }
+
+
+
+        /// <summary>
+        /// Gets the color for the angle arrow based on the currently focused image.
+        /// </summary>
+        /// <returns>The color for the angle arrow.</returns>
+        private async Task<Color> GetColorForAngleArrowAsync()
+        {
+            var app = Application.Current;
+            if (app == null) return Colors.Red;
+            string? path = GetFocusedImagePath();
+            if (path is null || !File.Exists(path))
+            {
+                return app.RequestedTheme == AppTheme.Dark ? (Color)app.Resources["PrimaryDark"] : (Color)app.Resources["Primary"];
+            }
+
+            if (ArrowOverlayColor.TryGetValue(path, out var cachedColor))
+            {
+                return cachedColor;
+            }
+
+            try
+            {
+                Color arrowColor = await Task.Run(() =>
+                {
+                    using var inputStream = File.OpenRead(path);
+                    Color average = GetOverallColor(inputStream);
+                    // Get the inverse and force it to be 100% vibrant (Saturation = 1.0)
+                    Color inverted = average.ToInverseColor().WithSaturation(1.0f);
+
+                    float luminance = 0.2126f * average.Red + 0.7152f * average.Green + 0.0722f * average.Blue;
+
+                    // Use 0.35 (darker) and 0.65 (lighter) so the color stays vibrant without turning black/white
+                    return luminance > 0.5f ? inverted.WithLuminosity(0.35f) : inverted.WithLuminosity(0.65f);
+                });
+
+                ArrowOverlayColor[path] = arrowColor;
+
+                return arrowColor;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error calculating average color for angle arrow: {ex.Message}");
+                return app.RequestedTheme == AppTheme.Dark ? (Color)app.Resources["PrimaryDark"] : (Color)app.Resources["Primary"];
+            }
+        }
+
 
         /// <summary>
         /// Constructs a formatted string that indicates the current sorting criteria and direction.
@@ -353,7 +461,7 @@ namespace PixelsorterApp
                 ApplyImageSizeForCurrentDevice();
                 imageViewer.ClearImages();
                 imageViewer.ShowImage(path);
-                
+
                 var originalText = imageCaptions[0].GetLocalizedText();
                 viewModel.CurrentCaption = originalText;
                 SemanticProperties.SetDescription(whatIsThisLabel, $"Options used for the current image: {originalText}");
@@ -471,10 +579,15 @@ namespace PixelsorterApp
                 }
 
                 // Cycle only between sort criterion and direction
-                var cycleMessages = new[]
+                var directionText = viewModel.SelectedSortDirectionName;
+                if (viewModel.SortingDirection == SortDirections.ArbitraryAngle)
                 {
+                    directionText = viewModel.ArbitraryAngleValueText;
+                }
+                var cycleMessages = new[]
+            {
                     String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesSortingBy,viewModel.SelectedSortByName),
-                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, viewModel.SelectedSortDirectionName)
+                    String.Format(PixelsorterApp.Resources.Languages.AppStrings.CycleSortingMessagesArrangingPixels, directionText)
                 };
                 var index = 0;
 
@@ -528,6 +641,8 @@ namespace PixelsorterApp
                 await IPopupService.Current.PopAsync(popup);
                 await LoadImageAsync();
             }
+            ArrowOverlayColor.Clear();
+            ArrowOverlayColor.TrimExcess();
         }
 
         private string? sortedImagePath; // Path to the temporarily saved sorted image
@@ -586,7 +701,8 @@ namespace PixelsorterApp
                         this.imagePath,
                         viewModel.SortingCriterion ?? SortBy.GetAllSortingCriteria().Values.First(),
                         viewModel.SortingDirection,
-                        maskToUse);
+                        maskToUse,
+                        viewModel.ArbitraryAngleValue);
 
                     sortSucceeded = true;
 
@@ -601,7 +717,7 @@ namespace PixelsorterApp
                         imageCaptions.Add(captionInfo);
                         imagePaths.Add(sortedImagePath);
                         currentDisplayedImageIndex = imagePaths.Count - 1;
-                        
+
                         var captionText = captionInfo.GetLocalizedText();
                         viewModel.CurrentCaption = captionText;
                         SemanticProperties.SetDescription(whatIsThisLabel, $"Current image caption: {captionText}");
@@ -824,5 +940,5 @@ namespace PixelsorterApp
 
         }
 
-            }
-        }
+    }
+}

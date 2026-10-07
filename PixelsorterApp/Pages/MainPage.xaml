@@ -10,6 +10,7 @@
     xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
     xmlns:views="clr-namespace:PixelsorterApp.Views"
+    x:Name="this"
     x:DataType="viewModels:MainPageViewModel"
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
     Shell.NavBarIsVisible="False">
@@ -73,7 +74,7 @@
                             Radius="12"
                             Offset="0,3" />
                     </Border.Shadow>
-                    <Grid RowDefinitions="Auto,Auto">
+                    <Grid RowDefinitions="Auto,Auto,Auto">
                         <local:ImageViewer
                             x:Name="imageViewer"
                             Grid.Row="0"
@@ -104,6 +105,11 @@
                                     TextColor="{StaticResource White}" />
                             </VerticalStackLayout>
                         </Grid>
+                        <views:AngleArrowOverlayView
+                            Grid.Row="0"
+                            HorizontalOptions="Center"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
                         <!--  Share FAB overlaid on image  -->
                         <Border
                             x:Name="shareFab"
@@ -141,6 +147,48 @@
                             TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                         Dark={StaticResource TextSecondaryDark}}"
                             VerticalOptions="Center" />
+                        <!--  Angle slider under the caption  -->
+                        <Grid
+                            Grid.Row="2"
+                            Margin="0,8,0,0"
+                            ColumnDefinitions="*, Auto"
+                            ColumnSpacing="8"
+                            IsVisible="{Binding ShowAngleSlider}"
+                            RowDefinitions="Auto, Auto">
+                            <Slider
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                IsEnabled="{Binding IsInteractionEnabled}"
+                                Maximum="360"
+                                Minimum="0"
+                                ThumbColor="{AppThemeBinding Dark={StaticResource Primary},
+                                                             Light={StaticResource PrimaryDark}}"
+                                VerticalOptions="Center"
+                                Value="{Binding ArbitraryAngleValue, Mode=TwoWay}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="0,0,4,0"
+                                FontFamily="JetBrainsMonoRegular"
+                                FontSize="14"
+                                HorizontalTextAlignment="End"
+                                LineBreakMode="NoWrap"
+                                MaxLines="1"
+                                Text="{Binding ArbitraryAngleValueText}"
+                                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                            Light={StaticResource Black}}"
+                                VerticalOptions="Center"
+                                WidthRequest="80" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HorizontalOptions="Center"
+                                Text="{localization:Translate DirectionAngle_Title}"
+                                TextColor="{AppThemeBinding Dark={StaticResource White},
+                                                            Light={StaticResource Black}}"
+                                VerticalOptions="Center" />
+                        </Grid>
                     </Grid>
                 </Border>
 
@@ -160,7 +208,7 @@
                     </Border.Shadow>
                     <VerticalStackLayout Spacing="0">
                         <VerticalStackLayout Padding="16,16,16,8" Spacing="16">
-                            <!-- Workaround for UraniumUI bug #715 -->
+                            <!--  Workaround for UraniumUI bug #715  -->
                             <VerticalStackLayout Spacing="4">
                                 <Label
                                     FontSize="12"
@@ -176,10 +224,9 @@
                                     SemanticProperties.Description="A dropdown menu to select what to sort the Pixels by"
                                     Style="{StaticResource MySelectFieldStyle}"
                                     TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                                Dark={StaticResource TextPrimaryDark}}">
-                                </material:SelectField>
+                                                                Dark={StaticResource TextPrimaryDark}}" />
                             </VerticalStackLayout>
-                            <!-- Workaround for UraniumUI bug #715 -->
+                            <!--  Workaround for UraniumUI bug #715  -->
                             <VerticalStackLayout Spacing="4">
                                 <Label
                                     FontSize="12"

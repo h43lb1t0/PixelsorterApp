@@ -1,6 +1,7 @@
 using PixelsorterApp.Models.Presets;
 using PixelsorterApp.ViewModels;
 using System.Text.Json;
+using Tomlyn.Model;
 
 namespace PixelsorterApp.Services;
 
@@ -138,6 +139,9 @@ public class PresetService : IPresetService
             directionName = directionMapped.Split('.').Last();
         }
 
+        // The angle is optional for backward compatibility with presets created before arbitrary angle sorting existed.
+        float? arbitraryAngle = TryReadArbitraryAngle(sanitizedToml);
+
         bool? useInvertedLumMask = null;
         int? lumThresholdPercent = null;
 
@@ -171,10 +175,50 @@ public class PresetService : IPresetService
             SortByName = sortByName,
             UseSubtractMasks = useSubtractMasks,
             DirectionName = directionName,
+            ArbitraryAngle = arbitraryAngle,
             UseLumMask = preset.MaskingOptions?.UseLuminance,
             LumThresholdPercent = lumThresholdPercent,
             UseInvertedLumMask = useInvertedLumMask
         };
+    }
+
+    /// <summary>
+    /// Reads the optional <c>sort_settings.angle</c> value from the TOML content.
+    /// </summary>
+    /// <remarks>Accepts both TOML integers and floats. Returns null if the key is missing, has an invalid type,
+    /// or is outside the range [0, 360], so older presets without an angle keep working unchanged.</remarks>
+    /// <param name="tomlContent">The sanitized TOML content.</param>
+    /// <returns>The angle in degrees, or null if not available.</returns>
+    private static float? TryReadArbitraryAngle(string tomlContent)
+    {
+        if (!Tomlyn.TomlSerializer.TryDeserialize(tomlContent, out TomlTable? table, null) || table is null)
+        {
+            return null;
+        }
+
+        if (!table.TryGetValue("sort_settings", out object? sortSettingsValue) || sortSettingsValue is not TomlTable sortSettings)
+        {
+            return null;
+        }
+
+        if (!sortSettings.TryGetValue("angle", out object? angleValue))
+        {
+            return null;
+        }
+
+        double? angle = angleValue switch
+        {
+            double d => d,
+            long l => l,
+            _ => null
+        };
+
+        if (angle is null || double.IsNaN(angle.Value) || angle.Value < 0 || angle.Value > 360)
+        {
+            return null;
+        }
+
+        return (float)angle.Value;
     }
 
     private static bool TryGetMappedValue(IReadOnlyDictionary<string, string>? map, string key, out string value)
