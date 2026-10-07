@@ -1,8 +1,6 @@
 using PixelsorterApp.Pages;
 using PixelsorterApp.Popups;
-using System.Diagnostics;
 using UXDivers.Popups.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace PixelsorterApp.Services;
 
@@ -35,12 +33,12 @@ public sealed class HelpNavigationService : IHelpNavigationService
         var parameters = new Dictionary<string, object?>
         {
             { "Title", PixelsorterApp.Resources.Languages.AppStrings.Navigation_Title },
-            { "Options", new List<(string Id, string Label, string Icon)> { 
-                ("Help", PixelsorterApp.Resources.Languages.AppStrings.PageName_HelpPage, MaterialSymbolsFont.Help), 
-                ("Gallery", PixelsorterApp.Resources.Languages.AppStrings.PageName_ExampleGallery, MaterialSymbolsFont.Collections), 
-                ("Presets", PixelsorterApp.Resources.Languages.AppStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune), 
-                ("Licenses", PixelsorterApp.Resources.Languages.AppStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel), 
-                ("Privacy", PixelsorterApp.Resources.Languages.AppStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip), 
+            { "Options", new List<(string Id, string Label, string Icon)> {
+                ("Help", PixelsorterApp.Resources.Languages.AppStrings.PageName_HelpPage, MaterialSymbolsFont.Help),
+                ("Gallery", PixelsorterApp.Resources.Languages.AppStrings.PageName_ExampleGallery, MaterialSymbolsFont.Collections),
+                ("Presets", PixelsorterApp.Resources.Languages.AppStrings.PageName_PresetsPage, MaterialSymbolsFont.Tune),
+                ("Licenses", PixelsorterApp.Resources.Languages.AppStrings.PageName_OpenSourceLicenses, MaterialSymbolsFont.Gavel),
+                ("Privacy", PixelsorterApp.Resources.Languages.AppStrings.PageName_PrivacyPolicy, MaterialSymbolsFont.PrivacyTip),
                 ("Settings", PixelsorterApp.Resources.Languages.AppStrings.PageName_Settings, MaterialSymbolsFont.SettingsGear),
             } }
         };

@@ -1,11 +1,11 @@
 using CommunityToolkit.Maui;
 using Indiko.Maui.Controls.Markdown;
+using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
 using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using UraniumUI;
 using UXDivers.Popups.Maui;
-using LocalizationResourceManager.Maui;
 
 namespace PixelsorterApp
 {

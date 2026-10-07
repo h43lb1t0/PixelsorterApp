@@ -2,8 +2,6 @@ using System.Windows.Input;
 using UXDivers.Popups.Maui;
 using UXDivers.Popups.Services;
 
-using System.Collections.Generic;
-
 namespace PixelsorterApp.Popups;
 
 public partial class NavigationPopup : PopupResultPage<String>

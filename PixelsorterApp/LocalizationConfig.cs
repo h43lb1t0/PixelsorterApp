@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace PixelsorterApp
@@ -12,7 +10,7 @@ namespace PixelsorterApp
     public static partial class LocalizationConfig
     {
         private static readonly CultureInfo DefaultCulture = CultureInfo.GetCultureInfo("en-GB");
-        
+
         /// <summary>
         /// Applies the base lnaguage of the devices language if the regional part is not supported, 
         /// the exact language if supported and the default language if not.
@@ -26,7 +24,7 @@ namespace PixelsorterApp
             {
                 return;
             }
-           
+
 
             // 2. Find a fallback with the same base language (e.g., system "de-CH" -> matches "de-DE")
             // Because your list is ordered by NativeName, if multiple exist (like en-GB and en-US), 
