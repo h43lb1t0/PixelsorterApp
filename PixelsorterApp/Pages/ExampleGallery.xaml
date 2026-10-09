@@ -4,13 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PixelsorterApp.Pages"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     xmlns:views="clr-namespace:PixelsorterApp.Views">
     <Shell.TitleView>
         <Label
             FontAttributes="Bold"
             FontFamily="SpaceGroteskBold"
             FontSize="24"
-            Text="Example Gallery"
+            Text="{localization:Translate PageName_ExampleGallery}"
             TextColor="{StaticResource Primary}"
             VerticalOptions="Center" />
     </Shell.TitleView>
@@ -21,7 +22,7 @@
             Padding="20,12,20,4"
             FontFamily="SpaceGroteskRegular"
             FontSize="13"
-            Text="Drag the slider to compare the original and sorted image."
+            Text="{localization:Translate ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage}"
             TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                         Dark={StaticResource TextSecondaryDark}}" />
 

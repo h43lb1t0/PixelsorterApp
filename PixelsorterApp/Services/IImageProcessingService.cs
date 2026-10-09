@@ -4,6 +4,7 @@ using SixLabors.ImageSharp.ColorSpaces;
 
 namespace PixelsorterApp.Services;
 
+
 /// <summary>
 /// Defines image processing operations used by the main page workflow.
 /// </summary>
@@ -24,9 +25,10 @@ public interface IImageProcessingService
     /// Creates subject and inverted subject masks for an image.
     /// </summary>
     /// <param name="imagePath">Path to the source image.</param>
+    /// <param name="detectionSensitivity">Sensitivity of the subject detection in the range 0-100.</param>
     /// <param name="padding">Padding for the subject mask in pixels.</param>
     /// <returns>The subject and inverted subject masks.</returns>
-    Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, int padding);
+    Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, float detectionSensitivity, int padding);
 
     /// <summary>
     /// Creates Canny and inverted Canny masks for an image.
@@ -35,6 +37,14 @@ public interface IImageProcessingService
     /// <param name="threshold">Canny threshold in normalized 0-1 range.</param>
     /// <returns>The Canny and inverted Canny masks.</returns>
     Task<(NDArray CannyMask, NDArray InvertedCannyMask)> CreateCannyMaskAsync(string imagePath, float threshold);
+
+    /// <summary>
+    /// Creates a luminance mask and its inverted version for an image.
+    /// </summary>
+    /// <param name="imagePath">Path to the source image.</param>
+    /// <param name="threshold">Luminance threshold in normalized 0-1 range.</param>
+    /// <returns>The luminance and inverted luminance masks.</returns>
+    Task<(NDArray LumMask, NDArray InvertedLumMask)> CreateLumMaskAsync(string imagePath, float threshold);
 
     /// <summary>
     /// Builds the effective mask according to current mask settings.
@@ -53,7 +63,11 @@ public interface IImageProcessingService
         bool useCanny,
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
+        float subjectDetectionSensitivity,
         int subjectMaskPadding,
+        bool useLumMask,
+        float lumThreshold,
+        bool useInvertedLumMask,
         float cannyThreshold);
 
     /// <summary>
@@ -64,7 +78,7 @@ public interface IImageProcessingService
     /// <param name="sortingDirection">Sorting direction.</param>
     /// <param name="maskToUse">Optional mask used while sorting.</param>
     /// <returns>The path of the generated sorted image file.</returns>
-    Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse);
+    Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse, float angle);
 
     /// <summary>
     /// Saves an image file to the device gallery.

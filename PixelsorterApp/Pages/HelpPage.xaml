@@ -3,12 +3,13 @@
     x:Class="PixelsorterApp.Pages.HelpPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown">
+    xmlns:indiko="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui">
     <Shell.TitleView>
         <Label
             FontSize="22"
             Style="{StaticResource TitleViewLabelStyle}"
-            Text="How to use the Pixelsorter" />
+            Text="{localization:Translate HelpPage_DisplayPageName_HowToUseThePixelsorter}" />
     </Shell.TitleView>
     <Grid
         Padding="15"
