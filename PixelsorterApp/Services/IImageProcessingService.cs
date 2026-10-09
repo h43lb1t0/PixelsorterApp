@@ -1,6 +1,6 @@
 using NumSharp;
 using PixelsorterClassLib.Core;
-using SixLabors.ImageSharp.ColorSpaces;
+using Hsl = SixLabors.ImageSharp.ColorProfiles.Hsl;
 
 namespace PixelsorterApp.Services;
 

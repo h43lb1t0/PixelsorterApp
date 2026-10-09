@@ -5,7 +5,7 @@ using PixelsorterApp.Models;
 using PixelsorterApp.Models.Presets;
 using PixelsorterApp.Services;
 using PixelsorterClassLib.Core;
-using SixLabors.ImageSharp.ColorSpaces;
+using Hsl = SixLabors.ImageSharp.ColorProfiles.Hsl;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
