@@ -188,6 +188,23 @@ public sealed partial class MainPageViewModel : BaseViewModel
     public partial int SubjectMaskPadding { get; set; } = 15;
 
     /// <summary>
+    /// Gets or sets the sensitivity of the subject detection.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SubjectDetectionSensitivityText))]
+    [NotifyPropertyChangedFor(nameof(SubjectDetectionSensitivityNormalized))]
+    public partial float SubjectDetectionSensitivity { get; set; } = 50f;
+
+    /// <summary>
+    /// Gets the formatted subject detection sensitivity label.
+    /// </summary>
+    public string SubjectDetectionSensitivityText => $"{SubjectDetectionSensitivity:F2}%";
+    /// <summary>
+    /// Gets the subject detection sensitivity as a normalized value between 0 and 1.
+    /// </summary>
+    public float SubjectDetectionSensitivityNormalized => SubjectDetectionSensitivity / 100f;
+
+    /// <summary>
     /// Gets or sets a value indicating whether the subject mask should be inverted.
     /// </summary>
     [ObservableProperty]
@@ -717,6 +734,16 @@ public sealed partial class MainPageViewModel : BaseViewModel
         if (value != clamped)
         {
             SubjectMaskPadding = clamped;
+        }
+    }
+
+    partial void OnSubjectDetectionSensitivityChanged(float value)
+    {
+        var rounded = MathF.Round(value, 2);
+        if (value != rounded)
+        {
+            SubjectDetectionSensitivity = rounded;
+            return;
         }
     }
 
