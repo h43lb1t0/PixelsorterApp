@@ -751,4 +751,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="TomlValidation_Angle_NaN" xml:space="preserve">
     <value>sortsettings.direction.angle must be a floating point number.</value>
   </data>
+  <data name="SubjectMaskOptionsView_DetectionConfidence" xml:space="preserve">
+    <value>Background detection confidence</value>
+  </data>
 </root>

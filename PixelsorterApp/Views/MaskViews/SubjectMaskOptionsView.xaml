@@ -51,7 +51,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 FontSize="14"
-                Text="Background detection confidence"
+                Text="{localization:Translate SubjectMaskOptionsView_DetectionConfidence}"
                 VerticalOptions="Center" />
             <Slider
                 Grid.Row="1"

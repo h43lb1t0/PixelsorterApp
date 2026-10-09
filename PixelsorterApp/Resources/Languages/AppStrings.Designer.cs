@@ -1075,6 +1075,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Background detection confidence.
+        /// </summary>
+        internal static string SubjectMaskOptionsView_DetectionConfidence {
+            get {
+                return ResourceManager.GetString("SubjectMaskOptionsView_DetectionConfidence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         internal static string SubjectMaskOptionsView_HowToCombineMasks_Add {
