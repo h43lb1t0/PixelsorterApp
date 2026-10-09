@@ -578,8 +578,10 @@ namespace PixelsorterApp.ViewModels
                 int subjectSettingsIdx = current.IndexOf("[subject_settings]", StringComparison.OrdinalIgnoreCase);
                 if (subjectSettingsIdx >= 0)
                 {
+                    int nextSectionIdx = current.IndexOf('[', subjectSettingsIdx + 1);
                     int insertIdx = current.IndexOf("what_to_sort", subjectSettingsIdx, StringComparison.OrdinalIgnoreCase);
-                    if (insertIdx >= 0)
+
+                    if (insertIdx >= 0 && (nextSectionIdx < 0 || insertIdx < nextSectionIdx))
                     {
                         sb.Insert(insertIdx, "sensitivity = 50.0\r\n");
                     }
