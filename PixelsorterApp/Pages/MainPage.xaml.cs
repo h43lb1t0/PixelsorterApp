@@ -691,6 +691,7 @@ namespace PixelsorterApp
                         viewModel.UseCanny,
                         viewModel.UseSubtractMasks,
                         viewModel.UseInvertedSubjectMask,
+                        viewModel.SubjectDetectionSensitivityNormalized,
                         viewModel.SubjectMaskPadding,
                         viewModel.UseLumMask,
                         viewModel.LumMaskThreshold,
