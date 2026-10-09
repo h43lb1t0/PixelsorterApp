@@ -21,6 +21,7 @@ namespace PixelsorterApp.ViewModels
         private readonly int cannyThreashold;
         private readonly bool subjectMasking;
         private readonly int subjectPadding;
+        private readonly float subjectSensitivity;
         private readonly bool subjectBackground;
         private readonly bool lumMasking;
         private readonly int lumThreshold;
@@ -118,6 +119,7 @@ namespace PixelsorterApp.ViewModels
 
             subjectMasking = _mainViewModel.UseSubjectMask;
             subjectPadding = _mainViewModel.SubjectMaskPadding;
+            subjectSensitivity = _mainViewModel.SubjectDetectionSensitivity;
             subjectBackground = _mainViewModel.UseInvertedSubjectMask;
 
             lumMasking = _mainViewModel.UseLumMask;
@@ -338,6 +340,9 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("  - 0.0 - 360.0 (used with direction \"aa\")");
             sb.AppendLine();
             AppendOptions("What To Sort Options:", map.WhatToSort);
+            sb.AppendLine("Sensitivity (subject_settings.sensitivity, optional):");
+            sb.AppendLine("  - 1.0 - 99.99");
+            sb.AppendLine();    
             AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
 
@@ -387,6 +392,7 @@ namespace PixelsorterApp.ViewModels
 
             sb.AppendLine("[subject_settings]");
             sb.AppendLine($"padding = {subjectPadding}");
+            sb.AppendLine($"sensitivity = {subjectSensitivity.ToString("0.0#", CultureInfo.InvariantCulture)}");
             sb.AppendLine($"what_to_sort = \"{whatToSortKey}\"");
             sb.AppendLine("");
 
@@ -519,7 +525,7 @@ namespace PixelsorterApp.ViewModels
             string rawToml = Path.IsPathRooted(filePath)
                 ? await File.ReadAllTextAsync(filePath)
                 : await ReadAppPackageTextAsync(filePath);
-            PresetToml = EnsureLuminanceSections(rawToml);
+            PresetToml = EnsureNewSections(rawToml);
             PresetName = presetName;
             MakeDefaultPreset = string.Equals(
                 Preferences.Get("defaultPreset", string.Empty),
@@ -528,10 +534,10 @@ namespace PixelsorterApp.ViewModels
         }
 
         /// <summary>
-        /// Injects default luminance sections into preset TOML text if they are missing.
+        /// Injects default new sections and properties into preset TOML text if they are missing.
         /// This ensures old presets get the new fields when opened for editing.
         /// </summary>
-        private static string EnsureLuminanceSections(string toml)
+        private static string EnsureNewSections(string toml)
         {
             var sb = new StringBuilder(toml);
 
@@ -549,10 +555,11 @@ namespace PixelsorterApp.ViewModels
                 }
             }
 
-            if (!toml.Contains("[luminance_options]", StringComparison.OrdinalIgnoreCase))
+            string current = sb.ToString();
+
+            if (!current.Contains("[luminance_options]", StringComparison.OrdinalIgnoreCase))
             {
                 // Insert before [mask_combination] if present, otherwise append
-                string current = sb.ToString();
                 int maskCombIdx = current.IndexOf("[mask_combination]", StringComparison.OrdinalIgnoreCase);
                 if (maskCombIdx >= 0)
                 {
@@ -564,6 +571,27 @@ namespace PixelsorterApp.ViewModels
                     sb.AppendLine("[luminance_options]");
                     sb.AppendLine("threshold = 50");
                     sb.AppendLine("what_to_sort = \"normal\"");
+                }
+            }
+
+            current = sb.ToString();
+
+            if (!current.Contains("sensitivity", StringComparison.OrdinalIgnoreCase))
+            {
+                int subjectSettingsIdx = current.IndexOf("[subject_settings]", StringComparison.OrdinalIgnoreCase);
+                if (subjectSettingsIdx >= 0)
+                {
+                    int nextSectionIdx = current.IndexOf('[', subjectSettingsIdx + 1);
+                    int insertIdx = current.IndexOf("what_to_sort", subjectSettingsIdx, StringComparison.OrdinalIgnoreCase);
+
+                    if (insertIdx >= 0 && (nextSectionIdx < 0 || insertIdx < nextSectionIdx))
+                    {
+                        sb.Insert(insertIdx, "sensitivity = 50.0\r\n");
+                    }
+                    else
+                    {
+                        sb.Insert(subjectSettingsIdx + "[subject_settings]".Length, "\r\nsensitivity = 50.0");
+                    }
                 }
             }
 

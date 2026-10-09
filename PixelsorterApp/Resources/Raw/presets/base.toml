@@ -1,6 +1,7 @@
 ﻿[sort_settings]
 sort_by = "hue"
 direction = "lr"
+angle = 45
 
 [masking_options]
 use_canny = false
@@ -11,6 +12,7 @@ use_luminance = false
 threshold = 30
 
 [subject_settings]
+sensitivity = 50
 padding = 15
 what_to_sort = "background"
 

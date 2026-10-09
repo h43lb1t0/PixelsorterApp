@@ -25,9 +25,10 @@ public interface IImageProcessingService
     /// Creates subject and inverted subject masks for an image.
     /// </summary>
     /// <param name="imagePath">Path to the source image.</param>
+    /// <param name="detectionSensitivity">Sensitivity of the subject detection in the range 0-100.</param>
     /// <param name="padding">Padding for the subject mask in pixels.</param>
     /// <returns>The subject and inverted subject masks.</returns>
-    Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, int padding);
+    Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, float detectionSensitivity, int padding);
 
     /// <summary>
     /// Creates Canny and inverted Canny masks for an image.
@@ -62,6 +63,7 @@ public interface IImageProcessingService
         bool useCanny,
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
+        float subjectDetectionSensitivity,
         int subjectMaskPadding,
         bool useLumMask,
         float lumThreshold,

@@ -18,6 +18,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 
     private string? cachedImagePath;
     private int cachedSubjectPadding = -1;
+    private float cachedSubjectDetectionSensitivity = -1f;
     private float cachedCannyThreshold = -1;
     private NDArray? subjectMask;
     private NDArray? invertedSubjectMask;
@@ -34,6 +35,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool UseCanny,
         bool UseSubtractMasks,
         bool UseInvertedSubjectMask,
+        int SubjectDetectionSensitivityBucket,
         int SubjectMaskPadding,
         int CannyThresholdBucket,
         bool UseLumMask,
@@ -50,9 +52,9 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     }
 
     /// <inheritdoc/>
-    public Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, int padding)
+    public Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, float detectionSensitivity, int padding)
     {
-        return backgroundMasker.GetMaskAsync(imagePath, new BackgroundMaskOptions(padding));
+        return backgroundMasker.GetMaskAsync(imagePath, new BackgroundMaskOptions(padding, detectionSensitivity));
     }
 
     /// <inheritdoc/>
@@ -74,6 +76,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool useCanny,
         bool useSubtractMasks,
         bool useInvertedSubjectMask,
+        float subjectDetectionSensitivity,
         int subjectMaskPadding,
         bool useLumMask,
         float lumThreshold,
@@ -87,6 +90,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             useCanny,
             useSubtractMasks,
             useInvertedSubjectMask,
+            GetThresholdBucket(subjectDetectionSensitivity),
             subjectMaskPadding,
             GetThresholdBucket(cannyThreshold),
             useLumMask,
@@ -108,7 +112,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 
         if (useSubjectMask)
         {
-            await EnsureSubjectMaskAsync(imagePath, subjectMaskPadding);
+            await EnsureSubjectMaskAsync(imagePath, subjectDetectionSensitivity, subjectMaskPadding);
             if (subjectMask is null || invertedSubjectMask is null)
                 return CacheAndReturn(cacheKey, null);
 
@@ -216,6 +220,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 
         cachedImagePath = imagePath;
         cachedSubjectPadding = -1;
+        cachedSubjectDetectionSensitivity = -1f;
         cachedCannyThreshold = -1;
         cachedLumThreshold = -1;
         subjectMask = null;
@@ -242,10 +247,11 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// Ensures that subject masks are available for the current image and padding settings.
     /// </summary>
     /// <param name="imagePath">Path of the image being processed.</param>
+    /// <param name="detectionSensitivity">Subject mask detection sensitivity.</param>
     /// <param name="padding">Subject mask padding in pixels.</param>
-    private async Task EnsureSubjectMaskAsync(string imagePath, int padding)
+    private async Task EnsureSubjectMaskAsync(string imagePath, float detectionSensitivity, int padding)
     {
-        if (subjectMask is not null && invertedSubjectMask is not null && cachedSubjectPadding == padding)
+        if (subjectMask is not null && invertedSubjectMask is not null && cachedSubjectPadding == padding && Math.Abs(cachedSubjectDetectionSensitivity - detectionSensitivity) < 0.0001f)
         {
             return;
         }
@@ -257,8 +263,9 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             return;
         }
 
-        (subjectMask, invertedSubjectMask) = await CreateSubjectMaskAsync(imagePath, padding);
+        (subjectMask, invertedSubjectMask) = await CreateSubjectMaskAsync(imagePath, detectionSensitivity, padding);
         cachedSubjectPadding = padding;
+        cachedSubjectDetectionSensitivity = detectionSensitivity;
     }
 
     /// <summary>

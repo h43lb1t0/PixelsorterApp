@@ -744,4 +744,13 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="TomlValidation_Angle_NaN" xml:space="preserve">
     <value>sortsettings.direction.angle muss eine Gleitkommazahl sein.</value>
   </data>
+  <data name="SubjectMaskOptionsView_DetectionConfidence" xml:space="preserve">
+    <value>Konfidenz der Hintergrunderkennung</value>
+  </data>
+  <data name="TomlValidation_SubjectSensitivityOutOfRange" xml:space="preserve">
+    <value>subject_settings.sensitivity muss im Intervall (1, 100] liegen.</value>
+  </data>
+  <data name="TomlValidation_SubjectSensitivity_NaN" xml:space="preserve">
+    <value>subject_settings.sensitivity muss eine Gleitkommazahl sein.</value>
+  </data>
 </root>

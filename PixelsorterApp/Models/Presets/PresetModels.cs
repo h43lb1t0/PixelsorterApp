@@ -93,6 +93,9 @@ public sealed class SubjectSettings
     [TomlPropertyName("padding")]
     public int? Padding { get; init; }
 
+    [TomlPropertyName("sensitivity")]
+    public float? Sensitivity { get; init; }
+
     [TomlPropertyName("what_to_sort")]
     public string? WhatToSort { get; init; }
 }
