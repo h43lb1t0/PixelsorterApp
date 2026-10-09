@@ -151,7 +151,7 @@ namespace PixelsorterApp.Services
                 }
                 else
 
-                    if (sens is null || sens.Value < 0 || sens.Value > 100)
+                    if (sens is null || sens.Value < 1 || sens.Value >= 100)
                 {
                     errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectSensitivityOutOfRange);
                 }
