@@ -64,6 +64,7 @@
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
+                FontFamily="JetBrainsMonoRegular"
                 FontSize="14"
                 HorizontalOptions="End"
                 Text="{Binding LumMaskThresholdText}"
