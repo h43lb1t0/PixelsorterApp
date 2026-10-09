@@ -340,6 +340,9 @@ namespace PixelsorterApp.ViewModels
             sb.AppendLine("  - 0.0 - 360.0 (used with direction \"aa\")");
             sb.AppendLine();
             AppendOptions("What To Sort Options:", map.WhatToSort);
+            sb.AppendLine("Sensitivity (subject_settings.sensitivity, optional):");
+            sb.AppendLine("  - 1.0 - 99.99");
+            sb.AppendLine();    
             AppendOptions("What To Sort Luminance Options:", map.WhatToSortLum);
             AppendOptions("Mask Combination Options:", map.MaskCombination);
 
