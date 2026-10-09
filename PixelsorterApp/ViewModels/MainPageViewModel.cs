@@ -848,6 +848,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             if (state.UseLumMask.HasValue) UseLumMask = state.UseLumMask.Value;
             if (state.CannyThresholdPercent.HasValue) CannyThresholdPercent = state.CannyThresholdPercent.Value;
             if (state.SubjectMaskPadding.HasValue) SubjectMaskPadding = state.SubjectMaskPadding.Value;
+            if (state.SubjectDetectionSensitivity.HasValue) SubjectDetectionSensitivity = state.SubjectDetectionSensitivity.Value;
             if (state.UseInvertedSubjectMask.HasValue) UseInvertedSubjectMask = state.UseInvertedSubjectMask.Value;
             if (state.UseSubtractMasks.HasValue) UseSubtractMasks = state.UseSubtractMasks.Value;
             if (state.LumThresholdPercent.HasValue) LumMaskThresholdPercent = state.LumThresholdPercent.Value;

@@ -136,6 +136,27 @@ namespace PixelsorterApp.Services
                 errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectPaddingOutOfRange);
             }
 
+            if (subjectSettings.TryGetValue("sensitivity", out object? sensValue))
+            {
+                double? sens = sensValue switch
+                {
+                    double d => d,
+                    long l => l,
+                    _ => null
+                };
+
+                if (sens is null || double.IsNaN(sens.Value))
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectSensitivity_NaN);
+                }
+                else
+
+                    if (sens is null || sens.Value < 0 || sens.Value > 100)
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectSensitivityOutOfRange);
+                }
+            }
+
             if (useSubject)
             {
                 bool licenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);

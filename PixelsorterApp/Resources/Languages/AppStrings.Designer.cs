@@ -1345,6 +1345,24 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to subject_settings.sensitivity must be a valid floating-point number..
+        /// </summary>
+        internal static string TomlValidation_SubjectSensitivity_NaN {
+            get {
+                return ResourceManager.GetString("TomlValidation_SubjectSensitivity_NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to subject_settings.sensitivity must be in range (1, 100]..
+        /// </summary>
+        internal static string TomlValidation_SubjectSensitivityOutOfRange {
+            get {
+                return ResourceManager.GetString("TomlValidation_SubjectSensitivityOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TOML is valid..
         /// </summary>
         internal static string TOMLValidation_Valid {

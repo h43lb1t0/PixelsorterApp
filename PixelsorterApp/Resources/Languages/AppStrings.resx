@@ -754,4 +754,10 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="SubjectMaskOptionsView_DetectionConfidence" xml:space="preserve">
     <value>Background detection confidence</value>
   </data>
+  <data name="TomlValidation_SubjectSensitivity_NaN" xml:space="preserve">
+    <value>subject_settings.sensitivity must be a valid floating-point number.</value>
+  </data>
+  <data name="TomlValidation_SubjectSensitivityOutOfRange" xml:space="preserve">
+    <value>subject_settings.sensitivity must be in range (1, 100].</value>
+  </data>
 </root>

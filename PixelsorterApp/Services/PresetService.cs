@@ -97,12 +97,18 @@ public class PresetService : IPresetService
 
         bool? useInvertedSubjectMask = null;
         int? subjectMaskPadding = null;
+        float? subjectDetectionSensitivity = null;
 
         if (preset.SubjectSettings is not null)
         {
             if (preset.SubjectSettings.Padding is > 0)
             {
                 subjectMaskPadding = preset.SubjectSettings.Padding.Value;
+            }
+
+            if (preset.SubjectSettings.Sensitivity is > 0)
+            {
+                subjectDetectionSensitivity = preset.SubjectSettings.Sensitivity.Value;
             }
 
             if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
@@ -171,6 +177,7 @@ public class PresetService : IPresetService
             UseSubjectMask = preset.MaskingOptions?.UseSubject,
             CannyThresholdPercent = preset.CannyOptions?.Threshold is > 0 ? preset.CannyOptions.Threshold.Value : null,
             SubjectMaskPadding = subjectMaskPadding,
+            SubjectDetectionSensitivity = subjectDetectionSensitivity,
             UseInvertedSubjectMask = useInvertedSubjectMask,
             SortByName = sortByName,
             UseSubtractMasks = useSubtractMasks,
