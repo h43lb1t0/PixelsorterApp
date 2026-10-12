@@ -339,6 +339,7 @@
 
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
+		<MauiAsset Include="Resources\Raw\licenses.Other.json" LogicalName="licenses.Other.json" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -62,10 +62,55 @@
                 SemanticProperties.HeadingLevel="Level2"
                 Text="Additional Licenses" />
             <Border>
-                <VerticalStackLayout Padding="16" Spacing="4">
-
-                    <!--  Add additional licenses here  -->
-
+                <VerticalStackLayout x:Name="AdditionalLicensesContainer" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="local:LicenseInfo">
+                            <VerticalStackLayout Padding="16" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    SemanticProperties.HeadingLevel="Level3"
+                                    Text="{Binding PackageName}" />
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.8"
+                                    Text="{Binding Authors}">
+                                    <Label.Triggers>
+                                        <DataTrigger Binding="{Binding Authors}" TargetType="Label" Value="">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.6"
+                                    Text="{Binding PackageVersion}">
+                                    <Label.Triggers>
+                                        <DataTrigger Binding="{Binding PackageVersion}" TargetType="Label" Value="">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.8"
+                                    Text="{Binding LicenseType}" />
+                                <Button
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
+                                    CommandParameter="{Binding LicenseUrl}"
+                                    SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
+                                    SemanticProperties.Hint="Press Enter to open this license in the browser"
+                                    Style="{StaticResource LinkButtonStyle}"
+                                    Text="{Binding LicenseUrl}" />
+                                <BoxView
+                                    Margin="0,8,0,0"
+                                    AutomationProperties.IsInAccessibleTree="False"
+                                    HeightRequest="1"
+                                    Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                            Dark={StaticResource DividerDark}}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

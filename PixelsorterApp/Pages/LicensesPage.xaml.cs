@@ -26,6 +26,14 @@ namespace PixelsorterApp
         {
             var licenses = await GetLicensesAsync();
             BindableLayout.SetItemsSource(LicensesContainer, licenses);
+
+            var additionalLicenses = await GetAdditionalLicensesAsync();
+            BindableLayout.SetItemsSource(AdditionalLicensesContainer, additionalLicenses);
+        }
+
+        public async Task<IReadOnlyList<LicenseInfo>> GetAdditionalLicensesAsync()
+        {
+            return await TryReadLicensesAsync("licenses.Other.json");
         }
 
         public async Task<IReadOnlyList<LicenseInfo>> GetLicensesAsync()
