@@ -60,7 +60,7 @@
                 FontAttributes="Bold"
                 FontSize="20"
                 SemanticProperties.HeadingLevel="Level2"
-                Text="Additional Licenses" />
+                Text="{localization:Translate LicensesPage_AdditionalLicenses}" />
             <Border>
                 <VerticalStackLayout x:Name="AdditionalLicensesContainer" Spacing="0">
                     <BindableLayout.ItemTemplate>
@@ -76,7 +76,10 @@
                                     Opacity="0.8"
                                     Text="{Binding Authors}">
                                     <Label.Triggers>
-                                        <DataTrigger Binding="{Binding Authors}" TargetType="Label" Value="">
+                                        <DataTrigger
+                                            Binding="{Binding Authors}"
+                                            TargetType="Label"
+                                            Value="">
                                             <Setter Property="IsVisible" Value="False" />
                                         </DataTrigger>
                                     </Label.Triggers>
@@ -86,7 +89,10 @@
                                     Opacity="0.6"
                                     Text="{Binding PackageVersion}">
                                     <Label.Triggers>
-                                        <DataTrigger Binding="{Binding PackageVersion}" TargetType="Label" Value="">
+                                        <DataTrigger
+                                            Binding="{Binding PackageVersion}"
+                                            TargetType="Label"
+                                            Value="">
                                             <Setter Property="IsVisible" Value="False" />
                                         </DataTrigger>
                                     </Label.Triggers>

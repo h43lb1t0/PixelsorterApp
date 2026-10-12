@@ -760,4 +760,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="TomlValidation_SubjectSensitivityOutOfRange" xml:space="preserve">
     <value>subject_settings.sensitivity must be in range (1, 100].</value>
   </data>
+  <data name="LicensesPage_AdditionalLicenses" xml:space="preserve">
+    <value>Additional Licenses</value>
+  </data>
 </root>

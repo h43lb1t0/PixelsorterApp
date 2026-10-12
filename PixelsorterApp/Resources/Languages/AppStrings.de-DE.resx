@@ -753,4 +753,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="TomlValidation_SubjectSensitivity_NaN" xml:space="preserve">
     <value>subject_settings.sensitivity muss eine Gleitkommazahl sein.</value>
   </data>
+  <data name="LicensesPage_AdditionalLicenses" xml:space="preserve">
+    <value>Zusätzliche Lizenzen</value>
+  </data>
 </root>
