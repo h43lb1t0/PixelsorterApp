@@ -153,8 +153,8 @@
 			<Using Namespace="System.Text.RegularExpressions" />
 			<Code Type="Fragment" Language="cs">
 <![CDATA[
-#nullable enable
-				var overrides = new Dictionary<string, (string? License, string? LicenseUrl)>(StringComparer.OrdinalIgnoreCase);
+#nullable disable
+				var overrides = new Dictionary<string, (string License, string LicenseUrl)>(StringComparer.OrdinalIgnoreCase);
 				if (!string.IsNullOrEmpty(OverridesFile) && File.Exists(OverridesFile))
 				{
 					var overridesContent = File.ReadAllText(OverridesFile);
@@ -224,6 +224,13 @@
 						var currentObj = obj;
 						var pkgMatch = Regex.Match(currentObj, @"""PackageId""\s*:\s*""([^""]+)""");
 						var pkgId = pkgMatch.Success ? pkgMatch.Groups[1].Value : "Unknown";
+
+						if (pkgId.StartsWith("Microsoft.WindowsAppSDK", StringComparison.OrdinalIgnoreCase) ||
+						    pkgId.StartsWith("Microsoft.Windows.SDK.", StringComparison.OrdinalIgnoreCase))
+						{
+							fileModified = true;
+							continue;
+						}
 
 						var verMatch = Regex.Match(currentObj, @"""PackageVersion""\s*:\s*""([^""]*)""");
 						var pkgVer = verMatch.Success ? verMatch.Groups[1].Value : "";
@@ -327,8 +334,8 @@
 
 	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
 		<Exec Command="dotnet tool restore --tool-manifest &quot;$(MSBuildProjectDirectory)\..\.config\dotnet-tools.json&quot;" />
-		<Exec Command="dotnet tool run nuget-license -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
-		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Command="dotnet tool run nuget-license -t -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 		<ItemGroup>
 			<_GeneratedLicenseFiles Include="$(ProjectDir)Resources\Raw\licenses.$(MSBuildProjectName).json" />
 			<_GeneratedLicenseFiles Condition="'@(ProjectReference)' != ''" Include="$(ProjectDir)Resources\Raw\licenses.%(ProjectReference.Filename).json" />
