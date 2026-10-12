@@ -1,4 +1,4 @@
-﻿namespace PixelsorterApp
+namespace PixelsorterApp.Models.Licenses
 {
     public class LicenseInfo
     {

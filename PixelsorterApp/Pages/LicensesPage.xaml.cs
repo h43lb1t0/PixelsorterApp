@@ -1,3 +1,4 @@
+using PixelsorterApp.Models.Licenses;
 using System.Text.Json;
 using System.Windows.Input;
 
@@ -5,30 +6,51 @@ namespace PixelsorterApp
 {
     public partial class LicensesPage : ContentPage
     {
-        public ICommand OpenUrlCommand { get; }
+        public static ICommand OpenUrlCommand { get; } = new Command(static async parameter =>
+        {
+            if (parameter is string url && Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                SemanticScreenReader.Announce($"Opening {uri.Host}");
+                await Launcher.OpenAsync(uri);
+            }
+        });
+
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            AllowTrailingCommas = true
+        };
+
+        private bool _isLoaded;
 
         public LicensesPage()
         {
             InitializeComponent();
-            OpenUrlCommand = new Command(static async parameter =>
-            {
-                if (parameter is string url && Uri.TryCreate(url, UriKind.Absolute, out var uri))
-                {
-                    SemanticScreenReader.Announce($"Opening {uri.Host}");
-                    await Launcher.OpenAsync(uri);
-                }
-            });
-            BindingContext = this;
             Loaded += OnLoaded;
         }
 
         private async void OnLoaded(object? sender, EventArgs e)
         {
-            var licenses = await GetLicensesAsync();
-            BindableLayout.SetItemsSource(LicensesContainer, licenses);
+            if (_isLoaded)
+            {
+                return;
+            }
+            _isLoaded = true;
 
-            var additionalLicenses = await GetAdditionalLicensesAsync();
-            BindableLayout.SetItemsSource(AdditionalLicensesContainer, additionalLicenses);
+            // Read + parse + merge off the UI thread, then hand the result to the CollectionView once.
+            var groups = await Task.Run(async () =>
+            {
+                var licenses = await GetLicensesAsync();
+                var additionalLicenses = await GetAdditionalLicensesAsync();
+
+                return new List<LicenseGroup>
+                {
+                    new(string.Empty, licenses),
+                    new(PixelsorterApp.Resources.Languages.AppStrings.LicensesPage_AdditionalLicenses, additionalLicenses)
+                };
+            });
+
+            LicensesCollection.ItemsSource = groups;
         }
 
         public async Task<IReadOnlyList<LicenseInfo>> GetAdditionalLicensesAsync()
@@ -107,13 +129,7 @@ namespace PixelsorterApp
                 return [];
             }
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                AllowTrailingCommas = true
-            };
-
-            var generatedLicenses = JsonSerializer.Deserialize<List<GeneratedLicenseInfo>>(contents, options);
+            var generatedLicenses = JsonSerializer.Deserialize<List<GeneratedLicenseInfo>>(contents, JsonOptions);
             if (generatedLicenses is { Count: > 0 }
                 && generatedLicenses.Any(item =>
                     !string.IsNullOrWhiteSpace(item.PackageId)
@@ -133,7 +149,7 @@ namespace PixelsorterApp
 
             try
             {
-                var directLicenses = JsonSerializer.Deserialize<List<LicenseInfo>>(contents, options) ?? [];
+                var directLicenses = JsonSerializer.Deserialize<List<LicenseInfo>>(contents, JsonOptions) ?? [];
                 foreach (var item in directLicenses)
                 {
                     item.LicenseUrl = ResolveLicenseUrl(item.LicenseUrl, item.LicenseType);
