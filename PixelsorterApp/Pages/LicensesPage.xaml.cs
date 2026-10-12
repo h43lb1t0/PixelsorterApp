@@ -30,34 +30,51 @@ namespace PixelsorterApp
 
         public async Task<IReadOnlyList<LicenseInfo>> GetLicensesAsync()
         {
-            // Load licenses.json first for prioritization
-            var prioritizedLicenses = await TryReadLicensesAsync("licenses.json");
-            var prioritizedDict = prioritizedLicenses.ToDictionary(
-                item => $"{item.PackageName}|{item.PackageVersion}",
-                item => item,
-                StringComparer.OrdinalIgnoreCase);
-
             var generatedFiles = new[]
             {
                 "licenses.PixelsorterApp.json",
                 "licenses.PixelsorterClassLib.json"
             };
 
+            var packageDict = new Dictionary<string, LicenseInfo>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var file in generatedFiles)
             {
                 var licenses = await TryReadLicensesAsync(file);
                 foreach (var license in licenses)
                 {
-                    var key = $"{license.PackageName}|{license.PackageVersion}";
-                    // Only add if not already present from licenses.json
-                    if (!prioritizedDict.ContainsKey(key))
+                    if (!packageDict.ContainsKey(license.PackageName))
                     {
-                        prioritizedDict[key] = license;
+                        packageDict[license.PackageName] = license;
                     }
                 }
             }
 
-            return prioritizedDict.Values
+            var supplementalLicenses = await TryReadLicensesAsync("licenses.json");
+            foreach (var item in supplementalLicenses)
+            {
+                if (packageDict.TryGetValue(item.PackageName, out var existing))
+                {
+                    if (string.IsNullOrWhiteSpace(existing.LicenseType) || existing.LicenseType == PixelsorterApp.Resources.Languages.AppStrings.LicensePage_LicenseInformationUnavailable)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.LicenseType) && item.LicenseType != PixelsorterApp.Resources.Languages.AppStrings.LicensePage_LicenseInformationUnavailable)
+                        {
+                            existing.LicenseType = item.LicenseType;
+                        }
+                    }
+
+                    if (string.IsNullOrWhiteSpace(existing.LicenseUrl) && !string.IsNullOrWhiteSpace(item.LicenseUrl))
+                    {
+                        existing.LicenseUrl = item.LicenseUrl;
+                    }
+                }
+                else
+                {
+                    packageDict[item.PackageName] = item;
+                }
+            }
+
+            return packageDict.Values
                 .OrderBy(item => item.PackageName)
                 .ToList();
         }
@@ -82,7 +99,11 @@ namespace PixelsorterApp
                 return [];
             }
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                AllowTrailingCommas = true
+            };
 
             var generatedLicenses = JsonSerializer.Deserialize<List<GeneratedLicenseInfo>>(contents, options);
             if (generatedLicenses is { Count: > 0 }
@@ -98,18 +119,37 @@ namespace PixelsorterApp
                         Authors = String.Format(PixelsorterApp.Resources.Languages.AppStrings.LicensePage_ByItemAuthors, item.Authors ?? string.Empty),
                         PackageVersion = item.PackageVersion ?? string.Empty,
                         LicenseType = item.License ?? PixelsorterApp.Resources.Languages.AppStrings.LicensePage_LicenseInformationUnavailable,
-                        LicenseUrl = item.LicenseUrl ?? string.Empty
+                        LicenseUrl = ResolveLicenseUrl(item.LicenseUrl, item.License)
                     })];
             }
 
             try
             {
-                return JsonSerializer.Deserialize<List<LicenseInfo>>(contents, options) ?? [];
+                var directLicenses = JsonSerializer.Deserialize<List<LicenseInfo>>(contents, options) ?? [];
+                foreach (var item in directLicenses)
+                {
+                    item.LicenseUrl = ResolveLicenseUrl(item.LicenseUrl, item.LicenseType);
+                }
+                return directLicenses;
             }
             catch (JsonException)
             {
                 return [];
             }
+        }
+
+        private static string ResolveLicenseUrl(string? licenseUrl, string? license)
+        {
+            var trimmedUrl = licenseUrl?.Trim().TrimEnd('/');
+            if (string.Equals(trimmedUrl, "https://aka.ms/deprecateLicenseUrl", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrWhiteSpace(license) && !license.Contains('\n') && !license.Contains('\r') && license.Length <= 100)
+                {
+                    return $"https://licenses.nuget.org/{license.Trim()}";
+                }
+            }
+
+            return licenseUrl ?? string.Empty;
         }
 
         private sealed class GeneratedLicenseInfo
