@@ -1,0 +1,62 @@
+[
+  {
+    "PackageId": "JetBrains Mono",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/JetBrains/JetBrainsMono",
+    "Authors": "JetBrains and contributors",
+    "Description": "JetBrains Mono is a free and open-source font for developers.",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "Space Grotesk 2.0",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/floriankarsten/space-grotesk",
+    "Authors": "Florian Karsten",
+    "Description": "",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://github.com/floriankarsten/space-grotesk/blob/master/OFL.txt",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "DM Sans",
+    "PackageVersion": "",
+    "PackageProjectUrl": "https://github.com/googlefonts/dm-fonts",
+    "Authors": "Colophon Foundry",
+    "Description": "",
+    "License": "OFL 1.1",
+    "LicenseUrl": "https://fonts.google.com/specimen/DM+Sans/license?preview.script=Latn",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "RMBG",
+    "PackageVersion": "1.4",
+    "PackageProjectUrl": "https://github.com/googlefonts/dm-fonts",
+    "Authors": "Bria.ai",
+    "Description": "",
+    "License": "CC-BY-NC",
+    "LicenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "Example Images",
+    "PackageVersion": "",
+    "PackageProjectUrl": "",
+    "Authors": "Tom Haelbich",
+    "Description": "",
+    "License": "© Tom Haelbich",
+    "LicenseUrl": "https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt",
+    "LicenseInformationOrigin": 5
+  },
+  {
+    "PackageId": "Material Symbols & Icons",
+    "PackageVersion": "",
+    "PackageProjectUrl": "",
+    "Authors": "Google",
+    "Description": "",
+    "License": "Apache-2.0",
+    "LicenseUrl": "https://github.com/google/material-design-icons/blob/master/LICENSE",
+    "LicenseInformationOrigin": 5
+  }
+]

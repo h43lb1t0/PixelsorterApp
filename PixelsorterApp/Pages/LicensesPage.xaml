@@ -3,6 +3,7 @@
     x:Class="PixelsorterApp.LicensesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:licensemodels="clr-namespace:PixelsorterApp.Models.Licenses"
     xmlns:local="clr-namespace:PixelsorterApp"
     xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
     SemanticProperties.Description="Open source licenses used by the app">
@@ -10,131 +11,75 @@
         <Label Style="{StaticResource TitleViewLabelStyle}" Text="{localization:Translate PageName_OpenSourceLicenses}" />
     </Shell.TitleView>
 
-
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20">
-            <Label Opacity="0.8" Text="{localization:Translate LicensesPage_Explenation}" />
-
-            <Border>
-                <VerticalStackLayout x:Name="LicensesContainer" Spacing="0">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="local:LicenseInfo">
-                            <VerticalStackLayout Padding="16" Spacing="4">
-                                <Label
-                                    FontAttributes="Bold"
-                                    FontSize="16"
-                                    SemanticProperties.HeadingLevel="Level2"
-                                    Text="{Binding PackageName}" />
-                                <Label
-                                    FontSize="13"
-                                    Opacity="0.8"
-                                    Text="{Binding Authors}" />
-                                <Label
-                                    FontSize="13"
-                                    Opacity="0.6"
-                                    Text="{Binding PackageVersion}" />
-                                <Label
-                                    FontSize="13"
-                                    Opacity="0.8"
-                                    Text="{Binding LicenseType}" />
-                                <Button
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
-                                    CommandParameter="{Binding LicenseUrl}"
-                                    SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
-                                    SemanticProperties.Hint="Press Enter to open this license in the browser"
-                                    Style="{StaticResource LinkButtonStyle}"
-                                    Text="{Binding LicenseUrl}" />
-                                <BoxView
-                                    Margin="0,8,0,0"
-                                    AutomationProperties.IsInAccessibleTree="False"
-                                    HeightRequest="1"
-                                    Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                            Dark={StaticResource DividerDark}}" />
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
-            </Border>
+    <!--  Single virtualized CollectionView (no outer ScrollView, otherwise virtualization is lost)  -->
+    <CollectionView
+        x:Name="LicensesCollection"
+        IsGrouped="True"
+        SelectionMode="None">
+        <CollectionView.Header>
             <Label
-                Margin="0,16,0,8"
-                FontAttributes="Bold"
-                FontSize="20"
-                SemanticProperties.HeadingLevel="Level2"
-                Text="Additional Licenses" />
-            <Border>
-                <VerticalStackLayout Padding="16" Spacing="4">
+                Padding="30,30,30,20"
+                Opacity="0.8"
+                Text="{localization:Translate LicensesPage_Explenation}" />
+        </CollectionView.Header>
+
+        <CollectionView.GroupHeaderTemplate>
+            <DataTemplate x:DataType="licensemodels:LicenseGroup">
+                <Label
+                    Margin="30,16,30,8"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    IsVisible="{Binding HasTitle}"
+                    SemanticProperties.HeadingLevel="Level2"
+                    Text="{Binding Title}" />
+            </DataTemplate>
+        </CollectionView.GroupHeaderTemplate>
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="licensemodels:LicenseInfo">
+                <VerticalStackLayout Padding="46,16,46,0" Spacing="4">
                     <Label
                         FontAttributes="Bold"
                         FontSize="16"
                         SemanticProperties.HeadingLevel="Level3"
-                        Text="RMBG-1.4" />
+                        Text="{Binding PackageName}" />
                     <Label
                         FontSize="13"
                         Opacity="0.8"
-                        Text="Bria.ai" />
+                        Text="{Binding Authors}">
+                        <Label.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Authors}"
+                                TargetType="Label"
+                                Value="">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label
+                        FontSize="13"
+                        Opacity="0.6"
+                        Text="{Binding PackageVersion}">
+                        <Label.Triggers>
+                            <DataTrigger
+                                Binding="{Binding PackageVersion}"
+                                TargetType="Label"
+                                Value="">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                     <Label
                         FontSize="13"
                         Opacity="0.8"
-                        Text="CC-BY-NC" />
+                        Text="{Binding LicenseType}" />
                     <Button
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
-                        CommandParameter="https://creativecommons.org/licenses/by-nc/4.0/"
-                        SemanticProperties.Description="Open license URL: https://creativecommons.org/licenses/by-nc/4.0/"
+                        Command="{x:Static local:LicensesPage.OpenUrlCommand}"
+                        CommandParameter="{Binding LicenseUrl}"
+                        SemanticProperties.Description="{Binding LicenseUrl, StringFormat='Open license URL: {0}'}"
                         SemanticProperties.Hint="Press Enter to open this license in the browser"
                         Style="{StaticResource LinkButtonStyle}"
-                        Text="https://creativecommons.org/licenses/by-nc/4.0/" />
-                    <BoxView
-                        Margin="0,8,0,0"
-                        AutomationProperties.IsInAccessibleTree="False"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                Dark={StaticResource DividerDark}}" />
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        SemanticProperties.HeadingLevel="Level3"
-                        Text="Example Images" />
-                    <Label
-                        FontSize="13"
-                        Opacity="0.8"
-                        Text="Tom Haelbich" />
-                    <Label
-                        FontSize="13"
-                        Opacity="0.8"
-                        Text="© Tom Haelbich" />
-                    <Button
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
-                        CommandParameter="https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt"
-                        SemanticProperties.Description="Open license URL: https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt"
-                        SemanticProperties.Hint="Press Enter to open this license in the browser"
-                        Style="{StaticResource LinkButtonStyle}"
-                        Text="https://github.com/h43lb1t0/PixelsorterApp/blob/main/LICENSE-EXAMPLE-IMAGES.txt" />
-                    <BoxView
-                        Margin="0,8,0,0"
-                        AutomationProperties.IsInAccessibleTree="False"
-                        HeightRequest="1"
-                        Color="{AppThemeBinding Light={StaticResource DividerLight},
-                                                Dark={StaticResource DividerDark}}" />
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        SemanticProperties.HeadingLevel="Level3"
-                        Text="Material Symbols &amp; Icons" />
-                    <Label
-                        FontSize="13"
-                        Opacity="0.8"
-                        Text="By Google" />
-                    <Label
-                        FontSize="13"
-                        Opacity="0.8"
-                        Text="Apache-2.0" />
-                    <Button
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:LicensesPage}}, Path=OpenUrlCommand}"
-                        CommandParameter="https://github.com/google/material-design-icons/blob/master/LICENSE"
-                        SemanticProperties.Description="Open license URL: https://github.com/google/material-design-icons/blob/master/LICENSE"
-                        SemanticProperties.Hint="Press Enter to open this license in the browser"
-                        Style="{StaticResource LinkButtonStyle}"
-                        Text="https://github.com/google/material-design-icons/blob/master/LICENSE" />
+                        Text="{Binding LicenseUrl}" />
                     <BoxView
                         Margin="0,8,0,0"
                         AutomationProperties.IsInAccessibleTree="False"
@@ -142,7 +87,11 @@
                         Color="{AppThemeBinding Light={StaticResource DividerLight},
                                                 Dark={StaticResource DividerDark}}" />
                 </VerticalStackLayout>
-            </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+        <CollectionView.Footer>
+            <BoxView HeightRequest="30" Color="Transparent" />
+        </CollectionView.Footer>
+    </CollectionView>
 </ContentPage>

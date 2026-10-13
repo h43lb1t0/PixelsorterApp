@@ -517,6 +517,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Licenses.
+        /// </summary>
+        internal static string LicensesPage_AdditionalLicenses {
+            get {
+                return ResourceManager.GetString("LicensesPage_AdditionalLicenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This application uses the following open source packages:.
         /// </summary>
         internal static string LicensesPage_Explenation {
