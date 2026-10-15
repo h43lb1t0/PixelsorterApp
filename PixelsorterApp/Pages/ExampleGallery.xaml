@@ -42,6 +42,7 @@
                             MaskCombine="{Binding MaskCombineSafe}"
                             SortBy="{Binding SortBySafe}"
                             SortDirection="{Binding SortDirectionSafe}"
+                            SubjectDetectionConfidence="{Binding SubjectDetectionConfidenceFormatted}"
                             SubjectMasking="{Binding SubjectMask}"
                             SubjectPadding="{Binding SubjectPaddingFormatted}"
                             VerticalOptions="Start"

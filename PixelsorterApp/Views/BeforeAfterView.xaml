@@ -205,8 +205,10 @@
                         <Grid
                             Padding="12,0,12,6"
                             ColumnDefinitions="*,Auto"
-                            IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}">
+                            IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}"
+                            RowDefinitions="Auto,Auto">
                             <Label
+                                Grid.Row="0"
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="{localization:Translate SubjectMaskOptionsView_Padding}"
@@ -214,10 +216,28 @@
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
                             <Label
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 FontAttributes="Bold"
                                 FontSize="13"
                                 Text="{Binding SubjectPadding, Source={x:Reference Root}}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Text="{localization:Translate SubjectMaskOptionsView_DetectionConfidence}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Text="{Binding SubjectDetectionConfidence, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}"
                                 VerticalOptions="Center" />

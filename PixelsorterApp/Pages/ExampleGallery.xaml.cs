@@ -83,6 +83,7 @@ public class ExampleImageConfig : INotifyPropertyChanged
     public int? CannyThreshold { get; set; }
     public bool SubjectMask { get; set; }
     public int? SubjectPadding { get; set; }
+    public int? SubjectDetectionConfidence { get; set; }
     public string WhatToSort { get; set; } = string.Empty;
     public string MaskCombine { get; set; } = string.Empty;
 
@@ -127,6 +128,9 @@ public class ExampleImageConfig : INotifyPropertyChanged
 
     [JsonIgnore]
     public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
+
+    [JsonIgnore]
+    public string SubjectDetectionConfidenceFormatted => SubjectDetectionConfidence.HasValue ? $"{SubjectDetectionConfidence}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
 
     [JsonIgnore]
     public string WhatToSortSafe => WhatToSort != null

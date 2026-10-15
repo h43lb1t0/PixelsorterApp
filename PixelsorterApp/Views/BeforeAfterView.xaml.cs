@@ -40,7 +40,10 @@ public partial class BeforeAfterView : ContentView
         
     public static readonly BindableProperty SubjectPaddingProperty =
         BindableProperty.Create(nameof(SubjectPadding), typeof(string), typeof(BeforeAfterView), string.Empty);
-        
+
+    public static readonly BindableProperty SubjectDetectionConfidenceProperty =
+        BindableProperty.Create(nameof(SubjectDetectionConfidence), typeof(string), typeof(BeforeAfterView), string.Empty);
+
     public static readonly BindableProperty WhatToSortProperty =
         BindableProperty.Create(nameof(WhatToSort), typeof(string), typeof(BeforeAfterView), string.Empty);
 
@@ -82,7 +85,13 @@ public partial class BeforeAfterView : ContentView
         get => (string)GetValue(SubjectPaddingProperty);
         set => SetValue(SubjectPaddingProperty, value);
     }
-    
+
+    public string SubjectDetectionConfidence
+    {
+        get => (string)GetValue(SubjectDetectionConfidenceProperty);
+        set => SetValue(SubjectDetectionConfidenceProperty, value);
+    }
+
     public string WhatToSort
     {
         get => (string)GetValue(WhatToSortProperty);
