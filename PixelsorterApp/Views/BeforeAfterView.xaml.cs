@@ -30,7 +30,8 @@ public partial class BeforeAfterView : ContentView
         BindableProperty.Create(nameof(SortDirection), typeof(string), typeof(BeforeAfterView), string.Empty);
 
     public static readonly BindableProperty SortAngleProperty =
-        BindableProperty.Create(nameof(SortAngle), typeof(string), typeof(BeforeAfterView), string.Empty);
+        BindableProperty.Create(nameof(SortAngle), typeof(string), typeof(BeforeAfterView), string.Empty,
+            propertyChanged: (b, o, n) => ((BeforeAfterView)b).OnPropertyChanged(nameof(HasSortAngle)));
 
     public static readonly BindableProperty CannyMaskingProperty =
         BindableProperty.Create(nameof(CannyMasking), typeof(bool), typeof(BeforeAfterView), false, propertyChanged: OnMaskingChanged);
@@ -48,7 +49,7 @@ public partial class BeforeAfterView : ContentView
         BindableProperty.Create(nameof(SubjectDetectionConfidence), typeof(string), typeof(BeforeAfterView), string.Empty);
 
     public static readonly BindableProperty LumMaskingProperty =
-        BindableProperty.Create(nameof(LumMasking), typeof(bool), typeof(BeforeAfterView), false);
+        BindableProperty.Create(nameof(LumMasking), typeof(bool), typeof(BeforeAfterView), false, propertyChanged: OnMaskingChanged);
     public static readonly BindableProperty LumThresholdProperty =
         BindableProperty.Create(nameof(LumThreshold), typeof(string), typeof(BeforeAfterView), string.Empty);
 
@@ -130,6 +131,7 @@ public partial class BeforeAfterView : ContentView
         set => SetValue(MaskCombineProperty, value);
     }
     
+    public bool HasSortAngle => !string.IsNullOrEmpty(SortAngle);
     public bool HasAnyMask => SubjectMasking || CannyMasking;
     private int _maskCount => (SubjectMasking ? 1 : 0) + (CannyMasking ? 1 : 0) + (LumMasking ? 1 : 0);
     public bool HasBothMasks => _maskCount == 2;
@@ -147,6 +149,7 @@ public partial class BeforeAfterView : ContentView
         {
             view.OnPropertyChanged(nameof(HasAnyMask));
             view.OnPropertyChanged(nameof(HasBothMasks));
+            view.OnPropertyChanged(nameof(HasOnlyLumMask));
             view.OnPropertyChanged(nameof(HasOnlySubjectMask));
         }
     }

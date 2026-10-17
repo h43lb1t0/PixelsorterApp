@@ -127,6 +127,7 @@
                                                             Dark={StaticResource TextPrimaryDark}}" />
                             <Label
                                 FontSize="14"
+                                 IsVisible="{Binding HasSortAngle, Source={x:Reference Root}}"
                                 Text="{Binding SortAngle, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />

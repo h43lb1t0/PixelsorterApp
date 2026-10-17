@@ -127,7 +127,7 @@ public class ExampleImageConfig : INotifyPropertyChanged
         : PixelsorterApp.Resources.Languages.AppStrings.common_None;
 
     [JsonIgnore]
-    public string SortAngleFormatted => SortAngle.HasValue ? $"{SortAngle}°" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
+    public string SortAngleFormatted => SortAngle.HasValue ? $"{SortAngle}°" : string.Empty;
 
     [JsonIgnore]
     public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
