@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="PixelsorterApp.Views.LanguageSettingsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PixelsorterApp"
+    xmlns:localization="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:viewModels="clr-namespace:PixelsorterApp.ViewModels"
+    x:DataType="viewModels:SettingsViewModel">
+    <VerticalStackLayout Spacing="16">
+        <Label
+            FontSize="16"
+            SemanticProperties.HeadingLevel="Level2"
+            Style="{StaticResource CardHeaderLabel}"
+            Text="{localization:Translate LanguageSettingsView_LanguageSettings}" />
+
+
+        <Border StyleClass="Elevation3">
+            <Border.Shadow>
+                <Shadow
+                    Brush="{AppThemeBinding Light={StaticResource Black},
+                                            Dark={StaticResource White}}"
+                    Opacity="0.10"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Padding="16" Spacing="16">
+                <Label Text="{localization:Translate LanguagesAreSortedByTheirNativeNames}" />
+                <!--  Workaround for UraniumUI bug #715  -->
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        FontSize="12"
+                        Text="{localization:Translate LanguageSettingsView_ChooseLanguage}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                    Dark={StaticResource TextPrimaryDark}}" />
+                    <material:SelectField
+                        AllowClear="False"
+                        Icon="{FontImageSource FontFamily=MaterialSymbolsFont, Glyph={x:Static local:MaterialSymbolsFont.Language}}"
+                        ItemDisplayBinding="{Binding NativeName}"
+                        ItemsSource="{Binding AvailableLanguages}"
+                        SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                    Dark={StaticResource TextPrimaryDark}}" />
+                    <Border>
+                        <Label
+                            Padding="8"
+                            FontSize="12"
+                            Text="{localization:Translate LanguageSettingsView_TranslationGuarantee}" />
+                    </Border>
+                </VerticalStackLayout>
+                <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
+
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

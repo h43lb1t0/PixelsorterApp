@@ -11,7 +11,7 @@ namespace PixelsorterApp.Services
         public async Task ShareImage(string filePath, string? text = null)
         {
             // Use platform-specific default message if no custom text is provided
-            string title = "Share Sorted Image";
+            string title = PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_ShareDialog_Title;
             string message = text ?? GetPlatformDefaultMessage();
 
 #if ANDROID
@@ -75,10 +75,12 @@ namespace PixelsorterApp.Services
 
         private static string GetPlatformDefaultMessage()
         {
+            String PlayStoreLink = "https://play.google.com/store/apps/details?id=org.haelbich.pixelsorter";
+            String GithubLink = "https://github.com/h43lb1t0/PixelsorterApp/releases";
 #if ANDROID
-            return "Check out this pixel sorted image I have created with https://play.google.com/store/apps/details?id=org.haelbich.pixelsorter";
+            return String.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_AdTextWithPlatformLink, PlayStoreLink);
 #else
-            return "Check out this image created with Pixelsorter https://github.com/h43lb1t0/PixelsorterApp/releases";
+            return String.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_AdTextWithPlatformLink, GithubLink);
 #endif
         }
     }

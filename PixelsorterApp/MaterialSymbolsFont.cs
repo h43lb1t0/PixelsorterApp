@@ -12,6 +12,8 @@ namespace PixelsorterApp
         public const string Close = "\ue5cd";
         public const string Error = "\ue000";
 
+        public const string Language = "\ue894";
+
         // Navigation icons
         public const string VertMenuDots = "\ue5d4";
         public const string Help = "\ue887";
@@ -20,5 +22,6 @@ namespace PixelsorterApp
         public const string Gavel = "\ue86f";
         public const string PrivacyTip = "\ue8e8";
         public const string ChevronRight = "\ue5cc";
+        public const string SettingsGear = "\ue8b8";
     }
 }

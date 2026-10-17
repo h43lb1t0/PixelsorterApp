@@ -30,12 +30,12 @@ namespace PixelsorterApp.Services
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                return (false, "TOML content is empty.");
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_Empty);
             }
 
             if (map is null)
             {
-                return (false, "Failed to load toml map.");
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_FailedToLoadTomlMap);
             }
 
             TomlTable? model;
@@ -45,12 +45,12 @@ namespace PixelsorterApp.Services
             }
             catch (Exception ex)
             {
-                return (false, $"Invalid TOML syntax: {ex.Message}");
+                return (false, String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidSyntaxError, ex.Message));
             }
 
             if (model is null)
             {
-                return (false, "Invalid TOML syntax.");
+                return (false, PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidSyntax);
             }
 
             var sortSettings = GetTable(model, "sort_settings", errors);
@@ -63,29 +63,98 @@ namespace PixelsorterApp.Services
             string direction = GetString(sortSettings, "direction", errors);
             bool useSubject = GetBool(maskingOptions, "use_subject", errors);
             bool useCanny = GetBool(maskingOptions, "use_canny", errors);
+            bool useLuminance = TryGetBool(maskingOptions, "use_luminance") ?? false;
             int cannyThreashold = GetInt(cannyOptions, "threshold", errors);
             int subjectPadding = GetInt(subjectSettings, "padding", errors);
             string whatToSort = GetString(subjectSettings, "what_to_sort", errors);
             string mode = GetString(maskCombination, "mode", errors);
+
+            // Luminance options are optional for backward compatibility
+            TomlTable? luminanceOptions = null;
+            if (model.TryGetValue("luminance_options", out object? lumTableValue) && lumTableValue is TomlTable lumTable)
+            {
+                luminanceOptions = lumTable;
+            }
+
+            if (luminanceOptions is not null)
+            {
+                int lumThreshold = GetInt(luminanceOptions, "threshold", errors);
+                string lumWhatToSort = GetString(luminanceOptions, "what_to_sort", errors);
+
+                if (lumThreshold is < 1 or >= 100)
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_LumThresholdOutOfRange);
+                }
+
+                ValidateMappedOption(lumWhatToSort, map.WhatToSortLum, "luminance_options.what_to_sort", errors);
+            }
 
             ValidateMappedOption(sortBy, map.SortBy, "sort_settings.sort_by", errors);
             ValidateMappedOption(direction, map.Direction, "sort_settings.direction", errors);
             ValidateMappedOption(whatToSort, map.WhatToSort, "subject_settings.what_to_sort", errors);
             ValidateMappedOption(mode, map.MaskCombination, "mask_combination.mode", errors);
 
-            if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny)
+            // The arbitrary angle is optional for backward compatibility; accept TOML integers and floats.
+            if (sortSettings.TryGetValue("angle", out object? angleValue))
             {
-                errors.Add("Direction 'im' (Into Mask) requires at least one mask to be enabled.");
+                double? angle = angleValue switch
+                {
+                    double d => d,
+                    long l => l,
+                    _ => null
+                };
+
+                if (angle is null || double.IsNaN(angle.Value))
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_Angle_NaN);
+                }
+                else if (angle is null || angle.Value < 0 || angle.Value > 360)
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_AngleOutOfRange);
+
+                }
+            }
+
+            if (string.Equals(direction, "im", StringComparison.OrdinalIgnoreCase) && !useSubject && !useCanny && !useLuminance)
+            {
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MaskMustBeEnabled);
+            }
+
+            int totalMasksEnabled = (useSubject ? 1 : 0) + (useCanny ? 1 : 0) + (useLuminance ? 1 : 0);
+            if (totalMasksEnabled > 2)
+            {
+                errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidationService_TooManyMasksEnabled, totalMasksEnabled));
             }
 
             if (cannyThreashold is <= 0 or >= 100)
             {
-                errors.Add("canny_options.threshold must be in range (0, 100).");
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_CannyOutOfRange);
             }
 
             if (subjectPadding is < 1 or > 100)
             {
-                errors.Add("subject_settings.padding must be in range [1, 100].");
+                errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectPaddingOutOfRange);
+            }
+
+            if (subjectSettings.TryGetValue("sensitivity", out object? sensValue))
+            {
+                double? sens = sensValue switch
+                {
+                    double d => d,
+                    long l => l,
+                    _ => null
+                };
+
+                if (sens is null || double.IsNaN(sens.Value))
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectSensitivity_NaN);
+                }
+                else
+
+                    if (sens is null || sens.Value < 1 || sens.Value >= 100)
+                {
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_SubjectSensitivityOutOfRange);
+                }
             }
 
             if (useSubject)
@@ -93,12 +162,12 @@ namespace PixelsorterApp.Services
                 bool licenseAccepted = Preferences.Get("MaskingLicenseAccepted", false);
                 if (!licenseAccepted)
                 {
-                    errors.Add("Subject masking cannot be enabled before accepting the masking license.");
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_subjectLicenseNotAccepted);
                 }
 
                 if (!imageProcessingService.IsBackgroundMaskReady)
                 {
-                    errors.Add("Subject masking cannot be enabled because the background model is not downloaded.");
+                    errors.Add(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_BackgroundModelIsNotDownloaded);
                 }
             }
 
@@ -124,7 +193,7 @@ namespace PixelsorterApp.Services
                 return table;
             }
 
-            errors.Add($"Missing or invalid table: [{tableName}].");
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidTableTableName, tableName));
             return new TomlTable();
         }
 
@@ -145,7 +214,7 @@ namespace PixelsorterApp.Services
                 return s;
             }
 
-            errors.Add($"Missing or invalid string value: {key}.");
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidStringValueKey, key));
             return string.Empty;
         }
 
@@ -165,8 +234,24 @@ namespace PixelsorterApp.Services
                 return b;
             }
 
-            errors.Add($"Missing or invalid boolean value: {key}.");
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidBooleanValue, key));
             return false;
+        }
+
+        /// <summary>
+        /// Retrieves a Boolean value from the table without recording errors when the key is absent.
+        /// </summary>
+        /// <param name="table">The TOML table to query.</param>
+        /// <param name="key">The key to look up.</param>
+        /// <returns>The Boolean value if found; otherwise, null.</returns>
+        private static bool? TryGetBool(TomlTable table, string key)
+        {
+            if (table.TryGetValue(key, out object? value) && value is bool b)
+            {
+                return b;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -186,7 +271,7 @@ namespace PixelsorterApp.Services
                 return (int)l;
             }
 
-            errors.Add($"Missing or invalid integer value: {key}.");
+            errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidIntegerValue, key));
             return 0;
         }
 
@@ -213,7 +298,7 @@ namespace PixelsorterApp.Services
 
             if (map is null || !map.ContainsKey(value))
             {
-                errors.Add($"Invalid value for {fieldName}: '{value}'.");
+                errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_InvalidValueForFieldNameValue, fieldName, value));
             }
         }
 

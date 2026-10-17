@@ -9,8 +9,13 @@ public sealed class PresetState
     public bool? UseSubjectMask { get; init; }
     public int? CannyThresholdPercent { get; init; }
     public int? SubjectMaskPadding { get; init; }
+    public float? SubjectDetectionSensitivity { get; init; }
     public bool? UseInvertedSubjectMask { get; init; }
     public string? SortByName { get; init; }
     public bool? UseSubtractMasks { get; init; }
     public string? DirectionName { get; init; }
+    public float? ArbitraryAngle { get; init; }
+    public bool? UseLumMask { get; init; }
+    public int? LumThresholdPercent { get; init; }
+    public bool? UseInvertedLumMask { get; init; }
 }
