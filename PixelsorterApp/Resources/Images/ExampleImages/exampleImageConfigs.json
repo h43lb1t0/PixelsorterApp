@@ -8,6 +8,7 @@
       "cannyThreshold": 15,
       "SubjectMask": true,
       "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
       "whatToSort": "",
       "maskCombine": "Subtract"
     },
@@ -19,6 +20,7 @@
       "cannyThreshold": 40,
       "SubjectMask": false,
       "subjectPadding": 0,
+      "subjectDetectionConfidence": 50,
       "whatToSort": "",
       "maskCombine": "Subtract"
     },
@@ -30,6 +32,7 @@
       "cannyThreshold": 0,
       "SubjectMask": true,
       "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
       "whatToSort": "Background",
       "maskCombine": "Subtract"
     },
@@ -41,6 +44,7 @@
       "cannyThreshold": 23,
       "SubjectMask": false,
       "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
       "whatToSort": "",
       "maskCombine": ""
     },
@@ -52,6 +56,7 @@
       "cannyThreshold": 50,
       "SubjectMask": false,
       "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
       "whatToSort": "",
       "maskCombine": ""
     },
@@ -63,6 +68,22 @@
       "cannyThreshold": 19,
       "SubjectMask": true,
       "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
+      "whatToSort": "",
+      "maskCombine": "Add"
+    },
+    {
+      "id": "7",
+      "sortBy": "Lightness",
+      "sortDirection": "Arbitrary Angle",
+      "SortAngle": 62.28,
+      "canny": true,
+      "cannyThreshold": 17,
+      "SubjectMask": false,
+      "subjectPadding": 15,
+      "subjectDetectionConfidence": 50,
+      "lumMask": true,
+      "lumMaskThreshold": 16,
       "whatToSort": "",
       "maskCombine": "Add"
     }

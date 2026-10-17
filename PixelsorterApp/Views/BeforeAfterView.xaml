@@ -125,6 +125,12 @@
                                 Text="{Binding SortDirection, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}" />
+                            <Label
+                                FontSize="14"
+                                 IsVisible="{Binding HasSortAngle, Source={x:Reference Root}}"
+                                Text="{Binding SortAngle, Source={x:Reference Root}}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
                 </Grid>
@@ -205,8 +211,10 @@
                         <Grid
                             Padding="12,0,12,6"
                             ColumnDefinitions="*,Auto"
-                            IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}">
+                            IsVisible="{Binding SubjectMasking, Source={x:Reference Root}}"
+                            RowDefinitions="Auto,Auto">
                             <Label
+                                Grid.Row="0"
                                 Grid.Column="0"
                                 FontSize="12"
                                 Text="{localization:Translate SubjectMaskOptionsView_Padding}"
@@ -214,10 +222,28 @@
                                                             Dark={StaticResource TextSecondaryDark}}"
                                 VerticalOptions="Center" />
                             <Label
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 FontAttributes="Bold"
                                 FontSize="13"
                                 Text="{Binding SubjectPadding, Source={x:Reference Root}}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Text="{localization:Translate SubjectMaskOptionsView_DetectionConfidence}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Text="{Binding SubjectDetectionConfidence, Source={x:Reference Root}}"
                                 TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                             Dark={StaticResource TextPrimaryDark}}"
                                 VerticalOptions="Center" />
@@ -228,6 +254,75 @@
                             Padding="12,0,12,6"
                             ColumnDefinitions="*,Auto"
                             IsVisible="{Binding HasOnlySubjectMask, Source={x:Reference Root}}">
+                            <Label
+                                Grid.Column="0"
+                                FontSize="12"
+                                Text="{localization:Translate MaskOptionsView_WhatToSort_Title}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Text="{Binding WhatToSort, Source={x:Reference Root}}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView
+                            Margin="12,0,12,0"
+                            HeightRequest="1"
+                            Color="{AppThemeBinding Light={StaticResource DividerLight},
+                                                    Dark={StaticResource DividerDark}}" />
+
+                        <!--  Luminance Masking Toggle  -->
+                        <Grid Padding="12,10,12,4" ColumnDefinitions="*,Auto">
+                            <Label
+                                Grid.Column="0"
+                                FontSize="13"
+                                Text="{localization:Translate LuminanceMaskView_Title}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
+                            <Switch
+                                Grid.Column="1"
+                                InputTransparent="True"
+                                IsToggled="{Binding LumMasking, Source={x:Reference Root}}"
+                                OnColor="{StaticResource Secondary}"
+                                ThumbColor="{StaticResource Primary}"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <Grid
+                            Padding="12,0,12,6"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding LumMasking, Source={x:Reference Root}}"
+                            RowDefinitions="Auto,Auto">
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Text="{localization:Translate LuminanceMaskView_Threshold}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                            Dark={StaticResource TextSecondaryDark}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Text="{Binding LumThreshold, Source={x:Reference Root}}"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                                            Dark={StaticResource TextPrimaryDark}}"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <Grid
+                            Padding="12,0,12,6"
+                            ColumnDefinitions="*,Auto"
+                            IsVisible="{Binding HasOnlyLumMask, Source={x:Reference Root}}">
                             <Label
                                 Grid.Column="0"
                                 FontSize="12"

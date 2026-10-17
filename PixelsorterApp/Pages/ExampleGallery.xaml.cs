@@ -79,10 +79,14 @@ public class ExampleImageConfig : INotifyPropertyChanged
     public required string Id { get; set; }
     public required string SortBy { get; set; }
     public required string SortDirection { get; set; }
+    public float? SortAngle { get; set; }
     public bool Canny { get; set; }
     public int? CannyThreshold { get; set; }
     public bool SubjectMask { get; set; }
     public int? SubjectPadding { get; set; }
+    public int? SubjectDetectionConfidence { get; set; }
+    public bool LumMask { get; set; }
+    public int? lumMaskThreshold { get; set; }
     public string WhatToSort { get; set; } = string.Empty;
     public string MaskCombine { get; set; } = string.Empty;
 
@@ -123,10 +127,19 @@ public class ExampleImageConfig : INotifyPropertyChanged
         : PixelsorterApp.Resources.Languages.AppStrings.common_None;
 
     [JsonIgnore]
+    public string SortAngleFormatted => SortAngle.HasValue ? $"{SortAngle}°" : string.Empty;
+
+    [JsonIgnore]
     public string CannyThresholdFormatted => CannyThreshold.HasValue ? $"{CannyThreshold}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
 
     [JsonIgnore]
     public string SubjectPaddingFormatted => SubjectPadding.HasValue ? $"{SubjectPadding}px" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
+
+    [JsonIgnore]
+    public string SubjectDetectionConfidenceFormatted => SubjectDetectionConfidence.HasValue ? $"{SubjectDetectionConfidence}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
+
+    [JsonIgnore]
+    public string LumThresholdFormatted => lumMaskThreshold.HasValue ? $"{lumMaskThreshold}%" : PixelsorterApp.Resources.Languages.AppStrings.common_NA;
 
     [JsonIgnore]
     public string WhatToSortSafe => WhatToSort != null
