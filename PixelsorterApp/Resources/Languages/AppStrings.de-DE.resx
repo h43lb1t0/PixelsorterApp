@@ -756,4 +756,7 @@ Mit Voreinstellungen kannst du deine bevorzugten Sortier- und Maskierungskonfigu
   <data name="LicensesPage_AdditionalLicenses" xml:space="preserve">
     <value>Zusätzliche Lizenzen</value>
   </data>
+  <data name="LanguageSettingsView_HelpUsLocalizingTheApp" xml:space="preserve">
+    <value>Hilf uns die App zu Übersetzen</value>
+  </data>
 </root>

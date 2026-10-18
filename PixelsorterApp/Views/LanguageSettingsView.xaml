@@ -10,11 +10,10 @@
     x:DataType="viewModels:SettingsViewModel">
     <VerticalStackLayout Spacing="16">
         <Label
-            FontSize="16"
             SemanticProperties.HeadingLevel="Level2"
             Style="{StaticResource CardHeaderLabel}"
-            Text="{localization:Translate LanguageSettingsView_LanguageSettings}" />
-
+            Text="{localization:Translate LanguageSettingsView_LanguageSettings}"
+            TextTransform="Uppercase" />
 
         <Border StyleClass="Elevation3">
             <Border.Shadow>
@@ -27,9 +26,8 @@
             </Border.Shadow>
 
             <VerticalStackLayout Padding="16" Spacing="16">
-                <Label Text="{localization:Translate LanguagesAreSortedByTheirNativeNames}" />
-                <!--  Workaround for UraniumUI bug #715  -->
-                <VerticalStackLayout Spacing="4">
+                <!--  1. Choose language dropdown (Workaround for UraniumUI bug #715)  -->
+                <VerticalStackLayout Spacing="6">
                     <Label
                         FontSize="12"
                         Text="{localization:Translate LanguageSettingsView_ChooseLanguage}"
@@ -42,25 +40,45 @@
                         ItemDisplayBinding="{Binding NativeName}"
                         ItemsSource="{Binding AvailableLanguages}"
                         SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                        Style="{StaticResource MySelectFieldStyle}"
                         TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
                                                     Dark={StaticResource TextPrimaryDark}}" />
-                    <Border>
-                        <Label
-                            Padding="8"
-                            FontSize="12"
-                            Text="{localization:Translate LanguageSettingsView_TranslationGuarantee}" />
-                    </Border>
                 </VerticalStackLayout>
-                <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
 
-                <Border>
-                    <VerticalStackLayout>
-                        <Image Source="multi_red.png" />
+                <!--  2. Native name sort note  -->
+                <Label
+                    FontSize="13"
+                    Text="{localization:Translate LanguagesAreSortedByTheirNativeNames}"
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                Dark={StaticResource TextSecondaryDark}}" />
+
+                <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource DividerLight}, Dark={StaticResource DividerDark}}" />
+
+                <!--  3. Weblate status & translation guarantee in the same box  -->
+                <Border
+                    Padding="16"
+                    BackgroundColor="Transparent"
+                    Stroke="{AppThemeBinding Light={StaticResource DividerLight},
+                                             Dark={StaticResource DividerDark}}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="1">
+                    <VerticalStackLayout Spacing="12">
+                        <Image
+                            Aspect="AspectFit"
+                            HeightRequest="75"
+                            HorizontalOptions="Center"
+                            Source="multi_red.png" />
+                        <Label
+                            FontSize="12"
+                            Text="{localization:Translate LanguageSettingsView_TranslationGuarantee}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                                        Dark={StaticResource TextSecondaryDark}}" />
                         <Button
                             Command="{Binding OpenUrlCommand}"
                             CommandParameter="https://hosted.weblate.org/engage/pixelsorter/"
-                            Style="{StaticResource LinkButtonStyle}"
-                            Text="Help us localizing the App" />
+                            HorizontalOptions="Center"
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="{localization:Translate LanguageSettingsView_HelpUsLocalizingTheApp}" />
                     </VerticalStackLayout>
                 </Border>
 

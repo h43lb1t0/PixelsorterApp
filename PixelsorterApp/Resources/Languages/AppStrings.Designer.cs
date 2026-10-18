@@ -472,6 +472,15 @@ namespace PixelsorterApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help us localizing the App.
+        /// </summary>
+        internal static string LanguageSettingsView_HelpUsLocalizingTheApp {
+            get {
+                return ResourceManager.GetString("LanguageSettingsView_HelpUsLocalizingTheApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language settings.
         /// </summary>
         internal static string LanguageSettingsView_LanguageSettings {
