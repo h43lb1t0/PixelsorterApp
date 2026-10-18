@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="75" xml:lang="en">
+<defs>
+
+<style type="text/css">@import url(https://hosted.weblate.org/static/weblate_fonts/source-sans-3.d177b4492cd5.css);</style>
+
+</defs>
+<g id="layer1">
+
+
+<a xlink:href="https://hosted.weblate.org/projects/pixelsorter/-/en_GB/" xlink:title="English (United Kingdom)">
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080;text-anchor:end;" x="190" y="20" id="text20">English (United Kingdom)</text>
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080" x="360" y="20" id="percent20">100%</text>
+<rect style="fill:#fa3939;fill-opacity:1;stroke:none" id="rect20" width="150" height="6" x="200" rx="2" y="14"/>
+</a>
+
+<a xlink:href="https://hosted.weblate.org/projects/pixelsorter/-/en_US/" xlink:title="English (United States)">
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080;text-anchor:end;" x="190" y="35" id="text35">English (United States)</text>
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080" x="360" y="35" id="percent35">6%</text>
+<rect style="fill:#fa3939;fill-opacity:1;stroke:none" id="rect35" width="9" height="6" x="200" rx="2" y="29"/>
+</a>
+
+<a xlink:href="https://hosted.weblate.org/projects/pixelsorter/-/de/" xlink:title="German">
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080;text-anchor:end;" x="190" y="50" id="text50">German</text>
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080" x="360" y="50" id="percent50">100%</text>
+<rect style="fill:#fa3939;fill-opacity:1;stroke:none" id="rect50" width="150" height="6" x="200" rx="2" y="44"/>
+</a>
+
+<a xlink:href="https://hosted.weblate.org/projects/pixelsorter/-/el/" xlink:title="Greek">
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080;text-anchor:end;" x="190" y="65" id="text65">Greek</text>
+<text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:11px;font-family:'Source Sans 3',sans-serif;fill:#808080" x="360" y="65" id="percent65">21%</text>
+<rect style="fill:#fa3939;fill-opacity:1;stroke:none" id="rect65" width="31" height="6" x="200" rx="2" y="59"/>
+</a>
+
+
+</g>
+<script xmlns=""/></svg>

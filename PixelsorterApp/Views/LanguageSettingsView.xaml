@@ -37,7 +37,8 @@
                                                     Dark={StaticResource TextPrimaryDark}}" />
                     <material:SelectField
                         AllowClear="False"
-                        Icon="{FontImageSource FontFamily=MaterialSymbolsFont, Glyph={x:Static local:MaterialSymbolsFont.Language}}"
+                        Icon="{FontImageSource FontFamily=MaterialSymbolsFont,
+                                               Glyph={x:Static local:MaterialSymbolsFont.Language}}"
                         ItemDisplayBinding="{Binding NativeName}"
                         ItemsSource="{Binding AvailableLanguages}"
                         SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
@@ -52,7 +53,19 @@
                 </VerticalStackLayout>
                 <Label Text="{localization:Translate LanguageSettingsView_Restart}" />
 
+                <Border>
+                    <VerticalStackLayout>
+                        <Image Source="multi_red.png" />
+                        <Button
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://hosted.weblate.org/engage/pixelsorter/"
+                            Style="{StaticResource LinkButtonStyle}"
+                            Text="Help us localizing the App" />
+                    </VerticalStackLayout>
+                </Border>
+
             </VerticalStackLayout>
         </Border>
+
     </VerticalStackLayout>
 </ContentView>
