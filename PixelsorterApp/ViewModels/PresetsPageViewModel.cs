@@ -595,7 +595,25 @@ namespace PixelsorterApp.ViewModels
                 }
             }
 
+            current = sb.ToString();
+
+            int sortSettingsIdx = current.IndexOf("[sort_settings]", StringComparison.OrdinalIgnoreCase);
+            if (sortSettingsIdx >= 0)
+            {
+                int sortSettingsEnd = current.IndexOf('[', sortSettingsIdx + 1);
+                string sortSection = sortSettingsEnd >= 0
+                    ? current[sortSettingsIdx..sortSettingsEnd]
+                    : current[sortSettingsIdx..];
+
+                if (!Regex.IsMatch(sortSection, @"^\s*angle\s*=", RegexOptions.Multiline | RegexOptions.IgnoreCase))
+                {
+                    int headerEnd = sortSettingsIdx + "[sort_settings]".Length;
+                    sb.Insert(headerEnd, "\r\nangle = 45.0");
+                }
+            }
+
             return sb.ToString();
+
         }
 
         private Task DeletePresetFileAsync(string presetName)
