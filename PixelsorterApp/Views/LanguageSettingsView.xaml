@@ -67,7 +67,7 @@
                             Aspect="AspectFit"
                             HeightRequest="75"
                             HorizontalOptions="Center"
-                            Source="multi_red.png" />
+                            Source="localization_progress.png" />
                         <Label
                             FontSize="12"
                             Text="{localization:Translate LanguageSettingsView_TranslationGuarantee}"
