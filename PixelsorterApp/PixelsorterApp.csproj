@@ -451,6 +451,70 @@ public static partial class LocalizationConfig
 		</ItemGroup>
 	</Target>
 
+	<!-- Download the latest Weblate translation status widget SVG at build time -->
+	<UsingTask TaskName="DownloadWeblateSvgTask" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<SourceUrl ParameterType="System.String" Required="true" />
+			<DestinationFile ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Net.Http" />
+			<Using Namespace="System.Text" />
+			<Code Type="Fragment" Language="cs">
+<![CDATA[
+				var dir = Path.GetDirectoryName(DestinationFile);
+				if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+				{
+					Directory.CreateDirectory(dir);
+				}
+
+				try
+				{
+					using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+					client.DefaultRequestHeaders.UserAgent.ParseAdd("PixelsorterApp-MSBuild/1.0");
+					var svgContent = client.GetStringAsync(SourceUrl).GetAwaiter().GetResult();
+
+					if (!string.IsNullOrWhiteSpace(svgContent) && svgContent.Contains("<svg"))
+					{
+						var existingContent = File.Exists(DestinationFile) ? File.ReadAllText(DestinationFile, Encoding.UTF8) : null;
+						if (existingContent != svgContent)
+						{
+							File.WriteAllText(DestinationFile, svgContent, Encoding.UTF8);
+							Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, $"[Weblate] Updated {DestinationFile} from {SourceUrl}");
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					if (!File.Exists(DestinationFile))
+					{
+						var fallbackSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"75\"></svg>";
+						File.WriteAllText(DestinationFile, fallbackSvg, Encoding.UTF8);
+						Log.LogWarning($"[Weblate] Could not download widget from {SourceUrl}: {ex.Message}. Created minimal placeholder SVG.");
+					}
+					else
+					{
+						Log.LogWarning($"[Weblate] Could not download latest widget from {SourceUrl}: {ex.Message}. Using cached local file.");
+					}
+				}
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="UpdateWeblateStatusSvg" BeforeTargets="PrepareForBuild;ResizetizeImages;ProcessMauiAssets">
+		<DownloadWeblateSvgTask
+			SourceUrl="https://hosted.weblate.org/widget/pixelsorter/multi-red.svg"
+			DestinationFile="$(ProjectDir)Resources\Images\localization_progress.svg" />
+		<ItemGroup>
+			<!-- Ensure localization_progress.svg is included in MauiImage even if it did not exist on disk during initial project evaluation -->
+			<MauiImage Remove="Resources\Images\localization_progress.svg" />
+			<MauiImage Include="Resources\Images\localization_progress.svg" LogicalName="localization_progress.svg" />
+		</ItemGroup>
+	</Target>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <AndroidEnableR8>true</AndroidEnableR8>
     <AndroidLinkTool>r8</AndroidLinkTool>

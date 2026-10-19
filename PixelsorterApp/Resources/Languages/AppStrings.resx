@@ -763,4 +763,7 @@ Presets allow you to save and load your favourite sorting and masking configurat
   <data name="LicensesPage_AdditionalLicenses" xml:space="preserve">
     <value>Additional Licenses</value>
   </data>
+  <data name="LanguageSettingsView_HelpUsLocalizingTheApp" xml:space="preserve">
+    <value>Help us localizing the App</value>
+  </data>
 </root>
