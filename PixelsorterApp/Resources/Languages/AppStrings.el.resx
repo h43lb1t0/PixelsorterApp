@@ -342,4 +342,190 @@
   <data name="OriginalImage" xml:space="preserve">
     <value>Αρχική εικόνα</value>
   </data>
+  <data name="CycleSortingMessagesCombiningMasks" xml:space="preserve">
+    <value>Συνδυασμός μασκών...</value>
+  </data>
+  <data name="CycleSortingMessagesApplyingSubjectMask" xml:space="preserve">
+    <value>Εφαρμογή μάσκας θέματος...</value>
+  </data>
+  <data name="CycleSortingMessagesDetectingEdges" xml:space="preserve">
+    <value>Ανίχνευση ακμών...</value>
+  </data>
+  <data name="CycleSortingMessagesSortingBy" xml:space="preserve">
+    <value>Ταξινόμηση κατά {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesArrangingPixels" xml:space="preserve">
+    <value>Διάταξη pixel {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesReadingPixelData" xml:space="preserve">
+    <value>Ανάγνωση δεδομένων pixel...</value>
+  </data>
+  <data name="SortAsync_AnErrorOccurredExMessage" xml:space="preserve">
+    <value>Παρουσιάστηκε σφάλμα: {0}</value>
+  </data>
+  <data name="SaveAsync_NoImageAvailableToSave" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμη εικόνα για αποθήκευση.</value>
+  </data>
+  <data name="SaveAsync_ImageSaved" xml:space="preserve">
+    <value>Η εικόνα αποθηκεύτηκε</value>
+  </data>
+  <data name="SaveAsync_FailedToSaveImage" xml:space="preserve">
+    <value>Αποτυχία αποθήκευσης εικόνας</value>
+  </data>
+  <data name="ShareAsync_NoImageAvailableToShare" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμη εικόνα για κοινοποίηση.</value>
+  </data>
+  <data name="ShareAsync_ShareFailed" xml:space="preserve">
+    <value>Αποτυχία κοινοποίησης: {0}</value>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Άδεια χρήσης λειτουργίας μάσκας</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>Η λειτουργία μάσκας χρησιμοποιεί ένα προεκπαιδευμένο μοντέλο μηχανικής μάθησης που δημιουργήθηκε από τρίτο μέρος. Ενεργοποιώντας αυτή τη λειτουργία, αποδέχεσαι ότι δεν θα χρησιμοποιήσεις εικόνες που δημιουργήθηκαν ή υποβλήθηκαν σε επεξεργασία με αυτό το εργαλείο για εμπορικούς σκοπούς. Για περισσότερες πληροφορίες, επισκέψου τη σελίδα της άδειας χρήσης.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Λήψη μοντέλου τεχνητής νοημοσύνης...</value>
+  </data>
+  <data name="DownloadFailed_Title" xml:space="preserve">
+    <value>Αποτυχία λήψης</value>
+  </data>
+  <data name="DownloadFailed_Message" xml:space="preserve">
+    <value>Δεν ήταν δυνατή η λήψη του μοντέλου μάσκας. Έλεγξε τη σύνδεσή σου στο διαδίκτυο και δοκίμασε ξανά.</value>
+  </data>
+  <data name="NoInternetConnection_Title" xml:space="preserve">
+    <value>Δεν υπάρχει σύνδεση στο διαδίκτυο</value>
+  </data>
+  <data name="NoInternetConnection_Message" xml:space="preserve">
+    <value>Απαιτείται σύνδεση στο διαδίκτυο για τη χρήση της λειτουργίας μάσκας. Συνδέσου στο διαδίκτυο και δοκίμασε ξανά.</value>
+  </data>
+  <data name="TapToLoadAnImage" xml:space="preserve">
+    <value>Πάτησε για να φορτώσεις μια εικόνα</value>
+  </data>
+  <data name="CannyView_Title" xml:space="preserve">
+    <value>Μάσκα ακμών Canny</value>
+  </data>
+  <data name="CannyView_details" xml:space="preserve">
+    <value>Διατηρεί τις ακμές χωρίς ταξινόμηση</value>
+  </data>
+  <data name="CannyView_Threshold" xml:space="preserve">
+    <value>Κατώφλι ευαισθησίας</value>
+  </data>
+  <data name="PresetsView_Header" xml:space="preserve">
+    <value>Προεπιλογές</value>
+  </data>
+  <data name="PresetsView_Presets" xml:space="preserve">
+    <value>Προεπιλογές</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
+    <value>Μάσκα θέματος</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
+    <value>Εντόπισε άτομα ή αντικείμενα και ταξινόμησε τα pixel γύρω τους</value>
+  </data>
+  <data name="MaskOptionsView_WhatToSort_Title" xml:space="preserve">
+    <value>Επιλογή</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
+    <value>Φόντο</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
+    <value>Προσκήνιο</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
+    <value>Αφαίρεση</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Add" xml:space="preserve">
+    <value>Προσθήκη</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
+    <value>Αφαίρεση: Αφαιρεί την ανεστραμμένη δεύτερη μάσκα από την πρώτη. Προσθήκη: Προσθέτει τις δύο μάσκες.</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
+    <value>Περιθώριο</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Navigation_Title" xml:space="preserve">
+    <value>Βοήθεια και πληροφορίες</value>
+  </data>
+  <data name="PageName_HelpPage" xml:space="preserve">
+    <value>Βοήθεια</value>
+  </data>
+  <data name="PageName_ExampleGallery" xml:space="preserve">
+    <value>Συλλογή παραδειγμάτων</value>
+  </data>
+  <data name="PageName_PresetsPage" xml:space="preserve">
+    <value>Σελίδα προεπιλογών</value>
+  </data>
+  <data name="PageName_OpenSourceLicenses" xml:space="preserve">
+    <value>Άδειες χρήσης ανοιχτού κώδικα</value>
+  </data>
+  <data name="PageName_PrivacyPolicy" xml:space="preserve">
+    <value>Πολιτική απορρήτου</value>
+  </data>
+  <data name="HelpPage_DisplayPageName_HowToUseThePixelsorter" xml:space="preserve">
+    <value>Πώς να χρησιμοποιήσεις το Pixelsorter</value>
+  </data>
+  <data name="PageName_Settings" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>Οι πληροφορίες άδειας χρήσης δεν είναι διαθέσιμες</value>
+  </data>
+  <data name="ShareFeature_ShareDialog_Title" xml:space="preserve">
+    <value>Κοινοποίηση ταξινομημένης εικόνας</value>
+  </data>
+  <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
+    <value>Δες αυτή την εικόνα με ταξινομημένα pixel που δημιούργησα με το {0}</value>
+  </data>
+  <data name="LicensesPage_Explenation" xml:space="preserve">
+    <value>Αυτή η εφαρμογή χρησιμοποιεί τα ακόλουθα πακέτα ανοιχτού κώδικα:</value>
+  </data>
+  <data name="LicensePage_ByItemAuthors" xml:space="preserve">
+    <value>από {0}</value>
+  </data>
+  <data name="PresetsPage_Header" xml:space="preserve">
+    <value>Λεπτομέρειες προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_CreateYourPresetExplenation" xml:space="preserve">
+    <value>Δημιούργησε τη δική σου προεπιλογή προσαρμόζοντας τις παρακάτω επιλογές. Η προεπιλογή που εμφανίζεται βασίζεται στις επιλογές σου. Συμβουλέψου τον πίνακα αντιστοίχισης TOML για να δεις πώς να ρυθμίσεις κάθε επιλογή.</value>
+  </data>
+  <data name="PresetsPage_PresetEditor_Heading" xml:space="preserve">
+    <value>TOML προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_NewPresetName_Title" xml:space="preserve">
+    <value>Όνομα προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_SetAsDefaultPreset" xml:space="preserve">
+    <value>Ορισμός ως προεπιλεγμένης ρύθμισης</value>
+  </data>
+  <data name="PresetsPage_SetBasePresetAsDefault" xml:space="preserve">
+    <value>Ορισμός της βασικής προεπιλογής ως προεπιλεγμένης ρύθμισης</value>
+  </data>
+  <data name="PresetsPage_SavePreset" xml:space="preserve">
+    <value>Αποθήκευση προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_AvilablePresets_Header" xml:space="preserve">
+    <value>Διαθέσιμες προεπιλογές</value>
+  </data>
+  <data name="PresetsPage_Preset" xml:space="preserve">
+    <value>Προεπιλογή</value>
+  </data>
+  <data name="ToggleTomlMap_Hide" xml:space="preserve">
+    <value>Απόκρυψη πίνακα αντιστοίχισης TOML</value>
+  </data>
+  <data name="ToggleTomlMap_Show" xml:space="preserve">
+    <value>Εμφάνιση πίνακα αντιστοίχισης TOML</value>
+  </data>
+  <data name="BasePresetSetAsDefault" xml:space="preserve">
+    <value>Η βασική προεπιλογή ορίστηκε ως προεπιλεγμένη ρύθμιση.</value>
+  </data>
+  <data name="TOMLValidation_Invalid" xml:space="preserve">
+    <value>Το TOML δεν είναι έγκυρο.</value>
+  </data>
+  <data name="TOMLValidation_InvalidError" xml:space="preserve">
+    <value>Το TOML δεν είναι έγκυρο.</value>
+  </data>
 </root>
