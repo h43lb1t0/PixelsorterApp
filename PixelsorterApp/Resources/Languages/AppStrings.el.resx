@@ -526,7 +526,7 @@
     <value>Το TOML δεν είναι έγκυρο.</value>
   </data>
   <data name="TOMLValidation_InvalidError" xml:space="preserve">
-    <value>Το TOML δεν είναι έγκυρο.</value>
+    <value>Το TOML δεν είναι έγκυρο: {0}</value>
   </data>
   <data name="TOMLValidation_Valid" xml:space="preserve">
     <value>Το TOML είναι έγκυρο.</value>
