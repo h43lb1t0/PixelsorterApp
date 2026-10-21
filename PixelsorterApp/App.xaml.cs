@@ -54,7 +54,7 @@ namespace PixelsorterApp
         /// <param name="theme"></param>
         static void UpdateStatusBar(AppTheme theme)
         {
-            # if ANDROID
+#if ANDROID
             Color dark = Colors.Black;
             Color light = Colors.White;
 
@@ -69,7 +69,7 @@ namespace PixelsorterApp
 
             StatusBar.SetColor(color);
             StatusBar.SetStyle(style);
-            #endif
+#endif
         }
     }
 }

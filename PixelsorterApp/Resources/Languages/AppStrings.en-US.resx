@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="HelpPage_Content" xml:space="preserve">
+    <value>Pixelsorter loads an image, sorts its pixels in a chosen direction using a chosen color criterion, and lets you preview and save results.
+
+The main screen is organized like this:
+
+- **Image preview** (tap to load an image)
+- **Sort settings** (what to sort by + sorting direction)
+- **Masking options** (optional: limit which pixels are allowed to move)
+- **Sort** button (creates a new sorted result)
+- **Save** button (saves the currently displayed result)
+
+---
+
+
+## Loading an image
+
+### Load by tapping the preview
+
+1. On the main screen, **tap the image preview**.
+2. Pick an image.
+3. After loading, the caption below the preview will show **“Original image”**, and the app will announce that it’s ready to sort.
+
+Notes:
+
+- Once an image is loaded, the **Sort** button becomes enabled.
+- The preview area can show multiple images (original + results). See Previewing results (swipe).
+
+### Android: share / “Send to” Pixelsorter
+
+On Android, Pixelsorter can receive an image from other apps:
+
+1. In your gallery, file manager, or another app, use **Share**.
+2. Choose **Pixelsorter**.
+
+Pixelsorter will open and load the shared image automatically.
+
+---
+
+## Previewing results (swipe)
+
+Every time you press **Sort**, Pixelsorter generates a new processed image and adds it to the preview.
+
+**Android only!**
+You can **swipe left/right** on the preview to switch between:
+
+- the **original image**, and
+- one or more **sorted results**.
+
+The text under the preview describes what you’re currently seeing (for example, “Original image” or the options used).
+
+---
+
+## Saving
+
+The **Save** button saves the **currently displayed image**.
+
+Important behavior:
+
+- **Save is disabled for the original image**. It becomes enabled only when you swipe to a generated result.
+- If you have multiple results, swipe to the one you want and then tap **Save**.
+
+---
+
+## Sorting options
+
+Pixel sorting works like this:
+
+- Pixels are processed in **runs** along the chosen direction (rows or columns).
+- Within each run, pixels are reordered by a **Sort by** criterion.
+- If a **mask** is enabled, only pixels inside the mask are considered sortable; pixels outside keep their original positions.
+
+### Sort by
+
+**Sort by** controls the value used to compare pixels. The app uses HSL color space (Hue/Saturation/Lightness) and offers these criteria:
+
+- **{0}** — sorts by hue angle (0–360). Produces strong color banding / rainbow-like transitions.
+- **{1}** — sorts by saturation (how “colorful” a pixel is).
+- **{2}** — sorts by brightness.
+- **{3}** — favors hues around warm colors (near orange/red) and boosts saturated, mid-lightness pixels.
+- **{4}** — favors hues around cool colors (near blue) and boosts saturated, mid-lightness pixels.
+- **{5}** — measures vividness (high saturation + not too close to pure black/white).
+- **{6}** — similar to chroma, but weighted by hue to better match perception.
+
+If you want a quick starting point:
+
+- try **{7}** for classic “glitchy” streaks,
+- try **{8}** for bold color separation,
+
+
+### Direction
+
+**Direction** controls in which order pixels are sorted:
+
+- **{9}** — sorts within each row.
+- **{10}** — same, but writes results reversed.
+- **{11}** — sorts within each column.
+- **{12}** — same, but writes results reversed.
+- **{13}** — special mode that sorts pixels *radially into the mask* (requires a mask).
+
+Mask-related detail:
+
+- When **no masks** are enabled, only the basic row/column directions are relevant.
+- When a mask is enabled, sorting happens in contiguous masked segments:
+  - for row sorting: masked stretches in each row are sorted independently
+  - for column sorting: masked stretches in each column are sorted independently
+- **{14}** is only available/meaningful when you have a mask, because it uses the mask shape to guide sorting.
+
+---
+
+## Masks (what they are)
+
+A **mask** is a black/white image (internally a thresholded grayscale mask).
+
+- **White (inside mask):** pixels are allowed to move/sort.
+- **Black (outside mask):** pixels stay in place.
+
+Masks are useful when you want a pixel-sorting effect only in certain regions (foreground/background, edges, etc.).
+You can enable up to two masks at the same time. If two maks are enabled, Pixelsorter combines them (see Combining masks).
+
+### Subject mask
+
+**Use subject masking** tries to separate the main subject from the background using a machine-learning model.
+
+- The **first time** you enable it, the model may need to be downloaded (internet required).
+- Afterward it runs locally using the cached model.
+
+Options:
+
+- **Padding** — expands the subject area by the given number of pixels. Use this when the cutout is too tight.
+- **What to sort** (only visible when *subject mask is on* and *Canny and Luminance are off*):
+  - **Background** — sorts the background and keeps the subject mostly stable.
+  - **Foreground** — sorts the subject and keeps the background mostly stable.
+
+### Canny mask (edge mask)
+
+**Use Canny masking** creates an additional mask from image edges (edge detection).
+
+- This is processed on-device.
+
+Option:
+
+- **Threshold** — controls how strong edge detection is.
+  - lower values → more edges included
+  - higher values → fewer edges
+
+This mask is handy when you want the sorting to “stick” to outlines and structures.
+
+### Luminance mask
+
+**Use luminance masking** creates a mask based on the image's overall luminance.
+
+Options:
+- **Threshold** — controls how bright a pixel must be to be included in the mask.
+  - lower values → more pixels included
+  - higher values → fewer pixels
+- **What to sort** (only visible when *luminance mask is on* and *subject and Canny are off*):
+  - **Normal** — sorts pixels brighter than the threshold and keeps darker pixels stable.
+  - **Invert** — sorts pixels darker than the threshold and keeps brighter pixels stable. 
+
+*Tip:* Use the Luminance mask with the **lightness** sorting criterion for a “glitchy,” effect.
+
+
+### When two masks are enabled: combining
+
+When any combination of **subject masking**, **luminance masking**, and **Canny masking** (with two enabled) is selected, Pixelsorter combines them.
+
+You can choose:
+
+- **Subtract** — subtracts the second mask from the first mask.
+  - *Subject &amp; Canny*: Subtracts the inverted Canny mask from the subject mask.
+  - *Subject &amp; Luminance*: Subtracts the inverted luminance mask from the subject mask.
+  - *Canny &amp; Luminance*: Subtracts the inverted luminance mask from the Canny mask.
+- **Add** — adds the two enabled masks together.
+  - *Subject &amp; Canny*: Adds the subject mask and the Canny mask.
+  - *Subject &amp; Luminance*: Adds the subject mask and the luminance mask.
+  - *Canny &amp; Luminance*: Adds the Canny mask and the luminance mask.
+
+---
+
+## Presets
+
+Presets allow you to save and load your favorite sorting and masking configurations.
+
+- **Load a preset:** On the main screen, use the preset selector to quickly apply a saved configuration.
+- **Create or edit presets:** Choose the **"new preset"** option or navigate to the Presets page. Here you can write custom presets using TOML syntax.
+- **Preset options:** You can view the TOML Map on the Presets page to guide you through the available configuration keys (such as `sort_settings`, `masking_options`, etc.).
+- **Default preset:** You can assign any preset as your default, so Pixelsorter always starts with your preferred settings.
+
+---
+
+## Tips &amp; troubleshooting
+
+- If **Sort** is disabled, make sure you loaded an image first.
+- If **Save** is disabled, you are probably viewing the **original image**. Swipe to a generated result.
+- If enabling **subject masking** does nothing the first time, check your internet connection (model download is required once).
+- For faster experimentation, start without masks and with **Row Left To Right + Lightness**, then add masks when you know the direction/criterion you like.</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Check out the example gallery to see what you can do before getting started. You can always find the gallery via the info menu.</value>
+    <comment>Messageof the Welcome Popup on first start of the app</comment>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Masking feature license</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>The masking feature uses a pre-trained machine learning model that was created by a third party. By enabling this feature, you accept that you won't use pictures created or edited by this tool for any commercial purposes. For further information, go to the license page.</value>
+  </data>
+  <data name="PageName_OpenSourceLicenses" xml:space="preserve">
+    <value>Open Source Licenses</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>License information unavailable</value>
+  </data>
+  <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
+    <value>Check out this pixel sorted image I have created with {0}</value>
+  </data>
+  <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
+    <value>Subject masking cannot be enabled before accepting the masking license.</value>
+  </data>
+</root>

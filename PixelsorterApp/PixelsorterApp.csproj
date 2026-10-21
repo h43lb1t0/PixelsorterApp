@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<NeutralLanguage>en-GB</NeutralLanguage>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
 		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
@@ -66,11 +67,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.10.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
+		<PackageReference Include="LocalizationResourceManager.Maui" Version="1.2.6" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
+		<PackageReference Include="SkiaSharp" Version="4.153.1" />
 		<PackageReference Include="Tomlyn" Version="2.10.1" />
 		<PackageReference Include="UraniumUI" Version="3.0.0" />
 		<PackageReference Include="UraniumUI.Material" Version="3.0.0" />
@@ -97,51 +100,444 @@
 	  <MauiXaml Update="Pages\PrivacyPolicyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Popups\ConfirmationPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\NavigationPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\AngleArrowOverlayView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\BeforeAfterView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CannyMaskOptionsView.xaml">
+	  <MauiXaml Update="Views\MaskViews\CannyMaskOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MaskingOptionsView.xaml">
+	  <MauiXaml Update="Views\LanguageSettingsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\LuminanceMaskView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\MaskCombinationView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\MaskingOptionsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MaskViews\WhatToSortView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PresetsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\SubjectMaskOptionsView.xaml">
+	  <MauiXaml Update="Views\MaskViews\SubjectMaskOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
+	<UsingTask TaskName="PatchAndValidateLicensesTask" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<JsonFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+			<OverridesFile ParameterType="System.String" Required="false" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Collections.Generic" />
+			<Using Namespace="System.Text.RegularExpressions" />
+			<Code Type="Fragment" Language="cs">
+<![CDATA[
+#nullable disable
+				var overrides = new Dictionary<string, (string License, string LicenseUrl)>(StringComparer.OrdinalIgnoreCase);
+				if (!string.IsNullOrEmpty(OverridesFile) && File.Exists(OverridesFile))
+				{
+					var overridesContent = File.ReadAllText(OverridesFile);
+					var matches = Regex.Matches(overridesContent, @"\{[^{}]*\}");
+					foreach (Match m in matches)
+					{
+						var idMatch = Regex.Match(m.Value, @"""(?:PackageId|PackageName)""\s*:\s*""([^""]+)""");
+						if (idMatch.Success)
+						{
+							var id = idMatch.Groups[1].Value.Trim();
+							var licMatch = Regex.Match(m.Value, @"""License(?:Type)?""\s*:\s*""((?:[^""\\]|\\.)*)""");
+							var urlMatch = Regex.Match(m.Value, @"""LicenseUrl""\s*:\s*""([^""]*)""");
+							overrides[id] = (
+								licMatch.Success ? licMatch.Groups[1].Value : null,
+								urlMatch.Success ? urlMatch.Groups[1].Value : null
+							);
+						}
+					}
+				}
+
+				var deprecateRegex = new Regex(@"""LicenseUrl""\s*:\s*""https://aka\.ms/deprecateLicenseUrl/?""", RegexOptions.IgnoreCase);
+
+				foreach (var item in JsonFiles)
+				{
+					var path = item.ItemSpec;
+					if (!File.Exists(path)) continue;
+
+					var fileName = Path.GetFileName(path);
+					var text = File.ReadAllText(path);
+
+					var objects = new List<string>();
+					bool inString = false;
+					bool escape = false;
+					int depth = 0;
+					int start = -1;
+
+					for (int i = 0; i < text.Length; i++)
+					{
+						char c = text[i];
+						if (escape) { escape = false; continue; }
+						if (c == '\\' && inString) { escape = true; continue; }
+						if (c == '"') { inString = !inString; continue; }
+						if (!inString)
+						{
+							if (c == '{')
+							{
+								if (depth == 0) start = i;
+								depth++;
+							}
+							else if (c == '}')
+							{
+								depth--;
+								if (depth == 0 && start >= 0)
+								{
+									objects.Add(text.Substring(start, i - start + 1));
+									start = -1;
+								}
+							}
+						}
+					}
+
+					var updatedObjects = new List<string>();
+					bool fileModified = false;
+
+					foreach (var obj in objects)
+					{
+						var currentObj = obj;
+						var pkgMatch = Regex.Match(currentObj, @"""PackageId""\s*:\s*""([^""]+)""");
+						var pkgId = pkgMatch.Success ? pkgMatch.Groups[1].Value : "Unknown";
+
+						if (pkgId.StartsWith("Microsoft.WindowsAppSDK", StringComparison.OrdinalIgnoreCase) ||
+						    pkgId.StartsWith("Microsoft.Windows.SDK.", StringComparison.OrdinalIgnoreCase))
+						{
+							fileModified = true;
+							continue;
+						}
+
+						var verMatch = Regex.Match(currentObj, @"""PackageVersion""\s*:\s*""([^""]*)""");
+						var pkgVer = verMatch.Success ? verMatch.Groups[1].Value : "";
+
+						var licMatch = Regex.Match(currentObj, @"""License""\s*:\s*""((?:[^""\\]|\\.)*)""");
+						var licVal = licMatch.Success ? licMatch.Groups[1].Value : null;
+
+						var urlMatch = Regex.Match(currentObj, @"""LicenseUrl""\s*:\s*""([^""]*)""");
+						var urlVal = urlMatch.Success ? urlMatch.Groups[1].Value : null;
+
+						// Fill in missing parts from licenses.json if present
+						if (overrides.TryGetValue(pkgId, out var ov))
+						{
+							bool patchedFromOverrides = false;
+							if (string.IsNullOrWhiteSpace(licVal) && !string.IsNullOrWhiteSpace(ov.License))
+							{
+								licVal = ov.License;
+								currentObj = currentObj.TrimEnd('}') + ",\"License\":\"" + licVal + "\"}";
+								patchedFromOverrides = true;
+							}
+							if ((string.IsNullOrWhiteSpace(urlVal) || urlVal.TrimEnd('/').Equals("https://aka.ms/deprecateLicenseUrl", StringComparison.OrdinalIgnoreCase)) && !string.IsNullOrWhiteSpace(ov.LicenseUrl))
+							{
+								urlVal = ov.LicenseUrl;
+								currentObj = urlMatch.Success
+									? Regex.Replace(currentObj, @"""LicenseUrl""\s*:\s*""[^""]*""", "\"LicenseUrl\":\"" + urlVal + "\"")
+									: currentObj.TrimEnd('}') + ",\"LicenseUrl\":\"" + urlVal + "\"}";
+								patchedFromOverrides = true;
+							}
+
+							if (patchedFromOverrides)
+							{
+								if (!string.IsNullOrWhiteSpace(licVal) && !string.IsNullOrWhiteSpace(urlVal) && currentObj.Contains("\"ValidationErrors\""))
+								{
+									currentObj = Regex.Replace(currentObj, @"""ValidationErrors""\s*:\s*\[[^\]]*\],?", "");
+									currentObj = currentObj.Replace("{,", "{").Replace(",}", "}").Replace(",,", ",");
+								}
+								fileModified = true;
+								Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High,
+									string.Format("[Licenses] Filled missing license information for '{0}' from licenses.json.", pkgId));
+							}
+						}
+
+						// Auto-generate license URL for deprecateLicenseUrl if valid license found
+						if (!string.IsNullOrEmpty(urlVal) &&
+							urlVal.TrimEnd('/').Equals("https://aka.ms/deprecateLicenseUrl", StringComparison.OrdinalIgnoreCase))
+						{
+							if (!string.IsNullOrWhiteSpace(licVal) &&
+								!licVal.Contains("\\n") &&
+								!licVal.Contains("\\r") &&
+								licVal.Length <= 100)
+							{
+								var newUrl = "https://licenses.nuget.org/" + licVal.Trim();
+								currentObj = deprecateRegex.Replace(currentObj, "\"LicenseUrl\":\"" + newUrl + "\"", 1);
+								urlVal = newUrl;
+								fileModified = true;
+								Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High,
+									string.Format("[Licenses] Auto-generated license URL for '{0}' ({1}): {2}", pkgId, pkgVer, newUrl));
+							}
+						}
+
+						// Check for remaining problems
+						var problems = new List<string>();
+						if (currentObj.Contains("\"ValidationErrors\""))
+						{
+							problems.Add("validation errors found");
+						}
+						if (string.IsNullOrWhiteSpace(licVal))
+						{
+							problems.Add("missing license");
+						}
+						if (string.IsNullOrWhiteSpace(urlVal))
+						{
+							problems.Add("missing license URL");
+						}
+						else if (urlVal.TrimEnd('/').Equals("https://aka.ms/deprecateLicenseUrl", StringComparison.OrdinalIgnoreCase))
+						{
+							problems.Add("unresolved deprecateLicenseUrl");
+						}
+
+						if (problems.Count > 0)
+						{
+							var reason = string.Join(", ", problems);
+							Log.LogWarning(string.Format("[Licenses] Problematic package: '{0}' ({1}) in {2} has issues: {3}. Please add missing info to licenses.json!", pkgId, pkgVer, fileName, reason));
+						}
+
+						updatedObjects.Add(currentObj);
+					}
+
+					if (fileModified)
+					{
+						var newJson = "[" + string.Join(",", updatedObjects) + "]";
+						File.WriteAllText(path, newJson, System.Text.Encoding.UTF8);
+						Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High,
+							string.Format("[Licenses] Saved updated license file: {0}", fileName));
+					}
+				}
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
 	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
 		<Exec Command="dotnet tool restore --tool-manifest &quot;$(MSBuildProjectDirectory)\..\.config\dotnet-tools.json&quot;" />
-		<Exec Command="dotnet tool run nuget-license -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
-		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Command="dotnet tool run nuget-license -t -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<ItemGroup>
+			<_GeneratedLicenseFiles Include="$(ProjectDir)Resources\Raw\licenses.$(MSBuildProjectName).json" />
+			<_GeneratedLicenseFiles Condition="'@(ProjectReference)' != ''" Include="$(ProjectDir)Resources\Raw\licenses.%(ProjectReference.Filename).json" />
+		</ItemGroup>
+		<PatchAndValidateLicensesTask JsonFiles="@(_GeneratedLicenseFiles)" OverridesFile="$(ProjectDir)Resources\Raw\licenses.json" />
 	</Target>
-
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>portable</DebugType>
-		<AndroidEnableProguardMappingFile>true</AndroidEnableProguardMappingFile>
-	</PropertyGroup>
-
 
 
 	<ItemGroup>
 		<MauiAsset Include="Resources\Raw\licenses.json" LogicalName="licenses.json" />
+		<MauiAsset Include="Resources\Raw\licenses.Other.json" LogicalName="licenses.Other.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Pages\PresetsPage.xaml.cs">
 	    <DependentUpon>PresetsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Languages\AppStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppStrings.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Languages\PrivacyPolicyStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>PrivacyPolicyStrings.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Languages\AppStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AppStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages\PrivacyPolicyStrings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>PrivacyPolicyStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<!-- Auto-generate LocalizationConfig.g.cs from .resx files so Weblate-added languages are picked up automatically -->
+	<UsingTask TaskName="GenerateSupportedCulturesTask" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<ResxFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+			<DefaultCultures ParameterType="System.String" Required="false" />
+			<OutputFile ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Linq" />
+			<Using Namespace="System.Globalization" />
+			<Using Namespace="System.Collections.Generic" />
+			<Code Type="Fragment" Language="cs">
+<![CDATA[
+				// Collect culture codes from DefaultCultures param and .resx filenames
+				var cultures = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
+
+				foreach (var c in (DefaultCultures ?? "").Split(';').Where(s => s.Length > 0))
+					cultures.Add(c);
+
+				foreach (var item in ResxFiles)
+				{
+					var name = Path.GetFileNameWithoutExtension(item.ItemSpec);
+					var dot = name.LastIndexOf('.');
+					if (dot < 0) continue;
+					var tag = name.Substring(dot + 1);
+					try { CultureInfo.GetCultureInfo(tag); cultures.Add(tag); }
+					catch { /* not a culture code, skip */ }
+				}
+
+				// Generate the partial class
+				var entries = string.Join(", ", cultures.Select(c => $"\"{c}\""));
+				var code =
+@"// <auto-generated/>
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+namespace PixelsorterApp;
+
+public static partial class LocalizationConfig
+{
+    public static readonly IReadOnlyList<CultureInfo> SupportedCultures =
+        new[] { " + entries + @" }
+            .Select(CultureInfo.GetCultureInfo)
+            .OrderBy(c => c.NativeName)
+            .ToList();
+}
+";
+				var outDir = Path.GetDirectoryName(OutputFile);
+				if (!string.IsNullOrEmpty(outDir) && !Directory.Exists(outDir))
+					Directory.CreateDirectory(outDir);
+
+				if (!File.Exists(OutputFile) || File.ReadAllText(OutputFile) != code)
+					File.WriteAllText(OutputFile, code, System.Text.Encoding.UTF8);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="GenerateSupportedLocalizationCultures" BeforeTargets="CoreCompile;XamlPreCompile">
+		<ItemGroup>
+			<_ResxLocalizationFiles Include="Resources\Languages\*.resx" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_GeneratedLocalizationConfigFile>$(IntermediateOutputPath)LocalizationConfig.g.cs</_GeneratedLocalizationConfigFile>
+		</PropertyGroup>
+		<GenerateSupportedCulturesTask ResxFiles="@(_ResxLocalizationFiles)" DefaultCultures="en-GB;en-US" OutputFile="$(_GeneratedLocalizationConfigFile)" />
+		<ItemGroup>
+			<Compile Include="$(_GeneratedLocalizationConfigFile)" />
+			<FileWrites Include="$(_GeneratedLocalizationConfigFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Download the latest Weblate translation status widget SVG at build time -->
+	<UsingTask TaskName="DownloadWeblateSvgTask" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<SourceUrl ParameterType="System.String" Required="true" />
+			<DestinationFile ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Net.Http" />
+			<Using Namespace="System.Text" />
+			<Code Type="Fragment" Language="cs">
+<![CDATA[
+				var dir = Path.GetDirectoryName(DestinationFile);
+				if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+				{
+					Directory.CreateDirectory(dir);
+				}
+
+				try
+				{
+					using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+					client.DefaultRequestHeaders.UserAgent.ParseAdd("PixelsorterApp-MSBuild/1.0");
+					var svgContent = client.GetStringAsync(SourceUrl).GetAwaiter().GetResult();
+
+					if (!string.IsNullOrWhiteSpace(svgContent) && svgContent.Contains("<svg"))
+					{
+						var existingContent = File.Exists(DestinationFile) ? File.ReadAllText(DestinationFile, Encoding.UTF8) : null;
+						if (existingContent != svgContent)
+						{
+							File.WriteAllText(DestinationFile, svgContent, Encoding.UTF8);
+							Log.LogMessage(Microsoft.Build.Framework.MessageImportance.High, $"[Weblate] Updated {DestinationFile} from {SourceUrl}");
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					if (!File.Exists(DestinationFile))
+					{
+						var fallbackSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"75\"></svg>";
+						File.WriteAllText(DestinationFile, fallbackSvg, Encoding.UTF8);
+						Log.LogWarning($"[Weblate] Could not download widget from {SourceUrl}: {ex.Message}. Created minimal placeholder SVG.");
+					}
+					else
+					{
+						Log.LogWarning($"[Weblate] Could not download latest widget from {SourceUrl}: {ex.Message}. Using cached local file.");
+					}
+				}
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="UpdateWeblateStatusSvg" BeforeTargets="PrepareForBuild;ResizetizeImages;ProcessMauiAssets">
+		<DownloadWeblateSvgTask SourceUrl="https://hosted.weblate.org/widget/pixelsorter/multi-red.svg" DestinationFile="$(ProjectDir)Resources\Images\localization_progress.svg" />
+		<ItemGroup>
+			<!-- Ensure localization_progress.svg is included in MauiImage even if it did not exist on disk during initial project evaluation -->
+			<MauiImage Remove="Resources\Images\localization_progress.svg" />
+			<MauiImage Include="Resources\Images\localization_progress.svg" LogicalName="localization_progress.svg" />
+		</ItemGroup>
+	</Target>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidEnableR8>true</AndroidEnableR8>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidLinkResources>true</AndroidLinkResources>
+    <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and $(TargetFramework.Contains('-android'))">
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+    <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
+  </PropertyGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties resources_4raw_4licenses_1pixelsorterapp_1json__JsonSchema="json" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="common_Save" xml:space="preserve">
+    <value>Αποθήκευση</value>
+  </data>
+  <data name="common_Dismiss" xml:space="preserve">
+    <value>Aκύρωση</value>
+  </data>
+  <data name="common_Error" xml:space="preserve">
+    <value>Σφάλμα</value>
+  </data>
+  <data name="common_OK" xml:space="preserve">
+    <value>ΟΚ</value>
+  </data>
+  <data name="common_None" xml:space="preserve">
+    <value>Κενό</value>
+  </data>
+  <data name="common_NA" xml:space="preserve">
+    <value>Δεν εφαρμόζεται</value>
+  </data>
+  <data name="common_Edit" xml:space="preserve">
+    <value>Επεξεργασία</value>
+  </data>
+  <data name="common_Delete" xml:space="preserve">
+    <value>Διαγραφή</value>
+  </data>
+  <data name="common_Cancel" xml:space="preserve">
+    <value>Ακύρωση</value>
+  </data>
+  <data name="common_Unknown" xml:space="preserve">
+    <value>Άγνωστο</value>
+  </data>
+  <data name="common_Accept" xml:space="preserve">
+    <value>Αποδοχή</value>
+  </data>
+  <data name="common_DontAccept" xml:space="preserve">
+    <value>Απόρριψη</value>
+  </data>
+  <data name="common_dngErrorMessage" xml:space="preserve">
+    <value>Δεν είναι δυνατή η φόρτωση εικόνων RAW (αρχεία DNG)</value>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_SORTBY" xml:space="preserve">
+    <value>ΤΑΞΙΝΟΜΗΣΗ ΚΑΤΑ</value>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_SETTINGSUSED" xml:space="preserve">
+    <value>ΡΥΘΜΙΣΕΙΣ ΠΟΥ ΧΡΗΣΙΜΟΠΟΙΗΘΗΚΑΝ</value>
+  </data>
+  <data name="ExampleGallery_BeforeAfterView_DIRECTION" xml:space="preserve">
+    <value>DIRECTION</value>
+  </data>
+  <data name="ExampleGallery_DragTheSliderToCompareTheOriginalAndSortedImage" xml:space="preserve">
+    <value>Σύρε το ρυθμιστικό για να συγκρίνεις την αρχική με την ταξινομημένη εικόνα.</value>
+  </data>
+  <data name="HelpPage_Content" xml:space="preserve">
+    <value>Το Pixelsorter φορτώνει μια εικόνα, ταξινομεί τα pixel της στην κατεύθυνση και με το χρωματικό κριτήριο που επιλέγεις και σου επιτρέπει να δεις και να αποθηκεύσεις τα αποτελέσματα.
+
+Η κύρια οθόνη περιλαμβάνει:
+
+- **Προεπισκόπηση εικόνας** (πάτησε για να φορτώσεις μια εικόνα)
+- **Ρυθμίσεις ταξινόμησης** (κριτήριο και κατεύθυνση ταξινόμησης)
+- **Επιλογές μάσκας** (προαιρετικά: περιόρισε ποια pixel επιτρέπεται να μετακινηθούν)
+- Κουμπί **Ταξινόμηση** (δημιουργεί ένα νέο αποτέλεσμα ταξινόμησης)
+- Κουμπί **Αποθήκευση** (αποθηκεύει το αποτέλεσμα που εμφανίζεται εκείνη τη στιγμή)
+
+---
+
+## Φόρτωση εικόνας
+
+### Φόρτωση με πάτημα στην προεπισκόπηση
+
+1. Στην κύρια οθόνη, **πάτησε στην προεπισκόπηση εικόνας**.
+2. Επίλεξε μια εικόνα.
+3. Μετά τη φόρτωση, η λεζάντα κάτω από την προεπισκόπηση θα γράφει **«Αρχική εικόνα»** και η εφαρμογή θα σε ενημερώσει ότι είναι έτοιμη για ταξινόμηση.
+
+Σημειώσεις:
+
+- Μόλις φορτωθεί μια εικόνα, ενεργοποιείται το κουμπί **Ταξινόμηση**.
+- Η περιοχή προεπισκόπησης μπορεί να εμφανίζει πολλές εικόνες (την αρχική και τα αποτελέσματα). Δες την ενότητα «Προεπισκόπηση αποτελεσμάτων (με σάρωση)».
+
+### Android: κοινοποίηση / «Αποστολή σε» Pixelsorter
+
+Στο Android, το Pixelsorter μπορεί να λάβει μια εικόνα από άλλες εφαρμογές:
+
+1. Στη συλλογή φωτογραφιών, στη διαχείριση αρχείων ή σε κάποια άλλη εφαρμογή, επίλεξε **Κοινοποίηση**.
+2. Επίλεξε **Pixelsorter**.
+
+Το Pixelsorter θα ανοίξει και θα φορτώσει αυτόματα την εικόνα που κοινοποίησες.
+
+---
+
+## Προεπισκόπηση αποτελεσμάτων (με σάρωση)
+
+Κάθε φορά που πατάς **Ταξινόμηση**, το Pixelsorter δημιουργεί μια νέα επεξεργασμένη εικόνα και την προσθέτει στην προεπισκόπηση.
+
+**Μόνο στο Android!**
+
+Μπορείς να **σύρεις αριστερά/δεξιά** στην προεπισκόπηση για να μεταβείς μεταξύ:
+
+- της **αρχικής εικόνας** και
+- ενός ή περισσότερων **αποτελεσμάτων ταξινόμησης**.
+
+Το κείμενο κάτω από την προεπισκόπηση περιγράφει αυτό που βλέπεις εκείνη τη στιγμή (για παράδειγμα, «Αρχική εικόνα» ή τις επιλογές που χρησιμοποιήθηκαν).
+
+---
+
+## Αποθήκευση
+
+Το κουμπί **Αποθήκευση** αποθηκεύει την **εικόνα που εμφανίζεται εκείνη τη στιγμή**.
+
+Σημαντικές πληροφορίες:
+
+- Η **Αποθήκευση είναι απενεργοποιημένη για την αρχική εικόνα**. Ενεργοποιείται μόνο όταν σύρεις σε ένα αποτέλεσμα που έχει δημιουργηθεί.
+- Αν έχεις πολλά αποτελέσματα, σύρε σε αυτό που θέλεις και πάτησε **Αποθήκευση**.
+
+---
+
+## Επιλογές ταξινόμησης
+
+Η ταξινόμηση των pixel λειτουργεί ως εξής:
+
+- Τα pixel υποβάλλονται σε επεξεργασία σε **διαδοχικά τμήματα** κατά μήκος της επιλεγμένης κατεύθυνσης (γραμμές ή στήλες).
+- Σε κάθε τμήμα, τα pixel αναδιατάσσονται σύμφωνα με το κριτήριο **Ταξινόμηση κατά**.
+- Αν είναι ενεργοποιημένη μια **μάσκα**, ταξινομούνται μόνο τα pixel που βρίσκονται μέσα σε αυτή. Τα pixel εκτός μάσκας διατηρούν τις αρχικές τους θέσεις.
+
+### Ταξινόμηση κατά
+
+Η επιλογή **Ταξινόμηση κατά** καθορίζει την τιμή που χρησιμοποιείται για τη σύγκριση των pixel. Η εφαρμογή χρησιμοποιεί τον χρωματικό χώρο HSL (Απόχρωση/Κορεσμός/Φωτεινότητα) και προσφέρει τα παρακάτω κριτήρια:
+
+- **{0}** — ταξινομεί με βάση τη γωνία απόχρωσης (0–360). Δημιουργεί έντονες χρωματικές ζώνες και μεταβάσεις που θυμίζουν ουράνιο τόξο.
+- **{1}** — ταξινομεί με βάση τον κορεσμό (πόσο έντονο είναι το χρώμα ενός pixel).
+- **{2}** — ταξινομεί με βάση τη φωτεινότητα.
+- **{3}** — δίνει προτεραιότητα στις θερμές αποχρώσεις (κοντά στο πορτοκαλί/κόκκινο) και ενισχύει τα pixel με υψηλό κορεσμό και μεσαία φωτεινότητα.
+- **{4}** — δίνει προτεραιότητα στις ψυχρές αποχρώσεις (κοντά στο μπλε) και ενισχύει τα pixel με υψηλό κορεσμό και μεσαία φωτεινότητα.
+- **{5}** — μετρά τη χρωματική ένταση (υψηλός κορεσμός και φωτεινότητα που δεν πλησιάζει υπερβολικά το απόλυτο μαύρο ή λευκό).
+- **{6}** — παρόμοιο με το chroma, αλλά συνυπολογίζει την απόχρωση ώστε να προσεγγίζει καλύτερα την ανθρώπινη αντίληψη.
+
+Για μια γρήγορη αρχή:
+
+- δοκίμασε **{7}** για κλασικές γραμμώσεις τύπου «glitch»,
+- δοκίμασε **{8}** για έντονο διαχωρισμό χρωμάτων.
+
+### Κατεύθυνση
+
+Η επιλογή **Κατεύθυνση** καθορίζει τη σειρά με την οποία ταξινομούνται τα pixel:
+
+- **{9}** — ταξινομεί τα pixel σε κάθε γραμμή.
+- **{10}** — το ίδιο, αλλά τοποθετεί τα αποτελέσματα με αντίστροφη σειρά.
+- **{11}** — ταξινομεί τα pixel σε κάθε στήλη.
+- **{12}** — το ίδιο, αλλά τοποθετεί τα αποτελέσματα με αντίστροφη σειρά.
+- **{13}** — ειδική λειτουργία που ταξινομεί τα pixel *ακτινικά προς το εσωτερικό της μάσκας* (απαιτεί μάσκα).
+
+Λεπτομέρειες για τη χρήση μάσκας:
+
+- Όταν **δεν είναι ενεργοποιημένη καμία μάσκα**, εφαρμόζονται μόνο οι βασικές κατευθύνσεις γραμμών/στηλών.
+- Όταν είναι ενεργοποιημένη μια μάσκα, η ταξινόμηση γίνεται σε συνεχόμενα τμήματα εντός της μάσκας:
+  - για ταξινόμηση ανά γραμμή: τα τμήματα της μάσκας σε κάθε γραμμή ταξινομούνται ανεξάρτητα,
+  - για ταξινόμηση ανά στήλη: τα τμήματα της μάσκας σε κάθε στήλη ταξινομούνται ανεξάρτητα.
+- Η επιλογή **{14}** είναι διαθέσιμη/έχει νόημα μόνο όταν χρησιμοποιείς μάσκα, επειδή αξιοποιεί το σχήμα της για να καθοδηγήσει την ταξινόμηση.
+
+---
+
+## Μάσκες (τι είναι)
+
+Μια **μάσκα** είναι μια ασπρόμαυρη εικόνα (εσωτερικά, μια εικόνα σε κλίμακα του γκρι που μετατρέπεται σε ασπρόμαυρη με βάση ένα κατώφλι).
+
+- **Λευκό (εντός μάσκας):** τα pixel επιτρέπεται να μετακινηθούν/ταξινομηθούν.
+- **Μαύρο (εκτός μάσκας):** τα pixel παραμένουν στη θέση τους.
+
+Οι μάσκες είναι χρήσιμες όταν θέλεις το εφέ ταξινόμησης pixel να εφαρμόζεται μόνο σε συγκεκριμένες περιοχές (προσκήνιο/φόντο, ακμές κ.λπ.).
+
+Μπορείς να ενεργοποιήσεις έως δύο μάσκες ταυτόχρονα. Αν ενεργοποιηθούν δύο μάσκες, το Pixelsorter τις συνδυάζει (δες την ενότητα «Όταν είναι ενεργοποιημένες δύο μάσκες: συνδυασμός»).
+
+### Μάσκα θέματος
+
+Η επιλογή **Χρήση μάσκας θέματος** προσπαθεί να διαχωρίσει το κύριο θέμα από το φόντο χρησιμοποιώντας ένα μοντέλο μηχανικής μάθησης.
+
+- Την **πρώτη φορά** που την ενεργοποιείς, ενδέχεται να χρειαστεί λήψη του μοντέλου (απαιτείται σύνδεση στο διαδίκτυο).
+- Στη συνέχεια, εκτελείται τοπικά χρησιμοποιώντας το αποθηκευμένο μοντέλο.
+
+Επιλογές:
+
+- **Περιθώριο** — επεκτείνει την περιοχή του θέματος κατά τον καθορισμένο αριθμό pixel. Χρησιμοποίησέ το όταν η απομόνωση του θέματος είναι υπερβολικά στενή.
+- **Τι να ταξινομηθεί** (εμφανίζεται μόνο όταν *η μάσκα θέματος είναι ενεργοποιημένη* και *οι μάσκες Canny και λαμπρότητας είναι απενεργοποιημένες*):
+  - **Φόντο** — ταξινομεί το φόντο και διατηρεί το θέμα σε μεγάλο βαθμό σταθερό.
+  - **Προσκήνιο** — ταξινομεί το θέμα και διατηρεί το φόντο σε μεγάλο βαθμό σταθερό.
+
+### Μάσκα Canny (μάσκα ακμών)
+
+Η επιλογή **Χρήση μάσκας Canny** δημιουργεί μια πρόσθετη μάσκα από τις ακμές της εικόνας (ανίχνευση ακμών).
+
+- Η επεξεργασία γίνεται στη συσκευή.
+
+Επιλογή:
+
+- **Κατώφλι** — καθορίζει την ευαισθησία της ανίχνευσης ακμών.
+  - χαμηλότερες τιμές → περιλαμβάνονται περισσότερες ακμές,
+  - υψηλότερες τιμές → περιλαμβάνονται λιγότερες ακμές.
+
+Αυτή η μάσκα είναι χρήσιμη όταν θέλεις η ταξινόμηση να «ακολουθεί» περιγράμματα και δομές.
+
+### Μάσκα λαμπρότητας
+
+Η επιλογή **Χρήση μάσκας λαμπρότητας** δημιουργεί μια μάσκα με βάση τη συνολική λαμπρότητα της εικόνας.
+
+Επιλογές:
+
+- **Κατώφλι** — καθορίζει πόσο φωτεινό πρέπει να είναι ένα pixel για να συμπεριληφθεί στη μάσκα.
+  - χαμηλότερες τιμές → περιλαμβάνονται περισσότερα pixel,
+  - υψηλότερες τιμές → περιλαμβάνονται λιγότερα pixel.
+- **Τι να ταξινομηθεί** (εμφανίζεται μόνο όταν *η μάσκα λαμπρότητας είναι ενεργοποιημένη* και *οι μάσκες θέματος και Canny είναι απενεργοποιημένες*):
+  - **Κανονικό** — ταξινομεί τα pixel που είναι φωτεινότερα από το κατώφλι και διατηρεί τα πιο σκοτεινά pixel σταθερά.
+  - **Αντιστροφή** — ταξινομεί τα pixel που είναι σκοτεινότερα από το κατώφλι και διατηρεί τα πιο φωτεινά pixel σταθερά.
+
+*Συμβουλή:* Χρησιμοποίησε τη μάσκα λαμπρότητας με το κριτήριο ταξινόμησης **φωτεινότητα** για ένα εφέ τύπου «glitch».
+
+### Όταν είναι ενεργοποιημένες δύο μάσκες: συνδυασμός
+
+Όταν επιλέγεις οποιονδήποτε συνδυασμό δύο από τις μάσκες **θέματος**, **λαμπρότητας** και **Canny**, το Pixelsorter τις συνδυάζει.
+
+Μπορείς να επιλέξεις:
+
+- **Αφαίρεση** — αφαιρεί τη δεύτερη μάσκα από την πρώτη.
+  - *Θέμα &amp; Canny*: Αφαιρεί την ανεστραμμένη μάσκα Canny από τη μάσκα θέματος.
+  - *Θέμα &amp; Λαμπρότητα*: Αφαιρεί την ανεστραμμένη μάσκα λαμπρότητας από τη μάσκα θέματος.
+  - *Canny &amp; Λαμπρότητα*: Αφαιρεί την ανεστραμμένη μάσκα λαμπρότητας από τη μάσκα Canny.
+- **Προσθήκη** — προσθέτει τις δύο ενεργοποιημένες μάσκες.
+  - *Θέμα &amp; Canny*: Προσθέτει τη μάσκα θέματος και τη μάσκα Canny.
+  - *Θέμα &amp; Λαμπρότητα*: Προσθέτει τη μάσκα θέματος και τη μάσκα λαμπρότητας.
+  - *Canny &amp; Λαμπρότητα*: Προσθέτει τη μάσκα Canny και τη μάσκα λαμπρότητας.
+
+---
+
+## Προεπιλογές
+
+Οι προεπιλογές σου επιτρέπουν να αποθηκεύεις και να φορτώνεις τους αγαπημένους σου συνδυασμούς ρυθμίσεων ταξινόμησης και μάσκας.
+
+- **Φόρτωση προεπιλογής:** Στην κύρια οθόνη, χρησιμοποίησε τον επιλογέα προεπιλογών για να εφαρμόσεις γρήγορα έναν αποθηκευμένο συνδυασμό ρυθμίσεων.
+- **Δημιουργία ή επεξεργασία προεπιλογών:** Επίλεξε **«Νέα προεπιλογή»** ή πήγαινε στη σελίδα «Προεπιλογές». Εκεί μπορείς να γράψεις προσαρμοσμένες προεπιλογές χρησιμοποιώντας σύνταξη TOML.
+- **Επιλογές προεπιλογών:** Μπορείς να δεις τον πίνακα αντιστοίχισης TOML στη σελίδα «Προεπιλογές» για καθοδήγηση σχετικά με τα διαθέσιμα κλειδιά ρυθμίσεων (όπως `sort_settings`, `masking_options` κ.λπ.).
+- **Προεπιλεγμένες ρυθμίσεις:** Μπορείς να ορίσεις οποιαδήποτε προεπιλογή ως προεπιλεγμένη, ώστε το Pixelsorter να ξεκινά πάντα με τις ρυθμίσεις που προτιμάς.
+
+---
+
+## Συμβουλές και αντιμετώπιση προβλημάτων
+
+- Αν η **Ταξινόμηση** είναι απενεργοποιημένη, βεβαιώσου ότι έχεις φορτώσει πρώτα μια εικόνα.
+- Αν η **Αποθήκευση** είναι απενεργοποιημένη, πιθανότατα βλέπεις την **αρχική εικόνα**. Σύρε σε ένα αποτέλεσμα που έχει δημιουργηθεί.
+- Αν η ενεργοποίηση της **μάσκας θέματος** δεν έχει αποτέλεσμα την πρώτη φορά, έλεγξε τη σύνδεσή σου στο διαδίκτυο (απαιτείται μία αρχική λήψη του μοντέλου).
+- Για πιο γρήγορες δοκιμές, ξεκίνησε χωρίς μάσκες και με **Γραμμή από αριστερά προς τα δεξιά + Φωτεινότητα**. Στη συνέχεια, πρόσθεσε μάσκες αφού βρεις την κατεύθυνση και το κριτήριο που σου αρέσουν.</value>
+  </data>
+  <data name="AppSlogan" xml:space="preserve">
+    <value>Φόρτωσε μια εικόνα, επίλεξε ρυθμίσεις και πάτησε Ταξινόμηση.</value>
+  </data>
+  <data name="PixelSorterHeader" xml:space="preserve">
+    <value>Pixelsorter</value>
+  </data>
+  <data name="HeaderSortSettings" xml:space="preserve">
+    <value>ΡΥΘΜΙΣΕΙΣ ΤΑΞΙΝΟΜΗΣΗΣ</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>ΤΑΞΙΝΟΜΗΣΗ ΚΑΤΑ</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Κατεύθυνση</value>
+  </data>
+  <data name="HeaderMaskingOptions" xml:space="preserve">
+    <value>Επιλογές μάσκας</value>
+  </data>
+  <data name="Sort" xml:space="preserve">
+    <value>Ταξινόμηση</value>
+  </data>
+  <data name="SortCaption" xml:space="preserve">
+    <value>Ταξινόμηση κατά: {0} • Κατεύθυνση: {1}</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Καλώς ήρθες στο Pixelsorter!</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Ρίξε μια ματιά στη συλλογή παραδειγμάτων για να δεις τι μπορείς να κάνεις πριν ξεκινήσεις. Μπορείς να βρεις τη συλλογή ανά πάσα στιγμή από το μενού πληροφοριών.</value>
+  </data>
+  <data name="WelcomeAction" xml:space="preserve">
+    <value>Μετάβαση στη συλλογή</value>
+  </data>
+  <data name="OriginalImage" xml:space="preserve">
+    <value>Αρχική εικόνα</value>
+  </data>
+  <data name="CycleSortingMessagesCombiningMasks" xml:space="preserve">
+    <value>Συνδυασμός μασκών...</value>
+  </data>
+  <data name="CycleSortingMessagesApplyingSubjectMask" xml:space="preserve">
+    <value>Εφαρμογή μάσκας θέματος...</value>
+  </data>
+  <data name="CycleSortingMessagesDetectingEdges" xml:space="preserve">
+    <value>Ανίχνευση ακμών...</value>
+  </data>
+  <data name="CycleSortingMessagesSortingBy" xml:space="preserve">
+    <value>Ταξινόμηση κατά {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesArrangingPixels" xml:space="preserve">
+    <value>Διάταξη pixel {0}...</value>
+  </data>
+  <data name="CycleSortingMessagesReadingPixelData" xml:space="preserve">
+    <value>Ανάγνωση δεδομένων pixel...</value>
+  </data>
+  <data name="SortAsync_AnErrorOccurredExMessage" xml:space="preserve">
+    <value>Παρουσιάστηκε σφάλμα: {0}</value>
+  </data>
+  <data name="SaveAsync_NoImageAvailableToSave" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμη εικόνα για αποθήκευση.</value>
+  </data>
+  <data name="SaveAsync_ImageSaved" xml:space="preserve">
+    <value>Η εικόνα αποθηκεύτηκε</value>
+  </data>
+  <data name="SaveAsync_FailedToSaveImage" xml:space="preserve">
+    <value>Αποτυχία αποθήκευσης εικόνας</value>
+  </data>
+  <data name="ShareAsync_NoImageAvailableToShare" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμη εικόνα για κοινοποίηση.</value>
+  </data>
+  <data name="ShareAsync_ShareFailed" xml:space="preserve">
+    <value>Αποτυχία κοινοποίησης: {0}</value>
+  </data>
+  <data name="MaskingFeatureLicense_Title" xml:space="preserve">
+    <value>Άδεια χρήσης λειτουργίας μάσκας</value>
+  </data>
+  <data name="MaskingFeatureLicense_Message" xml:space="preserve">
+    <value>Η λειτουργία μάσκας χρησιμοποιεί ένα προεκπαιδευμένο μοντέλο μηχανικής μάθησης που δημιουργήθηκε από τρίτο μέρος. Ενεργοποιώντας αυτή τη λειτουργία, αποδέχεσαι ότι δεν θα χρησιμοποιήσεις εικόνες που δημιουργήθηκαν ή υποβλήθηκαν σε επεξεργασία με αυτό το εργαλείο για εμπορικούς σκοπούς. Για περισσότερες πληροφορίες, επισκέψου τη σελίδα της άδειας χρήσης.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Λήψη μοντέλου τεχνητής νοημοσύνης...</value>
+  </data>
+  <data name="DownloadFailed_Title" xml:space="preserve">
+    <value>Αποτυχία λήψης</value>
+  </data>
+  <data name="DownloadFailed_Message" xml:space="preserve">
+    <value>Δεν ήταν δυνατή η λήψη του μοντέλου μάσκας. Έλεγξε τη σύνδεσή σου στο διαδίκτυο και δοκίμασε ξανά.</value>
+  </data>
+  <data name="NoInternetConnection_Title" xml:space="preserve">
+    <value>Δεν υπάρχει σύνδεση στο διαδίκτυο</value>
+  </data>
+  <data name="NoInternetConnection_Message" xml:space="preserve">
+    <value>Απαιτείται σύνδεση στο διαδίκτυο για τη χρήση της λειτουργίας μάσκας. Συνδέσου στο διαδίκτυο και δοκίμασε ξανά.</value>
+  </data>
+  <data name="TapToLoadAnImage" xml:space="preserve">
+    <value>Πάτησε για να φορτώσεις μια εικόνα</value>
+  </data>
+  <data name="CannyView_Title" xml:space="preserve">
+    <value>Μάσκα ακμών Canny</value>
+  </data>
+  <data name="CannyView_details" xml:space="preserve">
+    <value>Διατηρεί τις ακμές χωρίς ταξινόμηση</value>
+  </data>
+  <data name="CannyView_Threshold" xml:space="preserve">
+    <value>Κατώφλι ευαισθησίας</value>
+  </data>
+  <data name="PresetsView_Header" xml:space="preserve">
+    <value>Προεπιλογές</value>
+  </data>
+  <data name="PresetsView_Presets" xml:space="preserve">
+    <value>Προεπιλογές</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Title" xml:space="preserve">
+    <value>Μάσκα θέματος</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Details" xml:space="preserve">
+    <value>Εντόπισε άτομα ή αντικείμενα και ταξινόμησε τα pixel γύρω τους</value>
+  </data>
+  <data name="MaskOptionsView_WhatToSort_Title" xml:space="preserve">
+    <value>Επιλογή</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Background" xml:space="preserve">
+    <value>Φόντο</value>
+  </data>
+  <data name="SubjectMaskOptionsView_WhatToSort_Foreground" xml:space="preserve">
+    <value>Προσκήνιο</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Subtract" xml:space="preserve">
+    <value>Αφαίρεση</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_Add" xml:space="preserve">
+    <value>Προσθήκη</value>
+  </data>
+  <data name="SubjectMaskOptionsView_HowToCombineMasks_explenation" xml:space="preserve">
+    <value>Αφαίρεση: Αφαιρεί την ανεστραμμένη δεύτερη μάσκα από την πρώτη. Προσθήκη: Προσθέτει τις δύο μάσκες.</value>
+  </data>
+  <data name="SubjectMaskOptionsView_Padding" xml:space="preserve">
+    <value>Περιθώριο</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Navigation_Title" xml:space="preserve">
+    <value>Βοήθεια και πληροφορίες</value>
+  </data>
+  <data name="PageName_HelpPage" xml:space="preserve">
+    <value>Βοήθεια</value>
+  </data>
+  <data name="PageName_ExampleGallery" xml:space="preserve">
+    <value>Συλλογή παραδειγμάτων</value>
+  </data>
+  <data name="PageName_PresetsPage" xml:space="preserve">
+    <value>Σελίδα προεπιλογών</value>
+  </data>
+  <data name="PageName_OpenSourceLicenses" xml:space="preserve">
+    <value>Άδειες χρήσης ανοιχτού κώδικα</value>
+  </data>
+  <data name="PageName_PrivacyPolicy" xml:space="preserve">
+    <value>Πολιτική απορρήτου</value>
+  </data>
+  <data name="HelpPage_DisplayPageName_HowToUseThePixelsorter" xml:space="preserve">
+    <value>Πώς να χρησιμοποιήσεις το Pixelsorter</value>
+  </data>
+  <data name="PageName_Settings" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+  </data>
+  <data name="LicensePage_LicenseInformationUnavailable" xml:space="preserve">
+    <value>Οι πληροφορίες άδειας χρήσης δεν είναι διαθέσιμες</value>
+  </data>
+  <data name="ShareFeature_ShareDialog_Title" xml:space="preserve">
+    <value>Κοινοποίηση ταξινομημένης εικόνας</value>
+  </data>
+  <data name="ShareFeature_AdTextWithPlatformLink" xml:space="preserve">
+    <value>Δες αυτή την εικόνα με ταξινομημένα pixel που δημιούργησα με το {0}</value>
+  </data>
+  <data name="LicensesPage_Explenation" xml:space="preserve">
+    <value>Αυτή η εφαρμογή χρησιμοποιεί τα ακόλουθα πακέτα ανοιχτού κώδικα:</value>
+  </data>
+  <data name="LicensePage_ByItemAuthors" xml:space="preserve">
+    <value>από {0}</value>
+  </data>
+  <data name="PresetsPage_Header" xml:space="preserve">
+    <value>Λεπτομέρειες προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_CreateYourPresetExplenation" xml:space="preserve">
+    <value>Δημιούργησε τη δική σου προεπιλογή προσαρμόζοντας τις παρακάτω επιλογές. Η προεπιλογή που εμφανίζεται βασίζεται στις επιλογές σου. Συμβουλέψου τον πίνακα αντιστοίχισης TOML για να δεις πώς να ρυθμίσεις κάθε επιλογή.</value>
+  </data>
+  <data name="PresetsPage_PresetEditor_Heading" xml:space="preserve">
+    <value>TOML προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_NewPresetName_Title" xml:space="preserve">
+    <value>Όνομα προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_SetAsDefaultPreset" xml:space="preserve">
+    <value>Ορισμός ως προεπιλεγμένης ρύθμισης</value>
+  </data>
+  <data name="PresetsPage_SetBasePresetAsDefault" xml:space="preserve">
+    <value>Ορισμός της βασικής προεπιλογής ως προεπιλεγμένης ρύθμισης</value>
+  </data>
+  <data name="PresetsPage_SavePreset" xml:space="preserve">
+    <value>Αποθήκευση προεπιλογής</value>
+  </data>
+  <data name="PresetsPage_AvilablePresets_Header" xml:space="preserve">
+    <value>Διαθέσιμες προεπιλογές</value>
+  </data>
+  <data name="PresetsPage_Preset" xml:space="preserve">
+    <value>Προεπιλογή</value>
+  </data>
+  <data name="ToggleTomlMap_Hide" xml:space="preserve">
+    <value>Απόκρυψη πίνακα αντιστοίχισης TOML</value>
+  </data>
+  <data name="ToggleTomlMap_Show" xml:space="preserve">
+    <value>Εμφάνιση πίνακα αντιστοίχισης TOML</value>
+  </data>
+  <data name="BasePresetSetAsDefault" xml:space="preserve">
+    <value>Η βασική προεπιλογή ορίστηκε ως προεπιλεγμένη ρύθμιση.</value>
+  </data>
+  <data name="TOMLValidation_Invalid" xml:space="preserve">
+    <value>Το TOML δεν είναι έγκυρο.</value>
+  </data>
+  <data name="TOMLValidation_InvalidError" xml:space="preserve">
+    <value>Το TOML δεν είναι έγκυρο: {0}</value>
+  </data>
+  <data name="TOMLValidation_Valid" xml:space="preserve">
+    <value>Το TOML είναι έγκυρο.</value>
+  </data>
+  <data name="InvalidPresetName" xml:space="preserve">
+    <value>Μη έγκυρο όνομα προεπιλογής.</value>
+  </data>
+  <data name="PresetSavedSuccessfully" xml:space="preserve">
+    <value>Η προεπιλογή αποθηκεύτηκε με επιτυχία.</value>
+  </data>
+  <data name="ErrorSavingPreset" xml:space="preserve">
+    <value>Σφάλμα κατά την αποθήκευση της προεπιλογής: {0}</value>
+  </data>
+  <data name="LoadedPresetPresetName" xml:space="preserve">
+    <value>Η προεπιλογή '{0}' φορτώθηκε.</value>
+  </data>
+  <data name="ErrorLoadingPresetPresetNameExMessage" xml:space="preserve">
+    <value>Σφάλμα κατά τη φόρτωση της προεπιλογής '{0}': {1}</value>
+  </data>
+  <data name="DeletedPresetPresetName" xml:space="preserve">
+    <value>Η προεπιλογή '{0}' διαγράφηκε.</value>
+  </data>
+  <data name="NewPresetAction" xml:space="preserve">
+    <value>Νέα προεπιλογή</value>
+  </data>
+  <data name="TomlValidation_Empty" xml:space="preserve">
+    <value>Το περιεχόμενο TOML είναι κενό.</value>
+  </data>
+  <data name="TomlValidation_FailedToLoadTomlMap" xml:space="preserve">
+    <value>Αποτυχία φόρτωσης του πίνακα αντιστοίχισης TOML.</value>
+  </data>
+  <data name="TomlValidation_InvalidSyntaxError" xml:space="preserve">
+    <value>Μη έγκυρη σύνταξη TOML: {0}</value>
+  </data>
+  <data name="TomlValidation_InvalidSyntax" xml:space="preserve">
+    <value>Μη έγκυρη σύνταξη TOML.</value>
+  </data>
+  <data name="TomlValidation_MaskMustBeEnabled" xml:space="preserve">
+    <value>Η κατεύθυνση 'im' (Προς το εσωτερικό της μάσκας) απαιτεί να είναι ενεργοποιημένη τουλάχιστον μία μάσκα.</value>
+  </data>
+  <data name="TomlValidation_CannyOutOfRange" xml:space="preserve">
+    <value>Το canny_options.threshold πρέπει να είναι εντός του εύρους (0, 100).</value>
+  </data>
+  <data name="TomlValidation_SubjectPaddingOutOfRange" xml:space="preserve">
+    <value>Το subject_settings.padding πρέπει να είναι εντός του εύρους [1, 100].</value>
+  </data>
+  <data name="TomlValidation_subjectLicenseNotAccepted" xml:space="preserve">
+    <value>Η μάσκα θέματος δεν μπορεί να ενεργοποιηθεί πριν αποδεχτείς την άδεια χρήσης της λειτουργίας μάσκας.</value>
+  </data>
+  <data name="TomlValidation_BackgroundModelIsNotDownloaded" xml:space="preserve">
+    <value>Η μάσκα θέματος δεν μπορεί να ενεργοποιηθεί επειδή δεν έχει γίνει λήψη του μοντέλου φόντου.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidTableTableName" xml:space="preserve">
+    <value>Ο πίνακας [{0}] λείπει ή δεν είναι έγκυρος.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidStringValueKey" xml:space="preserve">
+    <value>Η τιμή συμβολοσειράς {0} λείπει ή δεν είναι έγκυρη.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidBooleanValue" xml:space="preserve">
+    <value>Η λογική τιμή {0} λείπει ή δεν είναι έγκυρη.</value>
+  </data>
+  <data name="TomlValidation_MissingOrInvalidIntegerValue" xml:space="preserve">
+    <value>Η ακέραια τιμή {0} λείπει ή δεν είναι έγκυρη.</value>
+  </data>
+  <data name="TomlValidation_InvalidValueForFieldNameValue" xml:space="preserve">
+    <value>Μη έγκυρη τιμή για το {0}: '{1}'.</value>
+  </data>
+  <data name="PresetsPageViewModel_PresetsPageViewModel_NewPresetName" xml:space="preserve">
+    <value>Προεπιλογή {0}</value>
+  </data>
+  <data name="LanguagesAreSortedByTheirNativeNames" xml:space="preserve">
+    <value>Οι γλώσσες ταξινομούνται με βάση το όνομά τους στη δική τους γλώσσα.</value>
+  </data>
+  <data name="LanguageSettingsView_LanguageSettings" xml:space="preserve">
+    <value>Ρυθμίσεις γλώσσας</value>
+  </data>
+  <data name="LanguageSettingsView_ChooseLanguage" xml:space="preserve">
+    <value>Επιλογή γλώσσας</value>
+  </data>
+  <data name="LanguageSettingsView_Restart" xml:space="preserve">
+    <value>Για την καλύτερη δυνατή εμπειρία, επανεκκίνησε την εφαρμογή μετά την αλλαγή γλώσσας.</value>
+  </data>
+  <data name="SortStrings_direction_im" xml:space="preserve">
+    <value>Προς το εσωτερικό της μάσκας</value>
+  </data>
+  <data name="SortStrings_by_hue" xml:space="preserve">
+    <value>Απόχρωση</value>
+  </data>
+  <data name="SortStrings_by_sat" xml:space="preserve">
+    <value>Κορεσμός</value>
+  </data>
+  <data name="SortStrings_by_light" xml:space="preserve">
+    <value>Φωτεινότητα</value>
+  </data>
+  <data name="SortStrings_by_warm" xml:space="preserve">
+    <value>Θερμότητα</value>
+  </data>
+  <data name="SortStrings_by_cool" xml:space="preserve">
+    <value>Ψυχρότητα</value>
+  </data>
+  <data name="SortStrings_by_chroma" xml:space="preserve">
+    <value>Χρωματική ένταση</value>
+  </data>
+  <data name="SortStrings_by_perVib" xml:space="preserve">
+    <value>Ζωντάνια χρωμάτων</value>
+  </data>
+  <data name="SortStrings_direction_rlr" xml:space="preserve">
+    <value>Γραμμή από αριστερά προς τα δεξιά</value>
+  </data>
+  <data name="SortStrings_direction_rrl" xml:space="preserve">
+    <value>Γραμμή από δεξιά προς τα αριστερά</value>
+  </data>
+  <data name="SortStrings_direction_ctb" xml:space="preserve">
+    <value>Στήλη από πάνω προς τα κάτω</value>
+  </data>
+  <data name="SortStrings_direction_cbt" xml:space="preserve">
+    <value>Στήλη από κάτω προς τα πάνω</value>
+  </data>
+  <data name="LanguageSettingsView_TranslationGuarantee" xml:space="preserve">
+    <value>Μπορούμε να εγγυηθούμε ότι μόνο η γερμανική και η αγγλική έκδοση είναι πάντα πλήρως μεταφρασμένες. Στις υπόλοιπες γλώσσες, ορισμένο περιεχόμενο ενδέχεται να μην έχει μεταφραστεί και να εμφανίζεται στα αγγλικά.</value>
+  </data>
+  <data name="LuminanceMaskView_Title" xml:space="preserve">
+    <value>Μάσκα λαμπρότητας</value>
+  </data>
+  <data name="LuminanceMaskView_Details" xml:space="preserve">
+    <value>Μια μάσκα που βασίζεται στη λαμπρότητα της εικόνας</value>
+  </data>
+  <data name="LuminanceMaskView_Threshold" xml:space="preserve">
+    <value>Κατώφλι</value>
+  </data>
+  <data name="CycleSortingMessagesAnalyzingLuminance" xml:space="preserve">
+    <value>Ανάλυση λαμπρότητας...</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Normal" xml:space="preserve">
+    <value>Κανονικό</value>
+  </data>
+  <data name="LuminanceMaskView_WhatToSort_Inverted" xml:space="preserve">
+    <value>Ανεστραμμένο</value>
+  </data>
+  <data name="MaskingOptionsView_InfoAboutMaskSelectLimit" xml:space="preserve">
+    <value>Επίλεξε έως δύο μάσκες</value>
+  </data>
+  <data name="TomlValidation_LumThresholdOutOfRange" xml:space="preserve">
+    <value>Το luminance_options.threshold πρέπει να είναι εντός του εύρους [1, 100].</value>
+  </data>
+  <data name="TomlValidationService_TooManyMasksEnabled" xml:space="preserve">
+    <value>Μπορούν να ενεργοποιηθούν έως 2 μάσκες ταυτόχρονα. Έχεις ενεργοποιήσει {0}.</value>
+  </data>
+  <data name="SortStrings_direction_ArbitraryAngle" xml:space="preserve">
+    <value>Αυθαίρετη γωνία</value>
+  </data>
+  <data name="DirectionAngle_Title" xml:space="preserve">
+    <value>Όρισε τη γωνία ταξινόμησης της εικόνας</value>
+  </data>
+  <data name="TomlValidation_AngleOutOfRange" xml:space="preserve">
+    <value>Το sortsettings.direction.angle πρέπει να είναι εντός του εύρους [0.0, 360.0].</value>
+  </data>
+  <data name="TomlValidation_Angle_NaN" xml:space="preserve">
+    <value>Το sortsettings.direction.angle πρέπει να είναι αριθμός κινητής υποδιαστολής.</value>
+  </data>
+  <data name="SubjectMaskOptionsView_DetectionConfidence" xml:space="preserve">
+    <value>Βαθμός βεβαιότητας ανίχνευσης φόντου</value>
+  </data>
+  <data name="TomlValidation_SubjectSensitivity_NaN" xml:space="preserve">
+    <value>Το subject_settings.sensitivity πρέπει να είναι έγκυρος αριθμός κινητής υποδιαστολής.</value>
+  </data>
+  <data name="TomlValidation_SubjectSensitivityOutOfRange" xml:space="preserve">
+    <value>Το subject_settings.sensitivity πρέπει να είναι εντός του εύρους (1, 100].</value>
+  </data>
+  <data name="LicensesPage_AdditionalLicenses" xml:space="preserve">
+    <value>Πρόσθετες άδειες χρήσης</value>
+  </data>
+  <data name="LanguageSettingsView_HelpUsLocalizingTheApp" xml:space="preserve">
+    <value>Βοήθησέ μας να μεταφράσουμε την εφαρμογή</value>
+  </data>
+</root>

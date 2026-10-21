@@ -1,4 +1,3 @@
-using UXDivers.Popups;
 using UXDivers.Popups.Maui;
 using UXDivers.Popups.Services;
 
@@ -48,11 +47,11 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
         }
         if (parameters.TryGetValue("CancelButton", out var cancelText))
         {
-            CancelButton.Text = cancelText?.ToString() ?? "Cancel";
+            CancelButton.Text = cancelText?.ToString() ?? PixelsorterApp.Resources.Languages.AppStrings.common_Cancel;
         }
         if (parameters.TryGetValue("ConfirmButton", out var confirmText))
         {
-            ConfirmButton.Text = confirmText?.ToString() ?? "Ok";
+            ConfirmButton.Text = confirmText?.ToString() ?? PixelsorterApp.Resources.Languages.AppStrings.common_OK;
         }
     }
 
