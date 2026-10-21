@@ -22,6 +22,7 @@ namespace PixelsorterApp
         public const string Gavel = "\ue86f";
         public const string PrivacyTip = "\ue8e8";
         public const string ChevronRight = "\ue5cc";
+        public const string ExpandMore = "\ue5cf";
         public const string SettingsGear = "\ue8b8";
     }
 }
