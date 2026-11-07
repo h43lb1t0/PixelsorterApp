@@ -10,10 +10,8 @@ namespace PixelsorterApp.ViewModels
 
         private readonly ILocalizationResourceManager localizationResourceManager;
 
-        public IReadOnlyList<CultureInfo> AvailableLanguages => LocalizationConfig.SupportedCultures;
-
         [ObservableProperty]
-        private CultureInfo selectedLanguage;
+        public partial CultureInfo SelectedLanguage { get; set; }
 
         [RelayCommand]
         private static async Task OpenUrlAsync(string? url)
@@ -37,7 +35,7 @@ namespace PixelsorterApp.ViewModels
             this.localizationResourceManager = localizationResourceManager;
             
             var current = localizationResourceManager.CurrentCulture;
-            this.selectedLanguage = current;
+            SelectedLanguage = current;
         }
     }
 }

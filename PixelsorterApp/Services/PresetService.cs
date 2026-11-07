@@ -5,19 +5,14 @@ using Tomlyn.Model;
 
 namespace PixelsorterApp.Services;
 
-public class PresetService : IPresetService
+public class PresetService(ITomlValidationService tomlValidationService) : IPresetService
 {
-    private readonly ITomlValidationService _tomlValidationService;
+    private readonly ITomlValidationService _tomlValidationService = tomlValidationService;
 
     private readonly string _basePresetPath = "presets/base.toml";
     private readonly string _userPresetsPath = Path.Combine(FileSystem.Current.AppDataDirectory, "Presets");
     private const string TomlMapPath = "presets/tomlMap.json";
     private TomlMap? _cachedMap;
-
-    public PresetService(ITomlValidationService tomlValidationService)
-    {
-        _tomlValidationService = tomlValidationService;
-    }
 
     public IReadOnlyDictionary<string, string> GetAvailablePresets()
     {
@@ -113,7 +108,7 @@ public class PresetService : IPresetService
 
             if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
             {
-                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
+                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out string? whatToSortMapped))
                 {
                     useInvertedSubjectMask = string.Equals(whatToSortMapped, "SortForegroundSelected", StringComparison.Ordinal);
                 }
@@ -126,21 +121,21 @@ public class PresetService : IPresetService
 
         string? sortByName = null;
         if (!string.IsNullOrWhiteSpace(preset.SortSettings?.SortBy)
-            && TryGetMappedValue(map.SortBy, preset.SortSettings.SortBy, out var sortByMapped))
+            && TryGetMappedValue(map.SortBy, preset.SortSettings.SortBy, out string? sortByMapped))
         {
             sortByName = sortByMapped.Split('.').Last();
         }
 
         bool? useSubtractMasks = null;
         if (!string.IsNullOrWhiteSpace(preset.MaskCombination?.Mode)
-            && TryGetMappedValue(map.MaskCombination, preset.MaskCombination.Mode, out var maskCombinationMapped))
+            && TryGetMappedValue(map.MaskCombination, preset.MaskCombination.Mode, out string? maskCombinationMapped))
         {
             useSubtractMasks = string.Equals(maskCombinationMapped, "UseSubtractMasksSelected", StringComparison.Ordinal);
         }
 
         string? directionName = null;
         if (!string.IsNullOrWhiteSpace(preset.SortSettings?.Direction)
-            && TryGetMappedValue(map.Direction, preset.SortSettings.Direction, out var directionMapped))
+            && TryGetMappedValue(map.Direction, preset.SortSettings.Direction, out string? directionMapped))
         {
             directionName = directionMapped.Split('.').Last();
         }
@@ -160,7 +155,7 @@ public class PresetService : IPresetService
 
             if (!string.IsNullOrWhiteSpace(preset.LuminanceOptions.WhatToSort))
             {
-                if (TryGetMappedValue(map.WhatToSortLum, preset.LuminanceOptions.WhatToSort, out var whatToSortLumMapped))
+                if (TryGetMappedValue(map.WhatToSortLum, preset.LuminanceOptions.WhatToSort, out string? whatToSortLumMapped))
                 {
                     useInvertedLumMask = string.Equals(whatToSortLumMapped, "SortLumInvertedSelected", StringComparison.Ordinal);
                 }

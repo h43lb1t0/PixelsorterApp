@@ -75,13 +75,12 @@ namespace PixelsorterApp.Services
 
         private static string GetPlatformDefaultMessage()
         {
-            String PlayStoreLink = "https://play.google.com/store/apps/details?id=org.haelbich.pixelsorter";
-            String GithubLink = "https://github.com/h43lb1t0/PixelsorterApp/releases";
 #if ANDROID
-            return String.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_AdTextWithPlatformLink, PlayStoreLink);
+            const string platformLink = "https://play.google.com/store/apps/details?id=org.haelbich.pixelsorter";
 #else
-            return String.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_AdTextWithPlatformLink, GithubLink);
+            const string platformLink = "https://github.com/h43lb1t0/PixelsorterApp/releases";
 #endif
+            return string.Format(PixelsorterApp.Resources.Languages.AppStrings.ShareFeature_AdTextWithPlatformLink, platformLink);
         }
     }
 }
