@@ -10,8 +10,6 @@ namespace PixelsorterApp.ViewModels
 
         private readonly ILocalizationResourceManager localizationResourceManager;
 
-        public IReadOnlyList<CultureInfo> AvailableLanguages => LocalizationConfig.SupportedCultures;
-
         [ObservableProperty]
         public partial CultureInfo SelectedLanguage { get; set; }
 
