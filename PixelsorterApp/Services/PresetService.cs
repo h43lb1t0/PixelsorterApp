@@ -113,7 +113,7 @@ public class PresetService : IPresetService
 
             if (!string.IsNullOrWhiteSpace(preset.SubjectSettings.WhatToSort))
             {
-                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out var whatToSortMapped))
+                if (TryGetMappedValue(map.WhatToSort, preset.SubjectSettings.WhatToSort, out string? whatToSortMapped))
                 {
                     useInvertedSubjectMask = string.Equals(whatToSortMapped, "SortForegroundSelected", StringComparison.Ordinal);
                 }
