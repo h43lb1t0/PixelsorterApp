@@ -133,8 +133,8 @@ public partial class BeforeAfterView : ContentView
     
     public bool HasSortAngle => !string.IsNullOrEmpty(SortAngle);
     public bool HasAnyMask => SubjectMasking || CannyMasking;
-    private int _maskCount => (SubjectMasking ? 1 : 0) + (CannyMasking ? 1 : 0) + (LumMasking ? 1 : 0);
-    public bool HasBothMasks => _maskCount == 2;
+    private int MaskCount => (SubjectMasking ? 1 : 0) + (CannyMasking ? 1 : 0) + (LumMasking ? 1 : 0);
+    public bool HasBothMasks => MaskCount == 2;
     public bool HasOnlySubjectMask => SubjectMasking && !CannyMasking && !LumMasking;
     public bool HasOnlyLumMask => LumMasking && !SubjectMasking && !CannyMasking;
     /// <summary>
