@@ -5,14 +5,9 @@ using Tomlyn.Model;
 
 namespace PixelsorterApp.Services
 {
-    public sealed class TomlValidationService : ITomlValidationService
+    public sealed partial class TomlValidationService(IImageProcessingService imageProcessingService) : ITomlValidationService
     {
-        private readonly IImageProcessingService imageProcessingService;
-
-        public TomlValidationService(IImageProcessingService imageProcessingService)
-        {
-            this.imageProcessingService = imageProcessingService;
-        }
+        private readonly IImageProcessingService imageProcessingService = imageProcessingService;
 
         /// <summary>
         /// Validates the provided TOML content against required settings and rules.
@@ -194,7 +189,7 @@ namespace PixelsorterApp.Services
             }
 
             errors.Add(String.Format(PixelsorterApp.Resources.Languages.AppStrings.TomlValidation_MissingOrInvalidTableTableName, tableName));
-            return new TomlTable();
+            return [];
         }
 
         /// <summary>
@@ -306,12 +301,10 @@ namespace PixelsorterApp.Services
         {
             content = content.Replace("\r\n", "\n").Replace('\r', '\n');
 
-            return Regex.Replace(
-            content,
-            @"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$",
-            "mode = \"${value}\"");
+            return SanitizeTomlRegex().Replace(content, "mode = \"${value}\"");
         }
 
-
+        [GeneratedRegex(@"(?m)^\s*mode\s+\""(?<value>[^\""\r\n]+)\""\s*$")]
+        private static partial Regex SanitizeTomlRegex();
     }
 }
