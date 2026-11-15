@@ -495,7 +495,7 @@ namespace PixelsorterApp.ViewModels
 
         private static string Normalize(string value)
         {
-            return Regex.Replace(value, "[^A-Za-z0-9]", string.Empty).ToLowerInvariant();
+            return NormalizeRegex().Replace(value, string.Empty).ToLowerInvariant();
         }
 
         private void RefreshAvailablePresets()
@@ -605,7 +605,7 @@ namespace PixelsorterApp.ViewModels
                     ? current[sortSettingsIdx..sortSettingsEnd]
                     : current[sortSettingsIdx..];
 
-                if (!Regex.IsMatch(sortSection, @"^\s*angle\s*=", RegexOptions.Multiline | RegexOptions.IgnoreCase))
+                if (!AngleRegex().IsMatch(sortSection))
                 {
                     int headerEnd = sortSettingsIdx + "[sort_settings]".Length;
                     sb.Insert(headerEnd, "\r\nangle = 45.0");
@@ -631,5 +631,19 @@ namespace PixelsorterApp.ViewModels
 
             return Task.CompletedTask;
         }
+
+        /// <summary>
+        /// Gets a regular expression that matches any character other than a letter or digit.
+        /// </summary>
+        /// <returns>A regular expression that matches any character other than an uppercase letter, lowercase letter, or digit.</returns>
+        [GeneratedRegex("[^A-Za-z0-9]")]
+        private static partial Regex NormalizeRegex();
+
+        /// <summary>
+        /// Creates a regular expression that matches lines beginning with an angle assignment.
+        /// </summary>
+        /// <returns>A regular expression for matching angle assignments, ignoring case and allowing leading whitespace.</returns>
+        [GeneratedRegex(@"^\s*angle\s*=", RegexOptions.IgnoreCase | RegexOptions.Multiline)]
+        private static partial Regex AngleRegex();
     }
 }
