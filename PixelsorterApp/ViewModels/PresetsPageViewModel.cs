@@ -136,7 +136,7 @@ namespace PixelsorterApp.ViewModels
 
             PresetName = String.Format(PixelsorterApp.Resources.Languages.AppStrings.PresetsPageViewModel_PresetsPageViewModel_NewPresetName, _mainViewModel.PresetOptions.Count);
 
-            AvailablePresets = new ObservableCollection<PresetListItem>();
+            AvailablePresets = [];
             RefreshAvailablePresets();
 
         }

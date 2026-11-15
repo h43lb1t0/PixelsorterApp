@@ -623,9 +623,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
     {
         // Rebuild SortBy options
         var previousSortByKey = SelectedSortBy?.Key;
-        SortByOptions = sortByOptions.Keys
-            .Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))
-            .ToList();
+        SortByOptions = [.. sortByOptions.Keys.Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))];
         OnPropertyChanged(nameof(SortByOptions));
 
         if (previousSortByKey != null)
