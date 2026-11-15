@@ -295,9 +295,7 @@ public sealed partial class MainPageViewModel : BaseViewModel
             allDirectionOptions.Add(new LocalizedOption(enumName, SortStringLocalizer.LocalizeDirection(enumName)));
         }
 
-        SortByOptions = sortByOptions.Keys
-            .Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))
-            .ToList();
+        SortByOptions = [.. sortByOptions.Keys.Select(key => new LocalizedOption(key, SortStringLocalizer.LocalizeSortBy(key)))];
         SelectedSortBy = SortByOptions.Count > 0 ? SortByOptions[0] : null;
 
         RefreshSortDirectionOptions();
