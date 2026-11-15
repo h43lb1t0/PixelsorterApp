@@ -159,13 +159,13 @@ public partial class BeforeAfterView : ContentView
         InitializeComponent();
     }
 
-    void BeforeImage_SizeChanged(object sender, EventArgs e)
+    void BeforeImage_SizeChanged(object? sender, EventArgs e)
     {
         // Width isn't known until layout happens, so set initial clip here
         UpdateClip(CompareSlider.Value);
     }
 
-    void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
+    void OnSliderValueChanged(object? sender, ValueChangedEventArgs e)
     {
         UpdateClip(e.NewValue);
     }

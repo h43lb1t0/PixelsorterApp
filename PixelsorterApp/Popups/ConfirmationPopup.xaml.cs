@@ -55,13 +55,13 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
         }
     }
 
-    private async void OnConfirmClicked(object sender, EventArgs e)
+    private async void OnConfirmClicked(object? sender, EventArgs e)
     {
         SetResult(true);
         await IPopupService.Current.PopAsync(this);
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e)
+    private async void OnCancelClicked(object? sender, EventArgs e)
     {
         SetResult(false);
         await IPopupService.Current.PopAsync(this);
