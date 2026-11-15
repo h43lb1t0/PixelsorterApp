@@ -10,7 +10,7 @@ namespace PixelsorterApp.Services;
 /// Provides image sorting, mask generation, and gallery save operations.
 /// </summary>
 /// <param name="serviceProvider">Service provider used to resolve platform-specific dependencies.</param>
-public sealed class ImageProcessingService(IServiceProvider serviceProvider) : IImageProcessingService, IDisposable
+public sealed partial class ImageProcessingService(IServiceProvider serviceProvider) : IImageProcessingService, IDisposable
 {
     private readonly BackgroundMask backgroundMasker = new();
     private readonly CannyMask cannyMasker = new();
