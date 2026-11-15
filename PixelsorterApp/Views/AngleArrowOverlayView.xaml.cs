@@ -16,16 +16,10 @@ public partial class AngleArrowOverlayView : ContentView
     {
         base.OnBindingContextChanged();
 
-        if (viewModel is not null)
-        {
-            viewModel.PropertyChanged -= OnViewModelPropertyChanged;
-        }
+        viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 
         viewModel = BindingContext as MainPageViewModel;
-        if (viewModel is not null)
-        {
-            viewModel.PropertyChanged += OnViewModelPropertyChanged;
-        }
+        viewModel?.PropertyChanged += OnViewModelPropertyChanged;
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
