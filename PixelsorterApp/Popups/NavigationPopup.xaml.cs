@@ -49,21 +49,21 @@ public partial class NavigationPopup : PopupResultPage<String>
         }
     }
 
-    private View CreateNavItem(string id, string label, string icon, bool isLast)
+    private VerticalStackLayout CreateNavItem(string id, string label, string icon, bool isLast)
     {
-        if (Application.Current == null) return new VerticalStackLayout();
+        if (Application.Current == null) return [];
 
         var container = new VerticalStackLayout { Spacing = 0 };
 
         // The tappable row
         var row = new Grid
         {
-            ColumnDefinitions = new ColumnDefinitionCollection
-            {
+            ColumnDefinitions =
+            [
                 new ColumnDefinition(new GridLength(40)),   // Icon column
                 new ColumnDefinition(GridLength.Star),       // Text column
                 new ColumnDefinition(new GridLength(32)),   // Chevron column
-            },
+            ],
             Padding = new Thickness(20, 14),
             BackgroundColor = Colors.Transparent,
         };

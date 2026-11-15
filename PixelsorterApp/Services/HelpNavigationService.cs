@@ -4,18 +4,12 @@ using UXDivers.Popups.Services;
 
 namespace PixelsorterApp.Services;
 
-public sealed class HelpNavigationService : IHelpNavigationService
+public sealed class HelpNavigationService(IPresetNavigationService presetNavigationService, IServiceProvider serviceProvider) : IHelpNavigationService
 {
 
-    private readonly IPresetNavigationService presetNavigationService;
-    private readonly IServiceProvider serviceProvider;
+    private readonly IPresetNavigationService presetNavigationService = presetNavigationService;
+    private readonly IServiceProvider serviceProvider = serviceProvider;
 
-
-    public HelpNavigationService(IPresetNavigationService presetNavigationService, IServiceProvider serviceProvider)
-    {
-        this.presetNavigationService = presetNavigationService;
-        this.serviceProvider = serviceProvider;
-    }
     public async Task ShowHelpMenuAsync()
     {
         var currentPage = Shell.Current?.CurrentPage;

@@ -10,7 +10,7 @@ namespace PixelsorterApp
     /// to ensure thread safety.</remarks>
     public static class SharedImageBridge
     {
-        private static readonly object SyncRoot = new();
+        private static readonly Lock SyncRoot = new();
         private static string? pendingImagePath;
 
         public static event Action<string>? SharedImageReceived;

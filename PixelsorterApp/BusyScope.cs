@@ -1,4 +1,6 @@
-﻿public class BusyScope : IDisposable
+﻿namespace PixelsorterApp;
+
+public sealed partial class BusyScope : IDisposable
 {
     private readonly Action _onComplete;
 

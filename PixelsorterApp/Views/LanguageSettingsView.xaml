@@ -38,7 +38,7 @@
                         Icon="{FontImageSource FontFamily=MaterialSymbolsFont,
                                                Glyph={x:Static local:MaterialSymbolsFont.Language}}"
                         ItemDisplayBinding="{Binding NativeName}"
-                        ItemsSource="{Binding AvailableLanguages}"
+                        ItemsSource="{x:Static local:LocalizationConfig.SupportedCultures}"
                         SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
                         Style="{StaticResource MySelectFieldStyle}"
                         TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},

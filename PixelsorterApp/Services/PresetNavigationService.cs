@@ -2,14 +2,9 @@ using PixelsorterApp.Pages;
 
 namespace PixelsorterApp.Services;
 
-public sealed class PresetNavigationService : IPresetNavigationService
+public sealed class PresetNavigationService(IServiceProvider serviceProvider) : IPresetNavigationService
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public PresetNavigationService(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
+    private readonly IServiceProvider serviceProvider = serviceProvider;
 
     public async Task ShowCreatePresetPageAsync()
     {
