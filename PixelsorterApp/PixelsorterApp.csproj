@@ -333,7 +333,7 @@
 		</Task>
 	</UsingTask>
 
-	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
+	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild" Condition="'$(TargetFramework)' == 'net11.0-android'">
 		<Exec Command="dotnet tool restore --tool-manifest &quot;$(MSBuildProjectDirectory)\..\.config\dotnet-tools.json&quot;" />
 		<Exec Command="dotnet tool run nuget-license -t -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
@@ -514,14 +514,14 @@ public static partial class LocalizationConfig
 		</ItemGroup>
 	</Target>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and $(TargetFramework.Contains('-android'))">
     <AndroidEnableR8>true</AndroidEnableR8>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidLinkResources>true</AndroidLinkResources>
     <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and !$(TargetFramework.Contains('-ios')) and !$(TargetFramework.Contains('-maccatalyst'))">
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>
