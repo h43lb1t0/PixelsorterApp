@@ -153,15 +153,26 @@
 		</Task>
 	</UsingTask>
 
+	<!-- Hook: runs in every TFM inner build, but only forwards to the core target.
+	     MSBuild builds a project/global-properties/target combination only once per build,
+	     so the core target runs a single time even when all TFMs build in parallel. 
+       No build failures due to race conditions but still multiple repetitive runs. -->
 	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
+		<MSBuild Projects="$(MSBuildProjectFullPath)"
+		         Targets="_GenerateCombinedLicensesCore"
+		         RemoveProperties="TargetFramework;RuntimeIdentifier" />
+	</Target>
+
+	<!-- Runs without a TargetFramework, so $(ProjectDir) is empty here: use $(MSBuildProjectDirectory) -->
+	<Target Name="_GenerateCombinedLicensesCore">
 		<Exec Command="dotnet tool restore --tool-manifest &quot;$(MSBuildProjectDirectory)\..\.config\dotnet-tools.json&quot;" />
-		<Exec Command="dotnet tool run nuget-license -t -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
-		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(ProjectDir)Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Command="dotnet tool run nuget-license -t -i &quot;$(MSBuildProjectFullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(MSBuildProjectDirectory)\Resources/Raw/licenses.$(MSBuildProjectName).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
+		<Exec Condition="'@(ProjectReference)' != ''" Command="dotnet tool run nuget-license -i &quot;%(ProjectReference.FullPath)&quot; -o Json -ignore &quot;Microsoft.WindowsAppSDK*;Microsoft.Windows.SDK.*&quot; -fo &quot;$(MSBuildProjectDirectory)\Resources/Raw/licenses.%(ProjectReference.Filename).json&quot;" WorkingDirectory="$(MSBuildProjectDirectory)\.." IgnoreExitCode="true" />
 		<ItemGroup>
-			<_GeneratedLicenseFiles Include="$(ProjectDir)Resources\Raw\licenses.$(MSBuildProjectName).json" />
-			<_GeneratedLicenseFiles Condition="'@(ProjectReference)' != ''" Include="$(ProjectDir)Resources\Raw\licenses.%(ProjectReference.Filename).json" />
+			<_GeneratedLicenseFiles Include="$(MSBuildProjectDirectory)\Resources\Raw\licenses.$(MSBuildProjectName).json" />
+			<_GeneratedLicenseFiles Condition="'@(ProjectReference)' != ''" Include="$(MSBuildProjectDirectory)\Resources\Raw\licenses.%(ProjectReference.Filename).json" />
 		</ItemGroup>
-		<PatchAndValidateLicensesTask JsonFiles="@(_GeneratedLicenseFiles)" OverridesFile="$(ProjectDir)Resources\Raw\licenses.json" />
+		<PatchAndValidateLicensesTask JsonFiles="@(_GeneratedLicenseFiles)" OverridesFile="$(MSBuildProjectDirectory)\Resources\Raw\licenses.json" />
 	</Target>
 
 
