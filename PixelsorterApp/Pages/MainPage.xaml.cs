@@ -144,7 +144,7 @@ namespace PixelsorterApp
             }
         }
 
-        private void OnOpenHelpClicked(object sender, EventArgs e)
+        private void OnOpenHelpClicked(object? sender, EventArgs e)
         {
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
         }
@@ -610,7 +610,7 @@ namespace PixelsorterApp
         /// </summary>
         /// <param name="sender">The event source.</param>
         /// <param name="e">Event arguments.</param>
-        private void LoadImage_Clicked(object sender, EventArgs e)
+        private void LoadImage_Clicked(object? sender, EventArgs e)
         {
             if (viewModel.LoadImageCommand.CanExecute(null))
             {

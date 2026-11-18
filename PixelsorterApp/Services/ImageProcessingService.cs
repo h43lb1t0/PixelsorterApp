@@ -10,7 +10,7 @@ namespace PixelsorterApp.Services;
 /// Provides image sorting, mask generation, and gallery save operations.
 /// </summary>
 /// <param name="serviceProvider">Service provider used to resolve platform-specific dependencies.</param>
-public sealed class ImageProcessingService(IServiceProvider serviceProvider) : IImageProcessingService
+public sealed partial class ImageProcessingService(IServiceProvider serviceProvider) : IImageProcessingService, IDisposable
 {
     private readonly BackgroundMask backgroundMasker = new();
     private readonly CannyMask cannyMasker = new();
@@ -29,6 +29,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     private float cachedLumThreshold = -1;
     private MaskBuildCacheKey? cachedMaskBuildKey;
     private NDArray? cachedBuiltMask;
+    private bool disposed;
 
     private readonly record struct MaskBuildCacheKey(
         bool UseSubjectMask,
@@ -48,24 +49,28 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// <inheritdoc/>
     public Task DownloadBackgroundModelAsync()
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         return backgroundMasker.DownloadModel();
     }
 
     /// <inheritdoc/>
     public Task<(NDArray SubjectMask, NDArray InvertedSubjectMask)> CreateSubjectMaskAsync(string imagePath, float detectionSensitivity, int padding)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         return backgroundMasker.GetMaskAsync(imagePath, new BackgroundMaskOptions(padding, detectionSensitivity));
     }
 
     /// <inheritdoc/>
     public Task<(NDArray CannyMask, NDArray InvertedCannyMask)> CreateCannyMaskAsync(string imagePath, float threshold)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         return cannyMasker.GetMaskAsync(imagePath, new CannyMaskOptions(threshold));
     }
 
     /// <inheritdoc/>
     public Task<(NDArray LumMask, NDArray InvertedLumMask)> CreateLumMaskAsync(string imagePath, float threshold)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         return luminanceMasker.GetMaskAsync(imagePath, new LuminanceMaskOptions(threshold));
     }
 
@@ -83,6 +88,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         bool useInvertedLumMask,
         float cannyThreshold)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         EnsureCacheScope(imagePath);
 
         var cacheKey = new MaskBuildCacheKey(
@@ -149,11 +155,40 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
 
         // Fold masks together: start with the first, combine the rest
         var result = masks[0].normal;
-        for (var i = 1; i < masks.Count; i++)
+        try
         {
-            result = useSubtractMasks
-                ? MaskCombiner.SubtractMasks(result, masks[i].inverted)
-                : MaskCombiner.AddMasks(result, masks[i].normal);
+            for (var i = 1; i < masks.Count; i++)
+            {
+                var next = useSubtractMasks
+                    ? MaskCombiner.SubtractMasks(result, masks[i].inverted)
+                    : MaskCombiner.AddMasks(result, masks[i].normal);
+
+                if (!ReferenceEquals(result, masks[0].normal))
+                {
+                    result.Dispose();
+                }
+
+                result = next;
+            }
+        }
+        catch
+        {
+            if (!ReferenceEquals(result, masks[0].normal))
+            {
+                result.Dispose();
+            }
+
+            throw;
+        }
+
+        if (disposed)
+        {
+            if (!ReferenceEquals(result, masks[0].normal))
+            {
+                result.Dispose();
+            }
+
+            throw new ObjectDisposedException(nameof(ImageProcessingService));
         }
 
         return CacheAndReturn(cacheKey, result);
@@ -164,6 +199,11 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// </summary>
     private NDArray? CacheAndReturn(MaskBuildCacheKey key, NDArray? mask)
     {
+        if (cachedBuiltMask is not null && !ReferenceEquals(cachedBuiltMask, mask) && !IsSourceMask(cachedBuiltMask))
+        {
+            cachedBuiltMask.Dispose();
+        }
+
         cachedMaskBuildKey = key;
         cachedBuiltMask = mask;
         return mask;
@@ -172,6 +212,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// <inheritdoc/>
     public async Task<string> SortImageAsync(string imagePath, Func<Hsl, float> sortingCriterion, SortDirections sortingDirection, NDArray? maskToUse, float angle = -1f)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         var sortedImagePath = Path.Combine(FileSystem.CacheDirectory, $"sorted_temp_{Guid.NewGuid()}.png");
 
         await Task.Run(() =>
@@ -192,6 +233,7 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// <inheritdoc/>
     public async Task<bool> SaveImageToGalleryAsync(string imagePath, string fileName)
     {
+        ObjectDisposedException.ThrowIf(disposed, this);
         if (!File.Exists(imagePath))
         {
             return false;
@@ -207,6 +249,18 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
         return await galleryService.SaveImageAsync(imageBytes, fileName);
     }
 
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        if (disposed)
+        {
+            return;
+        }
+
+        disposed = true;
+        ResetCacheState();
+    }
+
     /// <summary>
     /// Resets cached masks when the requested image path changes.
     /// </summary>
@@ -218,19 +272,99 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             return;
         }
 
+        ResetCacheState();
         cachedImagePath = imagePath;
+    }
+
+    /// <summary>
+    /// Resets all cache metadata and disposes any owned cached masks.
+    /// </summary>
+    private void ResetCacheState()
+    {
+        cachedImagePath = null;
         cachedSubjectPadding = -1;
         cachedSubjectDetectionSensitivity = -1f;
         cachedCannyThreshold = -1;
         cachedLumThreshold = -1;
+        ClearCachedMasks();
+    }
+
+    /// <summary>
+    /// Disposes all cached mask arrays without double-disposing aliased references.
+    /// </summary>
+    private void ClearCachedMasks()
+    {
+        InvalidateBuiltMaskCache();
+
+        subjectMask?.Dispose();
         subjectMask = null;
+
+        invertedSubjectMask?.Dispose();
         invertedSubjectMask = null;
+
+        cannyMask?.Dispose();
         cannyMask = null;
+
+        invertedCannyMask?.Dispose();
         invertedCannyMask = null;
+
+        lumMask?.Dispose();
         lumMask = null;
+
+        invertedLumMask?.Dispose();
         invertedLumMask = null;
-        cachedMaskBuildKey = null;
+    }
+
+    /// <summary>
+    /// Clears the cached composed mask and disposes it if it is not aliasing a cached source mask.
+    /// </summary>
+    private void InvalidateBuiltMaskCache()
+    {
+        if (cachedBuiltMask is not null && !IsSourceMask(cachedBuiltMask))
+        {
+            cachedBuiltMask.Dispose();
+        }
+
         cachedBuiltMask = null;
+        cachedMaskBuildKey = null;
+    }
+
+    /// <summary>
+    /// Returns whether the given mask instance is one of the cached source masks.
+    /// </summary>
+    private bool IsSourceMask(NDArray mask) =>
+        ReferenceEquals(mask, subjectMask) ||
+        ReferenceEquals(mask, invertedSubjectMask) ||
+        ReferenceEquals(mask, cannyMask) ||
+        ReferenceEquals(mask, invertedCannyMask) ||
+        ReferenceEquals(mask, lumMask) ||
+        ReferenceEquals(mask, invertedLumMask);
+
+    /// <summary>
+    /// Invalidates the built mask cache and disposes a source mask pair before replacement.
+    /// </summary>
+    private void PrepareMaskPairReplacement(ref NDArray? mask, ref NDArray? invertedMask)
+    {
+        InvalidateBuiltMaskCache();
+        mask?.Dispose();
+        mask = null;
+        invertedMask?.Dispose();
+        invertedMask = null;
+    }
+
+    /// <summary>
+    /// Disposes freshly created masks and throws if the service was disposed while awaiting generation.
+    /// </summary>
+    private (NDArray Mask, NDArray InvertedMask) GuardNotDisposed((NDArray Mask, NDArray InvertedMask) created)
+    {
+        if (disposed)
+        {
+            created.Mask.Dispose();
+            created.InvertedMask.Dispose();
+            throw new ObjectDisposedException(nameof(ImageProcessingService));
+        }
+
+        return created;
     }
 
     /// <summary>
@@ -256,14 +390,16 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             return;
         }
 
+        PrepareMaskPairReplacement(ref subjectMask, ref invertedSubjectMask);
+        cachedSubjectPadding = -1;
+        cachedSubjectDetectionSensitivity = -1f;
+
         if (!IsBackgroundMaskReady)
         {
-            subjectMask = null;
-            invertedSubjectMask = null;
             return;
         }
 
-        (subjectMask, invertedSubjectMask) = await CreateSubjectMaskAsync(imagePath, detectionSensitivity, padding);
+        (subjectMask, invertedSubjectMask) = GuardNotDisposed(await CreateSubjectMaskAsync(imagePath, detectionSensitivity, padding));
         cachedSubjectPadding = padding;
         cachedSubjectDetectionSensitivity = detectionSensitivity;
     }
@@ -280,7 +416,10 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
             return;
         }
 
-        (cannyMask, invertedCannyMask) = await CreateCannyMaskAsync(imagePath, threshold);
+        PrepareMaskPairReplacement(ref cannyMask, ref invertedCannyMask);
+        cachedCannyThreshold = -1f;
+
+        (cannyMask, invertedCannyMask) = GuardNotDisposed(await CreateCannyMaskAsync(imagePath, threshold));
         cachedCannyThreshold = threshold;
     }
 
@@ -292,12 +431,15 @@ public sealed class ImageProcessingService(IServiceProvider serviceProvider) : I
     /// <returns></returns>
     private async Task EnsureLumMaskAsync(string imagePath, float threshold)
     {
-       if (lumMask is not null && invertedLumMask is not null && Math.Abs(cachedLumThreshold - threshold) < 0.0001f)
+        if (lumMask is not null && invertedLumMask is not null && Math.Abs(cachedLumThreshold - threshold) < 0.0001f)
         {
             return;
         }
 
-        (lumMask, invertedLumMask) = await CreateLumMaskAsync(imagePath, threshold);
+        PrepareMaskPairReplacement(ref lumMask, ref invertedLumMask);
+        cachedLumThreshold = -1f;
+
+        (lumMask, invertedLumMask) = GuardNotDisposed(await CreateLumMaskAsync(imagePath, threshold));
         cachedLumThreshold = threshold;
     }
 }

@@ -15,8 +15,8 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
 
         if (Microsoft.Maui.Devices.DeviceInfo.Idiom == Microsoft.Maui.Devices.DeviceIdiom.Phone)
         {
-            ButtonLayoutGrid.ColumnDefinitions = new ColumnDefinitionCollection { new ColumnDefinition(GridLength.Star) };
-            ButtonLayoutGrid.RowDefinitions = new RowDefinitionCollection { new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto) };
+            ButtonLayoutGrid.ColumnDefinitions = [new ColumnDefinition(GridLength.Star)];
+            ButtonLayoutGrid.RowDefinitions = [new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto)];
             Grid.SetRow(ConfirmButton, 0);
             Grid.SetColumn(ConfirmButton, 0);
             Grid.SetRow(CancelButton, 1);
@@ -24,8 +24,8 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
         }
         else
         {
-            ButtonLayoutGrid.ColumnDefinitions = new ColumnDefinitionCollection { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) };
-            ButtonLayoutGrid.RowDefinitions = new RowDefinitionCollection { new RowDefinition(GridLength.Auto) };
+            ButtonLayoutGrid.ColumnDefinitions = [new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star)];
+            ButtonLayoutGrid.RowDefinitions = [new RowDefinition(GridLength.Auto)];
             Grid.SetRow(CancelButton, 0);
             Grid.SetColumn(CancelButton, 0);
             Grid.SetRow(ConfirmButton, 0);
@@ -55,13 +55,13 @@ public partial class ConfirmationPopup : PopupResultPage<bool>
         }
     }
 
-    private async void OnConfirmClicked(object sender, EventArgs e)
+    private async void OnConfirmClicked(object? sender, EventArgs e)
     {
         SetResult(true);
         await IPopupService.Current.PopAsync(this);
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e)
+    private async void OnCancelClicked(object? sender, EventArgs e)
     {
         SetResult(false);
         await IPopupService.Current.PopAsync(this);
