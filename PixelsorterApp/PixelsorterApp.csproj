@@ -68,13 +68,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="17.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.10.0" />
 		<PackageReference Include="LocalizationResourceManager.Maui" Version="1.2.6" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
-		<PackageReference Include="SkiaSharp" Version="4.156.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="11.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0" />
+		<PackageReference Include="SkiaSharp" Version="4.157.0" />
 		<PackageReference Include="Tomlyn" Version="2.11.1" />
 		<PackageReference Include="UraniumUI" Version="3.0.0" />
 		<PackageReference Include="UraniumUI.Material" Version="3.0.0" />
@@ -158,9 +158,7 @@
 	     so the core target runs a single time even when all TFMs build in parallel. 
        No build failures due to race conditions but still multiple repetitive runs. -->
 	<Target Name="GenerateCombinedLicenses" BeforeTargets="PrepareForBuild">
-		<MSBuild Projects="$(MSBuildProjectFullPath)"
-		         Targets="_GenerateCombinedLicensesCore"
-		         RemoveProperties="TargetFramework;RuntimeIdentifier" />
+		<MSBuild Projects="$(MSBuildProjectFullPath)" Targets="_GenerateCombinedLicensesCore" RemoveProperties="TargetFramework;RuntimeIdentifier" />
 	</Target>
 
 	<!-- Runs without a TargetFramework, so $(ProjectDir) is empty here: use $(MSBuildProjectDirectory) -->
@@ -246,7 +244,6 @@
 	</Target>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <AndroidEnableR8>true</AndroidEnableR8>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidLinkResources>true</AndroidLinkResources>
     <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
@@ -265,7 +262,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and $(TargetFramework.Contains('-android'))">
-    <RunAOTCompilation Condition="'$(UsingMonoRuntime)' == 'true'">true</RunAOTCompilation>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
     <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
   </PropertyGroup>
