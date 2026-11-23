@@ -37,8 +37,8 @@ This App is localized with [Weblate](https://hosted.weblate.org/engage/pixelsort
 
 ## Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- Visual Studio 2022 (with the .NET MAUI workload installed) or Visual Studio Code with the .NET MAUI extension.
+- [.NET 11 SDK](https://dotnet.microsoft.com/download/dotnet/11.0)
+- Visual Studio 2026 (with the .NET MAUI workload installed) or Visual Studio Code with the .NET MAUI extension.
 
 ## Getting Started
 
