@@ -249,7 +249,7 @@
     <AndroidCreateProguardMappingFile>true</AndroidCreateProguardMappingFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and !$(TargetFramework.Contains('-ios')) and !$(TargetFramework.Contains('-maccatalyst'))">
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>
