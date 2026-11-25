@@ -513,7 +513,7 @@ namespace PixelsorterApp
         /// <param name="text">The message to display on the loading overlay, providing context to the user about the ongoing operation.</param>
         private async Task UseLoadingOverlayAsync(String text)
         {
-            loadingOverlay.IsVisible = true;
+            loadingOverlayBorder.IsVisible = true;
             loadingOverlayLabel.Text = text;
             loadingOverlayLabel.Opacity = 0;
 
@@ -535,7 +535,7 @@ namespace PixelsorterApp
                 colors = (colors.Item2, colors.Item1);
             }
 
-            while (loadingOverlay.IsVisible)
+            while (loadingOverlayBorder.IsVisible)
             {
                 await imagePreviewBorder.StrokeColorTo(colors.Item1, rate: 16, length: 850, easing: Easing.SinInOut);
                 await imagePreviewBorder.StrokeColorTo(colors.Item2, rate: 16, length: 850, easing: Easing.SinInOut);
@@ -683,7 +683,7 @@ namespace PixelsorterApp
                     messageCts.Cancel();
                     pulsingDots.IsAnimating = false;
                     loadingOverlayLabel.Opacity = 0;
-                    loadingOverlay.IsVisible = false;
+                    loadingOverlayBorder.IsVisible = false;
                     ToggleUiForSorting(true);
 
                 }))
@@ -878,7 +878,7 @@ namespace PixelsorterApp
                 {
                     pulsingDots.IsAnimating = false;
                     loadingOverlayLabel.Opacity = 0;
-                    loadingOverlay.IsVisible = false;
+                    loadingOverlayBorder.IsVisible = false;
                     ToggleUiForSorting(true);
 
                 }))
@@ -900,7 +900,7 @@ namespace PixelsorterApp
                     {
                         pulsingDots.IsAnimating = false;
                         loadingOverlayLabel.Opacity = 0;
-                        loadingOverlay.IsVisible = false;
+                        loadingOverlayBorder.IsVisible = false;
                         viewModel.IsSortEnabled = true;
                     }
             }

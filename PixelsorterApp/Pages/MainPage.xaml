@@ -83,13 +83,15 @@
                             IsEnabled="{Binding IsInteractionEnabled}"
                             SemanticProperties.Description="Image viewer"
                             StyleClass="Elevation5" />
-                        <Border x:Name="loadingOverlayBorder" InputTransparent="True">
+                        <Border
+                            x:Name="loadingOverlayBorder"
+                            Grid.Row="0"
+                            InputTransparent="False"
+                            IsVisible="False">
                             <Grid
                                 x:Name="loadingOverlay"
-                                Grid.Row="0"
                                 BackgroundColor="#80000000"
                                 InputTransparent="False"
-                                IsVisible="False"
                                 SemanticProperties.Description="Busy">
                                 <VerticalStackLayout
                                     HorizontalOptions="Center"
