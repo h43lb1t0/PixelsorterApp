@@ -22,7 +22,6 @@ public partial class ImageViewer
         Content = new Border
         {
             Padding = 0,
-            Margin = 5,
             StrokeThickness = 0,
             Stroke = Brush.Transparent,
             BackgroundColor = Colors.Transparent,
