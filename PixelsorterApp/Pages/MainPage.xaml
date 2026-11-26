@@ -83,28 +83,33 @@
                             IsEnabled="{Binding IsInteractionEnabled}"
                             SemanticProperties.Description="Image viewer"
                             StyleClass="Elevation5" />
-                        <Grid
-                            x:Name="loadingOverlay"
+                        <Border
+                            x:Name="loadingOverlayBorder"
                             Grid.Row="0"
-                            BackgroundColor="#80000000"
                             InputTransparent="False"
-                            IsVisible="False"
-                            SemanticProperties.Description="Busy">
-                            <VerticalStackLayout
-                                HorizontalOptions="Center"
-                                Spacing="14"
-                                VerticalOptions="Center">
-                                <views:PulsingDotsView x:Name="pulsingDots" />
-                                <Label
-                                    x:Name="loadingOverlayLabel"
-                                    FontFamily="SpaceGroteskBold"
-                                    FontSize="13"
-                                    HorizontalTextAlignment="Center"
-                                    Opacity="0"
-                                    Text=""
-                                    TextColor="{StaticResource White}" />
-                            </VerticalStackLayout>
-                        </Grid>
+                            IsVisible="False">
+                            <Grid
+                                x:Name="loadingOverlay"
+                                BackgroundColor="#80000000"
+                                InputTransparent="False"
+                                SemanticProperties.Description="Busy">
+                                <VerticalStackLayout
+                                    HorizontalOptions="Center"
+                                    Spacing="14"
+                                    VerticalOptions="Center">
+                                    <views:PulsingDotsView x:Name="pulsingDots" />
+                                    <Label
+                                        x:Name="loadingOverlayLabel"
+                                        FontFamily="SpaceGroteskBold"
+                                        FontSize="13"
+                                        HorizontalTextAlignment="Center"
+                                        Opacity="0"
+                                        Text=""
+                                        TextColor="{StaticResource White}" />
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
                         <views:AngleArrowOverlayView
                             Grid.Row="0"
                             HorizontalOptions="Center"

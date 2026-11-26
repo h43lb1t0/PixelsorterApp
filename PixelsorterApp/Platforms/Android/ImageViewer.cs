@@ -1,10 +1,11 @@
 using System.Collections.ObjectModel;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace PixelsorterApp;
 
 public partial class ImageViewer
 {
-    private readonly ObservableCollection<ImageSource> _images = new();
+    private readonly ObservableCollection<ImageSource> _images = [];
     private CarouselView _carousel = null!;
 
     partial void InitializePlatformView()
@@ -26,12 +27,18 @@ public partial class ImageViewer
                 tap.Tapped += (_, _) => OnImageTapped();
                 image.GestureRecognizers.Add(tap);
 
-                return image;
+                return new Border
+                {
+                    Padding = 0,
+                    StrokeThickness = 0,
+                    Stroke = Brush.Transparent,
+                    BackgroundColor = Colors.Transparent,
+                    StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(ImageCornerRadius) },
+                    Content = image
+                };
             }),
             ItemsSource = _images
         };
-        SemanticProperties.SetDescription(_carousel, "Image preview");
-        SemanticProperties.SetHint(_carousel, "Swipe left or right to browse loaded images");
         _carousel.PositionChanged += (_, e) => OnDisplayedImageIndexChanged(e.CurrentPosition);
 
         Content = _carousel;
@@ -48,8 +55,7 @@ public partial class ImageViewer
 
             if (_carousel is not null)
             {
-                if (_carousel.ItemsSource is null)
-                    _carousel.ItemsSource = _images;
+                _carousel.ItemsSource ??= _images;
 
                 _carousel.CurrentItem = newImage;
             }
@@ -59,8 +65,7 @@ public partial class ImageViewer
 
     public partial void ClearImages()
     {
-        if (_carousel is not null)
-            _carousel.ItemsSource = null;
+        _carousel?.ItemsSource = null;
 
         _images.Clear();
     }
