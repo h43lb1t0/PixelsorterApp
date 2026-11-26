@@ -6,6 +6,7 @@ public partial class ImageViewer : ContentView
     public event EventHandler<int>? DisplayedImageIndexChanged;
 
     public const string PlaceholderImage = "uploadplaceholder.png";
+    public const double ImageCornerRadius = 6;
 
     public ImageViewer()
     {
