@@ -74,6 +74,7 @@
 		<PackageReference Include="LocalizationResourceManager.Maui" Version="1.2.6" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="11.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Foldable" Version="11.0.10" />
 		<PackageReference Include="SkiaSharp" Version="4.157.0" />
 		<PackageReference Include="Tomlyn" Version="2.11.1" />
 		<PackageReference Include="UraniumUI" Version="3.0.0" />

@@ -6,6 +6,7 @@ using PixelsorterApp.Services;
 using PixelsorterApp.ViewModels;
 using UraniumUI;
 using UXDivers.Popups.Maui;
+using Microsoft.Maui.Foldable;
 
 namespace PixelsorterApp
 {
@@ -36,6 +37,7 @@ namespace PixelsorterApp
             .UseUraniumUIMaterial()
             .UseMarkdownView()
             .UseUXDiversPopups()
+            .UseFoldable()
             .UseLocalizationResourceManager(settings =>
              {
                  settings.AddResource(PixelsorterApp.Resources.Languages.AppStrings.ResourceManager);
@@ -67,6 +69,7 @@ namespace PixelsorterApp
             builder.Logging.AddDebug();
 #endif
             return builder.Build();
+
         }
     }
 }
