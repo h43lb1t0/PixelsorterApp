@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
 using Microsoft.Maui.Controls.Foldable;
 using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Foldable;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Models;
 using PixelsorterApp.Popups;
@@ -66,6 +67,7 @@ namespace PixelsorterApp
 
         private readonly List<ImageCaptionInfo> imageCaptions = [];
         private readonly List<string> imagePaths = [];
+        private const double MIN_WIDE_LAYOUT_WIDTH = 600;
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
         private bool _isSideBySideLayout;
@@ -91,12 +93,6 @@ namespace PixelsorterApp
             loadingOverlayBorder.Stroke = Brush.Transparent;
             loadingOverlayBorder.StrokeThickness = 0;
 
-            if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
-            {
-                twoPaneView.MinWideModeWidth = double.PositiveInfinity;
-            }
-
-            twoPaneView.ModeChanged += OnTwoPaneViewModeChanged;
             SizeChanged += (_, _) =>
             {
                 UpdateFoldableLayout();
@@ -413,6 +409,7 @@ namespace PixelsorterApp
         {
             base.OnAppearing();
             SharedImageBridge.SharedImageReceived += OnSharedImageReceived;
+            DualScreenInfo.Current.PropertyChanged += OnDualScreenInfoPropertyChanged;
             UpdateFoldableLayout();
 
             _ = InitializeAppearingAsync();
@@ -452,6 +449,7 @@ namespace PixelsorterApp
         protected override void OnDisappearing()
         {
             SharedImageBridge.SharedImageReceived -= OnSharedImageReceived;
+            DualScreenInfo.Current.PropertyChanged -= OnDualScreenInfoPropertyChanged;
             base.OnDisappearing();
         }
 
@@ -506,18 +504,47 @@ namespace PixelsorterApp
             return true;
         }
 
-        private void OnTwoPaneViewModeChanged(object? sender, EventArgs e)
+        private void OnDualScreenInfoPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            UpdateFoldableLayout();
+            MainThread.BeginInvokeOnMainThread(UpdateFoldableLayout);
         }
 
         /// <summary>
-        /// Moves the image preview card to the left pane when running in side-by-side foldable mode,
-        /// and returns it inline to the main scrollable layout in single-pane mode.
+        /// Moves the image preview card to the left pane when running on an unfolded/wide foldable screen
+        /// (regardless of whether the fold is vertical or horizontal), and returns it inline to the main
+        /// scrollable layout on single-pane / folded screens.
         /// </summary>
         private void UpdateFoldableLayout()
         {
-            bool shouldUseSideBySide = twoPaneView.Mode == TwoPaneViewMode.Wide;
+            var dualScreenInfo = DualScreenInfo.Current;
+            bool isVerticallySpanned = dualScreenInfo.SpanMode == TwoPaneViewMode.Wide;
+            bool shouldUseSideBySide = DeviceInfo.Idiom != DeviceIdiom.Desktop
+                && (isVerticallySpanned || Width >= MIN_WIDE_LAYOUT_WIDTH);
+
+            if (shouldUseSideBySide)
+            {
+                if (isVerticallySpanned
+                    && dualScreenInfo.SpanningBounds is { Length: 2 } bounds
+                    && bounds[0].Width > 0)
+                {
+                    leftColumn.Width = new GridLength(bounds[0].Width, GridUnitType.Absolute);
+                    hingeColumn.Width = new GridLength(Math.Max(0, dualScreenInfo.HingeBounds.Width), GridUnitType.Absolute);
+                    rightColumn.Width = GridLength.Star;
+                }
+                else
+                {
+                    leftColumn.Width = GridLength.Star;
+                    hingeColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                    rightColumn.Width = GridLength.Star;
+                }
+            }
+            else
+            {
+                leftColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                hingeColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                rightColumn.Width = GridLength.Star;
+            }
+
             if (shouldUseSideBySide == _isSideBySideLayout)
             {
                 return;
@@ -536,9 +563,11 @@ namespace PixelsorterApp
                     {
                         leftPaneHost.Children.Add(imagePreviewBorder);
                     }
+                    leftPaneHost.IsVisible = true;
                 }
                 else
                 {
+                    leftPaneHost.IsVisible = false;
                     leftPaneHost.Children.Remove(imagePreviewBorder);
                     imagePreviewBorder.VerticalOptions = LayoutOptions.Start;
                     inlineImageHost.Content = imagePreviewBorder;
@@ -576,8 +605,8 @@ namespace PixelsorterApp
             {
                 double reservedChromeHeight = viewModel.ShowAngleSlider ? 180 : 110;
                 imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
-                imageViewer.MaximumHeightRequest = this.Height > reservedChromeHeight + 120
-                    ? this.Height - reservedChromeHeight
+                imageViewer.MaximumHeightRequest = this.Height > 0
+                    ? Math.Max(120, this.Height - reservedChromeHeight)
                     : double.PositiveInfinity;
                 return;
             }
