@@ -7,9 +7,11 @@ public partial class ImageViewer
 {
     private readonly ObservableCollection<ImageSource> _images = [];
     private CarouselView _carousel = null!;
+    private double? _lastImageAspectRatio;
 
     partial void InitializePlatformView()
     {
+        SizeChanged += (_, _) => UpdateHeightForCurrentWidth();
         _images.Add(ImageSource.FromFile(PlaceholderImage));
 
         _carousel = new CarouselView
@@ -68,6 +70,7 @@ public partial class ImageViewer
         _carousel?.ItemsSource = null;
 
         _images.Clear();
+        _lastImageAspectRatio = null;
     }
 
     public partial void PrepareForImage()
@@ -85,17 +88,33 @@ public partial class ImageViewer
 
             if (options.OutWidth > 0 && options.OutHeight > 0)
             {
+                _lastImageAspectRatio = (double)options.OutHeight / options.OutWidth;
                 var availableWidth = Width > 0
                     ? Width
                     : DeviceDisplay.Current.MainDisplayInfo.Width / DeviceDisplay.Current.MainDisplayInfo.Density;
-                HeightRequest = availableWidth * ((double)options.OutHeight / options.OutWidth);
+                HeightRequest = availableWidth * _lastImageAspectRatio.Value;
             }
         }
         catch
         {
             // Fall back to a screen-relative default if dimensions cannot be read
+            _lastImageAspectRatio = null;
             var display = DeviceDisplay.Current.MainDisplayInfo;
             HeightRequest = display.Height / display.Density * 0.4;
+        }
+    }
+
+    private void UpdateHeightForCurrentWidth()
+    {
+        if (!_lastImageAspectRatio.HasValue || Width <= 0)
+        {
+            return;
+        }
+
+        var targetHeight = Width * _lastImageAspectRatio.Value;
+        if (Math.Abs(targetHeight - HeightRequest) > 1)
+        {
+            HeightRequest = targetHeight;
         }
     }
 

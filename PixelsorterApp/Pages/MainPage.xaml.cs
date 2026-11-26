@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls.Foldable;
 using Microsoft.Maui.Controls.Shapes;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Models;
@@ -67,6 +68,8 @@ namespace PixelsorterApp
         private readonly List<string> imagePaths = [];
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
+        private bool _isSideBySideLayout;
+        private bool _isReparentingImagePreview;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
@@ -88,11 +91,22 @@ namespace PixelsorterApp
             loadingOverlayBorder.Stroke = Brush.Transparent;
             loadingOverlayBorder.StrokeThickness = 0;
 
-            SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
+            if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
+            {
+                twoPaneView.MinWideModeWidth = double.PositiveInfinity;
+            }
+
+            twoPaneView.ModeChanged += OnTwoPaneViewModeChanged;
+            SizeChanged += (_, _) =>
+            {
+                UpdateFoldableLayout();
+                ApplyImageSizeForCurrentDevice();
+            };
 
             this.viewModel.IsSortEnabled = false;
             this.viewModel.IsSaveVisible = false;
             this.viewModel.IsSaveEnabled = false;
+            UpdateFoldableLayout();
             ApplyImageSizeForCurrentDevice();
 
             this.viewModel.SortRequested += OnSortRequested;
@@ -147,6 +161,10 @@ namespace PixelsorterApp
                 {
                     viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
                 }
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.ShowAngleSlider))
+            {
+                ApplyImageSizeForCurrentDevice();
             }
         }
 
@@ -238,6 +256,11 @@ namespace PixelsorterApp
         /// available images.</param>
         private async void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
+            if (_isReparentingImagePreview)
+            {
+                return;
+            }
+
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
 
@@ -390,6 +413,7 @@ namespace PixelsorterApp
         {
             base.OnAppearing();
             SharedImageBridge.SharedImageReceived += OnSharedImageReceived;
+            UpdateFoldableLayout();
 
             _ = InitializeAppearingAsync();
         }
@@ -482,14 +506,61 @@ namespace PixelsorterApp
             return true;
         }
 
+        private void OnTwoPaneViewModeChanged(object? sender, EventArgs e)
+        {
+            UpdateFoldableLayout();
+        }
+
+        /// <summary>
+        /// Moves the image preview card to the left pane when running in side-by-side foldable mode,
+        /// and returns it inline to the main scrollable layout in single-pane mode.
+        /// </summary>
+        private void UpdateFoldableLayout()
+        {
+            bool shouldUseSideBySide = twoPaneView.Mode == TwoPaneViewMode.Wide;
+            if (shouldUseSideBySide == _isSideBySideLayout)
+            {
+                return;
+            }
+
+            _isSideBySideLayout = shouldUseSideBySide;
+            _isReparentingImagePreview = true;
+            try
+            {
+                if (shouldUseSideBySide)
+                {
+                    inlineImageHost.Content = null;
+                    inlineImageHost.IsVisible = false;
+                    imagePreviewBorder.VerticalOptions = LayoutOptions.Center;
+                    if (!leftPaneHost.Children.Contains(imagePreviewBorder))
+                    {
+                        leftPaneHost.Children.Add(imagePreviewBorder);
+                    }
+                }
+                else
+                {
+                    leftPaneHost.Children.Remove(imagePreviewBorder);
+                    imagePreviewBorder.VerticalOptions = LayoutOptions.Start;
+                    inlineImageHost.Content = imagePreviewBorder;
+                    inlineImageHost.IsVisible = true;
+                }
+            }
+            finally
+            {
+                _isReparentingImagePreview = false;
+            }
+
+            ApplyImageSizeForCurrentDevice();
+        }
+
         /// <summary>
         /// Adjusts the maximum height of the image viewer and its containing border to optimize image display for the
         /// current device type.
         /// </summary>
         /// <remarks>For desktop devices, the image viewer's maximum height is set relative to the current
-        /// height of the containing element, providing a tailored viewing experience. For non-desktop devices, both the
-        /// image viewer and its border allow unlimited height, enabling flexible image display across various device
-        /// form factors.</remarks>
+        /// height of the containing element, providing a tailored viewing experience. For open foldable devices
+        /// displaying the image viewer on the left screen, the maximum height is bounded to fit within the pane.
+        /// For single-pane mobile devices, both the image viewer and its border allow unlimited height.</remarks>
         private void ApplyImageSizeForCurrentDevice()
         {
             if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
@@ -497,6 +568,16 @@ namespace PixelsorterApp
                 imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
                 imageViewer.MaximumHeightRequest = this.Height > 0
                     ? this.Height * DESKTOP_IMAGE_HEIGHT
+                    : double.PositiveInfinity;
+                return;
+            }
+
+            if (_isSideBySideLayout)
+            {
+                double reservedChromeHeight = viewModel.ShowAngleSlider ? 180 : 110;
+                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = this.Height > reservedChromeHeight + 120
+                    ? this.Height - reservedChromeHeight
                     : double.PositiveInfinity;
                 return;
             }
