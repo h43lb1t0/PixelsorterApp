@@ -68,6 +68,8 @@ namespace PixelsorterApp
         private readonly List<ImageCaptionInfo> imageCaptions = [];
         private readonly List<string> imagePaths = [];
         private const double MIN_WIDE_LAYOUT_WIDTH = 600;
+        private const double EMPTY_IMAGE_VIEWER_HEIGHT = 190;
+        private const double FOLDABLE_EMPTY_IMAGE_HEIGHT_RATIO = 0.51;
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
         private bool _isSideBySideLayout;
@@ -604,15 +606,29 @@ namespace PixelsorterApp
             if (_isSideBySideLayout)
             {
                 double reservedChromeHeight = viewModel.ShowAngleSlider ? 180 : 110;
-                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
-                imageViewer.MaximumHeightRequest = this.Height > 0
+                double maxViewerHeight = this.Height > 0
                     ? Math.Max(120, this.Height - reservedChromeHeight)
                     : double.PositiveInfinity;
+
+                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = maxViewerHeight;
+
+                if (this.imagePath is null)
+                {
+                    imageViewer.HeightRequest = this.Height > 0
+                        ? Math.Min(maxViewerHeight, this.Height * FOLDABLE_EMPTY_IMAGE_HEIGHT_RATIO)
+                        : EMPTY_IMAGE_VIEWER_HEIGHT;
+                }
                 return;
             }
 
             imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
             imageViewer.MaximumHeightRequest = double.PositiveInfinity;
+
+            if (this.imagePath is null)
+            {
+                imageViewer.HeightRequest = EMPTY_IMAGE_VIEWER_HEIGHT;
+            }
         }
 
         /// <summary>
