@@ -15,10 +15,24 @@
     SemanticProperties.Description="Pixel Sorter main screen. Load an image, choose options, then sort and save."
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="*,Auto">
-        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+    <Grid x:Name="rootGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="leftColumn" Width="0" />
+            <ColumnDefinition x:Name="hingeColumn" Width="0" />
+            <ColumnDefinition x:Name="rightColumn" Width="*" />
+        </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
+        <Grid
+            x:Name="leftPaneHost"
+            Grid.Column="0"
+            Padding="20,20,16,20"
+            IsVisible="False"
+            VerticalOptions="Fill" />
+
+        <Grid Grid.Column="2" RowDefinitions="*,Auto">
+            <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+
+                <VerticalStackLayout Padding="20,20,20,30" Spacing="16">
 
                 <!--  Headder  -->
                 <Grid
@@ -60,12 +74,13 @@
                         WidthRequest="36" />
                 </Grid>
 
-                <!--  Image box  -->
-                <Border
-                    x:Name="imagePreviewBorder"
-                    Padding="12"
-                    StrokeShape="RoundRectangle 16"
-                    StyleClass="Elevation3">
+                <!--  Image box (inline in single-pane mode; moved to leftPaneHost when foldable is open)  -->
+                <ContentView x:Name="inlineImageHost">
+                    <Border
+                        x:Name="imagePreviewBorder"
+                        Padding="12"
+                        StrokeShape="RoundRectangle 16"
+                        StyleClass="Elevation3">
                     <Border.Shadow>
                         <Shadow
                             Brush="{AppThemeBinding Light={StaticResource Black},
@@ -195,7 +210,8 @@
                                 VerticalOptions="Center" />
                         </Grid>
                     </Grid>
-                </Border>
+                    </Border>
+                </ContentView>
 
                 <Label
                     SemanticProperties.HeadingLevel="Level2"
@@ -307,6 +323,7 @@
                 SemanticProperties.Description="Save the sorted image to your photo gallery"
                 Style="{StaticResource SaveButtonStyle}"
                 Text="{localization:Translate common_Save}" />
+            </Grid>
         </Grid>
     </Grid>
 

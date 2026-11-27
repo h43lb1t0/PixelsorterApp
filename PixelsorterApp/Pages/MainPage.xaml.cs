@@ -1,6 +1,8 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls.Foldable;
 using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Foldable;
 using PixelsorterApp.Extensions;
 using PixelsorterApp.Models;
 using PixelsorterApp.Popups;
@@ -65,8 +67,13 @@ namespace PixelsorterApp
 
         private readonly List<ImageCaptionInfo> imageCaptions = [];
         private readonly List<string> imagePaths = [];
+        private const double MIN_WIDE_LAYOUT_WIDTH = 600;
+        private const double EMPTY_IMAGE_VIEWER_HEIGHT = 190;
+        private const double FOLDABLE_EMPTY_IMAGE_HEIGHT_RATIO = 0.51;
         private int currentDisplayedImageIndex = -1;
         private bool suppressSubjectMaskChangeHandling;
+        private bool _isSideBySideLayout;
+        private bool _isReparentingImagePreview;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
@@ -88,11 +95,16 @@ namespace PixelsorterApp
             loadingOverlayBorder.Stroke = Brush.Transparent;
             loadingOverlayBorder.StrokeThickness = 0;
 
-            SizeChanged += (_, _) => ApplyImageSizeForCurrentDevice();
+            SizeChanged += (_, _) =>
+            {
+                UpdateFoldableLayout();
+                ApplyImageSizeForCurrentDevice();
+            };
 
             this.viewModel.IsSortEnabled = false;
             this.viewModel.IsSaveVisible = false;
             this.viewModel.IsSaveEnabled = false;
+            UpdateFoldableLayout();
             ApplyImageSizeForCurrentDevice();
 
             this.viewModel.SortRequested += OnSortRequested;
@@ -147,6 +159,10 @@ namespace PixelsorterApp
                 {
                     viewModel.SortDirectionArrowColor = await GetColorForAngleArrowAsync();
                 }
+            }
+            else if (e.PropertyName == nameof(MainPageViewModel.ShowAngleSlider))
+            {
+                ApplyImageSizeForCurrentDevice();
             }
         }
 
@@ -238,6 +254,11 @@ namespace PixelsorterApp
         /// available images.</param>
         private async void ImageViewer_DisplayedImageIndexChanged(object? sender, int index)
         {
+            if (_isReparentingImagePreview)
+            {
+                return;
+            }
+
             HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             currentDisplayedImageIndex = index;
 
@@ -390,6 +411,8 @@ namespace PixelsorterApp
         {
             base.OnAppearing();
             SharedImageBridge.SharedImageReceived += OnSharedImageReceived;
+            DualScreenInfo.Current.PropertyChanged += OnDualScreenInfoPropertyChanged;
+            UpdateFoldableLayout();
 
             _ = InitializeAppearingAsync();
         }
@@ -428,6 +451,7 @@ namespace PixelsorterApp
         protected override void OnDisappearing()
         {
             SharedImageBridge.SharedImageReceived -= OnSharedImageReceived;
+            DualScreenInfo.Current.PropertyChanged -= OnDualScreenInfoPropertyChanged;
             base.OnDisappearing();
         }
 
@@ -482,14 +506,92 @@ namespace PixelsorterApp
             return true;
         }
 
+        private void OnDualScreenInfoPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(UpdateFoldableLayout);
+        }
+
+        /// <summary>
+        /// Moves the image preview card to the left pane when running on an unfolded/wide foldable screen
+        /// (regardless of whether the fold is vertical or horizontal), and returns it inline to the main
+        /// scrollable layout on single-pane / folded screens.
+        /// </summary>
+        private void UpdateFoldableLayout()
+        {
+            var dualScreenInfo = DualScreenInfo.Current;
+            bool isVerticallySpanned = dualScreenInfo.SpanMode == TwoPaneViewMode.Wide;
+            bool shouldUseSideBySide = DeviceInfo.Idiom != DeviceIdiom.Desktop
+                && (isVerticallySpanned || Width >= MIN_WIDE_LAYOUT_WIDTH);
+
+            if (shouldUseSideBySide)
+            {
+                if (isVerticallySpanned
+                    && dualScreenInfo.SpanningBounds is { Length: 2 } bounds
+                    && bounds[0].Width > 0)
+                {
+                    leftColumn.Width = new GridLength(bounds[0].Width, GridUnitType.Absolute);
+                    hingeColumn.Width = new GridLength(Math.Max(0, dualScreenInfo.HingeBounds.Width), GridUnitType.Absolute);
+                    rightColumn.Width = GridLength.Star;
+                }
+                else
+                {
+                    leftColumn.Width = GridLength.Star;
+                    hingeColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                    rightColumn.Width = GridLength.Star;
+                }
+            }
+            else
+            {
+                leftColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                hingeColumn.Width = new GridLength(0, GridUnitType.Absolute);
+                rightColumn.Width = GridLength.Star;
+            }
+
+            if (shouldUseSideBySide == _isSideBySideLayout)
+            {
+                return;
+            }
+
+            _isSideBySideLayout = shouldUseSideBySide;
+            _isReparentingImagePreview = true;
+            try
+            {
+                if (shouldUseSideBySide)
+                {
+                    inlineImageHost.Content = null;
+                    inlineImageHost.IsVisible = false;
+                    imagePreviewBorder.VerticalOptions = LayoutOptions.Center;
+                    if (!leftPaneHost.Children.Contains(imagePreviewBorder))
+                    {
+                        leftPaneHost.Children.Add(imagePreviewBorder);
+                    }
+                    leftPaneHost.IsVisible = true;
+                }
+                else
+                {
+                    leftPaneHost.IsVisible = false;
+                    leftPaneHost.Children.Remove(imagePreviewBorder);
+                    imagePreviewBorder.VerticalOptions = LayoutOptions.Start;
+                    inlineImageHost.Content = imagePreviewBorder;
+                    inlineImageHost.IsVisible = true;
+                }
+            }
+            finally
+            {
+                _isReparentingImagePreview = false;
+            }
+
+            ApplyImageSizeForCurrentDevice();
+        }
+
         /// <summary>
         /// Adjusts the maximum height of the image viewer and its containing border to optimize image display for the
         /// current device type.
         /// </summary>
         /// <remarks>For desktop devices, the image viewer's maximum height is set relative to the current
-        /// height of the containing element, providing a tailored viewing experience. For non-desktop devices, both the
-        /// image viewer and its border allow unlimited height, enabling flexible image display across various device
-        /// form factors.</remarks>
+        /// height of the containing element, providing a tailored viewing experience. For open foldable devices
+        /// displaying the image viewer on the left screen, the maximum height is bounded to fit within the pane.
+        /// For single-pane mobile devices, both the image viewer and its border allow unlimited height.</remarks>
         private void ApplyImageSizeForCurrentDevice()
         {
             if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
@@ -501,8 +603,32 @@ namespace PixelsorterApp
                 return;
             }
 
+            if (_isSideBySideLayout)
+            {
+                double reservedChromeHeight = viewModel.ShowAngleSlider ? 180 : 110;
+                double maxViewerHeight = this.Height > 0
+                    ? Math.Max(120, this.Height - reservedChromeHeight)
+                    : double.PositiveInfinity;
+
+                imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
+                imageViewer.MaximumHeightRequest = maxViewerHeight;
+
+                if (this.imagePath is null)
+                {
+                    imageViewer.HeightRequest = this.Height > 0
+                        ? Math.Min(maxViewerHeight, this.Height * FOLDABLE_EMPTY_IMAGE_HEIGHT_RATIO)
+                        : EMPTY_IMAGE_VIEWER_HEIGHT;
+                }
+                return;
+            }
+
             imagePreviewBorder.MaximumHeightRequest = double.PositiveInfinity;
             imageViewer.MaximumHeightRequest = double.PositiveInfinity;
+
+            if (this.imagePath is null)
+            {
+                imageViewer.HeightRequest = EMPTY_IMAGE_VIEWER_HEIGHT;
+            }
         }
 
         /// <summary>
